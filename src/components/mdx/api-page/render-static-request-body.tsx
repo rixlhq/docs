@@ -23,8 +23,8 @@ async function buildRequestSections(mediaEntries: Array<[string, RequestMediaTyp
   return Promise.all(mediaEntries.map(([mediaType, media]) => buildRequestSection(mediaType, media, ctx)));
 }
 
-export async function renderStaticRequestBodySection(method: MethodWithPath, ctx: OpenApiRenderContext) {
-  const requestBody = method.requestBody;
+export async function renderStaticRequestBodySection(operation: MethodWithPath, ctx: OpenApiRenderContext) {
+  const requestBody = operation.requestBody;
   const mediaEntries = Object.entries(requestBody?.content ?? {});
   if (mediaEntries.length === 0) return null;
 

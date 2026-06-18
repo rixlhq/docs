@@ -108,8 +108,8 @@ async function renderResponseEntry(
   );
 }
 
-export async function renderStaticResponseSection(method: MethodWithPath, ctx: OpenApiRenderContext) {
-  const responseEntries = Object.entries(method.responses ?? {});
+export async function renderStaticResponseSection(operation: MethodWithPath, ctx: OpenApiRenderContext) {
+  const responseEntries = Object.entries(operation.responses ?? {});
   if (responseEntries.length === 0) return null;
 
   const sections = await Promise.all(responseEntries.map(([status, response]) => renderResponseEntry(status, response, ctx)));

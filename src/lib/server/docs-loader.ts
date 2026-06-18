@@ -4,7 +4,7 @@ import {staticFunctionMiddleware} from "@tanstack/start-static-server-functions"
 import type {Folder, Node, Root} from "fumadocs-core/page-tree";
 import {renderToReadableStream} from "react-dom/server";
 import {createElement} from "react";
-import type {ApiPageProps} from "fumadocs-openapi/ui";
+import type {OpenAPIPageProps_Spec} from "fumadocs-openapi/ui";
 import {source} from "../../lib/source.server";
 import {APIPage} from "../../components/mdx/api-page.server";
 
@@ -44,20 +44,30 @@ export const loader = createServerFn({
     };
   });
 
-interface StaticOpenApiSchema {
-  id: string;
-  bundled: unknown;
-  dereferenced: unknown;
-}
+// Resolves the splat for the first API page (e.g. "api/analytics/get-analytics-v1-dashboard").
+// Used by the /$lang/api index redirect so the landing page tracks the spec instead of a
+// hardcoded operation slug that breaks whenever the OpenAPI spec changes.
+export const getApiEntrySlug = createServerFn({
+  method: "GET",
+})
+  .inputValidator((params: {lang?: string}) => params)
+  .middleware([staticFunctionMiddleware])
+  .handler(({data: {lang}}) => {
+    const tree = source.getPageTree(lang) as Root;
+    const url = findFirstPageUrlByPrefix(tree, `/${lang}/api`);
+    if (!url) return "api";
+
+    const prefix = `/${lang}/`;
+    return url.startsWith(prefix) ? url.slice(prefix.length) : url.replace(/^\/+/, "");
+  });
 
 interface StaticOpenApiPage {
-  props: ApiPageProps;
-  schema: StaticOpenApiSchema;
+  props: OpenAPIPageProps_Spec;
   toc: unknown;
 }
 
 async function renderApiPageHtml(apiPage: StaticOpenApiPage): Promise<string> {
-  const stream = await renderToReadableStream(createElement(APIPage, {...apiPage.props, document: apiPage.schema}));
+  const stream = await renderToReadableStream(createElement(APIPage, apiPage.props));
   await stream.allReady;
   return await new Response(stream).text();
 }
@@ -65,34 +75,21 @@ async function renderApiPageHtml(apiPage: StaticOpenApiPage): Promise<string> {
 function getApiPage(data: unknown): StaticOpenApiPage | undefined {
   if (!isOpenApiData(data)) return;
 
-  const schema = data.getSchema();
   return {
-    props: data.getAPIPageProps(),
-    schema: {
-      id: schema.id,
-      bundled: schema.bundled,
-      dereferenced: schema.dereferenced,
-    },
+    props: data.getOpenAPIPageProps(),
     toc: data.toc,
   };
 }
 
 function isOpenApiData(data: unknown): data is {
-  getAPIPageProps: () => ApiPageProps;
-  getSchema: () => {
-    id: string;
-    bundled: unknown;
-    dereferenced: unknown;
-  };
+  getOpenAPIPageProps: () => OpenAPIPageProps_Spec;
   toc: unknown;
 } {
   return (
     typeof data === "object" &&
     data !== null &&
-    "getAPIPageProps" in data &&
-    typeof data.getAPIPageProps === "function" &&
-    "getSchema" in data &&
-    typeof data.getSchema === "function"
+    "getOpenAPIPageProps" in data &&
+    typeof data.getOpenAPIPageProps === "function"
   );
 }
 

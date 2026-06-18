@@ -4,8 +4,7 @@ import type {EncodedRequestData, MethodWithPath, OpenApiRenderContext} from "./t
 type OpenApiPaths = Record<string, Record<string, {operationId?: string; summary?: string} | undefined>>;
 
 function getOpenApiPaths(ctx: OpenApiRenderContext): OpenApiPaths | undefined {
-  const dereferenced = (ctx.schema as {dereferenced?: unknown}).dereferenced;
-  return (dereferenced as {paths?: OpenApiPaths})?.paths;
+  return (ctx.schema as {paths?: OpenApiPaths})?.paths;
 }
 
 function findPathByOperationId(paths: OpenApiPaths, methodKey: string, operationId?: string): string | undefined {
@@ -24,21 +23,27 @@ function findPathBySummary(paths: OpenApiPaths, methodKey: string, summary?: str
   }
 }
 
-export function findOperationPath(
-  ctx: OpenApiRenderContext,
-  method: MethodWithPath,
-  headerNode: unknown
-): string | undefined {
+export function findOperationPath({
+  ctx,
+  operation,
+  method,
+  headerNode,
+}: {
+  ctx: OpenApiRenderContext;
+  operation: MethodWithPath;
+  method: string;
+  headerNode: unknown;
+}): string | undefined {
   const pathFromHeader = extractPathFromHeader(headerNode);
   if (pathFromHeader) return pathFromHeader;
 
-  const methodKey = method.method?.toLowerCase();
+  const methodKey = method.toLowerCase();
   if (!methodKey) return;
 
   const paths = getOpenApiPaths(ctx);
   if (!paths) return;
 
-  return findPathByOperationId(paths, methodKey, method.operationId) ?? findPathBySummary(paths, methodKey, method.summary);
+  return findPathByOperationId(paths, methodKey, operation.operationId) ?? findPathBySummary(paths, methodKey, operation.summary);
 }
 
 export function extractPathFromHeader(node: unknown): string | undefined {
