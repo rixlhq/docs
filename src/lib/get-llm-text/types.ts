@@ -79,7 +79,8 @@ export interface OpenApiDereferencedSchema extends ApiServerRoot {
 }
 
 export interface OpenApiRootSchema {
-  dereferenced?: OpenApiDereferencedSchema;
+  id: string;
+  bundled: unknown;
 }
 
 export interface LLMPage {

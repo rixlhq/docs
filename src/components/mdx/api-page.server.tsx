@@ -1,28 +1,37 @@
 import "@tanstack/react-start/server-only";
-import {createAPIPage} from "fumadocs-openapi/ui";
-import {openapi} from "@/lib/openapi.server";
-import {renderResponseTabs} from "@/components/mdx/api-page/render-response-tabs";
+import {createOpenAPIPage} from "fumadocs-openapi/ui";
+import {highlight} from "fumadocs-core/highlight";
 import {renderStaticExampleTabs} from "@/components/mdx/api-page/render-static-example-tabs";
 import {renderStaticRequestBodySection} from "@/components/mdx/api-page/render-static-request-body";
 import {renderStaticResponseSection} from "@/components/mdx/api-page/render-static-response-section";
 import {findOperationPath} from "@/components/mdx/api-page/path-utils";
-import {getCachedSchema, isStaticOpenApiSchema} from "@/components/mdx/api-page/schema-cache";
-import type {MethodWithPath, OpenApiRenderContext, StaticOpenApiSchema} from "@/components/mdx/api-page/types";
+import type {MethodWithPath, OpenApiRenderContext, PathItemLite} from "@/components/mdx/api-page/types";
 
-const APIPageImpl = createAPIPage(openapi, {
+// v11 exposes a single render context to content hooks. Adapt it to the project's
+// static-render context: markdown via the built-in processor, code via fumadocs' Shiki
+// highlighter, and the dereferenced schema directly (no longer nested under `.dereferenced`).
+export const APIPage = createOpenAPIPage({
   playground: {
     enabled: false,
   },
   showResponseSchema: false,
   content: {
-    renderResponseTabs,
-    async renderOperationLayout(slots, ctx, method) {
-      const typedCtx = ctx as OpenApiRenderContext;
-      const typedMethod = method as MethodWithPath;
-      const path = findOperationPath(typedCtx, typedMethod, slots.header);
-      const rail = path ? await renderStaticExampleTabs({path, method, ctx: typedCtx}) : slots.apiExample;
-      const requestBody = await renderStaticRequestBodySection(typedMethod, typedCtx);
-      const responses = await renderStaticResponseSection(typedMethod, typedCtx);
+    async renderOperationLayout(slots, {operation, method, pathItem, ctx}) {
+      const typedCtx: OpenApiRenderContext = {
+        schema: ctx.schema.dereferenced,
+        mediaAdapters: ctx.mediaAdapters,
+        renderMarkdown: (md) => ctx._default_processMarkdown(md),
+        renderCodeBlock: (lang, code) => highlight(code, {lang, ...ctx.shikiOptions}),
+      };
+      const typedOperation = operation as MethodWithPath;
+      const typedPathItem = pathItem as PathItemLite;
+      const typedMethod = method as string;
+      const path = findOperationPath({ctx: typedCtx, operation: typedOperation, method: typedMethod, headerNode: slots.header});
+      const rail = path
+        ? await renderStaticExampleTabs({path, operation: typedOperation, method: typedMethod, pathItem: typedPathItem, ctx: typedCtx})
+        : slots.apiExample;
+      const requestBody = await renderStaticRequestBodySection(typedOperation, typedCtx);
+      const responses = await renderStaticResponseSection(typedOperation, typedCtx);
 
       return (
         <div className="flex flex-col gap-x-6 gap-y-4 @4xl:flex-row @4xl:items-start">
@@ -42,13 +51,3 @@ const APIPageImpl = createAPIPage(openapi, {
     },
   },
 });
-
-export function APIPage({
-  document,
-  ...props
-}: Omit<Parameters<typeof APIPageImpl>[0], "document"> & {
-  document: StaticOpenApiSchema | Promise<StaticOpenApiSchema>;
-}) {
-  const resolved = isStaticOpenApiSchema(document) ? getCachedSchema(document) : document;
-  return <APIPageImpl {...props} document={resolved} />;
-}

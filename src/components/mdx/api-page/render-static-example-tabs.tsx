@@ -1,9 +1,7 @@
 import {CodeBlockTabsList, CodeBlockTabsTrigger} from "fumadocs-ui/components/codeblock";
 import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 // @ts-expect-error -- runtime export exists but not in .d.ts
-import {ResponseTabs} from "../../../../node_modules/fumadocs-openapi/dist/ui/operation/response-tabs.js";
-// @ts-expect-error -- runtime export exists but not in .d.ts
-import {getExampleRequests} from "../../../../node_modules/fumadocs-openapi/dist/ui/operation/get-example-requests.js";
+import {getExampleRequests} from "../../../../node_modules/fumadocs-openapi/dist/utils/get-example-requests.js";
 import type {CodeUsageGenerator} from "fumadocs-openapi/requests/generators";
 import {csharp} from "fumadocs-openapi/requests/generators/csharp";
 import {curl} from "fumadocs-openapi/requests/generators/curl";
@@ -14,10 +12,29 @@ import {python} from "fumadocs-openapi/requests/generators/python";
 import type {ReactNode} from "react";
 import {joinApiUrl, resolveOpenApiBaseUrl} from "@/lib/api-base-url";
 import type {ApiServerRoot} from "@/lib/api-base-url";
-import type {EncodedRequestData, MethodWithPath, OpenApiRenderContext} from "./types";
+import {renderResponseTabs} from "./render-response-tabs";
+import {collectResponseExamples} from "./schema-utils";
+import type {EncodedRequestData, MethodWithPath, OpenApiRenderContext, PathItemLite, ResponseMediaTypeLite, ResponseTab} from "./types";
 import {resolveRequestPath} from "./path-utils";
 
 const requestCodeGenerators: CodeUsageGenerator[] = [curl, javascript, go, python, java, csharp];
+
+function pickPreferredMedia(content?: Record<string, ResponseMediaTypeLite>): [string, ResponseMediaTypeLite] | undefined {
+  const entries = Object.entries(content ?? {});
+  return entries.find(([type]) => type.includes("json")) ?? entries[0];
+}
+
+function buildResponseTabs(operation: MethodWithPath): ResponseTab[] {
+  return Object.entries(operation.responses ?? {}).map(([code, response]) => {
+    const media = pickPreferredMedia(response.content);
+    return {
+      code,
+      mediaType: media?.[0],
+      response: {description: response.description},
+      examples: media ? collectResponseExamples(media[1]) : [],
+    };
+  });
+}
 
 type RequestTabItem = {
   id: string;
@@ -41,10 +58,7 @@ function buildRequestItems(requestUrl: string, encoded: EncodedRequestData, ctx:
     id: resolveGeneratorId(generator),
     label: generator.label ?? generator.lang,
     lang: generator.lang,
-    code: generator.generate(requestUrl, encoded, {
-      mediaAdapters: ctx.mediaAdapters,
-      server: null,
-    }),
+    code: generator.generate({...encoded, url: requestUrl} as Parameters<CodeUsageGenerator["generate"]>[0], {mediaAdapters: ctx.mediaAdapters}),
   }));
 }
 
@@ -83,37 +97,42 @@ function RequestTabs({items}: {items: HighlightedTabItem[]}) {
 
 type RequestUrlInput = {
   path: string;
-  method: MethodWithPath;
+  operation: MethodWithPath;
   ctx: OpenApiRenderContext;
   encoded: EncodedRequestData;
 };
 
-function resolveRequestUrl({path, method, ctx, encoded}: RequestUrlInput): string {
-  const rootSchema = (ctx.schema as {dereferenced?: unknown}).dereferenced as ApiServerRoot | undefined;
-  return joinApiUrl(resolveOpenApiBaseUrl(rootSchema, method.servers), resolveRequestPath(path, encoded));
+function resolveRequestUrl({path, operation, ctx, encoded}: RequestUrlInput): string {
+  const rootSchema = ctx.schema as ApiServerRoot | undefined;
+  return joinApiUrl(resolveOpenApiBaseUrl(rootSchema, operation.servers), resolveRequestPath(path, encoded));
 }
 
 export async function renderStaticExampleTabs({
   path,
+  operation,
   method,
+  pathItem,
   ctx,
 }: {
   path: string;
-  method: Parameters<typeof getExampleRequests>[1];
+  operation: MethodWithPath;
+  method: string;
+  pathItem: PathItemLite;
   ctx: OpenApiRenderContext;
 }) {
-  const [firstExample] = getExampleRequests(path, method, ctx);
-  if (!firstExample) return <ResponseTabs operation={method} ctx={ctx} />;
+  const responseTabs = await renderResponseTabs(buildResponseTabs(operation), ctx);
+  const [firstExample] = getExampleRequests({path, operation, method, pathItem, ctx});
+  if (!firstExample) return responseTabs;
 
   const encoded = firstExample.encoded as EncodedRequestData;
-  const requestUrl = resolveRequestUrl({path, method: method as MethodWithPath, ctx, encoded});
+  const requestUrl = resolveRequestUrl({path, operation, ctx, encoded});
   const items = buildRequestItems(requestUrl, encoded, ctx);
   const highlightedItems = await highlightRequestItems(items, ctx);
 
   return (
     <div className="prose-no-margin">
       <RequestTabs items={highlightedItems} />
-      <ResponseTabs operation={method} ctx={ctx} />
+      {responseTabs}
     </div>
   );
 }

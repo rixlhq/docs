@@ -1,6 +1,8 @@
 import type {ReactNode} from "react";
-import type {MediaAdapter} from "fumadocs-openapi/requests/media/adapter";
+import type {CreateOpenAPIPageOptions} from "fumadocs-openapi/ui";
 import type {ApiServer} from "@/lib/api-base-url";
+
+type MediaAdapters = NonNullable<CreateOpenAPIPageOptions["mediaAdapters"]>;
 
 export interface EncodedParameter {
   readonly value: string;
@@ -21,12 +23,18 @@ export interface EncodedRequestData {
 }
 
 export interface MethodWithPath {
-  method?: string;
   operationId?: string;
   summary?: string;
   servers?: ApiServer[];
   requestBody?: RequestBodyLite;
   responses?: Record<string, ResponseObjectLite>;
+}
+
+export interface PathItemLite {
+  summary?: string;
+  description?: string;
+  servers?: ApiServer[];
+  parameters?: unknown[];
 }
 
 export interface RequestBodyLite {
@@ -83,12 +91,6 @@ export interface RenderedSchemaProperty {
   children: RenderedSchemaProperty[];
 }
 
-export interface StaticOpenApiSchema {
-  id: string;
-  bundled: unknown;
-  dereferenced: unknown;
-}
-
 export type RenderMarkdown = (markdown: string) => ReactNode;
 export type RenderCodeBlock = (lang: string, code: string) => Promise<ReactNode>;
 
@@ -96,7 +98,7 @@ export interface OpenApiRenderContext {
   renderMarkdown: RenderMarkdown;
   renderCodeBlock: RenderCodeBlock;
   schema: unknown;
-  mediaAdapters: Record<string, MediaAdapter>;
+  mediaAdapters: MediaAdapters;
 }
 
 export interface ResponseTabExample {

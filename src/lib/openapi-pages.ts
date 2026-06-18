@@ -1,4 +1,4 @@
-import type {SchemaToPagesOptions} from "fumadocs-openapi/server";
+import type {OpenAPISourceOptions} from "fumadocs-openapi/server";
 
 function toFlatFileName(value: string) {
   const flattened = value
@@ -13,10 +13,9 @@ function toFlatFileName(value: string) {
   return flattened.length > 0 ? flattened : "root";
 }
 
-export const openApiPagesOptions: SchemaToPagesOptions = {
+export const openApiPagesOptions: OpenAPISourceOptions = {
   per: "operation",
   groupBy: "tag",
-  includeDescription: true,
   name(entry) {
     if (entry.type === "operation") {
       return `${entry.item.method.toLowerCase()}-${toFlatFileName(entry.item.path)}`;
