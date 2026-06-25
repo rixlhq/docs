@@ -11,7 +11,7 @@ import {APIPage} from "../../components/mdx/api-page.server";
 export const loader = createServerFn({
   method: "GET",
 })
-  .inputValidator((params: {slugs: string[]; lang?: string}) => params)
+  .validator((params: {slugs: string[]; lang?: string}) => params)
   .middleware([staticFunctionMiddleware]) // used for tanstack static rendering
   .handler(async ({data: {slugs, lang}}) => {
     const page = source.getPage(slugs, lang);
@@ -50,7 +50,7 @@ export const loader = createServerFn({
 export const getApiEntrySlug = createServerFn({
   method: "GET",
 })
-  .inputValidator((params: {lang?: string}) => params)
+  .validator((params: {lang?: string}) => params)
   .middleware([staticFunctionMiddleware])
   .handler(({data: {lang}}) => {
     const tree = source.getPageTree(lang) as Root;
@@ -85,12 +85,7 @@ function isOpenApiData(data: unknown): data is {
   getOpenAPIPageProps: () => OpenAPIPageProps_Spec;
   toc: unknown;
 } {
-  return (
-    typeof data === "object" &&
-    data !== null &&
-    "getOpenAPIPageProps" in data &&
-    typeof data.getOpenAPIPageProps === "function"
-  );
+  return typeof data === "object" && data !== null && "getOpenAPIPageProps" in data && typeof data.getOpenAPIPageProps === "function";
 }
 
 function getSectionLinks(tree: Root, lang: string) {
