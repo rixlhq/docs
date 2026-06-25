@@ -3,9 +3,8 @@ title: Monitoring Status
 description: Track video processing progress and handle errors effectively.
 ---
 
-
-import {Callout} from '@/snippets';
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Callout} from "@/snippets";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 Monitor video processing status, track progress through the pipeline, and implement robust error handling for reliable video uploads.
 
@@ -39,6 +38,7 @@ Monitor your video's progress through the processing pipeline with real-time sta
     - Estimated completion time (when processing)
     - Available renditions (when ready)
     - Error details (if error occurred)
+
   </Tab>
 </Tabs>
 
@@ -54,7 +54,7 @@ class VideoStatusMonitor {
     this.apiKey = apiKey;
     this.baseUrl = 'https://api.rixl.com';
   }
-  
+
   async getVideoStatus(videoId) {
     const response = await fetch(`${this.baseUrl}/videos/${videoId}`, {
       headers: {
@@ -62,42 +62,42 @@ class VideoStatusMonitor {
         'Content-Type': 'application/json'
       }
     });
-    
+
     if (!response.ok) {
       throw new Error(`Failed to get video status: ${response.status}`);
     }
-    
+
     return await response.json();
   }
-  
+
   async waitForProcessing(videoId, options = {}) {
-    const { 
+    const {
       pollInterval = 5000, // 5 seconds
       timeout = 1800000,   // 30 minutes
-      onProgress = null 
+      onProgress = null
     } = options;
-    
+
     const startTime = Date.now();
-    
+
     return new Promise((resolve, reject) => {
       const checkStatus = async () => {
         try {
           const status = await this.getVideoStatus(videoId);
-          
+
           // Call progress callback if provided
           if (onProgress) {
             onProgress(status);
           }
-          
+
           switch (status.processing_status) {
             case 'ready':
               resolve(status);
               return;
-              
+
             case 'error':
               reject(new Error(`Processing failed: ${status.error_message}`));
               return;
-              
+
             case 'processing':
             case 'uploaded':
               // Check for timeout
@@ -105,11 +105,11 @@ class VideoStatusMonitor {
                 reject(new Error('Processing timeout exceeded'));
                 return;
               }
-              
+
               // Continue polling
               setTimeout(checkStatus, pollInterval);
               break;
-              
+
             default:
               reject(new Error(`Unknown status: ${status.processing_status}`));
           }
@@ -117,20 +117,20 @@ class VideoStatusMonitor {
           reject(error);
         }
       };
-      
+
       checkStatus();
     });
   }
-  
+
   async monitorMultipleVideos(videoIds, onUpdate) {
     const statusMap = new Map();
-    
+
     const checkAllStatuses = async () => {
       const promises = videoIds.map(async (videoId) => {
         try {
           const status = await this.getVideoStatus(videoId);
           const previousStatus = statusMap.get(videoId);
-          
+
           // Only call update if status changed
           if (!previousStatus || previousStatus.processing_status !== status.processing_status) {
             statusMap.set(videoId, status);
@@ -138,34 +138,34 @@ class VideoStatusMonitor {
               onUpdate(videoId, status, previousStatus);
             }
           }
-          
+
           return status;
         } catch (error) {
           console.error(`Error checking status for ${videoId}:`, error);
           return null;
         }
       });
-      
+
       return Promise.all(promises);
     };
-    
+
     // Initial check
     await checkAllStatuses();
-    
+
     // Poll for updates
     const pollInterval = setInterval(async () => {
       const statuses = await checkAllStatuses();
-      
+
       // Stop polling if all videos are complete
-      const allComplete = statuses.every(status => 
+      const allComplete = statuses.every(status =>
         status && ['ready', 'error'].includes(status.processing_status)
       );
-      
+
       if (allComplete) {
         clearInterval(pollInterval);
       }
     }, 10000); // Check every 10 seconds for multiple videos
-    
+
     return statusMap;
   }
 }
@@ -184,7 +184,7 @@ try {
       }
     }
   });
-  
+
   console.log('Video ready!', result);
 } catch (error) {
   console.error('Processing failed:', error.message);
@@ -211,37 +211,37 @@ class AsyncVideoStatusMonitor:
     def __init__(self, api_key: str):
         self.api_key = api_key
         self.base_url = 'https://api.rixl.com'
-        
+
     async def get_video_status(self, session: aiohttp.ClientSession, video_id: str) -> Dict:
         """Get current status of a video."""
         headers = {
             'X-API-Key': self.api_key,
             'Content-Type': 'application/json'
         }
-        
+
         async with session.get(f'{self.base_url}/videos/{video_id}', headers=headers) as response:
             if response.status != 200:
                 raise Exception(f'Failed to get video status: {response.status}')
             return await response.json()
-    
+
     async def wait_for_processing(
-        self, 
-        video_id: str, 
+        self,
+        video_id: str,
         poll_interval: int = 5,
         timeout: int = 1800,
         progress_callback: Optional[Callable] = None
     ) -> Dict:
         """Wait for video processing to complete."""
         start_time = time.time()
-        
+
         async with aiohttp.ClientSession() as session:
             while True:
                 try:
                     status = await self.get_video_status(session, video_id)
-                    
+
                     if progress_callback:
                         progress_callback(video_id, status)
-                    
+
                     if status['processing_status'] == 'ready':
                         return status
                     elif status['processing_status'] == 'error':
@@ -250,63 +250,63 @@ class AsyncVideoStatusMonitor:
                         # Check timeout
                         if time.time() - start_time > timeout:
                             raise Exception('Processing timeout exceeded')
-                        
+
                         await asyncio.sleep(poll_interval)
                     else:
                         raise Exception(f"Unknown status: {status['processing_status']}")
-                        
+
                 except Exception as e:
                     if 'timeout' in str(e).lower() or 'failed' in str(e).lower():
                         raise
                     # Retry on temporary errors
                     await asyncio.sleep(poll_interval)
-    
+
     async def monitor_batch(
-        self, 
+        self,
         video_ids: List[str],
         progress_callback: Optional[Callable] = None
     ) -> Dict[str, Dict]:
         """Monitor multiple videos concurrently."""
-        
+
         async def monitor_single(video_id: str) -> tuple[str, Dict]:
             try:
                 result = await self.wait_for_processing(
-                    video_id, 
+                    video_id,
                     progress_callback=progress_callback
                 )
                 return video_id, result
             except Exception as e:
                 return video_id, {'processing_status': 'error', 'error_message': str(e)}
-        
+
         # Monitor all videos concurrently
         tasks = [monitor_single(video_id) for video_id in video_ids]
         results = await asyncio.gather(*tasks)
-        
+
         return dict(results)
 
 # Usage
 async def main():
     monitor = AsyncVideoStatusMonitor('YOUR_API_KEY')
-    
+
     def progress_handler(video_id, status):
         print(f"{video_id}: {status['processing_status']}")
         if 'estimated_completion_time' in status:
             print(f"  ETA: {status['estimated_completion_time']}")
-    
+
     # Monitor single video
     try:
         result = await monitor.wait_for_processing(
-            'video_123', 
+            'video_123',
             progress_callback=progress_handler
         )
         print('Video ready!', result['video_id'])
     except Exception as e:
         print('Processing failed:', str(e))
-    
+
     # Monitor multiple videos
     video_ids = ['video_123', 'video_456', 'video_789']
     results = await monitor.monitor_batch(video_ids, progress_handler)
-    
+
     for video_id, result in results.items():
         if result['processing_status'] == 'ready':
             print(f"{video_id} completed successfully")
@@ -326,165 +326,162 @@ asyncio.run(main())
 ```javascript
 class ProcessingErrorHandler {
   static classifyError(status) {
-    const { processing_status, error_message, error_code } = status;
-    
-    if (processing_status !== 'error') {
+    const {processing_status, error_message, error_code} = status;
+
+    if (processing_status !== "error") {
       return null;
     }
-    
+
     const errorTypes = {
       // Retryable errors
-      'TEMPORARY_FAILURE': {
+      TEMPORARY_FAILURE: {
         recoverable: true,
-        strategy: 'retry',
-        delay: 30000 // 30 seconds
+        strategy: "retry",
+        delay: 30000, // 30 seconds
       },
-      'QUEUE_OVERLOADED': {
+      QUEUE_OVERLOADED: {
         recoverable: true,
-        strategy: 'retry_later',
-        delay: 300000 // 5 minutes
+        strategy: "retry_later",
+        delay: 300000, // 5 minutes
       },
-      'NETWORK_ERROR': {
+      NETWORK_ERROR: {
         recoverable: true,
-        strategy: 'retry',
-        delay: 60000 // 1 minute
+        strategy: "retry",
+        delay: 60000, // 1 minute
       },
-      
+
       // Non-retryable errors
-      'INVALID_FORMAT': {
+      INVALID_FORMAT: {
         recoverable: false,
-        strategy: 'convert_format',
-        message: 'Convert video to supported format (MP4/H.264)'
+        strategy: "convert_format",
+        message: "Convert video to supported format (MP4/H.264)",
       },
-      'FILE_CORRUPTED': {
+      FILE_CORRUPTED: {
         recoverable: false,
-        strategy: 'reupload',
-        message: 'File appears corrupted, try re-uploading'
+        strategy: "reupload",
+        message: "File appears corrupted, try re-uploading",
       },
-      'DURATION_EXCEEDED': {
+      DURATION_EXCEEDED: {
         recoverable: false,
-        strategy: 'split_video',
-        message: 'Video exceeds maximum duration limit'
+        strategy: "split_video",
+        message: "Video exceeds maximum duration limit",
       },
-      'QUOTA_EXCEEDED': {
+      QUOTA_EXCEEDED: {
         recoverable: false,
-        strategy: 'upgrade_plan',
-        message: 'Processing quota exceeded, upgrade plan required'
-      }
+        strategy: "upgrade_plan",
+        message: "Processing quota exceeded, upgrade plan required",
+      },
     };
-    
+
     const errorType = error_code || this.inferErrorType(error_message);
-    return errorTypes[errorType] || {
-      recoverable: false,
-      strategy: 'contact_support',
-      message: 'Unknown error, contact support'
-    };
+    return (
+      errorTypes[errorType] || {
+        recoverable: false,
+        strategy: "contact_support",
+        message: "Unknown error, contact support",
+      }
+    );
   }
-  
+
   static inferErrorType(errorMessage) {
     const message = errorMessage.toLowerCase();
-    
-    if (message.includes('format') || message.includes('codec')) {
-      return 'INVALID_FORMAT';
+
+    if (message.includes("format") || message.includes("codec")) {
+      return "INVALID_FORMAT";
     }
-    if (message.includes('corrupt') || message.includes('damaged')) {
-      return 'FILE_CORRUPTED';
+    if (message.includes("corrupt") || message.includes("damaged")) {
+      return "FILE_CORRUPTED";
     }
-    if (message.includes('duration') || message.includes('length')) {
-      return 'DURATION_EXCEEDED';
+    if (message.includes("duration") || message.includes("length")) {
+      return "DURATION_EXCEEDED";
     }
-    if (message.includes('quota') || message.includes('limit')) {
-      return 'QUOTA_EXCEEDED';
+    if (message.includes("quota") || message.includes("limit")) {
+      return "QUOTA_EXCEEDED";
     }
-    if (message.includes('network') || message.includes('timeout')) {
-      return 'NETWORK_ERROR';
+    if (message.includes("network") || message.includes("timeout")) {
+      return "NETWORK_ERROR";
     }
-    if (message.includes('queue') || message.includes('busy')) {
-      return 'QUEUE_OVERLOADED';
+    if (message.includes("queue") || message.includes("busy")) {
+      return "QUEUE_OVERLOADED";
     }
-    
-    return 'TEMPORARY_FAILURE';
+
+    return "TEMPORARY_FAILURE";
   }
-  
+
   static async handleError(videoId, status, originalFile, apiKey) {
     const errorInfo = this.classifyError(status);
-    
+
     if (!errorInfo) {
-      return { success: true, message: 'No error to handle' };
+      return {success: true, message: "No error to handle"};
     }
-    
+
     console.log(`Error detected: ${status.error_message}`);
     console.log(`Strategy: ${errorInfo.strategy}`);
-    
+
     switch (errorInfo.strategy) {
-      case 'retry':
+      case "retry":
         console.log(`Retrying in ${errorInfo.delay / 1000} seconds...`);
-        await new Promise(resolve => setTimeout(resolve, errorInfo.delay));
+        await new Promise((resolve) => setTimeout(resolve, errorInfo.delay));
         return await this.retryProcessing(videoId, apiKey);
-        
-      case 'retry_later':
+
+      case "retry_later":
         return {
           success: false,
           retry: true,
           delay: errorInfo.delay,
-          message: `Retry processing in ${errorInfo.delay / 60000} minutes`
+          message: `Retry processing in ${errorInfo.delay / 60000} minutes`,
         };
-        
-      case 'convert_format':
+
+      case "convert_format":
         return {
           success: false,
-          action: 'convert',
-          message: errorInfo.message
+          action: "convert",
+          message: errorInfo.message,
         };
-        
-      case 'reupload':
+
+      case "reupload":
         return {
           success: false,
-          action: 'reupload',
-          message: errorInfo.message
+          action: "reupload",
+          message: errorInfo.message,
         };
-        
+
       default:
         return {
           success: false,
-          action: 'manual',
-          message: errorInfo.message
+          action: "manual",
+          message: errorInfo.message,
         };
     }
   }
-  
+
   static async retryProcessing(videoId, apiKey) {
     try {
       const response = await fetch(`https://api.rixl.com/videos/${videoId}/retry`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'X-API-Key': apiKey,
-          'Content-Type': 'application/json'
-        }
+          "X-API-Key": apiKey,
+          "Content-Type": "application/json",
+        },
       });
-      
+
       if (response.ok) {
-        return { success: true, message: 'Processing retry initiated' };
+        return {success: true, message: "Processing retry initiated"};
       } else {
-        return { success: false, message: 'Retry failed' };
+        return {success: false, message: "Retry failed"};
       }
     } catch (error) {
-      return { success: false, message: `Retry error: ${error.message}` };
+      return {success: false, message: `Retry error: ${error.message}`};
     }
   }
 }
 
 // Usage
-const status = await monitor.getVideoStatus('video_123');
-if (status.processing_status === 'error') {
-  const recovery = await ProcessingErrorHandler.handleError(
-    'video_123', 
-    status, 
-    originalFile, 
-    'YOUR_API_KEY'
-  );
-  
-  console.log('Recovery result:', recovery);
+const status = await monitor.getVideoStatus("video_123");
+if (status.processing_status === "error") {
+  const recovery = await ProcessingErrorHandler.handleError("video_123", status, originalFile, "YOUR_API_KEY");
+
+  console.log("Recovery result:", recovery);
 }
 ```
 
@@ -500,48 +497,48 @@ class ProcessingAnalytics {
     this.apiKey = apiKey;
     this.metrics = new Map();
   }
-  
+
   startTracking(videoId, metadata) {
     this.metrics.set(videoId, {
       startTime: Date.now(),
       metadata: metadata,
       statusUpdates: [],
-      processingStages: []
+      processingStages: [],
     });
   }
-  
+
   updateStatus(videoId, status) {
     const metric = this.metrics.get(videoId);
     if (!metric) return;
-    
+
     const now = Date.now();
     const update = {
       timestamp: now,
       status: status.processing_status,
       progress: status.progress_percentage || 0,
-      estimatedCompletion: status.estimated_completion_time
+      estimatedCompletion: status.estimated_completion_time,
     };
-    
+
     metric.statusUpdates.push(update);
-    
+
     // Track stage transitions
     const lastUpdate = metric.statusUpdates[metric.statusUpdates.length - 2];
     if (lastUpdate && lastUpdate.status !== status.processing_status) {
       metric.processingStages.push({
         stage: lastUpdate.status,
         duration: now - (lastUpdate.timestamp || metric.startTime),
-        completed: now
+        completed: now,
       });
     }
   }
-  
+
   getProcessingReport(videoId) {
     const metric = this.metrics.get(videoId);
     if (!metric) return null;
-    
+
     const totalDuration = Date.now() - metric.startTime;
     const finalStatus = metric.statusUpdates[metric.statusUpdates.length - 1];
-    
+
     return {
       videoId,
       totalProcessingTime: totalDuration,
@@ -549,63 +546,63 @@ class ProcessingAnalytics {
       stages: metric.processingStages,
       metadata: metric.metadata,
       efficiency: this.calculateEfficiency(metric),
-      recommendations: this.getOptimizationRecommendations(metric)
+      recommendations: this.getOptimizationRecommendations(metric),
     };
   }
-  
+
   calculateEfficiency(metric) {
-    const { metadata, processingStages } = metric;
+    const {metadata, processingStages} = metric;
     const totalTime = processingStages.reduce((sum, stage) => sum + stage.duration, 0);
-    
+
     // Calculate processing speed ratio (higher is better)
     const fileSizeMB = metadata.fileSize / (1024 * 1024);
     const processingSpeed = fileSizeMB / (totalTime / 1000); // MB per second
-    
+
     return {
       processingSpeed,
       timePerMB: totalTime / fileSizeMB,
-      efficiency: processingSpeed > 0.5 ? 'good' : 'poor'
+      efficiency: processingSpeed > 0.5 ? "good" : "poor",
     };
   }
-  
+
   getOptimizationRecommendations(metric) {
     const recommendations = [];
-    const { metadata, efficiency } = metric;
-    
+    const {metadata, efficiency} = metric;
+
     if (efficiency.processingSpeed < 0.3) {
-      recommendations.push('Consider using MP4/H.264 format for faster processing');
+      recommendations.push("Consider using MP4/H.264 format for faster processing");
     }
-    
+
     if (metadata.resolution && metadata.resolution.width > 1920) {
-      recommendations.push('Large resolution detected - consider Pro tier for optimal processing');
+      recommendations.push("Large resolution detected - consider Pro tier for optimal processing");
     }
-    
+
     if (metadata.fileSize > 500 * 1024 * 1024) {
-      recommendations.push('Large file detected - upload during off-peak hours for faster processing');
+      recommendations.push("Large file detected - upload during off-peak hours for faster processing");
     }
-    
+
     return recommendations;
   }
 }
 
 // Usage
-const analytics = new ProcessingAnalytics('YOUR_API_KEY');
+const analytics = new ProcessingAnalytics("YOUR_API_KEY");
 
 // Start tracking
-analytics.startTracking('video_123', {
-  fileName: 'my-video.mp4',
+analytics.startTracking("video_123", {
+  fileName: "my-video.mp4",
   fileSize: 250 * 1024 * 1024, // 250MB
-  resolution: { width: 1920, height: 1080 },
-  duration: 300 // 5 minutes
+  resolution: {width: 1920, height: 1080},
+  duration: 300, // 5 minutes
 });
 
 // Update during monitoring
-const status = await monitor.getVideoStatus('video_123');
-analytics.updateStatus('video_123', status);
+const status = await monitor.getVideoStatus("video_123");
+analytics.updateStatus("video_123", status);
 
 // Get final report
-const report = analytics.getProcessingReport('video_123');
-console.log('Processing Report:', report);
+const report = analytics.getProcessingReport("video_123");
+console.log("Processing Report:", report);
 ```
 
 ## Troubleshooting Common Issues
@@ -613,20 +610,30 @@ console.log('Processing Report:', report);
 ### Processing Failures
 
 <Callout type="warning">
-  **Upload Failures:**
-  - Verify file size under 2GB limit
-  - Check network stability for large files
-  - Ensure the signed URL hasn't expired
-
-  **Processing Delays:**
-  - Check current queue status via API
-  - Contact support for processing over 2 hours
-  - Consider using the Basic tier for faster turnaround
-
-  **Playback Issues:**
-  - Verify all renditions have completed processing
-  - Check CDN propagation status
-  - Test with different quality levels
+  <p>
+    <strong>Upload Failures:</strong>
+  </p>
+  <ul>
+    <li>Verify file size under 2GB limit</li>
+    <li>Check network stability for large files</li>
+    <li>Ensure the signed URL hasn't expired</li>
+  </ul>
+  <p>
+    <strong>Processing Delays:</strong>
+  </p>
+  <ul>
+    <li>Check current queue status via API</li>
+    <li>Contact support for processing over 2 hours</li>
+    <li>Consider using the Basic tier for faster turnaround</li>
+  </ul>
+  <p>
+    <strong>Playback Issues:</strong>
+  </p>
+  <ul>
+    <li>Verify all renditions have completed processing</li>
+    <li>Check CDN propagation status</li>
+    <li>Test with different quality levels</li>
+  </ul>
 </Callout>
 
 ### Queue Management
@@ -635,24 +642,22 @@ console.log('Processing Report:', report);
 
 ```javascript
 async function checkQueueStatus(apiKey) {
-  const response = await fetch('https://api.rixl.com/processing/queue', {
-    headers: { 'X-API-Key': apiKey }
+  const response = await fetch("https://api.rixl.com/processing/queue", {
+    headers: {"X-API-Key": apiKey},
   });
-  
+
   const queueInfo = await response.json();
-  
+
   return {
     queueDepth: queueInfo.queue_depth,
     estimatedWaitTime: queueInfo.estimated_wait_time,
     processingCapacity: queueInfo.current_capacity,
-    recommendation: queueInfo.estimated_wait_time > 300 ? 
-      'Consider uploading during off-peak hours' : 
-      'Good time for upload'
+    recommendation: queueInfo.estimated_wait_time > 300 ? "Consider uploading during off-peak hours" : "Good time for upload",
   };
 }
 
 // Usage
-const queueStatus = await checkQueueStatus('YOUR_API_KEY');
+const queueStatus = await checkQueueStatus("YOUR_API_KEY");
 console.log(`Queue depth: ${queueStatus.queueDepth}`);
 console.log(`Est. wait time: ${queueStatus.estimatedWaitTime} seconds`);
 console.log(`Recommendation: ${queueStatus.recommendation}`);
@@ -663,6 +668,7 @@ console.log(`Recommendation: ${queueStatus.recommendation}`);
 ### Monitoring Strategy
 
 **Effective monitoring implementation**:
+
 - **Appropriate polling intervals**: 5-10 seconds for single videos, longer for batch processing
 - **Timeout handling**: Set reasonable timeouts based on content size and quality tier
 - **Error recovery**: Implement automatic retry logic for temporary failures
@@ -671,6 +677,7 @@ console.log(`Recommendation: ${queueStatus.recommendation}`);
 ### Performance Optimization
 
 **Optimize monitoring performance**:
+
 - **Batch monitoring**: Monitor multiple videos efficiently with concurrent requests
 - **Caching**: Cache status responses briefly to reduce API calls
 - **Smart polling**: Adjust polling frequency based on processing stage

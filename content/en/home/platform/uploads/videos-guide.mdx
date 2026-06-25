@@ -3,20 +3,19 @@ title: Video Processing Guide
 description: Complete guide to automated video transcoding system producing multiple quality levels and adaptive streaming formats for efficient delivery on any device.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Step, Steps} from 'fumadocs-ui/components/steps';
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
-import {Banner} from 'fumadocs-ui/components/banner';
+import {Step, Steps} from "fumadocs-ui/components/steps";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+import {Banner} from "fumadocs-ui/components/banner";
 
 <Banner variant="info">
-  **Coming soon:** Advanced video processing will include AI-powered thumbnail generation and automated chapter
-  detection, allowing for smarter preview selection and seamless navigation.
+  **Coming soon:** Advanced video processing will include AI-powered thumbnail generation and automated chapter detection, allowing for
+  smarter preview selection and seamless navigation.
 </Banner>
 
 <Callout>
-  Once [video upload](https://dash.rixl.com/videos) is complete, RIXL encodes the file into various quality levels and
-  adaptive streaming formats for reliable playback across all devices and network conditions.
+  Once [video upload](https://dash.rixl.com/videos) is complete, RIXL encodes the file into various quality levels and adaptive streaming
+  formats for reliable playback across all devices and network conditions.
 </Callout>
 
 ## Processing Architecture
@@ -24,15 +23,9 @@ import {Banner} from 'fumadocs-ui/components/banner';
 Video processing uses a three-phase pipeline converting uploaded content into streaming-ready assets:
 
 <Steps>
-  <Step>
-    **Analysis & Planning** - Content analysis determines optimal rendition ladder
-  </Step>
-  <Step>
-    **Multi-Quality Encoding** - Parallel transcoding to multiple resolutions and bitrates
-  </Step>
-  <Step>
-    **Adaptive Stream Packaging** - HLS/DASH manifest generation for seamless delivery
-  </Step>
+  <Step>**Analysis & Planning** - Content analysis determines optimal rendition ladder</Step>
+  <Step>**Multi-Quality Encoding** - Parallel transcoding to multiple resolutions and bitrates</Step>
+  <Step>**Adaptive Stream Packaging** - HLS/DASH manifest generation for seamless delivery</Step>
 </Steps>
 
 ## Quality Tiers Explained
@@ -47,6 +40,7 @@ Choose a tier matching your content needs at upload initiation:
     - **240p Mobile** (426×240) at 500 Kbps
 
     *Best for: General web content, tutorials, presentations*
+
   </Tab>
   <Tab value="Shorts">
     **Tailored for short-form vertical content:**
@@ -55,6 +49,7 @@ Choose a tier matching your content needs at upload initiation:
     - **480p SD** (854×480) at 1.0 Mbps, 30fps
 
     *Best for: Social media content, mobile-first videos, vertical format*
+
   </Tab>
   <Tab value="Pro">
     **Premium quality with full resolution support:**
@@ -64,23 +59,20 @@ Choose a tier matching your content needs at upload initiation:
     - **Additional lower resolutions** for adaptive streaming
 
     *Pro tier is best suited for professional content, broadcasts, and media with high-quality requirements.*
+
   </Tab>
 </Tabs>
 
 ## Supported Input Formats
 
-<Tabs items={['Primary Formats', 'Other Support']}>
+<Tabs items={["Primary Formats", "Other Support"]}>
   <Tab value="Primary Formats">
-    **Recommended for fastest processing:**
-    - **MP4** - H.264/H.265 video with Opus audio
-    - **MOV** - QuickTime containers (Apple ecosystem)
+    **Recommended for fastest processing:** - **MP4** - H.264/H.265 video with Opus audio - **MOV** - QuickTime containers (Apple ecosystem)
     - **WebM** - VP8/VP9 with Vorbis/Opus audio
   </Tab>
   <Tab value="Other Support">
-    **Also supported but may require longer processing:**
-    - **MKV** - Matroska container format
-    - **AVI** - Legacy Windows format
-    - **FLV** - Flash video format
+    **Also supported but may require longer processing:** - **MKV** - Matroska container format - **AVI** - Legacy Windows format - **FLV**
+    - Flash video format
   </Tab>
 </Tabs>
 
@@ -96,14 +88,11 @@ Choose a tier matching your content needs at upload initiation:
     - Aspect ratio preservation planning
   </Step>
 
-  <Step>
-    ### Intelligent Encoding
-    **Multi-rendition transcoding:**
-    - **Primary codec**: H.265 (HEVC) for efficiency
-    - **Other codec**: H.264 for universal compatibility
-    - **Frame rate handling**: 24fps to 60fps with NTSC support
-    - **Adaptive bitrates**: Content-aware quality selection
-  </Step>
+<Step>
+  ### Intelligent Encoding **Multi-rendition transcoding:** - **Primary codec**: H.265 (HEVC) for efficiency - **Other codec**: H.264 for
+  universal compatibility - **Frame rate handling**: 24fps to 60fps with NTSC support - **Adaptive bitrates**: Content-aware quality
+  selection
+</Step>
 
   <Step>
     ### Adaptive Streaming
@@ -120,45 +109,31 @@ Choose a tier matching your content needs at upload initiation:
 RIXL conducts independent audio processing for efficient streaming:
 
 <Columns cols={4}>
-  <Card
-    title="Codec: Opus"
-  >128kbps, 48kHz for superior quality and compression</Card>
-  <Card
-    title="Segmentation"
-  >6-second audio segments for low-latency delivery</Card>
-  <Card
-    title="Independent Streaming"
-  >Audio served separately for efficient bandwidth usage</Card>
-  <Card
-    title="Other Support"
-  >Opus encoding for superior audio quality and compression</Card>
+  <Card title="Codec: Opus">128kbps, 48kHz for superior quality and compression</Card>
+  <Card title="Segmentation">6-second audio segments for low-latency delivery</Card>
+  <Card title="Independent Streaming">Audio served separately for efficient bandwidth usage</Card>
+  <Card title="Other Support">Opus encoding for superior audio quality and compression</Card>
 </Columns>
 
 ## Advanced Processing Features
 
 <Columns cols={4}>
-  <Card
-    title="Smart Resolution Scaling"
-  >Preserves aspect ratios while targeting industry-standard resolutions</Card>
-  <Card
-    title="Frame Rate Intelligence"
-  >Maintains native frame rates and adapts for target platforms</Card>
-  <Card
-    title="HDR Processing"
-  >Supports HDR with BT.2020 color space and 10-bit encoding</Card>
-  <Card
-    title="Adaptive Quality Ladders"
-  >Generates multiple renditions even from low-resolution sources</Card>
+  <Card title="Smart Resolution Scaling">Preserves aspect ratios while targeting industry-standard resolutions</Card>
+  <Card title="Frame Rate Intelligence">Maintains native frame rates and adapts for target platforms</Card>
+  <Card title="HDR Processing">Supports HDR with BT.2020 color space and 10-bit encoding</Card>
+  <Card title="Adaptive Quality Ladders">Generates multiple renditions even from low-resolution sources</Card>
 </Columns>
 
 ## Performance Characteristics
 
 **Processing Speed:**
+
 - **Basic tier**: ~1x real-time processing
 - **Shorts tier**: ~1.5x real-time processing
 - **Pro tier**: ~2-3x real-time processing (4K content)
 
 **File Size Efficiency:**
+
 - **H.265 encoding**: 30-50% smaller than H.264
 - **Adaptive bitrates**: Content-aware compression
 - **Multiple renditions**: Users receive the best quality for their connection
@@ -186,6 +161,7 @@ Monitor your video's progress through the processing pipeline:
     - Estimated completion time (when processing)
     - Available renditions (when ready)
     - Error details (if error occurred)
+
   </Tab>
 </Tabs>
 
@@ -194,21 +170,14 @@ Monitor your video's progress through the processing pipeline:
 **Source File Recommendations:**
 
 <Columns cols={4}>
-  <Card
-    title="Format: MP4 + H.264"
-  >Fastest processing with universal compatibility</Card>
-  <Card
-    title="Resolution: Upload Highest Available"
-  >Up to 4K for Pro tier, system scales down appropriately</Card>
-  <Card
-    title="Frame Rate: 30fps or 60fps"
-  >Standard rates for efficient processing and compatibility</Card>
-  <Card
-    title="Audio: Opus Codec"
-  >Best compatibility and quality for source material</Card>
+  <Card title="Format: MP4 + H.264">Fastest processing with universal compatibility</Card>
+  <Card title="Resolution: Upload Highest Available">Up to 4K for Pro tier, system scales down appropriately</Card>
+  <Card title="Frame Rate: 30fps or 60fps">Standard rates for efficient processing and compatibility</Card>
+  <Card title="Audio: Opus Codec">Best compatibility and quality for source material</Card>
 </Columns>
 
 **Large File Handling:**
+
 - **Multipart uploads** automatically enabled for files >100MB
 - **Resume capability** for interrupted uploads
 - **Parallel processing** of multiple quality renditions
@@ -216,11 +185,13 @@ Monitor your video's progress through the processing pipeline:
 ## Implementation Best Practices
 
 **Quality Tier Selection:**
+
 - **Basic**: Standard web content, bandwidth-conscious delivery
 - **Shorts**: Mobile-first content, social media delivery
 - **Pro**: Professional broadcasts, premium content experiences
 
 **Processing Efficiency:**
+
 - Upload during off-peak hours for faster processing
 - Use recommended formats (MP4/H.264) to minimize processing time
 - Monitor processing status rather than polling continuously
@@ -239,13 +210,15 @@ Monitor your video's progress through the processing pipeline:
     file_name: string;
     video_quality: 'basic' | 'shorts' | 'pro';
     image_format: 'jpg' | 'png' | 'webp';
-  }
+
+}
 
     interface UploadResponse {
     video_id: string;
     video_presigned_url: string;
     expires_at: string;
-  }
+
+}
 
     async function uploadVideo(
     videoFile: File,
@@ -322,6 +295,7 @@ Monitor your video's progress through the processing pipeline:
         console.log(`Upload successful! Video ID: ${videoId}`);
       };
       ```
+
   </Tab>
 
   <Tab value="Python">
@@ -372,7 +346,8 @@ Monitor your video's progress through the processing pipeline:
     session.headers.update({
     'X-API-Key': api_key,
     'User-Agent': 'RIXL-Python-Client/1.0'
-  })
+
+})
 
     try:
     # Step 1: Initialize upload
@@ -384,9 +359,10 @@ Monitor your video's progress through the processing pipeline:
     'file_name': file_path.name,
     'video_quality': video_quality,
     'image_format': image_format
-  },
-    timeout=30
-    )
+
+},
+timeout=30
+)
 
     init_response.raise_for_status()
     upload_data = init_response.json()
@@ -445,6 +421,7 @@ Monitor your video's progress through the processing pipeline:
     except VideoUploadError as e:
     logger.error(f"Upload failed: {e}")
     ```
+
   </Tab>
 
   <Tab value="cURL">
@@ -468,41 +445,53 @@ Monitor your video's progress through the processing pipeline:
     curl -X POST https://api.rixl.com/videos/upload/complete/$VIDEO_ID \
     -H "X-API-Key: YOUR_PROJECT_API_KEY"
     ```
+
   </Tab>
 </Tabs>
 
 ## Security and Access Control
 
 **Upload Security:**
+
 - Time-limited signed URLs (valid for 1 hour)
 - MIME type and content validation
 
 **Delivery Security:**
+
 - Project-scoped access controls
 
 ## Troubleshooting Common Issues
 
 <Callout type="warning">
-  **Upload Failures:**
-  - Verify file size under 2GB limit
-  - Check network stability for large files
-  - Ensure the signed URL hasn't expired
-
-  **Processing Delays:**
-  - Check current queue status via API
-  - Contact support for processing over 2 hours
-  - Consider using the Basic tier for faster turnaround
-
-  **Playback Issues:**
-  - Verify all renditions have completed processing
-  - Check CDN propagation status
-  - Test with different quality levels
+  <p>
+    <strong>Upload Failures:</strong>
+  </p>
+  <ul>
+    <li>Verify file size under 2GB limit</li>
+    <li>Check network stability for large files</li>
+    <li>Ensure the signed URL hasn't expired</li>
+  </ul>
+  <p>
+    <strong>Processing Delays:</strong>
+  </p>
+  <ul>
+    <li>Check current queue status via API</li>
+    <li>Contact support for processing over 2 hours</li>
+    <li>Consider using the Basic tier for faster turnaround</li>
+  </ul>
+  <p>
+    <strong>Playback Issues:</strong>
+  </p>
+  <ul>
+    <li>Verify all renditions have completed processing</li>
+    <li>Check CDN propagation status</li>
+    <li>Test with different quality levels</li>
+  </ul>
 </Callout>
 
 ---
 
 <Callout type="success">
-  **RIXL's** video processing automatically prepares your content for all viewing scenarios,
-  from mobile users on slow connections to desktop viewers with high-speed internet.
-  The adaptive streaming ensures the best possible experience for each viewer.
+  **RIXL's** video processing automatically prepares your content for all viewing scenarios, from mobile users on slow connections to
+  desktop viewers with high-speed internet. The adaptive streaming ensures the best possible experience for each viewer.
 </Callout>
