@@ -1,7 +1,6 @@
 import "@tanstack/react-start/server-only";
 import fs from "node:fs/promises";
 import type {CSSProperties, ReactElement, ReactNode} from "react";
-import type {InferPageType} from "fumadocs-core/source";
 import ImageResponse from "@takumi-rs/image-response";
 import path from "node:path";
 
@@ -25,13 +24,15 @@ interface OGImageOptions {
   icon?: ReactNode;
 }
 
-type PageData = {
-  title: string;
-  description?: string;
-};
+interface OGPageData {
+  data: {
+    title?: string;
+    description?: string;
+  };
+}
 
-export async function generateOGImage(page: InferPageType<PageData>, options?: OGImageOptions): Promise<Response> {
-  const title = page.data.title;
+export async function generateOGImage(page: OGPageData, options?: OGImageOptions): Promise<Response> {
+  const title = page.data.title ?? "Rixl";
   const description = page.data.description;
 
   const imageOptions = {

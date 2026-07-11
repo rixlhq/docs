@@ -2,24 +2,53 @@ import {notFound} from "@tanstack/react-router";
 import {createServerFn} from "@tanstack/react-start";
 import {staticFunctionMiddleware} from "@tanstack/start-static-server-functions";
 import type {Folder, Node, Root} from "fumadocs-core/page-tree";
-import {renderToReadableStream} from "react-dom/server";
+import type {SerializedPageTree} from "fumadocs-core/source/client";
 import {createElement} from "react";
+import {renderToReadableStream} from "react-dom/server";
 import type {OpenAPIPageProps_Spec} from "fumadocs-openapi/ui";
-import {source} from "../../lib/source.server";
 import {APIPage} from "../../components/mdx/api-page.server";
+import {source} from "../../lib/source.server";
+
+export interface DocsSectionLinks {
+  home: string;
+  sdk: string;
+  api: string;
+}
+
+export interface DocsPageSummary {
+  slugs: string[];
+  locale: string;
+  data: {
+    title: string;
+    description: string;
+  };
+}
+
+export interface StaticOpenApiPage {
+  html: string;
+}
+
+export interface DocsLoaderData {
+  tree: SerializedPageTree;
+  sectionLinks: DocsSectionLinks;
+  path: string;
+  page: DocsPageSummary;
+  apiPage?: StaticOpenApiPage;
+}
 
 export const loader = createServerFn({
   method: "GET",
 })
   .validator((params: {slugs: string[]; lang?: string}) => params)
-  .middleware([staticFunctionMiddleware]) // used for tanstack static rendering
-  .handler(async ({data: {slugs, lang}}) => {
+  .middleware([staticFunctionMiddleware])
+  .handler(async ({data: {slugs, lang}}): Promise<DocsLoaderData> => {
     const page = source.getPage(slugs, lang);
     if (!page) throw notFound();
 
+    const locale = page.locale ?? lang ?? "en";
     const tree = source.getPageTree(lang) as Root;
-    const sectionLinks = getSectionLinks(tree, page.locale);
-    const normalizedTree = slugs[0] === "api" && lang ? extractApiTree(tree, lang) : tree;
+    const sectionLinks = getSectionLinks(tree, locale);
+    const normalizedTree = slugs[0] === "api" ? extractApiTree(tree, locale) : tree;
     const apiPage = getApiPage(page.data);
     const apiPageHtml = apiPage ? await renderApiPageHtml(apiPage) : undefined;
 
@@ -29,66 +58,60 @@ export const loader = createServerFn({
       path: page.path,
       page: {
         slugs: page.slugs,
-        locale: page.locale,
+        locale,
         data: {
-          title: page.data.title,
-          description: page.data.description,
+          title: page.data.title ?? "Untitled",
+          description: page.data.description ?? "",
         },
       },
-      apiPage: apiPage
+      apiPage: apiPageHtml
         ? {
-            toc: apiPage.toc,
-            html: apiPageHtml ?? "",
+            html: apiPageHtml,
           }
         : undefined,
     };
   });
 
-// Resolves the splat for the first API page (e.g. "api/analytics/get-analytics-v1-dashboard").
-// Used by the /$lang/api index redirect so the landing page tracks the spec instead of a
-// hardcoded operation slug that breaks whenever the OpenAPI spec changes.
 export const getApiEntrySlug = createServerFn({
   method: "GET",
 })
   .validator((params: {lang?: string}) => params)
   .middleware([staticFunctionMiddleware])
   .handler(({data: {lang}}) => {
+    const locale = lang ?? "en";
     const tree = source.getPageTree(lang) as Root;
-    const url = findFirstPageUrlByPrefix(tree, `/${lang}/api`);
+    const url = findFirstPageUrlByPrefix(tree, `/${locale}/api`);
     if (!url) return "api";
 
-    const prefix = `/${lang}/`;
+    const prefix = `/${locale}/`;
     return url.startsWith(prefix) ? url.slice(prefix.length) : url.replace(/^\/+/, "");
   });
 
-interface StaticOpenApiPage {
+interface RenderableOpenApiPage {
   props: OpenAPIPageProps_Spec;
-  toc: unknown;
 }
 
-async function renderApiPageHtml(apiPage: StaticOpenApiPage): Promise<string> {
+async function renderApiPageHtml(apiPage: RenderableOpenApiPage): Promise<string> {
   const stream = await renderToReadableStream(createElement(APIPage, apiPage.props));
   await stream.allReady;
   return await new Response(stream).text();
 }
 
-function getApiPage(data: unknown): StaticOpenApiPage | undefined {
-  if (!isOpenApiData(data)) return;
+function getApiPage(data: unknown): RenderableOpenApiPage | undefined {
+  if (!isOpenApiData(data)) return undefined;
 
   return {
     props: data.getOpenAPIPageProps(),
-    toc: data.toc,
   };
 }
 
 function isOpenApiData(data: unknown): data is {
   getOpenAPIPageProps: () => OpenAPIPageProps_Spec;
-  toc: unknown;
 } {
   return typeof data === "object" && data !== null && "getOpenAPIPageProps" in data && typeof data.getOpenAPIPageProps === "function";
 }
 
-function getSectionLinks(tree: Root, lang: string) {
+function getSectionLinks(tree: Root, lang: string): DocsSectionLinks {
   const fallback = {
     home: `/${lang}/home/getting-started/overview`,
     sdk: `/${lang}/sdk/getting-started/overview`,
@@ -107,16 +130,20 @@ function findFirstPageUrlByPrefix(root: Root, prefix: string): string | undefine
     const match = findFirstNodePageUrlByPrefix(node, prefix);
     if (match) return match;
   }
+
+  return undefined;
 }
 
 function findFirstNodePageUrlByPrefix(node: Node, prefix: string): string | undefined {
   if (node.type === "page") return node.url.startsWith(prefix) ? node.url : undefined;
-  if (node.type !== "folder") return;
+  if (node.type !== "folder") return undefined;
 
   for (const child of node.children) {
     const match = findFirstNodePageUrlByPrefix(child, prefix);
     if (match) return match;
   }
+
+  return undefined;
 }
 
 function extractApiTree(root: Root, lang: string): Root {
@@ -124,7 +151,6 @@ function extractApiTree(root: Root, lang: string): Root {
   const apiFolder = root.children.find((item): item is Folder => item.type === "folder" && hasPrefixInNode(item, apiPrefix));
   if (!apiFolder) return root;
 
-  // On API pages, show categories directly (Feeds/Images/Videos) without the extra API wrapper.
   return {
     ...root,
     children: apiFolder.children,
