@@ -3,39 +3,24 @@ title: Media Library
 description: Manage and optimize videos and images in your RIXL projects with intelligent processing, secure delivery, and advanced organization tools.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Step, Steps} from 'fumadocs-ui/components/steps';
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Step, Steps} from "fumadocs-ui/components/steps";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 The **Media Library** is your creative hub where you upload, optimize, and manage all your video and image assets. RIXL handles the heavy lifting — from transcoding and compression to secure delivery — so you can focus on creating and shipping.
 
-<Callout type="info">
-  Select a project and open **Media** from the left sidebar to get started.
-</Callout>
+<Callout type="info">Select a project and open **Media** from the left sidebar to get started.</Callout>
 
 ## What You Can Do
 
 <Columns cols={3}>
-  <Card
-    title="Video Processing"
-    href="/en/home/platform/dashboard/media/upload-videos"
-    icon="video"
-  >
+  <Card title="Video Processing" href="/en/home/platform/dashboard/media/upload-videos" icon="video">
     Upload any video format and get back multiple quality levels with adaptive streaming.
   </Card>
-  <Card
-    title="Image Optimization"
-    href="/en/home/platform/dashboard/media/upload-images"
-    icon="image"
-  >
+  <Card title="Image Optimization" href="/en/home/platform/dashboard/media/upload-images" icon="image">
     Transform images into lightning-fast AVIF files with smart placeholders and instant loading.
   </Card>
-  <Card
-    title="Library Organization"
-    href="/en/home/platform/dashboard/media/organize-media"
-    icon="folder"
-  >
+  <Card title="Library Organization" href="/en/home/platform/dashboard/media/organize-media" icon="folder">
     Keep your creative assets organized with powerful search, filtering, and categorization tools.
   </Card>
 </Columns>
@@ -49,28 +34,16 @@ The **Media Library** is your creative hub where you upload, optimize, and manag
 ## Quick Actions
 
 <Columns cols={2}>
-  <Card
-    title="Upload New Video"
-    href="/en/home/platform/dashboard/media/upload-videos"
-  >
+  <Card title="Upload New Video" href="/en/home/platform/dashboard/media/upload-videos">
     Quickly add video content to your project
   </Card>
-  <Card
-    title="Upload New Image"
-    href="/en/home/platform/dashboard/media/upload-images"
-  >
+  <Card title="Upload New Image" href="/en/home/platform/dashboard/media/upload-images">
     Add new image assets instantly
   </Card>
-  <Card
-    title="Create API Key"
-    href="/en/home/platform/api-documentation/api-keys"
-  >
+  <Card title="Create API Key" href="/en/home/platform/api-documentation/api-keys">
     Generate API keys for media workflows
   </Card>
-  <Card
-    title="Invite Team Member"
-    href="/en/home/platform/account-teams/organizations-overview"
-  >
+  <Card title="Invite Team Member" href="/en/home/platform/account-teams/organizations-overview">
     Collaborate with teammates on your media library
   </Card>
 </Columns>
@@ -134,6 +107,7 @@ The **Media Library** is your creative hub where you upload, optimize, and manag
       Processing settings are inherited from your project's video optimization tier. You can change this in [Project
       Settings](/en/home/platform/dashboard/projects/project-settings).
     </Callout>
+
   </Tab>
 
   <Tab value="Media Library">
@@ -187,6 +161,7 @@ The **Media Library** is your creative hub where you upload, optimize, and manag
     <Callout type="tip">
       Well-organized media libraries improve team productivity and make content discovery much faster.
     </Callout>
+
   </Tab>
 </Tabs>
 
@@ -211,10 +186,7 @@ Media access follows your project’s security model:
 - API keys control programmatic access ([API Access](/en/home/platform/api-documentation/api-keys))
 - Assets can be private or shared via secure URLs
 
-<Callout type="warning">
-  For critical media, always maintain backups in addition to RIXL’s secure storage.
-</Callout>
-
+<Callout type="warning">For critical media, always maintain backups in addition to RIXL’s secure storage.</Callout>
 
 ---
 
@@ -244,20 +216,24 @@ Media access follows your project’s security model:
     **Organize Content**
 
     Use [media organization](/en/home/platform/dashboard/media/organize-media) tools to structure your library
+
   </Step>
   <Step>
     **Create Feeds**
 
     Structure content with [content feeds](/en/home/platform/dashboard/feeds/overview) for dynamic distribution
+
   </Step>
   <Step>
     **API Integration**
 
     Access media through [API keys](/en/home/platform/api-documentation/api-keys) for programmatic usage
+
   </Step>
   <Step>
     **Team Sharing**
 
     Configure [team access](/en/home/platform/account-teams/team-management) for collaboration
+
   </Step>
 </Steps>

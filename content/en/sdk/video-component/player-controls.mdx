@@ -3,9 +3,8 @@ title: "Player Controls"
 description: "Complete guide to using the video player controls, settings, and customization options"
 ---
 
-
-import {Tabs, TabsContent, TabsList, TabsTrigger} from 'fumadocs-ui/components/tabs'
-import {Callout} from 'fumadocs-ui/components/callout'
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/tabs";
+import {Callout} from "fumadocs-ui/components/callout";
 
 <Callout type="info">
   Building your own control bar? See the [Hooks](/en/sdk/hooks) docs. Custom controls for the public `Video`
@@ -21,11 +20,11 @@ The video player features a comprehensive control bar with the following element
 2. **Progress Bar** - Shows current position and allows seeking
 3. **Chapters** - Navigate to specific sections of the video (when enabled)
 4. **Volume Control** - Adjust audio level
-4. **Time Display** - Current time / Total duration
-5. **Subtitle Display** - Toggle subtitle display
-6. **Settings Menu** - Access playback speed, quality, subtitles, and audio options
-7. **Picture-in-Picture** - Open video in a floating window
-8. **Fullscreen** - Expand video to full screen
+5. **Time Display** - Current time / Total duration
+6. **Subtitle Display** - Toggle subtitle display
+7. **Settings Menu** - Access playback speed, quality, subtitles, and audio options
+8. **Picture-in-Picture** - Open video in a floating window
+9. **Fullscreen** - Expand video to full screen
 
 ![Control Bar](/images/control_bar.png)
 
@@ -57,6 +56,7 @@ The player offers multiple playback speeds:
     2. Select **Playback Speed**
     3. Use the slider at the top to set a custom speed (e.g., 1.15x)
     4. The current speed is displayed as you adjust
+
   </TabsContent>
 
   <TabsContent value="presets">
@@ -66,10 +66,11 @@ The player offers multiple playback speeds:
     2. Select **Playback Speed**
     3. Click any preset speed option
     4. The selected speed is marked with a checkmark
+
   </TabsContent>
 </Tabs>
 
-[//]  # (![Playback Speed control]&#40;/images/playback_speed.png&#41;)
+[//] # (![Playback Speed control]&#40;/images/playback_speed.png&#41;)
 
 ## Video Chapters
 
@@ -99,7 +100,8 @@ To display chapters in your embedded player, set the `chapters` prop to `true`:
 ```
 
 <Callout type="info">
-  Chapters will only appear if you've added them to your video in the RIXL dashboard. Videos without chapters configured will show a standard progress bar.
+  Chapters will only appear if you've added them to your video in the RIXL dashboard. Videos without chapters configured will show a
+  standard progress bar.
 </Callout>
 
 ### Chapter Best Practices
@@ -115,13 +117,12 @@ To Enable subtitle:
 1. Click the **Settings** gear icon
 2. Select **Subtitle/CC**
 3. Choose your preferred language:
+
 - **Off** - No subtitles
 - **English** - English subtitles
-- *(Additional languages available based on video)*
+- _(Additional languages available based on video)_
 
-<Callout type="info">
-  Subtitle availability depends on the specific video content. Not all videos have subtitles in all languages.
-</Callout>
+<Callout type="info">Subtitle availability depends on the specific video content. Not all videos have subtitles in all languages.</Callout>
 
 ### Subtitle Customization
 
@@ -134,10 +135,12 @@ Click **Options** in the subtitle menu to customize appearance:
 - **Font Color**: Select text color
 
 **Background Settings**:
+
 - **Background Color**: Choose subtitle background
 - **Background Opacity**: Control background transparency
 
 **Window Settings**
+
 - **Window Color**: Set the subtitle window color
 - **Window Opacity**: Adjust window transparency
 
@@ -167,7 +170,8 @@ To select quality:
   Auto quality provides the best balance of video quality and smooth playback. It will automatically upgrade or
   downgrade quality as needed.
 
-  The **Auto** setting automatically adjusts video quality based on your internet connection and device capabilities.
+The **Auto** setting automatically adjusts video quality based on your internet connection and device capabilities.
+
 </Callout>
 
 Choose a specific quality when you want to:
@@ -183,7 +187,7 @@ Videos may include multiple audio tracks:
 - **English** - English audio track
 - **Spanish** - Spanish audio track
 - **Commentary (eng)** - English commentary track
-- *(Additional languages and tracks based on video content)*
+- _(Additional languages and tracks based on video content)_
 
 **Selecting Audio Tracks**:
 
@@ -194,8 +198,8 @@ Videos may include multiple audio tracks:
 5. Audio switches immediately without interrupting playback
 
 <Callout type="info">
-  Audio track availability varies by video. Educational and professional content often includes multiple language
-  options and commentary tracks.
+  Audio track availability varies by video. Educational and professional content often includes multiple language options and commentary
+  tracks.
 </Callout>
 
 ## Keyboard Shortcuts
@@ -203,50 +207,48 @@ Videos may include multiple audio tracks:
 ### Playback Controls
 
 | Action                  | Keyboard Shortcut | Alternative                |
-|-------------------------|-------------------|----------------------------|
+| ----------------------- | ----------------- | -------------------------- |
 | Play/Pause              | `Spacebar`        | `K`                        |
 | Play/Pause (Media Keys) | `MediaPlayPause`  | `MediaPlay` / `MediaPause` |
 
 ### Seeking Controls
 
-| Action            | Keyboard Shortcut | Description              |
-|-------------------|-------------------|--------------------------|
-| Seek Forward 5s   | `→` (Right Arrow) | Jump ahead 5 seconds     |
-| Seek Backward 5s  | `←` (Left Arrow)  | Jump back 5 seconds      |
-| Seek Forward 10s  | `L`               | Jump ahead 10 seconds    |
-| Seek Backward 10s | `J`               | Jump back 10 seconds     |
+| Action            | Keyboard Shortcut | Description           |
+| ----------------- | ----------------- | --------------------- |
+| Seek Forward 5s   | `→` (Right Arrow) | Jump ahead 5 seconds  |
+| Seek Backward 5s  | `←` (Left Arrow)  | Jump back 5 seconds   |
+| Seek Forward 10s  | `L`               | Jump ahead 10 seconds |
+| Seek Backward 10s | `J`               | Jump back 10 seconds  |
 
 ### Chapter Navigation
 
-| Action           | Keyboard Shortcut | Description                          |
-|------------------|-------------------|--------------------------------------|
-| Next Chapter     | `Shift + N`       | Jump to the next chapter             |
-| Previous Chapter | `Shift + P`       | Jump to the previous chapter         |
+| Action           | Keyboard Shortcut | Description                  |
+| ---------------- | ----------------- | ---------------------------- |
+| Next Chapter     | `Shift + N`       | Jump to the next chapter     |
+| Previous Chapter | `Shift + P`       | Jump to the previous chapter |
 
-<Callout type="info">
-  Chapter shortcuts are only active when the video has chapters enabled via the `chapters` prop.
-</Callout>
+<Callout type="info">Chapter shortcuts are only active when the video has chapters enabled via the `chapters` prop.</Callout>
 
 ### Audio Controls
 
 | Action      | Keyboard Shortcut | Description         |
-|-------------|-------------------|---------------------|
+| ----------- | ----------------- | ------------------- |
 | Volume Up   | `↑` (Up Arrow)    | Increase volume     |
 | Volume Down | `↓` (Down Arrow)  | Decrease volume     |
 | Mute/Unmute | `M`               | Toggle audio on/off |
 
 ### Display Controls
 
-| Action              | Shortcut / Interaction | Description                    |
-|---------------------|------------------------|--------------------------------|
-| Toggle Fullscreen   | `F`                    | Enter/exit fullscreen          |
-| Picture-in-Picture  | `I`                    | Enter/exit Picture-in-Picture  |
-| Double-click        | Double-click           | Toggle fullscreen              |
+| Action             | Shortcut / Interaction | Description                   |
+| ------------------ | ---------------------- | ----------------------------- |
+| Toggle Fullscreen  | `F`                    | Enter/exit fullscreen         |
+| Picture-in-Picture | `I`                    | Enter/exit Picture-in-Picture |
+| Double-click       | Double-click           | Toggle fullscreen             |
 
 ### Quick Navigation
 
 | Action      | Keyboard Shortcut | Description       |
-|-------------|-------------------|-------------------|
+| ----------- | ----------------- | ----------------- |
 | Jump to 0%  | `0`               | Start of video    |
 | Jump to 10% | `1`               | 10% through video |
 | Jump to 20% | `2`               | 20% through video |
@@ -259,31 +261,30 @@ Videos may include multiple audio tracks:
 | Jump to 90% | `9`               | 90% through video |
 
 <Callout type="info">
-  **Case Insensitive**: Letter shortcuts work with both uppercase and lowercase (e.g., both `f` and `F` trigger
-  fullscreen).
+  **Case Insensitive**: Letter shortcuts work with both uppercase and lowercase (e.g., both `f` and `F` trigger fullscreen).
 </Callout>
 
 <Callout type="info">
-  **Context Aware**: Keyboard shortcuts are disabled when typing in input fields, text areas, or content-editable
-  elements to prevent conflicts.
+  **Context Aware**: Keyboard shortcuts are disabled when typing in input fields, text areas, or content-editable elements to prevent
+  conflicts.
 </Callout>
 
 <Callout type="warning">
-  **Focus Required**: The video player area must have focus for keyboard shortcuts to work. Click on the video if
-  shortcuts aren't responding.
+  **Focus Required**: The video player area must have focus for keyboard shortcuts to work. Click on the video if shortcuts aren't
+  responding.
 </Callout>
 
 ## Picture-in-Picture Mode
 
 **Enabling PiP Mode**:
 
-1. Click the **Picture-in-Picture** icon in the control bar  or Press `I` on your keyboard
+1. Click the **Picture-in-Picture** icon in the control bar or Press `I` on your keyboard
 2. The video opens in a floating window
 3. Continue working in other applications while the video plays
 4. The PiP window stays on top of other content
 
-
 The floating window includes basic controls:
+
 - Play/Pause button
 - Close PiP button
 - Resize handles (drag corners to resize)
@@ -302,7 +303,6 @@ The floating window includes basic controls:
 
 ## Fullscreen Mode
 
-
 **Entering Fullscreen**:
 
 - Click the **Fullscreen** icon in the control bar
@@ -312,7 +312,7 @@ The floating window includes basic controls:
 
 - **Auto-hide**: Controls disappear after a few seconds of inactivity
 - **Show Controls**: Move your mouse to reveal controls
-- **Exit Fullscreen**: Press `Esc`, click the exit fullscreen icon, or  Press `F` on your keyboard
+- **Exit Fullscreen**: Press `Esc`, click the exit fullscreen icon, or Press `F` on your keyboard
 
 ### Fullscreen Tips
 

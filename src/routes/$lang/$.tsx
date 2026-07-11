@@ -83,13 +83,7 @@ function Page() {
   );
 }
 
-function ApiContent({
-  apiPage,
-  page,
-}: {
-  apiPage?: DocsLoaderData["apiPage"];
-  page: DocsLoaderData["page"];
-}) {
+function ApiContent({apiPage, page}: {apiPage?: DocsLoaderData["apiPage"]; page: DocsLoaderData["page"]}) {
   const {lang, _splat} = Route.useParams();
   if (!apiPage) return null;
   const pageSlug = _splat ?? "";

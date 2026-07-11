@@ -3,17 +3,15 @@ title: Create New Project
 description: Set up a project to organize your media and control access
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Step, Steps} from 'fumadocs-ui/components/steps';
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Step, Steps} from "fumadocs-ui/components/steps";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 Every workspace in **RIXL** begins with a project.  
 A project organizes your media, permissions, and API access in one place.
 
 <Callout type="info">
-  Projects are workspaces with dedicated storage, team access, and API keys.
-  You must create at least one project before uploading media.
+  Projects are workspaces with dedicated storage, team access, and API keys. You must create at least one project before uploading media.
 </Callout>
 
 ---
@@ -36,6 +34,7 @@ A project organizes your media, permissions, and API access in one place.
     <Callout type="warn">
       Server region cannot be changed after project creation.
     </Callout>
+
   </Step>
 
   <Step>
@@ -50,40 +49,23 @@ A project organizes your media, permissions, and API access in one place.
 ## Video Processing Tiers
 
 | Tier       | Quality          | Resolution  | Processing Speed | Best For              |
-|------------|------------------|-------------|------------------|-----------------------|
+| ---------- | ---------------- | ----------- | ---------------- | --------------------- |
 | **Basic**  | Standard         | Up to 720p  | Standard         | Development & Testing |
 | **Shorts** | Mobile Optimized | Up to 1080p | Fast             | Social Media Content  |
 | **Pro**    | Professional     | Up to 4K    | Priority         | Video-on-Demand       |
 
-<Callout type="info">
-  See full details in the [Video Processing Guide](/en/home/platform/uploads/videos/quality-tiers).
-</Callout>
-
-
+<Callout type="info">See full details in the [Video Processing Guide](/en/home/platform/uploads/videos/quality-tiers).</Callout>
 
 ## Project Templates
 
-
 <Columns cols={2}>
-  <Card title="Social Media">
-    - Shorts video optimization
-    - Fast processing for social feeds
-    - Mobile-first delivery settings
-  </Card>
-  <Card title="Professional VOD">
-    - Pro video optimization
-    - Multiple quality levels
-    - Advanced analytics
-  </Card>
+  <Card title="Social Media">- Shorts video optimization - Fast processing for social feeds - Mobile-first delivery settings</Card>
+  <Card title="Professional VOD">- Pro video optimization - Multiple quality levels - Advanced analytics</Card>
   <Card title="E-commerce">
-    - Image optimization for product galleries
-    - Video previews and demonstrations
-    - Fast loading for commerce sites
+    - Image optimization for product galleries - Video previews and demonstrations - Fast loading for commerce sites
   </Card>
   <Card title="Custom Setup">
-    - Full Manual configuration of all settings
-    - Flexible optimization profiles
-    - Custom workflows and automation
+    - Full Manual configuration of all settings - Flexible optimization profiles - Custom workflows and automation
   </Card>
 </Columns>
 
@@ -99,14 +81,11 @@ A project organizes your media, permissions, and API access in one place.
     - **CDN delivery**: Global fast content distribution
   </Tab>
 
-  <Tab value="Video Optimization">
-    - **Basic**: Standard processing for testing
-    - **Shorts**: Fast, mobile-first streaming
-    - **Pro**: Multiple resolutions, priority processing
-    <Callout type="info">
-      Advanced analytics available in **Pro** tier.
-    </Callout>
-  </Tab>
+<Tab value="Video Optimization">
+  - **Basic**: Standard processing for testing - **Shorts**: Fast, mobile-first streaming - **Pro**: Multiple resolutions, priority
+  processing
+  <Callout type="info">Advanced analytics available in **Pro** tier.</Callout>
+</Tab>
 
   <Tab value="Security & Access">
     - Project visibility: Organization-wide, team-specific, or private
@@ -120,27 +99,30 @@ A project organizes your media, permissions, and API access in one place.
 
 ## After Project Creation
 
-
 <Steps>
   <Step>
     **Generate API Key**
 
     Create your first secure API key for integartions
+
   </Step>
   <Step>
     **Configure Team Access**
 
     Invite team members and set up role-based permissions
+
   </Step>
   <Step>
     **Test Upload**
 
     Test with your first video or image file
+
   </Step>
   <Step>
     **Organize with Feeds**
 
     Start building feeds for structured delivery
+
   </Step>
 </Steps>
 

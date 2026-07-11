@@ -8,7 +8,7 @@ import {Callout} from "@/snippets";
 ## Importing the Feed Component
 
 ```tsx
-import { Feed } from '@rixl/videosdk-react';
+import {Feed} from "@rixl/videosdk-react";
 ```
 
 ## Essential Props
@@ -26,13 +26,13 @@ Every Feed component needs at minimum:
 Here's a basic implementation with common settings:
 
 ```tsx
-import { Feed } from '@rixl/videosdk-react';
+import {Feed} from "@rixl/videosdk-react";
 
 function BasicFeed() {
   return (
-        <div className={`md:w-2/5 w-[90%] mx-auto h-screen`}>
-            <Feed feedId={`id-from-dashboard`} />
-        </div>
+    <div className={`md:w-2/5 w-[90%] mx-auto h-screen`}>
+      <Feed feedId={`id-from-dashboard`} />
+    </div>
   );
 }
 ```
@@ -45,18 +45,15 @@ function BasicFeed() {
 function SocialFeed() {
   return (
     <main className="w-full h-screen bg-black">
-      <Feed
-        feedId="following-feed"
-      />
+      <Feed feedId="following-feed" />
     </main>
   );
 }
 ```
 
 <Callout type="tip">
-    **See it in action:** Check out the [Standard Feed example](/en/sdk/examples/standard-feed) for a complete feed implementation.
+  **See it in action:** Check out the [Standard Feed example](/en/sdk/examples/standard-feed) for a complete feed implementation.
 </Callout>
-
 
 ### Localized Feed
 
@@ -85,9 +82,10 @@ function StyledFeed() {
 ## Best Practices
 
 <Callout type="info">
-    **Mobile-First**: Design your feed layout with mobile devices in mind, as most feed interactions happen on mobile platforms.
+  **Mobile-First**: Design your feed layout with mobile devices in mind, as most feed interactions happen on mobile platforms.
 </Callout>
 
 <Callout type="info">
-    **Container Height**: Always provide a defined height on the feed's parent container (`h-screen`, `h-full`, or a fixed height). Without it, scroll snapping won't work correctly.
+  **Container Height**: Always provide a defined height on the feed's parent container (`h-screen`, `h-full`, or a fixed height). Without
+  it, scroll snapping won't work correctly.
 </Callout>

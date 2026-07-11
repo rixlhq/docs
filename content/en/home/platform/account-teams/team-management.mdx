@@ -3,10 +3,9 @@ title: Team Management
 description: Manage your organization's team settings, invite members, and control access.
 ---
 
-
-import {Callout} from '@/snippets';
-import {Step, Steps} from 'fumadocs-ui/components/steps';
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Callout} from "@/snippets";
+import {Step, Steps} from "fumadocs-ui/components/steps";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 Access team management by navigating to **Organization Settings → Team** from your dashboard sidebar.
 
@@ -98,39 +97,46 @@ Access team management by navigating to **Organization Settings → Team** from 
 
 <table>
   <thead>
-  <tr>
-    <th>Role</th>
-    <th>Permissions</th>
-  </tr>
+    <tr>
+      <th>Role</th>
+      <th>Permissions</th>
+    </tr>
   </thead>
   <tbody>
-  <tr>
-    <td><strong>Owner</strong></td>
-    <td>
-      Complete control over organization settings, billing management, add/remove all members, create/modify/delete any
-      project, cannot be removed by other members
-    </td>
-  </tr>
-  <tr>
-    <td><strong>Admin</strong></td>
-    <td>
-      Create/manage projects, invite/manage team members (excluding Owner), configure organization settings, cannot
-      access billing or remove Owner
-    </td>
-  </tr>
-  <tr>
-    <td><strong>Member</strong></td>
-    <td>
-      Access assigned projects only, create/manage content within permitted projects, cannot create projects or manage
-      organization settings
-    </td>
-  </tr>
+    <tr>
+      <td>
+        <strong>Owner</strong>
+      </td>
+      <td>
+        Complete control over organization settings, billing management, add/remove all members, create/modify/delete any project, cannot be
+        removed by other members
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Admin</strong>
+      </td>
+      <td>
+        Create/manage projects, invite/manage team members (excluding Owner), configure organization settings, cannot access billing or
+        remove Owner
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Member</strong>
+      </td>
+      <td>
+        Access assigned projects only, create/manage content within permitted projects, cannot create projects or manage organization
+        settings
+      </td>
+    </tr>
   </tbody>
 </table>
 
 ## Security Best Practices
 
 ### Access Management
+
 - Review team member access quarterly
 - Remove inactive or departed team members
 - Audit role assignments for appropriateness
@@ -144,9 +150,7 @@ Access team management by navigating to **Organization Settings → Team** from 
     Navigate to the specific project settings
   </Step>
 
-  <Step>
-    Go to **Project Settings → Team**
-  </Step>
+<Step>Go to **Project Settings → Team**</Step>
 
   <Step>
     Add team members to the project with appropriate roles
@@ -154,17 +158,19 @@ Access team management by navigating to **Organization Settings → Team** from 
 </Steps>
 
 <Callout type="warning" title="Important">
-  Organization-level permissions can override project-level permissions. An organization Admin can access any project,
-  regardless of project-specific role assignments.
+  Organization-level permissions can override project-level permissions. An organization Admin can access any project, regardless of
+  project-specific role assignments.
 </Callout>
 
 ## Troubleshooting
 
 ### Invitation Issues
+
 - **Username isn't found:** Verify exact spelling and confirm the user has RIXL account
 - **Pending invitations:** Check notifications, resend if necessary
 - **Role changes not taking effect:** Allow time to propagate, try logging out/in
 
 ### Access Problems
+
 - **Member can't access projects:** Verify organization role and project permissions
 - **Admin limitations:** Some features are Owner-only (billing, organization deletion)

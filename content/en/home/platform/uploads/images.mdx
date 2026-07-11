@@ -3,34 +3,21 @@ title: Image Processing
 description: Transform any image into lightning-fast, web-ready files. AVIF format, smart placeholders, and global delivery — all automatic.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Step, Steps} from "fumadocs-ui/components/steps";
 
 Upload any image to RIXL and watch it transform into a web-ready masterpiece. Our intelligent processing pipeline delivers files that are 90% smaller while looking identical to the original — it's like magic, but it's just really smart technology.
 
 ## Quick Actions
 
 <Columns cols={3}>
-  <Card
-    title="Upload Images"
-    href="/en/home/platform/dashboard/media/overview"
-    icon="upload"
-  >
+  <Card title="Upload Images" href="/en/home/platform/dashboard/media/overview" icon="upload">
     Start uploading and optimizing your images now.
   </Card>
-  <Card
-    title="API Integration"
-    href="/en/api"
-    icon="code"
-  >
+  <Card title="API Integration" href="/en/api" icon="code">
     Integrate image optimization into your applications.
   </Card>
-  <Card
-    title="Posts"
-    href="/en/home/platform/uploads/posts"
-    icon="archive"
-  >
+  <Card title="Posts" href="/en/home/platform/uploads/posts" icon="archive">
     Create social media-style posts by uploading images directly to feeds.
   </Card>
 </Columns>
@@ -44,47 +31,55 @@ Every image you upload gets the full optimization treatment:
     **Smart Format Selection**
 
     Raster images become ultra-efficient AVIF files, while SVGs stay perfectly crisp as vectors.
+
   </Step>
   <Step>
     **Intelligent Compression**
 
     Advanced algorithms find the perfect balance between tiny file sizes and stunning visual quality.
+
   </Step>
   <Step>
     **Instant Placeholders**
 
     Generate ultra-compact thumbhash placeholders so your pages load instantly, even on slow connections.
+
   </Step>
   <Step>
     **Metadata Preservation**
 
     Keep all the important stuff — dimensions, camera settings, color profiles — while ditching unnecessary bloat.
+
   </Step>
   <Step>
     **Global Distribution**
 
     Your optimized images hit our global CDN immediately, ready for lightning-fast delivery anywhere in the world.
+
   </Step>
 </Steps>
 
 ## What We Support
 
-**Raster Images** *(get the AVIF treatment)*
+**Raster Images** _(get the AVIF treatment)_
+
 - **Common formats**: JPEG, PNG, WebP, GIF, BMP
 - **Professional formats**: HEIC/HEIF, TIFF, JPEG 2000
 - **Next-gen formats**: JPEG XL, WEBP2, HDR, AVIF
 
-**Vector Graphics** *(stay perfect as-is)*
+**Vector Graphics** _(stay perfect as-is)_
+
 - **SVG files**: Keep all their scalability and interactivity intact
 
 <Callout type="info" title="The AVIF Advantage">
-  Here's the magic: AVIF at 50% quality looks identical to JPEG at 85% but is 50-90% smaller. Your users get faster
-  loading, you save bandwidth costs — everyone wins.
+  Here's the magic: AVIF at 50% quality looks identical to JPEG at 85% but is 50-90% smaller. Your users get faster loading, you save
+  bandwidth costs — everyone wins.
 </Callout>
 
 ## Behind the Scenes
 
 **AVIF Optimization Settings**
+
 - **Quality Level**: 50% for the sweet spot between size and visual perfection
 - **Color Depth**: 8-bit for universal browser support (no compatibility worries)
 - **Smart Metadata**: Camera settings and color profiles preserved when useful
@@ -100,21 +95,23 @@ Your images also generate tiny ~25-byte "thumbhash" placeholders that create bea
 
 **Implementation Example:**
 
-[//]  # (```md)
+[//] # (```md)
 
-[//]  # (We can have an implementation example here)
+[//] # (We can have an implementation example here)
 
-[//]  # (```)
+[//] # (```)
 
 ## Performance Impact
 
 **File Size Reductions:**
+
 - **Photography:** 70-90% smaller than JPEG
 - **Screenshots:** 60-80% reduction from PNG
 - **Graphics with text:** 50-70% improvement
 - **Web graphics:** 40-60% smaller than WebP
 
 **Loading Performance:**
+
 - Instant placeholders eliminate loading delays
 - Reduced bandwidth usage, especially on mobile
 - Improved Core Web Vitals scores
@@ -122,13 +119,11 @@ Your images also generate tiny ~25-byte "thumbhash" placeholders that create bea
 
 ## Browser Support
 
-<Callout type="info">
-  **AVIF supported by ~95% of modern browsers**
-</Callout>
+<Callout type="info">**AVIF supported by ~95% of modern browsers**</Callout>
 
 **Full Support:**
 
-[//]  # ([//]: # I need to check for broswer compatibility rate)
+[//] # ([//]: # I need to check for broswer compatibility rate)
 
 ## Processing Pipeline Details
 
@@ -138,20 +133,11 @@ Your images also generate tiny ~25-byte "thumbhash" placeholders that create bea
     Images are added to the processing queue and checked for valid formats and security issues.
   </Step>
 
-  <Step>
-    ### File Type Detection
-    The system identifies SVG files to keep unchanged and sends other images for conversion.
-  </Step>
+<Step>### File Type Detection The system identifies SVG files to keep unchanged and sends other images for conversion.</Step>
 
-  <Step>
-    ### Image Optimization
-    Images are converted to AVIF format for smaller file sizes while keeping quality high.
-  </Step>
+<Step>### Image Optimization Images are converted to AVIF format for smaller file sizes while keeping quality high.</Step>
 
-  <Step>
-    ### Create Placeholders
-    Small preview images are generated for fast loading while the full image loads.
-  </Step>
+<Step>### Create Placeholders Small preview images are generated for fast loading while the full image loads.</Step>
 
   <Step>
     ### Distribute Globally
@@ -162,28 +148,22 @@ Your images also generate tiny ~25-byte "thumbhash" placeholders that create bea
 ## Advanced Features
 
 <Columns cols={2}>
-  <Card title="Auto-Rotate Images">
-    Automatically fixes rotated photos based on camera data
-  </Card>
-  <Card title="Keep Photo Details">
-    Preserves camera settings, location data, and color information
-  </Card>
-  <Card title="Fast Global Delivery">
-    Updates images instantly on servers worldwide
-  </Card>
-  <Card title="Content Checking">
-    Scans uploads to ensure they meet content guidelines
-  </Card>
+  <Card title="Auto-Rotate Images">Automatically fixes rotated photos based on camera data</Card>
+  <Card title="Keep Photo Details">Preserves camera settings, location data, and color information</Card>
+  <Card title="Fast Global Delivery">Updates images instantly on servers worldwide</Card>
+  <Card title="Content Checking">Scans uploads to ensure they meet content guidelines</Card>
 </Columns>
 
 ## Best Practices
 
 **When Uploading:**
+
 - Upload your highest quality images, it'd optimize automatically
 - Use clear, descriptive file names to stay organized
 - Add alt text descriptions for screen readers
 
 **When Loading Images:**
+
 - Use our placeholder images for instant feedback while photos load
 - Load images progressively for a better user experience
 - Wait for processing to complete on large files
@@ -192,14 +172,16 @@ Your images also generate tiny ~25-byte "thumbhash" placeholders that create bea
 ## Security Features
 
 **Upload Protection:**
+
 - Checks file types to ensure they're actually images
 - Enforces file size limits at every step
 
 **Access Control:**
+
 - Images are isolated within each project
 - API keys required for all access
 
 <Callout type="success">
-  RIXL's image processing delivers real improvements: files are 50-90% smaller,
-  placeholders load instantly, and image quality stays high across all modern browsers.
+  RIXL's image processing delivers real improvements: files are 50-90% smaller, placeholders load instantly, and image quality stays high
+  across all modern browsers.
 </Callout>

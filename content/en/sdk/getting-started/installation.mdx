@@ -4,8 +4,8 @@ description: "Install and configure RIXL Video SDK for React in your project"
 ---
 
 import {Callout} from "@/snippets";
-import {Steps} from 'fumadocs-ui/components/steps';
-import {Tabs, TabsContent, TabsList, TabsTrigger} from 'fumadocs-ui/components/tabs';
+import {Steps} from "fumadocs-ui/components/steps";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/tabs";
 
 ## Requirements
 
@@ -13,7 +13,7 @@ Before installing the RIXL Video SDK for React, ensure your project meets these 
 
 - **React**: 18.0 or higher
 - **Node.js**: 24.0 or higher
-- **TailwindCSS**: 4.0.9 or higher *(recommended but optional)*
+- **TailwindCSS**: 4.0.9 or higher _(recommended but optional)_
 
 ## NPM Installation
 
@@ -27,23 +27,11 @@ Install the RIXL Video SDK for React using your preferred package manager:
     <TabsTrigger value="bun">bun</TabsTrigger>
   </TabsList>
 
-  <TabsContent value="npm">
-    ```bash
-    npm install @rixl/videosdk-react
-    ```
-  </TabsContent>
+<TabsContent value="npm">```bash npm install @rixl/videosdk-react ```</TabsContent>
 
-  <TabsContent value="yarn">
-    ```bash
-    yarn add @rixl/videosdk-react
-    ```
-  </TabsContent>
+<TabsContent value="yarn">```bash yarn add @rixl/videosdk-react ```</TabsContent>
 
-  <TabsContent value="pnpm">
-    ```bash
-    pnpm add @rixl/videosdk-react
-    ```
-  </TabsContent>
+<TabsContent value="pnpm">```bash pnpm add @rixl/videosdk-react ```</TabsContent>
 
   <TabsContent value="bun">
     ```bash
@@ -63,16 +51,19 @@ Before using the SDK, you need to upload your media content:
     **Upload to Dashboard**
 
     Go to [dash.rixl.com/videos](https://dash.rixl.com/videos) for videos or [dash.rixl.com/images](https://dash.rixl.com/images) for images
+
   </Step>
   <Step>
     **Get Media ID**
 
     Copy the generated media ID (e.g., `"FU9aVtA88m"`)
+
   </Step>
   <Step>
     **Use in Your App**
 
     Reference the media ID in your React components
+
   </Step>
 </Steps>
 
@@ -80,23 +71,20 @@ Before using the SDK, you need to upload your media content:
 
 ```tsx
 import "@rixl/videosdk-react/style.css";
-import { Video, Image, Feed } from '@rixl/videosdk-react';
+import {Video, Image, Feed} from "@rixl/videosdk-react";
 ```
 
 ### 3. Use in Your Component
 
 ```tsx
 import "@rixl/videosdk-react/style.css";
-import { Video } from '@rixl/videosdk-react';
+import {Video} from "@rixl/videosdk-react";
 
 function App() {
   return (
     <div className="container mx-auto p-4">
       <h1>My First RIXL Video</h1>
-      <Video
-        id="D3OCjdLP60"
-        className="w-full h-auto rounded-lg"
-      />
+      <Video id="D3OCjdLP60" className="w-full h-auto rounded-lg" />
     </div>
   );
 }
@@ -113,9 +101,9 @@ Here's a complete example showing how to integrate RIXL components into a React 
 ### Complete App Example
 
 ```tsx
-import React from 'react';
+import React from "react";
 import "@rixl/videosdk-react/style.css";
-import { Video, Image } from '@rixl/videosdk-react';
+import {Video, Image} from "@rixl/videosdk-react";
 
 function MediaShowcase() {
   return (
@@ -137,21 +125,9 @@ function MediaShowcase() {
       <section>
         <h2 className="text-2xl font-semibold mb-4">Featured Images</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Image
-            id="featured-1"
-            alt="Featured content 1"
-            className="aspect-square object-cover rounded-lg"
-          />
-          <Image
-            id="featured-2"
-            alt="Featured content 2"
-            className="aspect-square object-cover rounded-lg"
-          />
-          <Image
-            id="featured-3"
-            alt="Featured content 3"
-            className="aspect-square object-cover rounded-lg"
-          />
+          <Image id="featured-1" alt="Featured content 1" className="aspect-square object-cover rounded-lg" />
+          <Image id="featured-2" alt="Featured content 2" className="aspect-square object-cover rounded-lg" />
+          <Image id="featured-3" alt="Featured content 3" className="aspect-square object-cover rounded-lg" />
         </div>
       </section>
 
@@ -167,9 +143,7 @@ function MediaShowcase() {
           allowPlayPause={false}
         />
         <div className="relative z-10 flex items-center justify-center h-full">
-          <h2 className="text-4xl font-bold text-white text-center">
-            Beautiful Background Video
-          </h2>
+          <h2 className="text-4xl font-bold text-white text-center">Beautiful Background Video</h2>
         </div>
       </section>
     </div>
@@ -221,22 +195,14 @@ You can use regular CSS classes or CSS-in-JS solutions:
 ### Troubleshooting
 
 <Callout type="warning">
-  **Media not loading?**
-  - Verify your media ID is correct
-  - Check that the media exists in your RIXL dashboard
-  - Ensure you have proper network connectivity
+  **Media not loading?** - Verify your media ID is correct - Check that the media exists in your RIXL dashboard - Ensure you have proper
+  network connectivity
 </Callout>
 
-<Callout type="info">
-  **TypeScript errors?**
-  - Ensure you're using React 18+
-  - Update your `@types/react` package if needed
-</Callout>
+<Callout type="info">**TypeScript errors?** - Ensure you're using React 18+ - Update your `@types/react` package if needed</Callout>
 
 <Callout type="info">
-  **Style issues?**
-  - Check that your CSS framework is properly configured
-  - Verify className props are being applied correctly
+  **Style issues?** - Check that your CSS framework is properly configured - Verify className props are being applied correctly
 </Callout>
 
 ## What's Next?

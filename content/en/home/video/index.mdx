@@ -3,35 +3,22 @@ title: Video Streaming
 description: Professional video transcoding with adaptive streaming, instant delivery, and automatic processing for any device or connection.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
-import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+import {Step, Steps} from "fumadocs-ui/components/steps";
 
 Welcome to **RIXL Video Streaming** — where every video becomes a streaming powerhouse. Upload any format and get back professional HLS & DASH streams with adaptive quality, instant thumbnails, and global CDN delivery.
 
 ## Quick Actions
 
 <Columns cols={3}>
-  <Card
-    title="Upload Videos"
-    href="/en/home/platform/uploads/videos-guide"
-    icon="upload"
-  >
+  <Card title="Upload Videos" href="/en/home/platform/uploads/videos-guide" icon="upload">
     Professional video transcoding with adaptive streaming and instant delivery.
   </Card>
-  <Card
-    title="Video Component"
-    href="/en/sdk/video-component"
-    icon="video"
-  >
+  <Card title="Video Component" href="/en/sdk/video-component" icon="video">
     Drop-in video player with HLS streaming, progress tracking, and controls.
   </Card>
-  <Card
-    title="Dashboard Management"
-    href="/en/home/platform/dashboard/media/overview"
-    icon="monitor"
-  >
+  <Card title="Dashboard Management" href="/en/home/platform/dashboard/media/overview" icon="monitor">
     Upload, organize, and manage videos through our web interface.
   </Card>
 </Columns>
@@ -43,24 +30,28 @@ Welcome to **RIXL Video Streaming** — where every video becomes a streaming po
     **Upload Any Format**
 
     Drop in MP4, MOV, AVI, WebM, or any video format. RIXL accepts files up to 2GB each.
+
   </Step>
 
   <Step>
     **Choose Quality Tier**
 
     Select Basic (720p), Shorts (1080p), or Pro (4K) based on your content and audience needs.
+
   </Step>
 
   <Step>
     **Automatic Processing**
 
     RIXL creates multiple quality levels, generates thumbnails, and prepares HLS streams automatically.
+
   </Step>
 
   <Step>
     **Global CDN Delivery**
 
     Your processed videos are distributed to 200+ edge locations worldwide for instant streaming anywhere.
+
   </Step>
 </Steps>
 
@@ -68,15 +59,13 @@ Welcome to **RIXL Video Streaming** — where every video becomes a streaming po
 
 <Columns cols={3}>
   <Card title="Adaptive HLS Streaming" icon="wifi">
-    Multiple quality levels that automatically adjust based on connection speed
-    and device capabilities.
+    Multiple quality levels that automatically adjust based on connection speed and device capabilities.
   </Card>
   <Card title="Instant Thumbnails" icon="image">
     Automatic thumbnail generation in AVIF format with smart frame selection.
   </Card>
   <Card title="Quality Tiers" icon="settings">
-    Basic (720p), Shorts (1080p), Pro (4K) processing options for different use
-    cases.
+    Basic (720p), Shorts (1080p), Pro (4K) processing options for different use cases.
   </Card>
   <Card title="Progress Tracking" icon="bar-chart">
     Real-time processing status and progress monitoring through dashboard and API.
@@ -85,8 +74,7 @@ Welcome to **RIXL Video Streaming** — where every video becomes a streaming po
     Edge caching and intelligent routing for instant video delivery worldwide.
   </Card>
   <Card title="Smart Compression" icon="zap">
-    Optimal encoding settings that balance file size and visual quality
-    automatically.
+    Optimal encoding settings that balance file size and visual quality automatically.
   </Card>
 </Columns>
 
@@ -108,6 +96,7 @@ Choose the right processing tier for your content and audience:
     - Fastest processing times (~1x video length)
     - Smallest file sizes
     - Ideal for educational content and web videos
+
   </Tab>
 
   <Tab value="Shorts Tier">
@@ -123,6 +112,7 @@ Choose the right processing tier for your content and audience:
     - Mobile-ready encoding
     - Medium processing times (~1.5x video length)
     - Perfect for social platforms and mobile viewing
+
   </Tab>
 
   <Tab value="Pro Tier">
@@ -138,6 +128,7 @@ Choose the right processing tier for your content and audience:
     - Professional audio processing
     - Longest processing times (~2-3x video length)
     - Cinema-quality output for premium content
+
   </Tab>
 </Tabs>
 
@@ -163,31 +154,33 @@ Choose the right processing tier for your content and audience:
       );
     }
     ```
+
   </Tab>
 
 <Tab value="Advanced Player">
   ```jsx
   import {Video, VideoPlayer, usePlayback, usePlayerProgress} from '@rixl/videosdk-react';
 
-  function AdvancedVideoPlayer({videoId}) {
-    return (
-      <VideoPlayer>
-        <div className="video-container">
-          <Video
+function AdvancedVideoPlayer({videoId}) {
+return (
+
+<VideoPlayer>
+<div className="video-container">
+<Video
             id={videoId}
             className="w-full h-auto rounded-lg shadow-lg"
             progressBar={true}
             allowFullscreen={true}
           />
-          <PlaybackStatus />
-        </div>
-      </VideoPlayer>
-    );
-  }
+<PlaybackStatus />
+</div>
+</VideoPlayer>
+);
+}
 
-  function PlaybackStatus() {
-    const {paused, ended} = usePlayback();
-    const {progress, duration, currentTime} = usePlayerProgress();
+function PlaybackStatus() {
+const {paused, ended} = usePlayback();
+const {progress, duration, currentTime} = usePlayerProgress();
 
     return (
       <div className="video-info mt-4 p-4 bg-gray-100 rounded">
@@ -200,85 +193,88 @@ Choose the right processing tier for your content and audience:
         </div>
       </div>
     );
-  }
-  ```
+
+}
+
+````
 </Tab>
 
 <Tab value="Custom Controls">
-  ```jsx
-  import {Video, VideoPlayer, useMediaSettings, usePlayback, usePlayerProgress} from '@rixl/videosdk-react';
-  import {useState} from 'react';
+```jsx
+import {Video, VideoPlayer, useMediaSettings, usePlayback, usePlayerProgress} from '@rixl/videosdk-react';
+import {useState} from 'react';
 
-  function CustomVideoPlayer({videoId}) {
-    return (
-      <VideoPlayer>
-        <CustomPlayerShell videoId={videoId} />
-      </VideoPlayer>
-    );
-  }
+function CustomVideoPlayer({videoId}) {
+  return (
+    <VideoPlayer>
+      <CustomPlayerShell videoId={videoId} />
+    </VideoPlayer>
+  );
+}
 
-  function CustomPlayerShell({videoId}) {
-    const [showControls, setShowControls] = useState(true);
+function CustomPlayerShell({videoId}) {
+  const [showControls, setShowControls] = useState(true);
 
-    return (
-      <div
-        className="relative video-container"
-        onMouseEnter={() => setShowControls(true)}
-        onMouseLeave={() => setShowControls(false)}
-      >
-        <Video
-          id={videoId}
-          className="w-full h-auto"
-          theme="hideUI"
-        />
+  return (
+    <div
+      className="relative video-container"
+      onMouseEnter={() => setShowControls(true)}
+      onMouseLeave={() => setShowControls(false)}
+    >
+      <Video
+        id={videoId}
+        className="w-full h-auto"
+        theme="hideUI"
+      />
 
-        {showControls && <CustomControls />}
-      </div>
-    );
-  }
+      {showControls && <CustomControls />}
+    </div>
+  );
+}
 
-  function CustomControls() {
-    const {paused, togglePlay} = usePlayback();
-    const {muted, toggleMute} = useMediaSettings();
-    const {progress, duration, currentTime, seekTo} = usePlayerProgress();
+function CustomControls() {
+  const {paused, togglePlay} = usePlayback();
+  const {muted, toggleMute} = useMediaSettings();
+  const {progress, duration, currentTime, seekTo} = usePlayerProgress();
 
-    return (
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => void togglePlay()}
-            className="text-white hover:text-gray-300"
-          >
-            {paused ? 'Play' : 'Pause'}
-          </button>
+  return (
+    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => void togglePlay()}
+          className="text-white hover:text-gray-300"
+        >
+          {paused ? 'Play' : 'Pause'}
+        </button>
 
-          <button
-            onClick={toggleMute}
-            className="text-white hover:text-gray-300"
-          >
-            {muted ? 'Unmute' : 'Mute'}
-          </button>
+        <button
+          onClick={toggleMute}
+          className="text-white hover:text-gray-300"
+        >
+          {muted ? 'Unmute' : 'Mute'}
+        </button>
 
-          <div className="flex-1">
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={progress}
-              onChange={(e) => seekTo(parseFloat(e.target.value) * duration)}
-              className="w-full"
-            />
-          </div>
-
-          <span className="text-white text-sm">
-            {Math.round(currentTime)}s / {Math.round(duration)}s
-          </span>
+        <div className="flex-1">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={progress}
+            onChange={(e) => seekTo(parseFloat(e.target.value) * duration)}
+            className="w-full"
+          />
         </div>
+
+        <span className="text-white text-sm">
+          {Math.round(currentTime)}s / {Math.round(duration)}s
+        </span>
       </div>
-    );
-  }
-  ```
+    </div>
+  );
+}
+````
+
 </Tab>
 </Tabs>
 
@@ -315,12 +311,16 @@ Choose the right processing tier for your content and audience:
     body: videoFile,
     headers: {
     'Content-Type': videoFile.type
-  }
-  });
+
+}
+});
 
     return video_id;
-  };
-    ```
+
+};
+
+````
+
   </Tab>
 
   <Tab value="Monitor Processing">
@@ -336,7 +336,8 @@ Choose the right processing tier for your content and audience:
 
     const result = await response.json();
     return result.data;
-  };
+
+};
 
     // Poll every 5 seconds until processing is complete
     return new Promise((resolve) => {
@@ -348,14 +349,16 @@ Choose the right processing tier for your content and audience:
     if (video.file.status === 'ready') {
     clearInterval(interval);
     resolve(video);
-  } else if (video.file.status === 'error') {
-    clearInterval(interval);
-    throw new Error('Video processing failed');
-  }
-  }, 5000);
-  });
-  };
-    ```
+
+} else if (video.file.status === 'error') {
+clearInterval(interval);
+throw new Error('Video processing failed');
+}
+}, 5000);
+});
+};
+````
+
   </Tab>
 
   <Tab value="Get Video Details">
@@ -380,9 +383,12 @@ Choose the right processing tier for your content and audience:
     thumbnailUrl: `https://cdn.rixl.com/${video.id}/thumbnail.jpg`,
     status: video.file.status,
     createdAt: video.created_at
-  };
-  };
-    ```
+
+};
+};
+
+```
+
   </Tab>
 </Tabs>
 
@@ -390,8 +396,7 @@ Choose the right processing tier for your content and audience:
 
 <Columns cols={3}>
   <Card title="Video Streaming Platform" icon="play">
-    Netflix-style streaming with adaptive quality, progress tracking, and global
-    delivery.
+    Netflix-style streaming with adaptive quality, progress tracking, and global delivery.
   </Card>
   <Card title="Live Event Streaming" icon="radio">
     Professional broadcasts with multiple quality levels and real-time delivery.
@@ -429,33 +434,22 @@ Choose the right processing tier for your content and audience:
 Ready to stream your videos? Choose your approach:
 
 <Columns cols={3}>
-  <Card
-    title="Upload Your First Video"
-    href="/en/home/platform/uploads/videos-guide"
-    icon="upload"
-  >
+  <Card title="Upload Your First Video" href="/en/home/platform/uploads/videos-guide" icon="upload">
     See HLS streaming and adaptive quality in action with our dashboard.
   </Card>
-  <Card
-    title="React Integration"
-    href="/en/sdk/video-component"
-    icon="video"
-  >
+  <Card title="React Integration" href="/en/sdk/video-component" icon="video">
     Add the Video component with progress tracking to your application.
   </Card>
-  <Card
-    title="API Implementation"
-    href="/en/api"
-    icon="code"
-  >
+  <Card title="API Implementation" href="/en/api" icon="code">
     Build custom video workflows with our comprehensive REST API.
   </Card>
 </Columns>
 
 <div className="mt-12">
   <Callout type="tip" title="Ready to stream?">
-    Start with our [Video Upload Guide](/en/home/platform/uploads/videos-guide) to see HLS streaming in action, or jump into the
-    [React Component Guide](/en/sdk/video-component) to add professional video players to your application. For custom
-    workflows, explore our [API Documentation](/en/api).
+    Start with our [Video Upload Guide](/en/home/platform/uploads/videos-guide) to see HLS streaming in action, or jump into the [React
+    Component Guide](/en/sdk/video-component) to add professional video players to your application. For custom workflows, explore our [API
+    Documentation](/en/api).
   </Callout>
 </div>
+```

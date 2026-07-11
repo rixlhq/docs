@@ -14,25 +14,25 @@ Upload your media to [dash.rixl.com/videos](https://dash.rixl.com/videos) or [da
 Select the SDK that matches your development stack:
 
 | Platform         | Status         | Installation                       |
-|------------------|----------------|------------------------------------|
-| **React**        | ✅ Available    | `npm install @rixl/videosdk-react` |
+| ---------------- | -------------- | ---------------------------------- |
+| **React**        | ✅ Available   | `npm install @rixl/videosdk-react` |
 | **JavaScript**   | 🚧 Coming Soon | -                                  |
 | **Vue**          | 🚧 Coming Soon | -                                  |
 | **React Native** | 🚧 Coming Soon | -                                  |
 
-<Callout type="info">
-  Currently only the React SDK is available. Additional platforms coming soon.
-</Callout>
+<Callout type="info">Currently only the React SDK is available. Additional platforms coming soon.</Callout>
 
 ## Key Features and Benefits
 
 ### **Performance Optimized**
+
 - **Adaptive Streaming**: Automatically serves optimal quality based on device capabilities and network conditions
 - **Lazy Loading**: Images and videos load only when needed, reducing initial page load times
 - **CDN Delivery**: Global content delivery network ensures fast loading worldwide
 - **Memory Efficient**: Smart resource management prevents memory leaks in long-running applications
 
 ### **Developer Experience**
+
 - **TypeScript First**: Full type safety with comprehensive TypeScript definitions
 - **Framework Native**: Components feel natural and integrate seamlessly with React patterns
 - **Composable Hooks**: Build custom controls with `usePlayback`, `usePlayerProgress`, `usePlayerUI`, and friends through the player scope created by `<Video>` or `<VideoPlayer>`
@@ -40,6 +40,7 @@ Select the SDK that matches your development stack:
 - **Zero Configuration**: Works out of the box with sensible defaults
 
 ### **Modern Media Features**
+
 - **Thumbhash Placeholders**: Beautiful, lightweight image placeholders during loading
 - **Picture-in-Picture**: Native browser PiP support for videos
 - **Responsive Design**: Automatic adaptation to different screen sizes and orientations
@@ -47,18 +48,22 @@ Select the SDK that matches your development stack:
 ## Browser Compatibility
 
 ### Fully Supported
+
 - **Chrome** 88+
 - **Firefox** 85+
 - **Safari** 14+
 - **Edge** 88+
 
 ### Mobile Support
+
 - **iOS Safari** 14+
 - **Chrome Mobile** 88+
 - **Samsung Internet** 15+
 
 ### Legacy Browser Fallbacks
+
 The SDK provides graceful degradation for older browsers:
+
 - Static images for older browsers that don't support advanced features
 - Basic HTML5 video player fallback
 - Progressive enhancement ensures your content is always accessible
@@ -66,17 +71,20 @@ The SDK provides graceful degradation for older browsers:
 ## Performance Considerations
 
 ### Network Optimization
+
 - **Bandwidth Adaptive**: Automatically adjusts quality based on connection speed
 - **Preloading Strategies**: Smart preloading of critical above-the-fold content
 - **Compression**: Advanced video and image compression reduces data usage
 - **Caching**: Intelligent browser and CDN caching strategies
 
 ### Bundle Size
+
 - **Tree Shakable**: Import only the components you need
 - **Zero Dependencies**: No heavy third-party libraries
 - **Production Ready**: Minified and ready for production
 
 ### Memory Management
+
 - **Automatic Cleanup**: Components clean up resources when unmounted
 - **Lazy Initialization**: Heavy resources only loaded when needed
 - **Garbage Collection Friendly**: Proper cleanup prevents memory leaks
@@ -86,6 +94,7 @@ The SDK provides graceful degradation for older browsers:
 Ready to start building? Head to the [Installation](/en/sdk/getting-started/installation) guide to set up your first RIXL-powered media component.
 
 **Quick Links:**
+
 - [React SDK Installation](/en/sdk/getting-started/installation) - Get up and running in minutes
 - [Video Component](/en/sdk/video-component) - Rich video player documentation
 - [Hooks](/en/sdk/hooks) - Build custom playback controls with the player hook APIs

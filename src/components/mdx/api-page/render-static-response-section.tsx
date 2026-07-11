@@ -81,11 +81,7 @@ function MediaBlockContent({
   );
 }
 
-async function renderResponseEntry(
-  status: string,
-  response: ResponseObjectLite,
-  ctx: OpenApiRenderContext
-): Promise<ReactElement> {
+async function renderResponseEntry(status: string, response: ResponseObjectLite, ctx: OpenApiRenderContext): Promise<ReactElement> {
   const descriptionNode = response.description ? await ctx.renderMarkdown(response.description) : null;
   const mediaEntries = Object.entries(response.content ?? {});
   const mediaBlocks = await buildMediaBlocks({status, response, mediaEntries, ctx});
@@ -102,7 +98,12 @@ async function renderResponseEntry(
       <div className="prose-no-margin space-y-4 pt-2 ps-4">
         {descriptionNode}
         {mediaBlocks.map((mediaBlock) => (
-          <MediaBlockContent key={`${status}:${mediaBlock.mediaType}`} status={status} mediaEntries={mediaEntries} mediaBlock={mediaBlock} />
+          <MediaBlockContent
+            key={`${status}:${mediaBlock.mediaType}`}
+            status={status}
+            mediaEntries={mediaEntries}
+            mediaBlock={mediaBlock}
+          />
         ))}
       </div>
     </details>

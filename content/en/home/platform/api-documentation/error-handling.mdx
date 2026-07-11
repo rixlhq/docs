@@ -5,18 +5,17 @@ description: Troubleshoot common API failures and implement resilient retry beha
 
 import {Callout} from "@/snippets";
 
-
 Use this page to diagnose the most common RIXL API failures and choose the correct recovery strategy.
 
 ## Status Code Triage
 
-| Code | Meaning | Primary Fix |
-|------|---------|-------------|
+| Code  | Meaning                                       | Primary Fix                                   |
+| ----- | --------------------------------------------- | --------------------------------------------- |
 | `401` | Missing, invalid, revoked, or expired API key | Verify `X-API-Key`, then rotate key if needed |
-| `403` | Key cannot access this resource scope | Check project/key scope and endpoint target |
-| `404` | Resource does not exist | Validate ID and route |
-| `429` | Request rate exceeded | Retry with backoff and lower concurrency |
-| `5xx` | Server-side failure | Retry with capped backoff, then escalate |
+| `403` | Key cannot access this resource scope         | Check project/key scope and endpoint target   |
+| `404` | Resource does not exist                       | Validate ID and route                         |
+| `429` | Request rate exceeded                         | Retry with backoff and lower concurrency      |
+| `5xx` | Server-side failure                           | Retry with capped backoff, then escalate      |
 
 ## 401 Unauthorized
 
@@ -54,7 +53,7 @@ async function requestWithRetry(send, maxAttempts = 5, baseDelayMs = 500) {
     if (response.status !== 429 && response.status < 500) return response;
 
     const jitter = Math.floor(Math.random() * 200);
-    const delay = baseDelayMs * (2 ** attempt) + jitter;
+    const delay = baseDelayMs * 2 ** attempt + jitter;
     await new Promise((resolve) => setTimeout(resolve, delay));
   }
 

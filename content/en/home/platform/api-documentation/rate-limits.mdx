@@ -30,7 +30,7 @@ async function requestWithBackoff(fetcher) {
     if (response.status !== 429) return response;
 
     const jitter = Math.floor(Math.random() * 200);
-    const delay = baseDelayMs * (2 ** attempt) + jitter;
+    const delay = baseDelayMs * 2 ** attempt + jitter;
     await new Promise((resolve) => setTimeout(resolve, delay));
   }
 

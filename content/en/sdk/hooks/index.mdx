@@ -71,15 +71,15 @@ function DetachedPlayer() {
 
 ## Choose a Hook
 
-| Hook | Use it for | Notes |
-| --- | --- | --- |
-| `useMediaSettings()` | Mute, unmute, volume, and previous volume | Player-scoped audio only |
-| `usePlayback()` | Play, pause, playback rate, loading, ended, `pauseOthers()` | Best for transport controls |
-| `usePlayerProgress()` | Current time, duration, buffered progress, seeking | Preferred public timeline hook |
-| `usePlayerUI()` | Fullscreen, Picture-in-Picture, controls visibility | Exposes durable chrome state only |
-| `usePlayerTracks()` | Audio track and subtitle track selection | Track styling and global caption prefs stay elsewhere |
-| `useGlobalPlayerSettings()` | Page-level coordination across mounted players | Advanced API for shared controls |
-| `useProgressBar({video})` | Low-level drag handling for a raw `HTMLVideoElement` | Prefer `usePlayerProgress()` with `Video` |
+| Hook                        | Use it for                                                  | Notes                                                 |
+| --------------------------- | ----------------------------------------------------------- | ----------------------------------------------------- |
+| `useMediaSettings()`        | Mute, unmute, volume, and previous volume                   | Player-scoped audio only                              |
+| `usePlayback()`             | Play, pause, playback rate, loading, ended, `pauseOthers()` | Best for transport controls                           |
+| `usePlayerProgress()`       | Current time, duration, buffered progress, seeking          | Preferred public timeline hook                        |
+| `usePlayerUI()`             | Fullscreen, Picture-in-Picture, controls visibility         | Exposes durable chrome state only                     |
+| `usePlayerTracks()`         | Audio track and subtitle track selection                    | Track styling and global caption prefs stay elsewhere |
+| `useGlobalPlayerSettings()` | Page-level coordination across mounted players              | Advanced API for shared controls                      |
+| `useProgressBar({video})`   | Low-level drag handling for a raw `HTMLVideoElement`        | Prefer `usePlayerProgress()` with `Video`             |
 
 ## Which Hook Should Most Apps Start With?
 

@@ -3,8 +3,8 @@ title: "Video: Hover Preview"
 description: "Play-on-hover video preview for thumbnails and content cards"
 ---
 
-import { Video } from '@/snippets'
-import { Callout } from 'fumadocs-ui/components/callout'
+import {Video} from "@/snippets";
+import {Callout} from "fumadocs-ui/components/callout";
 
 # Hover Preview Player
 
@@ -15,22 +15,15 @@ A video player that plays on mouse hover and pauses when the mouse leaves. Shows
 Hover over the video to start playback:
 
 <div className="w-full max-w-md">
-    <Video
-        id="HhWaDUjU74"
-        className="w-full aspect-video rounded-lg"
-        theme="hover"
-    />
+  <Video id="HhWaDUjU74" className="w-full aspect-video rounded-lg" theme="hover" />
 </div>
 
 ## Basic Implementation
 
 ```tsx
-import { Video } from '@rixl/videosdk-react';
+import {Video} from "@rixl/videosdk-react";
 
-<Video
-  id="your-video-id"
-  theme="hover"
-/>
+<Video id="your-video-id" theme="hover" />;
 ```
 
 ## How It Works
@@ -40,9 +33,7 @@ import { Video } from '@rixl/videosdk-react';
 - A poster image (with thumbhash placeholder) overlays the video when idle
 - Only a **mute button** (top-right) and **progress bar** (bottom) are shown
 
-<Callout type="info">
-    The hover theme is designed for desktop interactions. On touch devices, users tap to play/pause instead.
-</Callout>
+<Callout type="info">The hover theme is designed for desktop interactions. On touch devices, users tap to play/pause instead.</Callout>
 
 ## Use Cases
 
@@ -51,19 +42,13 @@ import { Video } from '@rixl/videosdk-react';
 Create a grid of video previews that play on hover:
 
 ```tsx
-import { Video } from '@rixl/videosdk-react';
+import {Video} from "@rixl/videosdk-react";
 
-function VideoGrid({ videos }) {
+function VideoGrid({videos}) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {videos.map(video => (
-        <Video
-          key={video.id}
-          id={video.id}
-          className="w-full aspect-video rounded-lg"
-          theme="hover"
-          loop={true}
-        />
+      {videos.map((video) => (
+        <Video key={video.id} id={video.id} className="w-full aspect-video rounded-lg" theme="hover" loop={true} />
       ))}
     </div>
   );
@@ -73,17 +58,12 @@ function VideoGrid({ videos }) {
 ### Content Card with Hover Preview
 
 ```tsx
-import { Video } from '@rixl/videosdk-react';
+import {Video} from "@rixl/videosdk-react";
 
-function ContentCard({ videoId, title, description }) {
+function ContentCard({videoId, title, description}) {
   return (
     <div className="rounded-xl overflow-hidden shadow-lg">
-      <Video
-        id={videoId}
-        className="w-full aspect-video"
-        theme="hover"
-        loop={true}
-      />
+      <Video id={videoId} className="w-full aspect-video" theme="hover" loop={true} />
       <div className="p-4">
         <h3 className="font-bold text-lg">{title}</h3>
         <p className="text-gray-600 text-sm">{description}</p>
@@ -96,12 +76,14 @@ function ContentCard({ videoId, title, description }) {
 ## When to Use
 
 **Use Hover Theme For:**
+
 - Video thumbnail grids and galleries
 - Content cards with video previews
 - Product showcases
 - Portfolio displays
 
 **Use Standard Theme Instead:**
+
 - Videos that need full playback controls
 - Long-form content where users control playback
 - Mobile-first experiences

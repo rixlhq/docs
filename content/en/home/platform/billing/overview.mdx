@@ -3,25 +3,17 @@ title: Billing Overview
 description: Manage your subscription, billing, and payment information for your Project on RIXL.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
-
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 The Billing section allows you to manage your subscription, monitor usage, update payment methods
 , and access your invoice history. Access it through **Project Settings → Billing**.
 
 <Columns cols={2}>
-  <Card
-    title="Current Plan & Usage"
-    href="/en/home/platform/billing/subscription-plans"
-  >
+  <Card title="Current Plan & Usage" href="/en/home/platform/billing/subscription-plans">
     View your active subscription and monitor resource usage across all projects.
   </Card>
-  <Card
-    title="Payment & Invoices"
-    href="/en/home/platform/billing/payment_invoice"
-  >
+  <Card title="Payment & Invoices" href="/en/home/platform/billing/payment_invoice">
     Manage payment methods and download billing history.
   </Card>
 </Columns>
@@ -29,6 +21,7 @@ The Billing section allows you to manage your subscription, monitor usage, updat
 ## Current Plan Summary
 
 Your billing dashboard shows:
+
 - **Active Plan:** Current subscription tier and monthly cost
 - **Billing Cycle:** Next billing date and payment method
 - **Usage Metrics:** Real-time tracking of storage and API usage
@@ -36,31 +29,12 @@ Your billing dashboard shows:
 
 ## Plans
 
-<Tabs items={['Free', 'Pro', 'Enterprise']}>
-  <Tab value="Free">
-    **$0/Month**
-    - 5 GB video storage
-    - 1 GB image storage
-    - 3 team members
-    - 100 API calls/hour
-  </Tab>
+<Tabs items={["Free", "Pro", "Enterprise"]}>
+  <Tab value="Free">**$0/Month** - 5 GB video storage - 1 GB image storage - 3 team members - 100 API calls/hour</Tab>
   <Tab value="Pro">
-    **$49/Month**
-    - 50 GB video storage
-    - 10 GB image storage
-    - 10 team members
-    - 1,000 API calls/hour
-    - Priority support
+    **$49/Month** - 50 GB video storage - 10 GB image storage - 10 team members - 1,000 API calls/hour - Priority support
   </Tab>
-  <Tab value="Enterprise">
-    **$299/Month**
-    - Custom storage
-    - Unlimited team members
-    - Custom API limits
-    - 24/7 support
-  </Tab>
+  <Tab value="Enterprise">**$299/Month** - Custom storage - Unlimited team members - Custom API limits - 24/7 support</Tab>
 </Tabs>
 
-<Callout type="warning">
-  Going over your limits may result in extra charges. Upgrade before hitting limits.
-</Callout>
+<Callout type="warning">Going over your limits may result in extra charges. Upgrade before hitting limits.</Callout>

@@ -3,9 +3,8 @@ title: Upload Implementation
 description: Code examples and best practices for implementing video uploads
 ---
 
-
-import {Card, Columns} from '@/snippets';
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Card, Columns} from "@/snippets";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 Implement video uploads with comprehensive code examples and best practices for reliable, efficient video processing.
 
@@ -14,6 +13,7 @@ Implement video uploads with comprehensive code examples and best practices for 
 ### Implementation Overview
 
 **Three-step upload process**:
+
 1. **Initialize upload**: Get presigned URLs and upload configuration
 2. **Upload video file**: Direct upload to secure cloud storage
 3. **Complete upload**: Trigger processing pipeline
@@ -21,18 +21,10 @@ Implement video uploads with comprehensive code examples and best practices for 
 ### Upload Optimization Guidelines
 
 <Columns cols={3}>
-  <Card title="Format: MP4 + H.264">
-    Fastest processing with universal compatibility
-  </Card>
-  <Card title="Resolution: Upload Highest Available">
-    Up to 4K for Pro tier, system scales down appropriately
-  </Card>
-  <Card title="Frame Rate: 30fps or 60fps">
-    Standard rates for optimal processing and compatibility
-  </Card>
-  <Card title="Audio: Opus Codec">
-    Best compatibility and quality for source material
-  </Card>
+  <Card title="Format: MP4 + H.264">Fastest processing with universal compatibility</Card>
+  <Card title="Resolution: Upload Highest Available">Up to 4K for Pro tier, system scales down appropriately</Card>
+  <Card title="Frame Rate: 30fps or 60fps">Standard rates for optimal processing and compatibility</Card>
+  <Card title="Audio: Opus Codec">Best compatibility and quality for source material</Card>
 </Columns>
 
 ## Code Examples
@@ -49,13 +41,15 @@ Implement video uploads with comprehensive code examples and best practices for 
     file_name: string;
     video_quality: 'basic' | 'shorts' | 'pro';
     image_format: 'jpg' | 'png' | 'webp';
-  }
+
+}
 
     interface UploadInitResponse {
     video_id: string;
     video_presigned_url: string;
     expires_at: string;
-  }
+
+}
 
     async function uploadVideo(
     videoFile: File,
@@ -134,6 +128,7 @@ Implement video uploads with comprehensive code examples and best practices for 
         return videoId;
       };
       ```
+
   </Tab>
 
   <Tab value="Python">
@@ -186,7 +181,8 @@ Implement video uploads with comprehensive code examples and best practices for 
     session = requests.Session()
     session.headers.update({
     'X-API-Key': api_key,
-  })
+
+})
 
     try:
     # Step 1: Initialize upload
@@ -198,9 +194,10 @@ Implement video uploads with comprehensive code examples and best practices for 
     'file_name': file_path.name,
     'video_quality': video_quality,
     'image_format': image_format
-  },
-    timeout=timeout
-    )
+
+},
+timeout=timeout
+)
 
     init_response.raise_for_status()
     upload_data = init_response.json()
@@ -266,6 +263,7 @@ Implement video uploads with comprehensive code examples and best practices for 
     except Exception as e:
     logger.error(f"Unexpected error: {e}")
     ```
+
   </Tab>
 
   <Tab value="cURL">
@@ -312,7 +310,8 @@ Implement video uploads with comprehensive code examples and best practices for 
     \"file_name\": \"$(basename "$VIDEO_FILE")\",
     \"video_quality\": \"$VIDEO_QUALITY\",
     \"image_format\": \"$IMAGE_FORMAT\"
-  }")
+
+}")
 
     # Extract HTTP status code and response body
     HTTP_CODE="${INIT_RESPONSE: -3}"
@@ -365,6 +364,7 @@ Implement video uploads with comprehensive code examples and best practices for 
     log_info "Video ID: $VIDEO_ID"
     log_info "Processing started. Check your dashboard for status."
     ```
+
   </Tab>
 </Tabs>
 
@@ -376,110 +376,84 @@ Implement video uploads with comprehensive code examples and best practices for 
 
 ```javascript
 async function uploadVideoWithRetry(file, maxRetries = 3) {
-for (let attempt = 1; attempt <= maxRetries; attempt++) {
-  try {
-    // Initialize upload
-    const initResponse = await fetch('https://api.rixl.com/videos/upload/init', {
-      method: 'POST',
-      headers: {
-        'X-API-Key': 'YOUR_PROJECT_API_KEY',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        file_name: file.name,
-        video_quality: 'basic',
-        image_format: 'jpg'
-      })
-    });
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      // Initialize upload
+      const initResponse = await fetch("https://api.rixl.com/videos/upload/init", {
+        method: "POST",
+        headers: {
+          "X-API-Key": "YOUR_PROJECT_API_KEY",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          file_name: file.name,
+          video_quality: "basic",
+          image_format: "jpg",
+        }),
+      });
 
-
-
-    if (!initResponse.ok) {
-      throw new Error(`Initialization failed: ${initResponse.status}`);
-    }
-
-
-
-    const uploadData = await initResponse.json();
-
-
-
-    // Upload with progress tracking
-    const uploadResponse = await uploadWithProgress(
-      uploadData.video_presigned_url,
-      file,
-      (progress) => console.log(`Upload progress: ${progress}%`)
-    );
-
-
-
-    // Complete upload
-    const completeResponse = await fetch(
-      `https://api.rixl.com/videos/${uploadData.video_id}/upload/complete/`,
-      {
-        method: 'POST',
-        headers: {'X-API-Key': 'YOUR_PROJECT_API_KEY'}
+      if (!initResponse.ok) {
+        throw new Error(`Initialization failed: ${initResponse.status}`);
       }
-    );
 
+      const uploadData = await initResponse.json();
 
+      // Upload with progress tracking
+      const uploadResponse = await uploadWithProgress(uploadData.video_presigned_url, file, (progress) =>
+        console.log(`Upload progress: ${progress}%`)
+      );
 
-    if (!completeResponse.ok) {
-      throw new Error(`Completion failed: ${completeResponse.status}`);
+      // Complete upload
+      const completeResponse = await fetch(`https://api.rixl.com/videos/${uploadData.video_id}/upload/complete/`, {
+        method: "POST",
+        headers: {"X-API-Key": "YOUR_PROJECT_API_KEY"},
+      });
+
+      if (!completeResponse.ok) {
+        throw new Error(`Completion failed: ${completeResponse.status}`);
+      }
+
+      return uploadData.video_id;
+    } catch (error) {
+      console.log(`Attempt ${attempt} failed:`, error.message);
+
+      if (attempt === maxRetries) {
+        throw new Error(`Upload failed after ${maxRetries} attempts: ${error.message}`);
+      }
+
+      // Exponential backoff
+      await new Promise((resolve) => setTimeout(resolve, Math.pow(2, attempt) * 1000));
     }
-
-
-
-    return uploadData.video_id;
-
-
-
-  } catch (error) {
-    console.log(`Attempt ${attempt} failed:`, error.message);
-
-
-    if (attempt === maxRetries) {
-      throw new Error(`Upload failed after ${maxRetries} attempts: ${error.message}`);
-    }
-
-
-    // Exponential backoff
-    await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
   }
-}
 }
 
 async function uploadWithProgress(url, file, onProgress) {
-return new Promise((resolve, reject) => {
-  const xhr = new XMLHttpRequest();
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
 
+    xhr.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) {
+        const progress = Math.round((event.loaded / event.total) * 100);
+        onProgress(progress);
+      }
+    });
 
-  xhr.upload.addEventListener('progress', (event) => {
-    if (event.lengthComputable) {
-      const progress = Math.round((event.loaded / event.total) * 100);
-      onProgress(progress);
-    }
+    xhr.addEventListener("load", () => {
+      if (xhr.status === 200) {
+        resolve(xhr.response);
+      } else {
+        reject(new Error(`Upload failed with status: ${xhr.status}`));
+      }
+    });
+
+    xhr.addEventListener("error", () => {
+      reject(new Error("Upload failed due to network error"));
+    });
+
+    xhr.open("PUT", url);
+    xhr.setRequestHeader("Content-Type", file.type);
+    xhr.send(file);
   });
-
-
-  xhr.addEventListener('load', () => {
-    if (xhr.status === 200) {
-      resolve(xhr.response);
-    } else {
-      reject(new Error(`Upload failed with status: ${xhr.status}`));
-    }
-  });
-
-
-  xhr.addEventListener('error', () => {
-    reject(new Error('Upload failed due to network error'));
-  });
-
-
-  xhr.open('PUT', url);
-  xhr.setRequestHeader('Content-Type', file.type);
-  xhr.send(file);
-});
 }
 ```
 
@@ -562,36 +536,37 @@ print(f"Upload complete! Video ID: {video_id}")
 
 ```javascript
 function selectOptimalTier(videoMetadata) {
-const {width, height, duration, fileSize} = videoMetadata;
-const resolution = width * height;
-const isVertical = height > width;
+  const {width, height, duration, fileSize} = videoMetadata;
+  const resolution = width * height;
+  const isVertical = height > width;
 
-// 4K or higher resolution
-if (resolution >= 3840 * 2160) {
-  return 'pro';
-}
+  // 4K or higher resolution
+  if (resolution >= 3840 * 2160) {
+    return "pro";
+  }
 
-// Vertical content or high frame rate
-if (isVertical || videoMetadata.frameRate >= 50) {
-  return 'shorts';
-}
+  // Vertical content or high frame rate
+  if (isVertical || videoMetadata.frameRate >= 50) {
+    return "shorts";
+  }
 
-// Large files likely high quality
-if (fileSize > 500 * 1024 * 1024) { // 500MB
-  return 'pro';
-}
+  // Large files likely high quality
+  if (fileSize > 500 * 1024 * 1024) {
+    // 500MB
+    return "pro";
+  }
 
-// Default to basic for standard content
-return 'basic';
+  // Default to basic for standard content
+  return "basic";
 }
 
 // Usage
 const optimalTier = selectOptimalTier({
-width: 1920,
+  width: 1920,
   height: 1080,
   duration: 300, // 5 minutes
   fileSize: 200 * 1024 * 1024, // 200MB
-  frameRate: 30
+  frameRate: 30,
 });
 ```
 
@@ -636,117 +611,102 @@ print(f"Consider waiting: {message}")
 
 ```javascript
 class SecureVideoUploader {
-constructor(apiKey, projectId) {
-  this.apiKey = apiKey;
-  this.projectId = projectId;
-  this.baseUrl = 'https://api.rixl.com';
-}
-
-async validateFile(file) {
-  // File size validation (2GB limit)
-  if (file.size > 2 * 1024 * 1024 * 1024) {
-    throw new Error('File size exceeds 2GB limit');
+  constructor(apiKey, projectId) {
+    this.apiKey = apiKey;
+    this.projectId = projectId;
+    this.baseUrl = "https://api.rixl.com";
   }
 
-
-  // MIME type validation
-  const allowedTypes = ['video/mp4', 'video/quicktime', 'video/webm'];
-  if (!allowedTypes.includes(file.type)) {
-    throw new Error('Unsupported file type');
-  }
-
-
-  return true;
-}
-
-async uploadVideo(file, options = {}) {
-  // Validate file before upload
-  await this.validateFile(file);
-
-
-  const requestBody = {
-    file_name: file.name,
-    video_quality: options.quality || 'basic',
-    image_format: options.imageFormat || 'jpg',
-    project_id: this.projectId
-  };
-
-
-  // Initialize with authentication
-  const initResponse = await fetch(`${this.baseUrl}/videos/upload/init`, {
-    method: 'POST',
-    headers: {
-      'X-API-Key': this.apiKey,
-      'Content-Type': 'application/json',
-      'User-Agent': 'RIXL-SDK/1.0'
-    },
-    body: JSON.stringify(requestBody)
-  });
-
-
-  if (!initResponse.ok) {
-    const error = await initResponse.json();
-    throw new Error(`Upload initialization failed: ${error.message}`);
-  }
-
-
-  const uploadData = await initResponse.json();
-
-
-  // Verify presigned URL is secure (HTTPS)
-  if (!uploadData.video_presigned_url.startsWith('https://')) {
-    throw new Error('Insecure upload URL provided');
-  }
-
-
-  // Upload with timeout
-  const uploadResponse = await Promise.race([
-    fetch(uploadData.video_presigned_url, {
-      method: 'PUT',
-      body: file,
-      headers: {'Content-Type': file.type}
-    }),
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Upload timeout')), 300000) // 5 minutes
-    )
-  ]);
-
-
-  if (!uploadResponse.ok) {
-    throw new Error(`Upload failed: ${uploadResponse.status}`);
-  }
-
-
-  // Complete upload
-  const completeResponse = await fetch(
-    `${this.baseUrl}/videos/${uploadData.video_id}/upload/complete/`,
-    {
-      method: 'POST',
-      headers: {'X-API-Key': this.apiKey}
+  async validateFile(file) {
+    // File size validation (2GB limit)
+    if (file.size > 2 * 1024 * 1024 * 1024) {
+      throw new Error("File size exceeds 2GB limit");
     }
-  );
 
+    // MIME type validation
+    const allowedTypes = ["video/mp4", "video/quicktime", "video/webm"];
+    if (!allowedTypes.includes(file.type)) {
+      throw new Error("Unsupported file type");
+    }
 
-  if (!completeResponse.ok) {
-    throw new Error('Upload completion failed');
+    return true;
   }
 
+  async uploadVideo(file, options = {}) {
+    // Validate file before upload
+    await this.validateFile(file);
 
-  return uploadData.video_id;
-}
+    const requestBody = {
+      file_name: file.name,
+      video_quality: options.quality || "basic",
+      image_format: options.imageFormat || "jpg",
+      project_id: this.projectId,
+    };
+
+    // Initialize with authentication
+    const initResponse = await fetch(`${this.baseUrl}/videos/upload/init`, {
+      method: "POST",
+      headers: {
+        "X-API-Key": this.apiKey,
+        "Content-Type": "application/json",
+        "User-Agent": "RIXL-SDK/1.0",
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!initResponse.ok) {
+      const error = await initResponse.json();
+      throw new Error(`Upload initialization failed: ${error.message}`);
+    }
+
+    const uploadData = await initResponse.json();
+
+    // Verify presigned URL is secure (HTTPS)
+    if (!uploadData.video_presigned_url.startsWith("https://")) {
+      throw new Error("Insecure upload URL provided");
+    }
+
+    // Upload with timeout
+    const uploadResponse = await Promise.race([
+      fetch(uploadData.video_presigned_url, {
+        method: "PUT",
+        body: file,
+        headers: {"Content-Type": file.type},
+      }),
+      new Promise(
+        (_, reject) => setTimeout(() => reject(new Error("Upload timeout")), 300000) // 5 minutes
+      ),
+    ]);
+
+    if (!uploadResponse.ok) {
+      throw new Error(`Upload failed: ${uploadResponse.status}`);
+    }
+
+    // Complete upload
+    const completeResponse = await fetch(`${this.baseUrl}/videos/${uploadData.video_id}/upload/complete/`, {
+      method: "POST",
+      headers: {"X-API-Key": this.apiKey},
+    });
+
+    if (!completeResponse.ok) {
+      throw new Error("Upload completion failed");
+    }
+
+    return uploadData.video_id;
+  }
 }
 
 // Usage
-const uploader = new SecureVideoUploader('YOUR_API_KEY', 'YOUR_PROJECT_ID');
+const uploader = new SecureVideoUploader("YOUR_API_KEY", "YOUR_PROJECT_ID");
 
 try {
-const videoId = await uploader.uploadVideo(videoFile, {
-  quality: 'pro',
-  imageFormat: 'jpg'
-});
-console.log('Upload successful:', videoId);
+  const videoId = await uploader.uploadVideo(videoFile, {
+    quality: "pro",
+    imageFormat: "jpg",
+  });
+  console.log("Upload successful:", videoId);
 } catch (error) {
-console.error('Upload failed:', error.message);
+  console.error("Upload failed:", error.message);
 }
 ```
 
@@ -758,63 +718,58 @@ console.error('Upload failed:', error.message);
 
 ```javascript
 async function batchUploadVideos(files, options = {}) {
-const {concurrency = 3, quality = 'basic'} = options;
-const results = [];
+  const {concurrency = 3, quality = "basic"} = options;
+  const results = [];
 
-// Process files in batches to avoid overwhelming the server
-for (let i = 0; i < files.length; i += concurrency) {
-  const batch = files.slice(i, i + concurrency);
+  // Process files in batches to avoid overwhelming the server
+  for (let i = 0; i < files.length; i += concurrency) {
+    const batch = files.slice(i, i + concurrency);
 
+    const batchPromises = batch.map(async (file, index) => {
+      try {
+        console.log(`Starting upload ${i + index + 1}/${files.length}: ${file.name}`);
 
-  const batchPromises = batch.map(async (file, index) => {
-    try {
-      console.log(`Starting upload ${i + index + 1}/${files.length}: ${file.name}`);
+        const videoId = await uploadVideoWithRetry(file);
 
+        return {
+          success: true,
+          fileName: file.name,
+          videoId: videoId,
+        };
+      } catch (error) {
+        return {
+          success: false,
+          fileName: file.name,
+          error: error.message,
+        };
+      }
+    });
 
-      const videoId = await uploadVideoWithRetry(file);
+    const batchResults = await Promise.all(batchPromises);
+    results.push(...batchResults);
 
-
-      return {
-        success: true,
-        fileName: file.name,
-        videoId: videoId
-      };
-    } catch (error) {
-      return {
-        success: false,
-        fileName: file.name,
-        error: error.message
-      };
+    // Brief pause between batches
+    if (i + concurrency < files.length) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-  });
-
-
-  const batchResults = await Promise.all(batchPromises);
-  results.push(...batchResults);
-
-
-  // Brief pause between batches
-  if (i + concurrency < files.length) {
-    await new Promise(resolve => setTimeout(resolve, 1000));
   }
-}
 
-return results;
+  return results;
 }
 
 // Usage
 const files = [video1, video2, video3, video4];
 const results = await batchUploadVideos(files, {
-concurrency: 2,
-  quality: 'pro'
+  concurrency: 2,
+  quality: "pro",
 });
 
-results.forEach(result => {
-if (result.success) {
-  console.log(`${result.fileName} → ${result.videoId}`);
-} else {
-  console.log(`${result.fileName} → ${result.error}`);
-}
+results.forEach((result) => {
+  if (result.success) {
+    console.log(`${result.fileName} → ${result.videoId}`);
+  } else {
+    console.log(`${result.fileName} → ${result.error}`);
+  }
 });
 ```
 
@@ -826,71 +781,66 @@ if (result.success) {
 
 ```javascript
 class UploadTroubleshooter {
-static diagnoseError(error, context) {
-  const {statusCode, message, file} = context;
+  static diagnoseError(error, context) {
+    const {statusCode, message, file} = context;
 
+    // File size issues
+    if (file?.size > 2 * 1024 * 1024 * 1024) {
+      return {
+        issue: "File size limit exceeded",
+        solution: "Compress video or split into smaller segments",
+        code: "FILE_TOO_LARGE",
+      };
+    }
 
-  // File size issues
-  if (file?.size > 2 * 1024 * 1024 * 1024) {
+    // Network issues
+    if (statusCode >= 500 || message.includes("network")) {
+      return {
+        issue: "Server or network error",
+        solution: "Retry upload with exponential backoff",
+        code: "NETWORK_ERROR",
+      };
+    }
+
+    // Authentication issues
+    if (statusCode === 401 || statusCode === 403) {
+      return {
+        issue: "Authentication failed",
+        solution: "Verify API key and project permissions",
+        code: "AUTH_ERROR",
+      };
+    }
+
+    // Presigned URL expiration
+    if (statusCode === 403 && message.includes("expired")) {
+      return {
+        issue: "Upload URL expired",
+        solution: "Reinitialize upload to get new presigned URL",
+        code: "URL_EXPIRED",
+      };
+    }
+
     return {
-      issue: 'File size limit exceeded',
-      solution: 'Compress video or split into smaller segments',
-      code: 'FILE_TOO_LARGE'
+      issue: "Unknown error",
+      solution: "Check error logs and contact support if persistent",
+      code: "UNKNOWN_ERROR",
     };
   }
-
-
-  // Network issues
-  if (statusCode >= 500 || message.includes('network')) {
-    return {
-      issue: 'Server or network error',
-      solution: 'Retry upload with exponential backoff',
-      code: 'NETWORK_ERROR'
-    };
-  }
-
-
-  // Authentication issues
-  if (statusCode === 401 || statusCode === 403) {
-    return {
-      issue: 'Authentication failed',
-      solution: 'Verify API key and project permissions',
-      code: 'AUTH_ERROR'
-    };
-  }
-
-
-  // Presigned URL expiration
-  if (statusCode === 403 && message.includes('expired')) {
-    return {
-      issue: 'Upload URL expired',
-      solution: 'Reinitialize upload to get new presigned URL',
-      code: 'URL_EXPIRED'
-    };
-  }
-
-
-  return {
-    issue: 'Unknown error',
-    solution: 'Check error logs and contact support if persistent',
-    code: 'UNKNOWN_ERROR'
-  };
-}
 }
 
 // Usage in error handling
 try {
-await uploadVideo(file);
+  await uploadVideo(file);
 } catch (error) {
-const diagnosis = UploadTroubleshooter.diagnoseError(error, {
-  statusCode: error.status,
-  message: error.message,
-  file: file
-});
+  const diagnosis = UploadTroubleshooter.diagnoseError(error, {
+    statusCode: error.status,
+    message: error.message,
+    file: file,
+  });
 
-console.log(`Issue: ${diagnosis.issue}`);
-console.log(`Solution: ${diagnosis.solution}`);
-console.log(`Code: ${diagnosis.code}`);
+  console.log(`Issue: ${diagnosis.issue}`);
+  console.log(`Solution: ${diagnosis.solution}`);
+  console.log(`Code: ${diagnosis.code}`);
 }
 ```
 

@@ -3,8 +3,8 @@ title: "Video: Minimal Player"
 description: "Muted video with no controls for Feed components and custom UI implementations"
 ---
 
-import { Video } from '@/snippets'
-import { Callout } from 'fumadocs-ui/components/callout'
+import {Video} from "@/snippets";
+import {Callout} from "fumadocs-ui/components/callout";
 
 # Minimal Video Player
 
@@ -13,37 +13,35 @@ A video player with no UI controls, designed for Feed components where you build
 ## Live Example
 
 <div className="w-full h-[500px]">
-    <Video
-        id="HhWaDUjU74"
-        className="w-full h-auto rounded-lg"
-        theme="minimal"
-        muted={true}
-    />
+  <Video id="HhWaDUjU74" className="w-full h-auto rounded-lg" theme="minimal" muted={true} />
 </div>
 
 ## Basic Implementation
 
 ```tsx
-import { Video } from '@rixl/videosdk-react';
+import {Video} from "@rixl/videosdk-react";
 
 <Video
   id="your-video-id"
   theme="minimal"
   muted={true} // Permanently disables audio and hides sound controls
-/>
+/>;
 ```
 
 <Callout type="info">
-    Setting `muted={true}` permanently disables audio and hides the mute button and volume controls. This is ideal for feed components and custom UI implementations where you handle audio separately.
+  Setting `muted={true}` permanently disables audio and hides the mute button and volume controls. This is ideal for feed components and
+  custom UI implementations where you handle audio separately.
 </Callout>
 
 ## What's Included
 
 **Available:**
+
 - Video playback
 - Autoplay support
 
 **NOT Available:**
+
 - No visible controls
 - No keyboard shortcuts
 - No audio (must be muted)
@@ -55,17 +53,10 @@ import { Video } from '@rixl/videosdk-react';
 Build TikTok/Instagram-style feeds with custom UI:
 
 ```tsx
-function FeedVideo({ videoId }) {
+function FeedVideo({videoId}) {
   return (
     <div className="relative w-full h-screen">
-      <Video
-        id={videoId}
-        className="w-full h-full object-cover"
-        theme="minimal"
-        muted={true}
-        autoPlay={true}
-        loop={true}
-      />
+      <Video id={videoId} className="w-full h-full object-cover" theme="minimal" muted={true} autoPlay={true} loop={true} />
 
       {/* Your custom overlay UI */}
       <div className="absolute bottom-20 left-6 text-white">
@@ -81,7 +72,7 @@ function FeedVideo({ videoId }) {
 
 ```tsx
 <div className="grid grid-cols-3 gap-4">
-  {videos.map(video => (
+  {videos.map((video) => (
     <Video
       key={video.id}
       id={video.id}
@@ -98,12 +89,14 @@ function FeedVideo({ videoId }) {
 ## When to Use
 
 **Use Minimal Theme For:**
+
 - Feed components
 - Video previews
 - Background videos
 - Custom player implementations
 
 **Use Standard Theme Instead:**
+
 - Videos that need audio
 - Content requiring user controls
 - Educational or tutorial content

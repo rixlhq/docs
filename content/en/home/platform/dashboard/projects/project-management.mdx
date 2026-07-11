@@ -3,10 +3,8 @@ title: Project Management
 description: Manage projects through the dashboard with navigation, collaboration, and usage monitoring tools.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
-
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 Once a project is created, you can manage it directly from the dashboard.  
 This includes switching between projects, tracking usage, monitoring team activity, and performing management actions.
@@ -28,30 +26,26 @@ This includes switching between projects, tracking usage, monitoring team activi
 </Columns>
 
 <Callout type="tip">
-  Create separate projects for **different environments** (development, staging, production) or business units to keep
-  data and access cleanly separated.
+  Create separate projects for **different environments** (development, staging, production) or business units to keep data and access
+  cleanly separated.
 </Callout>
 
 ---
 
 ## Project Dashboard Overview
 
-<Tabs items={['Project Info', 'Usage Metrics', 'Team Activity']}>
+<Tabs items={["Project Info", "Usage Metrics", "Team Activity"]}>
   <Tab value="Project Info">
-    - **Name & Region**: Identifies the project and where it’s hosted
-    - **Optimization Settings**: Current video processing tier
-    - **Created Date**: When the project was set up
-    - **Visibility**: Public or private access level
+    - **Name & Region**: Identifies the project and where it’s hosted - **Optimization Settings**: Current video processing tier - **Created
+    Date**: When the project was set up - **Visibility**: Public or private access level
   </Tab>
   <Tab value="Usage Metrics">
-    - **Storage & Bandwidth**: Current usage and quotas
-    - **Processing Queue**: Ongoing transcoding or optimization jobs
-    - **API Activity**: Request volume and trends
+    - **Storage & Bandwidth**: Current usage and quotas - **Processing Queue**: Ongoing transcoding or optimization jobs - **API Activity**:
+    Request volume and trends
   </Tab>
   <Tab value="Team Activity">
-    - **Members Overview**: Roles and permissions distribution
-    - **Recent Updates**: Project edits and media uploads
-    - **Invitations**: Pending team invites
+    - **Members Overview**: Roles and permissions distribution - **Recent Updates**: Project edits and media uploads - **Invitations**:
+    Pending team invites
   </Tab>
 </Tabs>
 
@@ -60,20 +54,13 @@ This includes switching between projects, tracking usage, monitoring team activi
 ## Management Actions
 
 <Columns cols={3}>
-  <Card title="Rename Project">
-    Update the display name for easier identification
-  </Card>
-  <Card title="Change Optimization Tier">
-    Switch the default video processing strategy
-  </Card>
-  <Card title="Delete Project">
-    Permanently remove the project and its contents
-  </Card>
+  <Card title="Rename Project">Update the display name for easier identification</Card>
+  <Card title="Change Optimization Tier">Switch the default video processing strategy</Card>
+  <Card title="Delete Project">Permanently remove the project and its contents</Card>
 </Columns>
 
 <Callout type="error">
-  **Warning**: Deleting a project is permanent and removes all content, feeds, and settings. This action cannot be
-  undone.
+  **Warning**: Deleting a project is permanent and removes all content, feeds, and settings. This action cannot be undone.
 </Callout>
 
 ---
@@ -93,9 +80,7 @@ For details on roles and permissions, see [Project Settings → Access & Permiss
 
 ## Best Practices
 
-<Callout type="tip">
-  Well-organized projects improve efficiency, security, and scaling.
-</Callout>
+<Callout type="tip">Well-organized projects improve efficiency, security, and scaling.</Callout>
 
 - Use clear, descriptive project names
 - Separate environments into different projects

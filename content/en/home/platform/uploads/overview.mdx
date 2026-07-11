@@ -3,31 +3,18 @@ title: Upload & Optimize
 description: Transform your raw media into web-optimized assets. Automatic processing, multiple formats, global delivery — all handled seamlessly.
 ---
 
-
-import {Card, Columns} from '@/snippets';
+import {Card, Columns} from "@/snippets";
 
 ## Quick Upload Actions
 
 <Columns cols={3}>
-  <Card
-    title="Upload Images"
-    href="/en/home/platform/uploads/images"
-    icon="image"
-  >
+  <Card title="Upload Images" href="/en/home/platform/uploads/images" icon="image">
     Transform any image into lightning-fast AVIF files with smart placeholders.
   </Card>
-  <Card
-    title="Upload Videos"
-    href="/en/home/platform/uploads/videos/overview"
-    icon="video"
-  >
+  <Card title="Upload Videos" href="/en/home/platform/uploads/videos/overview" icon="video">
     Professional video transcoding with adaptive streaming and instant delivery.
   </Card>
-  <Card
-    title="Posts"
-    href="/en/home/platform/uploads/posts"
-    icon="archive"
-  >
+  <Card title="Posts" href="/en/home/platform/uploads/posts" icon="archive">
     Create social media-style posts by uploading media directly to feeds.
   </Card>
 </Columns>
@@ -35,39 +22,33 @@ import {Card, Columns} from '@/snippets';
 ## Upload Methods
 
 <Columns cols={3}>
-  <Card
-    title="Dashboard Upload"
-    icon="upload"
-  >
+  <Card title="Dashboard Upload" icon="upload">
     Drag and drop files directly in the web interface with real-time progress tracking.
   </Card>
-  <Card
-    title="API Integration"
-    icon="code"
-  >
+  <Card title="API Integration" icon="code">
     Programmatic uploads via REST API for seamless app integration.
   </Card>
-  <Card
-    title="Bulk Processing"
-    icon="workflow"
-  >
+  <Card title="Bulk Processing" icon="workflow">
     Handle large volumes of content with automated workflows and batch operations.
   </Card>
 </Columns>
 
 ## Supported Formats
 
-**Images** *(converted to optimized AVIF)*
+**Images** _(converted to optimized AVIF)_
+
 - **Common**: JPEG, PNG, WebP, GIF, BMP
 - **Professional**: HEIC/HEIF, TIFF, JPEG 2000
 - **Vector**: SVG (preserved as-is)
 
-**Videos** *(transcoded for adaptive streaming)*
+**Videos** _(transcoded for adaptive streaming)_
+
 - **Input**: MP4, MOV, AVI, MKV, WebM, FLV
 - **Output**: Adaptive HLS with multiple quality tiers
 - **Thumbnails**: AVIF format with instant placeholders
 
 **File Limits**
+
 - Images: Up to 100MB each
 - Videos: Up to 2GB each
 - Bulk uploads: No limit on quantity

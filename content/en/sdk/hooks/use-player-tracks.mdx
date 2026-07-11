@@ -26,14 +26,7 @@ It returns:
 import {Video, usePlayerTracks} from "@rixl/videosdk-react";
 
 function CustomTrackControls() {
-  const {
-    audioTrack,
-    availableAudioTracks,
-    subtitleTrack,
-    availableSubtitleTracks,
-    setAudioTrack,
-    setSubtitleTrack,
-  } = usePlayerTracks();
+  const {audioTrack, availableAudioTracks, subtitleTrack, availableSubtitleTracks, setAudioTrack, setSubtitleTrack} = usePlayerTracks();
 
   return (
     <div className="space-y-2">

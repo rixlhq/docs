@@ -8,7 +8,11 @@ type RenderedRequestSection = {
   properties: Awaited<ReturnType<typeof buildRenderedSchemaProperties>>;
 };
 
-async function buildRequestSection(mediaType: string, media: RequestMediaTypeLite, ctx: OpenApiRenderContext): Promise<RenderedRequestSection> {
+async function buildRequestSection(
+  mediaType: string,
+  media: RequestMediaTypeLite,
+  ctx: OpenApiRenderContext
+): Promise<RenderedRequestSection> {
   const example = getRequestExample(media);
   const renderedExample = example === undefined ? null : await ctx.renderCodeBlock("json", JSON.stringify(example, null, 2));
   const properties = await buildRenderedSchemaProperties(media.schema, ctx);
@@ -42,7 +46,9 @@ export async function renderStaticRequestBodySection(operation: MethodWithPath, 
         <div key={section.mediaType} className="space-y-4">
           <code className="text-xs text-fd-muted-foreground">{section.mediaType}</code>
           {section.renderedExample}
-          {section.properties.length > 0 ? <div className="flex flex-col">{renderSchemaProperties(section.properties, section.mediaType)}</div> : null}
+          {section.properties.length > 0 ? (
+            <div className="flex flex-col">{renderSchemaProperties(section.properties, section.mediaType)}</div>
+          ) : null}
         </div>
       ))}
     </section>

@@ -3,60 +3,37 @@ title: Account & Teams Overview
 description: Manage your personal account settings, team memberships, and organization preferences all in one place.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Step, Steps} from "fumadocs-ui/components/steps";
 
 Welcome to your RIXL account and team management hub. From here, you can update your personal information, protect your account with security tools, manage team memberships, create organizations, and control access across all your projects.
 
 ## Quick Actions
 
 ### Personal Account
+
 <Columns cols={3}>
-  <Card
-    title="Update Profile"
-    href="/en/home/platform/account-teams/general-settings"
-    icon="settings"
-  >
+  <Card title="Update Profile" href="/en/home/platform/account-teams/general-settings" icon="settings">
     Edit your display name, username, and email address.
   </Card>
-  <Card
-    title="Secure Account"
-    href="/en/home/platform/account-teams/security"
-    icon="shield"
-  >
+  <Card title="Secure Account" href="/en/home/platform/account-teams/security" icon="shield">
     Set up two-factor authentication and manage sessions.
   </Card>
-  <Card
-    title="Generate API Key"
-    href="/en/home/platform/api-documentation/api-keys"
-    icon="key"
-  >
+  <Card title="Generate API Key" href="/en/home/platform/api-documentation/api-keys" icon="key">
     Create secure keys for integrating with RIXL's API.
   </Card>
 </Columns>
 
 ### Organizations & Teams
+
 <Columns cols={3}>
-  <Card
-    title="Create Organization"
-    href="/en/home/platform/account-teams/create-organization"
-    icon="building"
-  >
+  <Card title="Create Organization" href="/en/home/platform/account-teams/create-organization" icon="building">
     Set up a new organization for your team or company.
   </Card>
-  <Card
-    title="Team Management"
-    href="/en/home/platform/account-teams/team-management"
-    icon="users"
-  >
+  <Card title="Team Management" href="/en/home/platform/account-teams/team-management" icon="users">
     Invite members and manage their access to your organization.
   </Card>
-  <Card
-    title="View Memberships"
-    href="/en/home/platform/account-teams/membership"
-    icon="user-check"
-  >
+  <Card title="View Memberships" href="/en/home/platform/account-teams/membership" icon="user-check">
     Check all organizations you belong to and your role in each.
   </Card>
 </Columns>
@@ -68,6 +45,7 @@ Welcome to your RIXL account and team management hub. From here, you can update 
     **Profile & Personal Info**
 
     Keep your display name, email, and username up to date so your team can easily recognize and connect with you.
+
   </Step>
 
   <Step>
@@ -75,30 +53,35 @@ Welcome to your RIXL account and team management hub. From here, you can update 
 
     Protect your account with strong passwords, two-factor authentication, and monitor active login sessions for
     suspicious activity.
+
   </Step>
 
   <Step>
     **Team Collaboration**
 
     View all your organization memberships, manage your roles, and respond to team invitations from colleagues.
+
   </Step>
 
   <Step>
     **Organization Management**
 
     Create organizations for your team or company, invite members, and control access to projects and resources.
+
   </Step>
 
   <Step>
     **Developer Tools**
 
     Generate and manage API keys for integrating RIXL into your applications and automated workflows.
+
   </Step>
 
   <Step>
     **Billing & Usage**
 
     Track your usage across projects and manage billing for organizations where you have admin access.
+
   </Step>
 </Steps>
 
@@ -110,7 +93,9 @@ When working with teams, understanding roles helps you know what you can do in e
   <Card title="Owner" icon="crown">Full control of everything. Manages billing, adds/removes anyone, and controls all
     projects.</Card>
 
-  <Card title="Admin" icon="shield">Creates and manages projects. Invites team members and configures settings.</Card>
+<Card title="Admin" icon="shield">
+  Creates and manages projects. Invites team members and configures settings.
+</Card>
 
   <Card title="Member" icon="user">Works on assigned projects only. Can create content but can't manage the
     organization.</Card>
@@ -119,16 +104,18 @@ When working with teams, understanding roles helps you know what you can do in e
 ## Best Practices
 
 ### Security
+
 - **Enable two-factor authentication** for all accounts, especially if you're an organization owner or admin
 - **Review active sessions** regularly and revoke access from unfamiliar devices
 - **Use strong, unique passwords** and consider a password manager
 
 ### Team Management
+
 - **Assign appropriate roles** - Give team members the minimum permissions they need to do their work
 - **Regular access reviews** - Periodically check who has access to your organizations and projects
 - **Clear naming conventions** - Use descriptive organization and project names that make sense to your team
 
 <Callout type="tip">
-  **Quick access:** Click your profile picture in the top-right corner and select **Account Settings** to jump straight
-  to any of these sections.
+  **Quick access:** Click your profile picture in the top-right corner and select **Account Settings** to jump straight to any of these
+  sections.
 </Callout>

@@ -1,12 +1,5 @@
 {
   "title": "Upload & Optimize",
   "description": "Upload and transform your media with automatic optimization",
-  "pages": [
-    "overview",
-    "images",
-    "videos-guide",
-    "---Video Processing---",
-    "...videos",
-    "posts"
-  ]
+  "pages": ["overview", "images", "videos-guide", "---Video Processing---", "...videos", "posts"]
 }

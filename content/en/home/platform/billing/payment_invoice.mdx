@@ -3,15 +3,15 @@ title: Payment & Invoices
 description: Manage payment methods and access your billing history.
 ---
 
-
-import {Callout} from '@/snippets';
-import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Callout} from "@/snippets";
+import {Step, Steps} from "fumadocs-ui/components/steps";
 
 ## Payment Methods
 
 ### Current Payment Method
 
 Your active payment method is displayed in the billing dashboard, showing:
+
 - **Card Type:** Visa, Mastercard, etc.
 - **Last 4 Digits:** For security, only the last 4 digits are shown
 - **Expiration Date:** Month and year when the card expires
@@ -19,51 +19,42 @@ Your active payment method is displayed in the billing dashboard, showing:
 ### Updating Payment Information
 
 <Steps>
-  <Step>
-    Navigate to **Project Settings → Billing**.
-  </Step>
-  <Step>
-    In the Payment Method section, click **Update Payment Method**.
-  </Step>
-  <Step>
-    Enter your new card details and billing address.
-  </Step>
-  <Step>
-    Click **Save** to update your payment information.
-  </Step>
+  <Step>Navigate to **Project Settings → Billing**.</Step>
+  <Step>In the Payment Method section, click **Update Payment Method**.</Step>
+  <Step>Enter your new card details and billing address.</Step>
+  <Step>Click **Save** to update your payment information.</Step>
 </Steps>
 
 ### Supported Payment Options
 
 RIXL accepts the following payment methods:
+
 - **Credit Cards:** Visa, Mastercard, American Express, Discover
 - **Debit Cards:** Cards with major network logos
 - **International Cards:** Multi-currency support for global users
 
-<Callout type="info">
-  Payment information is securely processed and encrypted. Card details are never stored on RIXL servers.
-</Callout>
+<Callout type="info">Payment information is securely processed and encrypted. Card details are never stored on RIXL servers.</Callout>
 
 ### Payment Issues & Troubleshooting
 
 If a payment fails, you'll receive immediate notification and have a **7-day grace period** to resolve the issue.
 
 Common solutions:
+
 1. **Verify Card Details:** Check card number, expiration, and CVV
 2. **Confirm Billing Address:** Must match your card's registered address
 3. **Check Bank Restrictions:** Some banks block international transactions
 4. **Sufficient Funds:** Ensure adequate account balance
 5. **Try Alternative Card:** Use a different payment method
 
-<Callout type="warning">
-  Service may be suspended after the 7-day grace period if payment issues aren't resolved.
-</Callout>
+<Callout type="warning">Service may be suspended after the 7-day grace period if payment issues aren't resolved.</Callout>
 
 ## Invoices
 
 ### Your Invoice History
 
 Find your invoices in the Recent Invoices section:
+
 - Invoice number (INV-001, INV-002, etc.)
 - Date created
 - Amount charged
@@ -79,6 +70,7 @@ Find your invoices in the Recent Invoices section:
 </Steps>
 
 **Each invoice includes:**
+
 - Billing period dates
 - Monthly subscription fee
 - Any overage charges
@@ -88,11 +80,10 @@ Find your invoices in the Recent Invoices section:
 ### Email Notifications
 
 You'll get emails for:
+
 - New invoices
 - Successful payments
 - Failed payments
 - Payment retries
 
-<Callout type="info">
-  Pro and Enterprise customers get faster billing support: Pro (24h), Enterprise (4h).
-</Callout>
+<Callout type="info">Pro and Enterprise customers get faster billing support: Pro (24h), Enterprise (4h).</Callout>

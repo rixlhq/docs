@@ -98,10 +98,7 @@ export default function SharedLayout({
         }}
         className={`flex-1 ${layoutWidthClass}`}
       >
-        <DocsLayout
-          key={treeKey}
-          {...docsLayoutProps}
-        >
+        <DocsLayout key={treeKey} {...docsLayoutProps}>
           {children}
         </DocsLayout>
       </HomeLayout>

@@ -3,8 +3,7 @@ title: "Props Reference"
 description: "Complete API reference for all Video component props and TypeScript interfaces"
 ---
 
-
-import {Callout} from "@/snippets"
+import {Callout} from "@/snippets";
 
 ## Core Props
 
@@ -30,10 +29,7 @@ The media identifier from your RIXL dashboard. Pass this to `<Video />` so the S
 CSS classes for styling the video container. Supports all CSS frameworks including TailwindCSS.
 
 ```tsx
-<Video
-  id="D3OCjdLP60"
-  className="w-full h-auto rounded-lg shadow-lg"
-/>
+<Video id="D3OCjdLP60" className="w-full h-auto rounded-lg shadow-lg" />
 ```
 
 ## Playback Controls
@@ -49,7 +45,9 @@ Permanently disables audio and hides all sound controls (mute button, volume sli
 ```
 
 <Callout type="warning">
-  When `muted={true}` is set, the mute button and volume controls are completely hidden. Users will not be able to unmute the video. Only use this for background videos or scenarios where audio is intentionally disabled. For autoplay with the ability to unmute, use `autoPlay={true}` without `muted={true}`.
+  When `muted={true}` is set, the mute button and volume controls are completely hidden. Users will not be able to unmute the video. Only
+  use this for background videos or scenarios where audio is intentionally disabled. For autoplay with the ability to unmute, use `autoPlay=
+  {true}` without `muted={true}`.
 </Callout>
 
 ### `autoPlay` **(Optional)**
@@ -59,18 +57,18 @@ Permanently disables audio and hides all sound controls (mute button, volume sli
 Automatically starts playback when the component loads. The SDK automatically handles browser autoplay compliance by starting the video muted, so you do **not** need to pass `muted={true}`. The player shows sound controls that let users unmute when they choose.
 
 ```tsx
-<Video
-  id="D3OCjdLP60"
-  autoPlay={true}
-/>
+<Video id="D3OCjdLP60" autoPlay={true} />
 ```
 
 <Callout type="info">
-  The SDK handles browser autoplay policies internally — the video starts muted until the user interacts with the player. Sound controls remain visible so users can unmute at any time. You only need `muted={true}` if you want to permanently disable audio (e.g. background videos).
+  The SDK handles browser autoplay policies internally — the video starts muted until the user interacts with the player. Sound controls
+  remain visible so users can unmute at any time. You only need `muted={true}` if you want to permanently disable audio (e.g. background
+  videos).
 </Callout>
 
 <Callout type="warning">
-  **Hover theme exception:** When `theme="hover"` is set, `autoPlay` is ignored. The video is paused by default and only plays when the user hovers over it. See the [Hover Preview](/en/sdk/examples/hover-preview) example for details.
+  **Hover theme exception:** When `theme="hover"` is set, `autoPlay` is ignored. The video is paused by default and only plays when the user
+  hovers over it. See the [Hover Preview](/en/sdk/examples/hover-preview) example for details.
 </Callout>
 
 ### `loop` **(Optional)**
@@ -148,6 +146,7 @@ Selects the player theme and control styling.
 ```
 
 **Available Themes:**
+
 - `'default'` - Full-featured player with all standard controls
 - `'minimal'` - Clean, simplified interface with Progressbar and Mute button only
 - `'hover'` - Video plays on mouse enter, pauses on mouse leave. Shows only a mute button and progress bar. Ideal for video thumbnails and preview cards.
@@ -187,10 +186,10 @@ Specifies the page context for analytics reporting. This helps segment your anal
 ```
 
 **Available Contexts:**
+
 - `'standalone'` - Video on its own dedicated page
 - `'feed'` - Video within a scrolling feed
 - `'profile'` - Video on a user profile page
-
 
 ## Engagement Features
 
@@ -241,10 +240,7 @@ Associates player analytics and progress restoration with a stable application u
 Adds custom string properties to analytics events for this player.
 
 ```tsx
-<Video
-  id="D3OCjdLP60"
-  userProperties={{plan: "pro", team: "growth"}}
-/>
+<Video id="D3OCjdLP60" userProperties={{plan: "pro", team: "growth"}} />
 ```
 
 ### `chapters` **(Optional)**
@@ -258,7 +254,8 @@ Enables video chapters on the progress bar. When enabled, chapters you've added 
 ```
 
 <Callout type="info">
-  To use chapters, first add them to your video in the RIXL dashboard. Each chapter requires a timestamp and title. Once added, enable this prop to display them in the player.
+  To use chapters, first add them to your video in the RIXL dashboard. Each chapter requires a timestamp and title. Once added, enable this
+  prop to display them in the player.
 </Callout>
 
 ## TypeScript Interface

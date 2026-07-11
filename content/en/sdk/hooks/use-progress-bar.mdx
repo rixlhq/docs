@@ -37,16 +37,8 @@ function NativeVideoProgress() {
     <div className="space-y-3">
       <video ref={videoRef} src="/example.mp4" className="w-full" />
 
-      <div
-        role="presentation"
-        className="h-2 rounded bg-gray-200"
-        onMouseDown={handleDragStart}
-        onTouchStart={handleDragStart}
-      >
-        <div
-          className="h-2 rounded bg-black"
-          style={{width: `${progress * 100}%`}}
-        />
+      <div role="presentation" className="h-2 rounded bg-gray-200" onMouseDown={handleDragStart} onTouchStart={handleDragStart}>
+        <div className="h-2 rounded bg-black" style={{width: `${progress * 100}%`}} />
       </div>
 
       <div>{isDragging ? "Dragging" : "Idle"}</div>

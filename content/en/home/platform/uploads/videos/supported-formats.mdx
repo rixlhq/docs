@@ -3,10 +3,8 @@ title: Supported Formats
 description: Video formats and encoding specifications supported by RIXL.
 ---
 
-
-import {Card, Columns} from '@/snippets';
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
-
+import {Card, Columns} from "@/snippets";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 Understanding supported input formats helps you prepare videos for optimal processing speed and compatibility.
 
@@ -14,16 +12,12 @@ Understanding supported input formats helps you prepare videos for optimal proce
 
 <Tabs>
   <Tab value="Primary Formats">
-    **Recommended for fastest processing:**
-    - **MP4** - H.264/H.265 video with Opus audio
-    - **MOV** - QuickTime containers (Apple ecosystem)
+    **Recommended for fastest processing:** - **MP4** - H.264/H.265 video with Opus audio - **MOV** - QuickTime containers (Apple ecosystem)
     - **WebM** - VP8/VP9 with Vorbis/Opus audio
   </Tab>
   <Tab value="Other Support">
-    **Also supported but may require longer processing:**
-    - **MKV** - Matroska container format
-    - **AVI** - Legacy Windows format
-    - **FLV** - Flash video format
+    **Also supported but may require longer processing:** - **MKV** - Matroska container format - **AVI** - Legacy Windows format - **FLV**
+    - Flash video format
   </Tab>
 </Tabs>
 
@@ -32,12 +26,14 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### MP4 Container
 
 **Optimal format for processing**:
+
 - **Video codecs**: H.264 (AVC), H.265 (HEVC)
 - **Audio codecs**: Opus, MP3
 - **Processing speed**: Fastest transcoding times
 - **Compatibility**: Universal browser and device support
 
 **Why MP4 is recommended**:
+
 - Native support in all modern browsers
 - Efficient transcoding with minimal quality loss
 - Broad compatibility across devices and platforms
@@ -46,12 +42,14 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### MOV Container (QuickTime)
 
 **Apple ecosystem optimized**:
+
 - **Video codecs**: H.264, H.265, ProRes (limited support)
 - **Audio codecs**: Opus, PCM
 - **Processing speed**: Fast transcoding, especially from Apple devices
 - **Use cases**: Content from iPhone, iPad, Mac recording applications
 
 **Considerations**:
+
 - Slightly larger file sizes than MP4
 - Excellent quality preservation from Apple devices
 - May contain advanced metadata and color information
@@ -59,6 +57,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### WebM Container
 
 **Open-source web format**:
+
 - **Video codecs**: VP8, VP9, AV1 (experimental)
 - **Audio codecs**: Vorbis, Opus
 - **Processing speed**: Moderate transcoding times
@@ -69,6 +68,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### MKV Container (Matroska)
 
 **Feature-rich container**:
+
 - **Video codecs**: H.264, H.265, VP8, VP9, and others
 - **Audio codecs**: Opus, MP3, FLAC, Vorbis
 - **Processing impact**: Longer transcoding due to format complexity
@@ -77,6 +77,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### AVI Container (Legacy)
 
 **Legacy Windows format**:
+
 - **Video codecs**: Various (DivX, Xvid, H.264)
 - **Audio codecs**: MP3, PCM, AC3
 - **Processing impact**: Slower transcoding, format conversion required
@@ -85,6 +86,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### FLV Container (Flash)
 
 **Legacy web format**:
+
 - **Video codecs**: H.264, VP6
 - **Audio codecs**: Opus, MP3
 - **Processing impact**: Conversion overhead for modern delivery
@@ -95,6 +97,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### H.264 (AVC) - Recommended
 
 **Universal compatibility**:
+
 - **Profiles**: Baseline, Main, High
 - **Levels**: Up to 5.2 (4K support)
 - **Processing**: Fastest transcoding times
@@ -103,6 +106,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### H.265 (HEVC) - Advanced
 
 **Next-generation efficiency**:
+
 - **Profiles**: Main, Main 10 (10-bit)
 - **Quality**: 30-50% better compression than H.264
 - **Processing**: Moderate transcoding times
@@ -111,6 +115,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### VP8/VP9 - Open Source
 
 **WebM ecosystem**:
+
 - **VP8**: Older but widely supported
 - **VP9**: Better compression, HDR support
 - **Processing**: Variable transcoding times
@@ -121,6 +126,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Opus - Recommended
 
 **Standard web audio**:
+
 - **Bitrates**: 64kbps to 320kbps
 - **Channels**: Mono, stereo, 5.1 surround
 - **Compatibility**: Universal browser support
@@ -129,6 +135,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### MP3 - Compatible
 
 **Legacy format support**:
+
 - **Bitrates**: 64kbps to 320kbps
 - **Compatibility**: Universal support
 - **Processing**: Minimal transcoding overhead
@@ -137,6 +144,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Advanced Audio Formats
 
 **Specialized audio**:
+
 - **Opus**: High-efficiency codec for streaming
 - **FLAC**: Lossless compression for archival quality
 - **PCM**: Uncompressed audio for maximum quality
@@ -147,23 +155,16 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Source File Optimization
 
 <Columns cols={2}>
-  <Card title="Format: MP4 + H.264">
-    Fastest processing with universal compatibility
-  </Card>
-  <Card title="Resolution: Upload Highest Available">
-    Up to 4K for Pro tier, system scales down appropriately
-  </Card>
-  <Card title="Frame Rate: 30fps or 60fps">
-    Standard rates for optimal processing and compatibility
-  </Card>
-  <Card title="Audio: Opus Codec">
-    Best compatibility and quality for source material
-  </Card>
+  <Card title="Format: MP4 + H.264">Fastest processing with universal compatibility</Card>
+  <Card title="Resolution: Upload Highest Available">Up to 4K for Pro tier, system scales down appropriately</Card>
+  <Card title="Frame Rate: 30fps or 60fps">Standard rates for optimal processing and compatibility</Card>
+  <Card title="Audio: Opus Codec">Best compatibility and quality for source material</Card>
 </Columns>
 
 ### Pre-processing Recommendations
 
 **Before upload**:
+
 - **Container format**: Convert to MP4 if using other formats
 - **Video codec**: Ensure H.264 encoding for the fastest processing
 - **Audio codec**: Use Opus for optimal quality and compression
@@ -174,16 +175,19 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Format Processing Speed
 
 **Fastest processing** (MP4/H.264):
+
 - Direct transcoding with minimal format conversion
 - Optimized encoding pipelines
 - Reduced processing overhead
 
 **Moderate processing** (MOV, WebM):
+
 - Some format conversion is required
 - Generally good processing efficiency
 - Minimal quality impact
 
 **Slower processing** (MKV, AVI, FLV):
+
 - Significant format conversion overhead
 - Multiple encoding passes may be required
 - Potential quality degradation from multiple conversions
@@ -191,6 +195,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Optimization Strategies
 
 **For fastest processing**:
+
 1. **Use MP4 container** with H.264 video and Opus audio
 2. **Match standard resolutions** (720p, 1080p, 4K)
 3. **Use standard frame rates** (24fps, 30fps, 60fps)
@@ -201,6 +206,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Lossless vs. Lossy
 
 **Source quality preservation**:
+
 - **Lossless formats**: Better quality preservation but larger files
 - **Lossy formats**: Smaller files but potential quality loss
 - **Recommendation**: Use high-quality lossy formats (H.264/H.265) for the best balance
@@ -208,6 +214,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Color Space and a bit of Depth
 
 **Advanced quality features**:
+
 - **Standard**: 8-bit YUV 4:2:0 color space
 - **Enhanced**: 10-bit YUV 4:2:2 for professional content
 - **HDR support**: BT.2020 color space with HDR metadata
@@ -218,6 +225,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Browser Support
 
 **Format compatibility across browsers**:
+
 - **MP4/H.264**: Universal support (Chrome, Firefox, Safari, Edge)
 - **WebM/VP8**: Wide support (Chrome, Firefox, Opera)
 - **WebM/VP9**: Modern browser support
@@ -226,6 +234,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Device Support
 
 **Mobile and device compatibility**:
+
 - **iOS devices**: Native MP4/H.264 and MOV support
 - **Android devices**: MP4/H.264 universal support
 - **Smart TVs**: MP4/H.264 for maximum compatibility
@@ -236,11 +245,13 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Common Problems
 
 **Upload failures**:
+
 - **Unsupported codec**: Check video and audio codec compatibility
 - **Corrupted files**: Verify file integrity before upload
 - **Size limitations**: Ensure files are under 2GB limit
 
 **Processing failures**:
+
 - **Exotic formats**: Convert to MP4/H.264 before upload
 - **DRM protection**: Remove DRM protection before processing
 - **Variable frame rates**: Consider converting to constant frame rate
@@ -248,6 +259,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Format Conversion Tools
 
 **Recommended conversion tools**:
+
 - **FFmpeg**: Command-line tool for format conversion
 - **HandBrake**: User-friendly GUI for video conversion
 - **Adobe Media Encoder**: Professional conversion tool
@@ -258,6 +270,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### File Preparation
 
 **Optimize before upload**:
+
 - **Use recommended formats** for the fastest processing
 - **Maintain source quality** until ready for final encoding
 - **Test files** with small samples before bulk uploads
@@ -266,6 +279,7 @@ Understanding supported input formats helps you prepare videos for optimal proce
 ### Quality Assurance
 
 **Ensure optimal results**:
+
 - **Preview content** before upload to verify quality
 - **Check audio sync** and quality in source files
 - **Verify aspect ratios** and resolution requirements

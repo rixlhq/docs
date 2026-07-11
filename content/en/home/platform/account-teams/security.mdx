@@ -3,9 +3,8 @@ title: Security Settings
 description: Protect your account with strong authentication, connected accounts, and active monitoring.
 ---
 
-
-import {Callout} from '@/snippets';
-import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Callout} from "@/snippets";
+import {Step, Steps} from "fumadocs-ui/components/steps";
 
 Keep your RIXL account secure with multifactor authentication, connected accounts for SSO, and session monitoring.
 These settings help you control who can access your account and how.
@@ -15,6 +14,7 @@ These settings help you control who can access your account and how.
 Link trusted third-party services for single sign-on (SSO) access.
 
 **Currently Supported:**
+
 - **Google:** Sign in with your Google account
 - **Apple:** Log-in securely with your Apple ID
 - **Telegram:** Connect for additional security features
@@ -38,8 +38,8 @@ Link trusted third-party services for single sign-on (SSO) access.
 </Steps>
 
 <Callout type="warn" title="Before Disconnecting">
-  If you use a connected account as your only sign-in method, create a password for your RIXL account **before**
-  disconnecting it to avoid being locked out.
+  If you use a connected account as your only sign-in method, create a password for your RIXL account **before** disconnecting it to avoid
+  being locked out.
 </Callout>
 
 ## Two-Factor Authentication
@@ -55,12 +55,10 @@ Add an extra layer of security with authenticator app-based 2FA.
     - Available on iOS and Android
   </Step>
 
-  <Step>
-    **Enable 2FA in RIXL**
-    - Go to [Security Settings](/en/home/platform/account-teams/security)
-    - Click **Enable Two-Factor Authentication**
-    - Scan the QR code with your authenticator app
-  </Step>
+<Step>
+  **Enable 2FA in RIXL** - Go to [Security Settings](/en/home/platform/account-teams/security) - Click **Enable Two-Factor Authentication**
+  - Scan the QR code with your authenticator app
+</Step>
 
   <Step>
     **Verify Setup**
@@ -78,9 +76,7 @@ When enabling 2FA, you'll receive backup recovery codes:
 - **Use once**: Each code can only be used one time
 - **Generate new codes**: Generate new codes if you've used several
 
-<Callout type="info">
-  Recovery codes allow you to access your account if you lose your authenticator app.
-</Callout>
+<Callout type="info">Recovery codes allow you to access your account if you lose your authenticator app.</Callout>
 
 ## Password Management
 
@@ -91,16 +87,12 @@ When enabling 2FA, you'll receive backup recovery codes:
     Go to **[Security Settings](/en/home/platform/account-teams/security) → Password**
   </Step>
 
-  <Step>
-    Enter your current password for verification
-  </Step>
+<Step>Enter your current password for verification</Step>
 
-  <Step>
-    Create a new strong password:
-    - At least 12 characters long
-    - Include uppercase, lowercase, numbers, and symbols
-    - Avoid common words or personal information
-  </Step>
+<Step>
+  Create a new strong password: - At least 12 characters long - Include uppercase, lowercase, numbers, and symbols - Avoid common words or
+  personal information
+</Step>
 
   <Step>
     Confirm your new password and save changes
@@ -110,6 +102,7 @@ When enabling 2FA, you'll receive backup recovery codes:
 ### Password Requirements
 
 RIXL passwords must include:
+
 - Minimum 8 characters (12+ recommended)
 - At least one uppercase letter
 - At least one lowercase letter
@@ -123,6 +116,7 @@ Review and manage all devices currently logged into your account.
 ### Session Information
 
 For each session, you'll see:
+
 - **Device Type**: Browser, mobile app, or API client
 - **Location**: Approximate geographic region
 - **Last Activity**: Time of last use
@@ -135,11 +129,7 @@ For each session, you'll see:
     Open the **Active Sessions** list in Security Settings
   </Step>
 
-  <Step>
-    **End Suspicious Sessions:**
-    - Click **End Session** next to any unfamiliar login
-    - Sessions will be immediately terminated
-  </Step>
+<Step>**End Suspicious Sessions:** - Click **End Session** next to any unfamiliar login - Sessions will be immediately terminated</Step>
 
   <Step>
     **End All Other Sessions:**
@@ -148,9 +138,7 @@ For each session, you'll see:
   </Step>
 </Steps>
 
-<Callout type="tip">
-  Check your active sessions regularly, especially if you use RIXL on shared or public devices.
-</Callout>
+<Callout type="tip">Check your active sessions regularly, especially if you use RIXL on shared or public devices.</Callout>
 
 ## Security Notifications
 

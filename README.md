@@ -5,22 +5,27 @@ Documentation site built with **TanStack Start**, **Fumadocs v16.2**, **Bun**, *
 ## 🚀 Quick Start
 
 ### Install Dependencies
+
 ```bash
 bun install
 ```
 
 ### Development
+
 ```bash
 bun dev
 ```
+
 Visit: http://localhost:3000
 
 ### Build
+
 ```bash
 bun build
 ```
 
 ### Production
+
 ```bash
 bun start
 ```
@@ -74,6 +79,7 @@ bun format       # Format code
 ## 🔥 Recent Migration
 
 This project was recently migrated from Next.js to TanStack Start. See:
+
 - `MIGRATION_COMPLETE.md` - Migration summary
 - `README.migration.md` - Technical details
 - `QUICKSTART.md` - Getting started guide

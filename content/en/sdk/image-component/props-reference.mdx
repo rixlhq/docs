@@ -3,8 +3,7 @@ title: "Props Reference"
 description: "Complete API reference for all Image component props and TypeScript interfaces"
 ---
 
-
-import {Callout} from "@/snippets"
+import {Callout} from "@/snippets";
 
 ## Core Props
 
@@ -29,8 +28,7 @@ Alternative text for accessibility. Describes the image content for screen reade
 ```
 
 <Callout type="info">
-  Good alt text is descriptive but concise. Avoid "image of" or "picture of" - screen readers already announce it's an
-  image.
+  Good alt text is descriptive but concise. Avoid "image of" or "picture of" - screen readers already announce it's an image.
 </Callout>
 
 ### `className` **(Optional)**
@@ -40,10 +38,7 @@ Alternative text for accessibility. Describes the image content for screen reade
 CSS classes for styling the image container. Supports all CSS frameworks including TailwindCSS.
 
 ```tsx
-<Image
-  id="your-image-id"
-  className="object-contain w-full h-full rounded-lg shadow-md"
-/>
+<Image id="your-image-id" className="object-contain w-full h-full rounded-lg shadow-md" />
 ```
 
 ## Analytics
@@ -69,6 +64,7 @@ Specifies the page context for analytics reporting. This helps segment your anal
 ```
 
 **Available Contexts:**
+
 - `'standalone'` - Image on its own dedicated page
 - `'feed'` - Image within a scrolling feed
 - `'profile'` - Image on a user profile page

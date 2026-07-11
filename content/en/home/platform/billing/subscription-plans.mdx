@@ -3,9 +3,8 @@ title: Plans & Usage
 description: Compare subscription plans and monitor your resource usage.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Step, Steps} from "fumadocs-ui/components/steps";
 
 ## Current Plan
 
@@ -19,21 +18,14 @@ Your current subscription details are displayed at the top of the billing dashbo
 ### Changing Your Plan
 
 <Steps>
-  <Step>
-    Navigate to **Project Settings → Billing**.
-  </Step>
-  <Step>
-    Click **Change Plan** to view available options.
-  </Step>
-  <Step>
-    Select your desired plan from the modal window.
-  </Step>
-  <Step>
-    Review pricing and confirm the change.
-  </Step>
+  <Step>Navigate to **Project Settings → Billing**.</Step>
+  <Step>Click **Change Plan** to view available options.</Step>
+  <Step>Select your desired plan from the modal window.</Step>
+  <Step>Review pricing and confirm the change.</Step>
 </Steps>
 
 ## Available Plans
+
 <Columns cols={3}>
   <Card title="Free">
     For personal projects and small teams.
@@ -51,26 +43,29 @@ Your current subscription details are displayed at the top of the billing dashbo
     </ul>
   </Card>
 
-  <Card title="Pro">
-    For professionals and growing businesses.
-    <div
-      className="absolute top-0 -translate-y-1/2 rounded-full bg-fd-primary px-3 py-1 text-sm font-semibold text-fd-primary-foreground">
-      Most Popular
-    </div>
-    <p className="mt-4 text-3xl font-bold">$49<span
-      className="text-base font-normal text-muted-foreground">/month</span></p>
-    <a href="https://dash.rixl.com/settings/billing"
-       className="mt-4 block w-full rounded-md bg-fd-primary px-4 py-2 text-center text-sm font-medium text-fd-primary-foreground">Upgrade
-      to Pro</a>
-    <ul className="mt-6 space-y-2 text-sm">
-      <li>✓ 500 GB Video Storage</li>
-      <li>✓ 50 GB Image Storage</li>
-      <li>✓ Up to 10 Team Members</li>
-      <li>✓ 1,000 API Calls/Hour</li>
-      <li>✓ Priority Support</li>
-      <li>✓ Custom Domains</li>
-    </ul>
-  </Card>
+<Card title="Pro">
+  For professionals and growing businesses.
+  <div className="absolute top-0 -translate-y-1/2 rounded-full bg-fd-primary px-3 py-1 text-sm font-semibold text-fd-primary-foreground">
+    Most Popular
+  </div>
+  <p className="mt-4 text-3xl font-bold">
+    $49<span className="text-base font-normal text-muted-foreground">/month</span>
+  </p>
+  <a
+    href="https://dash.rixl.com/settings/billing"
+    className="mt-4 block w-full rounded-md bg-fd-primary px-4 py-2 text-center text-sm font-medium text-fd-primary-foreground"
+  >
+    Upgrade to Pro
+  </a>
+  <ul className="mt-6 space-y-2 text-sm">
+    <li>✓ 500 GB Video Storage</li>
+    <li>✓ 50 GB Image Storage</li>
+    <li>✓ Up to 10 Team Members</li>
+    <li>✓ 1,000 API Calls/Hour</li>
+    <li>✓ Priority Support</li>
+    <li>✓ Custom Domains</li>
+  </ul>
+</Card>
 
   <Card title="Enterprise">
     For large-scale applications.
@@ -107,15 +102,15 @@ The billing dashboard provides real-time monitoring across all your projects:
     </ul>
   </Card>
 
-  <Card title="Image Storage">
-    Tracks all images, thumbnails, and static assets.
-    <ul className="list-disc pl-4 space-y-1 mt-2">
-      <li>**Current Usage:** GB used vs. your plan limit</li>
-      <li>**Usage Bar:** Visual progress bar with percentage consumed</li>
-      <li>**Included:** JPEG, PNG, GIF, WebP, thumbnails, and static media</li>
-      <li>**Auto Cleanup:** Option to auto-archive old/unused assets</li>
-    </ul>
-  </Card>
+<Card title="Image Storage">
+  Tracks all images, thumbnails, and static assets.
+  <ul className="list-disc pl-4 space-y-1 mt-2">
+    <li>**Current Usage:** GB used vs. your plan limit</li>
+    <li>**Usage Bar:** Visual progress bar with percentage consumed</li>
+    <li>**Included:** JPEG, PNG, GIF, WebP, thumbnails, and static media</li>
+    <li>**Auto Cleanup:** Option to auto-archive old/unused assets</li>
+  </ul>
+</Card>
 
   <Card title="API Calls">
     Real-time monitoring of API consumption across projects.
@@ -167,6 +162,5 @@ If you go over your plan limits, the following charges apply:
 </Card>
 
 <Callout type="warning">
-  Usage bars turning red indicate you're approaching plan limits.
-  Consider upgrading to avoid service interruptions.
+  Usage bars turning red indicate you're approaching plan limits. Consider upgrading to avoid service interruptions.
 </Callout>

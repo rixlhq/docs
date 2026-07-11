@@ -3,10 +3,9 @@ title: Best Practices
 description: Essential guidelines and recommendations for optimizing your RIXL workflow, from media preparation to production deployment.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Step, Steps} from 'fumadocs-ui/components/steps';
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Step, Steps} from "fumadocs-ui/components/steps";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 Get the most out of **RIXL** with these proven best practices. Whether you're just getting started or optimizing an existing workflow, these guidelines will help you achieve better performance, quality, and efficiency.
 
@@ -45,6 +44,7 @@ Choose the right [quality tier](/en/home/platform/uploads/videos/quality-tiers) 
     - 24fps/30fps frame rates
     - Fastest processing times
     - Smallest file sizes
+
   </Tab>
   <Tab value="Shorts Tier">
     **Best for:**
@@ -58,6 +58,7 @@ Choose the right [quality tier](/en/home/platform/uploads/videos/quality-tiers) 
     - Up to 60fps frame rates
     - Mobile-optimized encoding
     - Medium processing times
+
   </Tab>
   <Tab value="Pro Tier">
     **Best for:**
@@ -71,6 +72,7 @@ Choose the right [quality tier](/en/home/platform/uploads/videos/quality-tiers) 
     - Up to 60fps with HDR
     - Professional audio processing
     - Longest processing times
+
   </Tab>
 </Tabs>
 
@@ -84,6 +86,7 @@ Choose the right [quality tier](/en/home/platform/uploads/videos/quality-tiers) 
     - **Video**: Up to 2GB per file
     - **Images**: Up to 100MB per file
     - **Resolution**: Keep original resolution, avoid upscaling
+
   </Step>
   <Step>
     **Audio Processing**
@@ -92,6 +95,7 @@ Choose the right [quality tier](/en/home/platform/uploads/videos/quality-tiers) 
     - **Codec**: Opus (preferred) or MP3
     - **Bitrate**: 128kbps for most content
     - **Channels**: Stereo for standard content
+
   </Step>
   <Step>
     **Frame Rate Standards**
@@ -100,6 +104,7 @@ Choose the right [quality tier](/en/home/platform/uploads/videos/quality-tiers) 
     - **24fps**: Cinematic content
     - **30fps**: Standard web video
     - **60fps**: Smooth motion (Shorts/Pro tiers)
+
   </Step>
 </Steps>
 
@@ -111,12 +116,10 @@ Choose the right [quality tier](/en/home/platform/uploads/videos/quality-tiers) 
 
 <Columns cols={2}>
   <Card title="Project Separation" icon="folder-plus">
-    Create separate projects for different campaigns, brands, or environments
-    (dev/staging/prod).
+    Create separate projects for different campaigns, brands, or environments (dev/staging/prod).
   </Card>
   <Card title="Server Location" icon="globe">
-    Choose server regions closest to your primary audience for optimal delivery
-    performance.
+    Choose server regions closest to your primary audience for optimal delivery performance.
   </Card>
 </Columns>
 
@@ -125,18 +128,21 @@ Choose the right [quality tier](/en/home/platform/uploads/videos/quality-tiers) 
 Follow these organization strategies for efficient content management:
 
 **Folder Structure Best Practices:**
+
 - Organize by project or campaign
 - Use consistent naming conventions
 - Create date-based folders for time-sensitive content
 - Separate content types (videos, images, documents)
 
 **Tagging Strategy:**
+
 - Use descriptive, searchable tags
 - Create tag hierarchies for complex categorization
 - Apply bulk tagging for efficiency
 - Include purpose tags (hero, thumbnail, background)
 
 **Content Lifecycle Management:**
+
 - Start with draft status for review
 - Use approval workflows for team content
 - Archive unused or outdated content
@@ -155,6 +161,7 @@ Follow these organization strategies for efficient content management:
     - **Admin**: Project and team management
     - **Member**: Content upload and management
     - **Viewer**: Read-only access
+
   </Step>
   <Step>
     **Approval Workflows**
@@ -164,6 +171,7 @@ Follow these organization strategies for efficient content management:
     - Team comments and feedback
     - Version history tracking
     - Content status management
+
   </Step>
   <Step>
     **Project Templates**
@@ -173,6 +181,7 @@ Follow these organization strategies for efficient content management:
     - Standard tag sets
     - Default processing settings
     - Team permission templates
+
   </Step>
 </Steps>
 
@@ -182,11 +191,10 @@ Follow these organization strategies for efficient content management:
 
 **Follow proper installation procedures for reliable performance:**
 
-<Callout type="info">
-  Always use the latest stable version of the SDK and ensure your React version is 18.0 or higher.
-</Callout>
+<Callout type="info">Always use the latest stable version of the SDK and ensure your React version is 18.0 or higher.</Callout>
 
 **Package Management:**
+
 ```bash
 # Use your preferred package manager
 npm install @rixl/videosdk-react
@@ -195,6 +203,7 @@ yarn add @rixl/videosdk-react
 ```
 
 **TypeScript Configuration:**
+
 - Enable strict mode for better type safety
 - Use provided TypeScript definitions
 - Import components with proper typing
@@ -218,6 +227,7 @@ yarn add @rixl/videosdk-react
       allowFullscreen={true}
     />
     ```
+
   </Tab>
   <Tab value="Advanced Features">
     ```tsx
@@ -251,7 +261,7 @@ yarn add @rixl/videosdk-react
 **Image Component Best Practices:**
 
 ```tsx
-import { Image } from '@rixl/videosdk-react';
+import {Image} from "@rixl/videosdk-react";
 
 // Optimized image usage
 <Image
@@ -261,7 +271,7 @@ import { Image } from '@rixl/videosdk-react';
   // Automatic format selection (WebP, AVIF)
   // Responsive sizing
   // Thumbhash placeholders
-/>
+/>;
 ```
 
 ### Accessibility Implementation
@@ -270,8 +280,7 @@ import { Image } from '@rixl/videosdk-react';
 
 <Columns cols={2}>
   <Card title="Alt Text" icon="eye">
-    Always provide descriptive alt text for images and meaningful titles for
-    videos.
+    Always provide descriptive alt text for images and meaningful titles for videos.
   </Card>
   <Card title="Keyboard Navigation" icon="keyboard">
     RIXL components include built-in keyboard navigation support.
@@ -300,11 +309,11 @@ import { Image } from '@rixl/videosdk-react';
 **Protect your API keys and implement secure practices:**
 
 <Callout type="warning">
-  **API keys are like passwords for your project**. Keep them secure and never share them publicly or commit them to version
-  control.
+  **API keys are like passwords for your project**. Keep them secure and never share them publicly or commit them to version control.
 </Callout>
 
 **Security Guidelines:**
+
 - Store API keys in environment variables
 - Use different keys for development and production
 - Rotate keys regularly
@@ -323,6 +332,7 @@ import { Image } from '@rixl/videosdk-react';
     1. Initialize upload to get presigned URLs
     2. Upload file directly to secure cloud storage
     3. Complete upload to trigger processing
+
   </Step>
   <Step>
     **Error Handling**
@@ -332,6 +342,7 @@ import { Image } from '@rixl/videosdk-react';
     - Progress tracking and user feedback
     - Timeout handling for large files
     - Network error recovery
+
   </Step>
   <Step>
     **Performance**
@@ -341,6 +352,7 @@ import { Image } from '@rixl/videosdk-react';
     - Implement resume capability for interrupted uploads
     - Monitor upload progress and provide feedback
     - Batch multiple uploads efficiently
+
   </Step>
 </Steps>
 
@@ -356,20 +368,21 @@ const monitorProcessing = async (videoId) => {
   while (true) {
     const status = await checkProcessingStatus(videoId);
 
-    if (status.state === 'completed') {
+    if (status.state === "completed") {
       break;
-    } else if (status.state === 'failed') {
+    } else if (status.state === "failed") {
       handleProcessingError(status.error);
       break;
     }
 
     // Adjust polling frequency based on processing stage
-    await new Promise(resolve => setTimeout(resolve, pollInterval));
+    await new Promise((resolve) => setTimeout(resolve, pollInterval));
   }
 };
 ```
 
 **Monitoring Best Practices:**
+
 - Use smart polling intervals (start frequently, reduce over time)
 - Implement exponential backoff for errors
 - Cache status responses briefly to reduce API calls
@@ -406,16 +419,13 @@ const monitorProcessing = async (videoId) => {
     Load images and videos only when they enter the viewport to save bandwidth.
   </Card>
   <Card title="Optimize Placeholders" icon="image">
-    Use smart placeholders to improve perceived load time and prevent layout
-    shift.
+    Use smart placeholders to improve perceived load time and prevent layout shift.
   </Card>
 </Columns>
 
 ## What's Next?
 
 <Callout type="tip">
-  Ready to put these practices into action? Start with the
-  [5-Minute Quick Start Guide](/en/home/getting-started/quick-start) or explore the
-  [Platform Dashboard Guide](/en/home/platform/dashboard/guide) for more in-depth
-  workflows.
+  Ready to put these practices into action? Start with the [5-Minute Quick Start Guide](/en/home/getting-started/quick-start) or explore the
+  [Platform Dashboard Guide](/en/home/platform/dashboard/guide) for more in-depth workflows.
 </Callout>

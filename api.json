@@ -1993,12 +1993,7 @@
       "type": "object"
     },
     "imagesv1.Visibility": {
-      "enum": [
-        0,
-        1,
-        2,
-        3
-      ],
+      "enum": [0, 1, 2, 3],
       "type": "integer",
       "x-enum-varnames": [
         "Visibility_VISIBILITY_UNSPECIFIED",
@@ -2013,9 +2008,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "email"
-      ],
+      "required": ["email"],
       "type": "object"
     },
     "internal_auth.attachPolicyBody": {
@@ -2027,10 +2020,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "identity_id",
-        "identity_type"
-      ],
+      "required": ["identity_id", "identity_type"],
       "type": "object"
     },
     "internal_auth.autoJoinBody": {
@@ -2047,30 +2037,20 @@
           "type": "string"
         }
       },
-      "required": [
-        "new_email"
-      ],
+      "required": ["new_email"],
       "type": "object"
     },
     "internal_auth.connectProviderBody": {
       "properties": {
         "provider": {
-          "enum": [
-            "google",
-            "apple",
-            "microsoft",
-            "tgAuthResult"
-          ],
+          "enum": ["google", "apple", "microsoft", "tgAuthResult"],
           "type": "string"
         },
         "token": {
           "type": "string"
         }
       },
-      "required": [
-        "provider",
-        "token"
-      ],
+      "required": ["provider", "token"],
       "type": "object"
     },
     "internal_auth.createDomainBody": {
@@ -2079,9 +2059,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "domain"
-      ],
+      "required": ["domain"],
       "type": "object"
     },
     "internal_auth.emailBody": {
@@ -2090,18 +2068,13 @@
           "type": "string"
         }
       },
-      "required": [
-        "email"
-      ],
+      "required": ["email"],
       "type": "object"
     },
     "internal_auth.inviteMemberBody": {
       "properties": {
         "role": {
-          "enum": [
-            "admin",
-            "member"
-          ],
+          "enum": ["admin", "member"],
           "type": "string"
         },
         "username": {
@@ -2110,25 +2083,17 @@
           "type": "string"
         }
       },
-      "required": [
-        "role",
-        "username"
-      ],
+      "required": ["role", "username"],
       "type": "object"
     },
     "internal_auth.membershipStateBody": {
       "properties": {
         "state": {
-          "enum": [
-            "accepted",
-            "declined"
-          ],
+          "enum": ["accepted", "declined"],
           "type": "string"
         }
       },
-      "required": [
-        "state"
-      ],
+      "required": ["state"],
       "type": "object"
     },
     "internal_auth.passkeyLoginFinishBody": {
@@ -2143,9 +2108,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "session_id"
-      ],
+      "required": ["session_id"],
       "type": "object"
     },
     "internal_auth.passkeyRegisterFinishBody": {
@@ -2164,9 +2127,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "session_id"
-      ],
+      "required": ["session_id"],
       "type": "object"
     },
     "internal_auth.policyBody": {
@@ -2185,10 +2146,7 @@
           "type": "array"
         }
       },
-      "required": [
-        "name",
-        "permissions"
-      ],
+      "required": ["name", "permissions"],
       "type": "object"
     },
     "internal_auth.registerBody": {
@@ -2204,10 +2162,7 @@
           "type": "boolean"
         }
       },
-      "required": [
-        "email",
-        "password"
-      ],
+      "required": ["email", "password"],
       "type": "object"
     },
     "internal_auth.registerOrLoginBody": {
@@ -2220,10 +2175,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "email",
-        "password"
-      ],
+      "required": ["email", "password"],
       "type": "object"
     },
     "internal_auth.renamePasskeyBody": {
@@ -2233,9 +2185,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "type": "object"
     },
     "internal_auth.resendInviteBody": {
@@ -2244,9 +2194,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "user_id"
-      ],
+      "required": ["user_id"],
       "type": "object"
     },
     "internal_auth.resetPasswordBody": {
@@ -2259,10 +2207,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "new_password",
-        "token"
-      ],
+      "required": ["new_password", "token"],
       "type": "object"
     },
     "internal_auth.sendBlogBroadcastBody": {
@@ -2289,11 +2234,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "description",
-        "read_more_url",
-        "title"
-      ],
+      "required": ["description", "read_more_url", "title"],
       "type": "object"
     },
     "internal_auth.unsubscribeBlogByEmailBody": {
@@ -2305,10 +2246,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "email",
-        "user_id"
-      ],
+      "required": ["email", "user_id"],
       "type": "object"
     },
     "internal_auth.updateNameBody": {
@@ -2318,9 +2256,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "full_name"
-      ],
+      "required": ["full_name"],
       "type": "object"
     },
     "internal_auth.updateOrgNameBody": {
@@ -2330,9 +2266,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "full_name"
-      ],
+      "required": ["full_name"],
       "type": "object"
     },
     "internal_auth.updateOrgUsernameBody": {
@@ -2342,24 +2276,17 @@
           "type": "string"
         }
       },
-      "required": [
-        "username"
-      ],
+      "required": ["username"],
       "type": "object"
     },
     "internal_auth.updateRoleBody": {
       "properties": {
         "role": {
-          "enum": [
-            "admin",
-            "member"
-          ],
+          "enum": ["admin", "member"],
           "type": "string"
         }
       },
-      "required": [
-        "role"
-      ],
+      "required": ["role"],
       "type": "object"
     },
     "internal_auth.updateUsernameBody": {
@@ -2369,9 +2296,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "username"
-      ],
+      "required": ["username"],
       "type": "object"
     },
     "internal_auth.verifyEmailBody": {
@@ -2383,10 +2308,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "code",
-        "verification_id"
-      ],
+      "required": ["code", "verification_id"],
       "type": "object"
     },
     "internal_auth.verifyOTPBody": {
@@ -2395,9 +2317,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "code"
-      ],
+      "required": ["code"],
       "type": "object"
     },
     "internal_auth.verifyTOTPLoginBody": {
@@ -2409,10 +2329,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "code",
-        "session_id"
-      ],
+      "required": ["code", "session_id"],
       "type": "object"
     },
     "internal_billing.billingAddressBody": {
@@ -2526,13 +2443,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "company",
-        "email",
-        "first_name",
-        "last_name",
-        "phone"
-      ],
+      "required": ["company", "email", "first_name", "last_name", "phone"],
       "type": "object"
     },
     "internal_billing.createSubscriptionBody": {
@@ -2599,9 +2510,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "title"
-      ],
+      "required": ["title"],
       "type": "object"
     },
     "internal_media.completeTrackItem": {
@@ -2616,10 +2525,7 @@
           "type": "integer"
         }
       },
-      "required": [
-        "id",
-        "object_key"
-      ],
+      "required": ["id", "object_key"],
       "type": "object"
     },
     "internal_media.completeTrackUploadBody": {
@@ -2632,9 +2538,7 @@
           "type": "array"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": ["items"],
       "type": "object"
     },
     "internal_media.createImageUploadBody": {
@@ -2646,9 +2550,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "type": "object"
     },
     "internal_media.createVideoUploadBody": {
@@ -2663,9 +2565,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "type": "object"
     },
     "internal_media.initTrackUploadBody": {
@@ -2678,9 +2578,7 @@
           "type": "array"
         }
       },
-      "required": [
-        "items"
-      ],
+      "required": ["items"],
       "type": "object"
     },
     "internal_media.trackUploadItem": {
@@ -2701,11 +2599,7 @@
           "type": "integer"
         }
       },
-      "required": [
-        "file_name",
-        "format",
-        "language_code"
-      ],
+      "required": ["file_name", "format", "language_code"],
       "type": "object"
     },
     "internal_media.updateChaptersBody": {
@@ -2722,17 +2616,11 @@
     "internal_media.updateVisibilityBody": {
       "properties": {
         "visibility": {
-          "enum": [
-            "public",
-            "unlisted",
-            "private"
-          ],
+          "enum": ["public", "unlisted", "private"],
           "type": "string"
         }
       },
-      "required": [
-        "visibility"
-      ],
+      "required": ["visibility"],
       "type": "object"
     },
     "internal_posts.completeUploadBody": {
@@ -2741,9 +2629,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "post_id"
-      ],
+      "required": ["post_id"],
       "type": "object"
     },
     "internal_posts.createPostBody": {
@@ -2758,28 +2644,20 @@
           "type": "string"
         },
         "type": {
-          "enum": [
-            "video",
-            "image"
-          ],
+          "enum": ["video", "image"],
           "type": "string"
         },
         "video_id": {
           "type": "string"
         }
       },
-      "required": [
-        "type"
-      ],
+      "required": ["type"],
       "type": "object"
     },
     "internal_posts.initUploadBody": {
       "properties": {
         "content_type": {
-          "enum": [
-            "image",
-            "video"
-          ],
+          "enum": ["image", "video"],
           "type": "string"
         },
         "creator_id": {
@@ -2801,11 +2679,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "content_type",
-        "file_name",
-        "format"
-      ],
+      "required": ["content_type", "file_name", "format"],
       "type": "object"
     },
     "postsv1.DeleteResult": {
@@ -3019,17 +2893,9 @@
       "type": "object"
     },
     "sqlc.VideoQuality": {
-      "enum": [
-        "basic",
-        "shorts",
-        "pro"
-      ],
+      "enum": ["basic", "shorts", "pro"],
       "type": "string",
-      "x-enum-varnames": [
-        "VideoQualityBasic",
-        "VideoQualityShorts",
-        "VideoQualityPro"
-      ]
+      "x-enum-varnames": ["VideoQualityBasic", "VideoQualityShorts", "VideoQualityPro"]
     },
     "types.CreateAPIKeyRequest": {
       "properties": {
@@ -3043,10 +2909,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "project_id"
-      ],
+      "required": ["name", "project_id"],
       "type": "object"
     },
     "types.CreateClientCredentialRequest": {
@@ -3058,9 +2921,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "type": "object"
     },
     "types.CreateFeedRequest": {
@@ -3090,10 +2951,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "project_id"
-      ],
+      "required": ["name", "project_id"],
       "type": "object"
     },
     "types.CreateProjectRequest": {
@@ -3103,10 +2961,7 @@
           "type": "string"
         },
         "regions": {
-          "example": [
-            "iso",
-            "eu"
-          ],
+          "example": ["iso", "eu"],
           "items": {
             "type": "string"
           },
@@ -3121,9 +2976,7 @@
           "example": "basic"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "type": "object"
     },
     "types.CustomDomainRequest": {
@@ -3133,9 +2986,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "custom_domain"
-      ],
+      "required": ["custom_domain"],
       "type": "object"
     },
     "types.ExchangeRequest": {
@@ -3144,9 +2995,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "api_key"
-      ],
+      "required": ["api_key"],
       "type": "object"
     },
     "types.MintClientTokenRequest": {
@@ -3167,11 +3016,7 @@
           "type": "integer"
         }
       },
-      "required": [
-        "client_id",
-        "client_secret",
-        "subject"
-      ],
+      "required": ["client_id", "client_secret", "subject"],
       "type": "object"
     },
     "types.MoveProjectRequest": {
@@ -3181,9 +3026,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "target_organization_id"
-      ],
+      "required": ["target_organization_id"],
       "type": "object"
     },
     "types.RefreshRequest": {
@@ -3192,9 +3035,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "refresh_token"
-      ],
+      "required": ["refresh_token"],
       "type": "object"
     },
     "types.TokenResponse": {
@@ -3241,9 +3082,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "type": "object"
     },
     "types.UpdateProjectNameRequest": {
@@ -3253,9 +3092,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name"
-      ],
+      "required": ["name"],
       "type": "object"
     },
     "types.UpdateVideoQualityRequest": {
@@ -3266,17 +3103,11 @@
               "$ref": "#/definitions/sqlc.VideoQuality"
             }
           ],
-          "enum": [
-            "basic",
-            "shorts",
-            "pro"
-          ],
+          "enum": ["basic", "shorts", "pro"],
           "example": "shorts"
         }
       },
-      "required": [
-        "video_quality"
-      ],
+      "required": ["video_quality"],
       "type": "object"
     },
     "videosv1.AudioTrack": {
@@ -3548,12 +3379,7 @@
       "type": "object"
     },
     "videosv1.Visibility": {
-      "enum": [
-        0,
-        1,
-        2,
-        3
-      ],
+      "enum": [0, 1, 2, 3],
       "type": "integer",
       "x-enum-varnames": [
         "Visibility_VISIBILITY_UNSPECIFIED",
@@ -3596,9 +3422,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -3613,16 +3437,12 @@
           }
         ],
         "summary": "Dashboard analytics",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/events": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Ingest a batch of analytics events for the authenticated organization",
         "parameters": [
           {
@@ -3635,9 +3455,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "No Content"
@@ -3649,9 +3467,7 @@
           }
         ],
         "summary": "Track analytics events",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/feeds/{feedId}/stats": {
@@ -3678,9 +3494,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -3695,16 +3509,12 @@
           }
         ],
         "summary": "Get feed statistics",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/funnels": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Calculate funnel conversion across a sequence of steps",
         "parameters": [
           {
@@ -3729,9 +3539,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -3746,9 +3554,7 @@
           }
         ],
         "summary": "Funnel analytics",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/posts/{postId}/stats": {
@@ -3775,9 +3581,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -3792,17 +3596,13 @@
           }
         ],
         "summary": "Get post statistics",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/realtime": {
       "get": {
         "description": "Returns real-time analytics snapshot",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -3817,9 +3617,7 @@
           }
         ],
         "summary": "Realtime analytics",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/retention": {
@@ -3845,9 +3643,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -3862,9 +3658,7 @@
           }
         ],
         "summary": "Retention analytics",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/top/feeds": {
@@ -3890,9 +3684,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -3907,9 +3699,7 @@
           }
         ],
         "summary": "Get top feeds",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/top/posts": {
@@ -3941,9 +3731,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -3958,9 +3746,7 @@
           }
         ],
         "summary": "Get top posts",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/top/videos": {
@@ -3986,9 +3772,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4003,9 +3787,7 @@
           }
         ],
         "summary": "Get top videos",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/videos/{videoId}/heatmap": {
@@ -4038,9 +3820,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4055,9 +3835,7 @@
           }
         ],
         "summary": "Get video heatmap",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/videos/{videoId}/hot-segments": {
@@ -4084,9 +3862,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4101,9 +3877,7 @@
           }
         ],
         "summary": "Get hot segments",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/analytics/v1/videos/{videoId}/stats": {
@@ -4130,9 +3904,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4147,16 +3919,12 @@
           }
         ],
         "summary": "Get video statistics",
-        "tags": [
-          "Analytics"
-        ]
+        "tags": ["Analytics"]
       }
     },
     "/auth/v1/blog/broadcast": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Triggers a blog newsletter broadcast to all subscribers. Internal endpoint guarded by the service API key (X-Api-Key); called by the blog-publishing pipeline.",
         "operationId": "sendBlogBroadcast",
         "parameters": [
@@ -4177,9 +3945,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4189,9 +3955,7 @@
           }
         },
         "summary": "Send a blog newsletter broadcast",
-        "tags": [
-          "Auth / Blog"
-        ]
+        "tags": ["Auth / Blog"]
       }
     },
     "/auth/v1/blog/subscribe": {
@@ -4208,17 +3972,13 @@
           }
         ],
         "summary": "Subscribe to the blog",
-        "tags": [
-          "Auth / Blog"
-        ]
+        "tags": ["Auth / Blog"]
       }
     },
     "/auth/v1/blog/subscription": {
       "get": {
         "description": "Returns whether the authenticated user is subscribed to the blog newsletter.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4233,9 +3993,7 @@
           }
         ],
         "summary": "Get blog subscription status",
-        "tags": [
-          "Auth / Blog"
-        ]
+        "tags": ["Auth / Blog"]
       }
     },
     "/auth/v1/blog/unsubscribe": {
@@ -4252,16 +4010,12 @@
           }
         ],
         "summary": "Unsubscribe from the blog",
-        "tags": [
-          "Auth / Blog"
-        ]
+        "tags": ["Auth / Blog"]
       }
     },
     "/auth/v1/blog/unsubscribe/email": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Unsubscribes a recipient using the user id and email from an email-footer link. No authentication required.",
         "parameters": [
           {
@@ -4274,25 +4028,19 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "No Content"
           }
         },
         "summary": "Unsubscribe from the blog by email",
-        "tags": [
-          "Auth / Blog"
-        ]
+        "tags": ["Auth / Blog"]
       }
     },
     "/auth/v1/email/verify": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Verifies a user's email address using a verification id and the code sent to them.",
         "parameters": [
           {
@@ -4305,9 +4053,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4317,16 +4063,12 @@
           }
         },
         "summary": "Verify email with a code",
-        "tags": [
-          "Auth / Email"
-        ]
+        "tags": ["Auth / Email"]
       }
     },
     "/auth/v1/email/verify/resend": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Resends the email verification message to the given email address.",
         "parameters": [
           {
@@ -4339,9 +4081,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4351,9 +4091,7 @@
           }
         },
         "summary": "Resend email verification",
-        "tags": [
-          "Auth / Email"
-        ]
+        "tags": ["Auth / Email"]
       }
     },
     "/auth/v1/invitations/{token}/accept": {
@@ -4368,9 +4106,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4380,9 +4116,7 @@
           }
         },
         "summary": "Accept an organization invitation",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/invitations/{token}/decline": {
@@ -4403,16 +4137,12 @@
           }
         },
         "summary": "Decline an organization invitation",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/login": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Authenticates a user by email and password and issues access and refresh tokens.",
         "parameters": [
           {
@@ -4425,9 +4155,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4437,9 +4165,7 @@
           }
         },
         "summary": "Log in with email and password",
-        "tags": [
-          "Auth / Authentication"
-        ]
+        "tags": ["Auth / Authentication"]
       }
     },
     "/auth/v1/logout": {
@@ -4459,9 +4185,7 @@
           }
         },
         "summary": "Log out (revoke the current access token)",
-        "tags": [
-          "Auth / Authentication"
-        ]
+        "tags": ["Auth / Authentication"]
       }
     },
     "/auth/v1/memberships/{orgId}/active": {
@@ -4476,9 +4200,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4493,9 +4215,7 @@
           }
         ],
         "summary": "Set the active membership",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/check": {
@@ -4510,9 +4230,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4527,9 +4245,7 @@
           }
         ],
         "summary": "Check the current user's membership in an organization",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/domain": {
@@ -4555,9 +4271,7 @@
           }
         ],
         "summary": "Remove a custom domain",
-        "tags": [
-          "Auth / Custom Domains"
-        ]
+        "tags": ["Auth / Custom Domains"]
       },
       "get": {
         "description": "Returns the current custom domain and its verification status for the organization.",
@@ -4570,9 +4284,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4587,14 +4299,10 @@
           }
         ],
         "summary": "Get custom domain status",
-        "tags": [
-          "Auth / Custom Domains"
-        ]
+        "tags": ["Auth / Custom Domains"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Registers a custom domain for the organization and issues verification details to prove ownership.",
         "parameters": [
           {
@@ -4614,9 +4322,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -4631,9 +4337,7 @@
           }
         ],
         "summary": "Create a custom domain verification",
-        "tags": [
-          "Auth / Custom Domains"
-        ]
+        "tags": ["Auth / Custom Domains"]
       }
     },
     "/auth/v1/memberships/{orgId}/domain/auto-join": {
@@ -4648,9 +4352,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4665,14 +4367,10 @@
           }
         ],
         "summary": "Get domain auto-join setting",
-        "tags": [
-          "Auth / Custom Domains"
-        ]
+        "tags": ["Auth / Custom Domains"]
       },
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Enables or disables automatically adding users with a matching verified domain email to the organization.",
         "parameters": [
           {
@@ -4692,9 +4390,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4709,9 +4405,7 @@
           }
         ],
         "summary": "Set domain auto-join setting",
-        "tags": [
-          "Auth / Custom Domains"
-        ]
+        "tags": ["Auth / Custom Domains"]
       }
     },
     "/auth/v1/memberships/{orgId}/domain/verification": {
@@ -4726,9 +4420,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4743,9 +4435,7 @@
           }
         ],
         "summary": "Check a custom domain verification",
-        "tags": [
-          "Auth / Custom Domains"
-        ]
+        "tags": ["Auth / Custom Domains"]
       }
     },
     "/auth/v1/memberships/{orgId}/info": {
@@ -4760,9 +4450,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4777,9 +4465,7 @@
           }
         ],
         "summary": "Get the caller's membership info in an organization",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/leave": {
@@ -4794,9 +4480,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4811,9 +4495,7 @@
           }
         ],
         "summary": "Leave an organization",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/members": {
@@ -4840,9 +4522,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4857,9 +4537,7 @@
           }
         ],
         "summary": "List members of an organization",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/members/{userId}": {
@@ -4881,9 +4559,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4898,9 +4574,7 @@
           }
         ],
         "summary": "Remove a member from an organization",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/members/{userId}/policies": {
@@ -4922,9 +4596,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4939,16 +4611,12 @@
           }
         ],
         "summary": "List a member's policies",
-        "tags": [
-          "Auth / Policies"
-        ]
+        "tags": ["Auth / Policies"]
       }
     },
     "/auth/v1/memberships/{orgId}/members/{userId}/role": {
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Updates the specified member's role within the organization.",
         "parameters": [
           {
@@ -4975,9 +4643,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -4992,16 +4658,12 @@
           }
         ],
         "summary": "Update a member's role",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/members/invite": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Invites the user with the given username to the organization with the specified role.",
         "parameters": [
           {
@@ -5021,9 +4683,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -5038,16 +4698,12 @@
           }
         ],
         "summary": "Invite a member to an organization",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/members/invite/resend": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Resends the pending organization invitation to the specified member.",
         "parameters": [
           {
@@ -5067,9 +4723,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "No Content"
@@ -5081,16 +4735,12 @@
           }
         ],
         "summary": "Resend an invitation",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/membership/state": {
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Accepts or declines the authenticated user's pending invitation to the organization. Used from inside the dashboard; the public token flow is /auth/v1/invitations/{token}/accept|decline.",
         "parameters": [
           {
@@ -5110,9 +4760,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5127,16 +4775,12 @@
           }
         ],
         "summary": "Accept or decline a pending membership",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/name": {
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Updates the display name of the specified organization.",
         "parameters": [
           {
@@ -5156,9 +4800,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5173,9 +4815,7 @@
           }
         ],
         "summary": "Update an organization's name",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/{orgId}/policies": {
@@ -5190,9 +4830,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5207,14 +4845,10 @@
           }
         ],
         "summary": "List policies",
-        "tags": [
-          "Auth / Policies"
-        ]
+        "tags": ["Auth / Policies"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Creates a new authorization policy in the organization with the given name, description, and permissions.",
         "parameters": [
           {
@@ -5234,9 +4868,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -5251,9 +4883,7 @@
           }
         ],
         "summary": "Create a policy",
-        "tags": [
-          "Auth / Policies"
-        ]
+        "tags": ["Auth / Policies"]
       }
     },
     "/auth/v1/memberships/{orgId}/policies/{policyId}": {
@@ -5286,9 +4916,7 @@
           }
         ],
         "summary": "Delete a policy",
-        "tags": [
-          "Auth / Policies"
-        ]
+        "tags": ["Auth / Policies"]
       },
       "get": {
         "description": "Returns the details of a single authorization policy in the organization by its ID.",
@@ -5308,9 +4936,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5325,14 +4951,10 @@
           }
         ],
         "summary": "Get a policy",
-        "tags": [
-          "Auth / Policies"
-        ]
+        "tags": ["Auth / Policies"]
       },
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Updates an existing authorization policy's name, description, and permissions.",
         "parameters": [
           {
@@ -5359,9 +4981,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5376,9 +4996,7 @@
           }
         ],
         "summary": "Update a policy",
-        "tags": [
-          "Auth / Policies"
-        ]
+        "tags": ["Auth / Policies"]
       }
     },
     "/auth/v1/memberships/{orgId}/policies/{policyId}/attachments": {
@@ -5400,9 +5018,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5417,14 +5033,10 @@
           }
         ],
         "summary": "List policy attachments",
-        "tags": [
-          "Auth / Policies"
-        ]
+        "tags": ["Auth / Policies"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Attaches the given policy to an identity so the policy's permissions apply to that identity.",
         "parameters": [
           {
@@ -5451,9 +5063,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -5468,9 +5078,7 @@
           }
         ],
         "summary": "Attach a policy to an identity",
-        "tags": [
-          "Auth / Policies"
-        ]
+        "tags": ["Auth / Policies"]
       }
     },
     "/auth/v1/memberships/{orgId}/policies/{policyId}/attachments/{attachmentId}": {
@@ -5510,16 +5118,12 @@
           }
         ],
         "summary": "Detach a policy",
-        "tags": [
-          "Auth / Policies"
-        ]
+        "tags": ["Auth / Policies"]
       }
     },
     "/auth/v1/memberships/{orgId}/username": {
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Updates the unique username handle of the specified organization.",
         "parameters": [
           {
@@ -5539,9 +5143,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5556,9 +5158,7 @@
           }
         ],
         "summary": "Update an organization's username",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/active": {
@@ -5578,9 +5178,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5595,9 +5193,7 @@
           }
         ],
         "summary": "List the current user's active memberships",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/memberships/pending": {
@@ -5617,9 +5213,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5634,17 +5228,13 @@
           }
         ],
         "summary": "List the current user's pending memberships",
-        "tags": [
-          "Auth / Memberships"
-        ]
+        "tags": ["Auth / Memberships"]
       }
     },
     "/auth/v1/passkey/login/begin": {
       "post": {
         "description": "Begins a passkey login by returning a session_id and WebAuthn challenge options for the client to sign.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "session_id and WebAuthn options",
@@ -5654,16 +5244,12 @@
           }
         },
         "summary": "Begin passkey login",
-        "tags": [
-          "Auth / Passkeys"
-        ]
+        "tags": ["Auth / Passkeys"]
       }
     },
     "/auth/v1/passkey/login/finish": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Completes a passkey login by verifying the signed WebAuthn credential against the session and returning authentication tokens.",
         "parameters": [
           {
@@ -5676,9 +5262,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5688,16 +5272,12 @@
           }
         },
         "summary": "Finish passkey login",
-        "tags": [
-          "Auth / Passkeys"
-        ]
+        "tags": ["Auth / Passkeys"]
       }
     },
     "/auth/v1/password/reset": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Sends a password reset email containing a reset token to the given email address.",
         "parameters": [
           {
@@ -5710,25 +5290,19 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "No Content"
           }
         },
         "summary": "Send a password reset email",
-        "tags": [
-          "Auth / Authentication"
-        ]
+        "tags": ["Auth / Authentication"]
       }
     },
     "/auth/v1/password/reset/confirm": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Resets the user's password using a valid reset token and the supplied new password.",
         "parameters": [
           {
@@ -5741,26 +5315,20 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "No Content"
           }
         },
         "summary": "Reset password with a token",
-        "tags": [
-          "Auth / Authentication"
-        ]
+        "tags": ["Auth / Authentication"]
       }
     },
     "/auth/v1/policies/permissions": {
       "get": {
         "description": "Returns the registered permission names and their bit offsets.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5775,17 +5343,13 @@
           }
         ],
         "summary": "List the permission registry",
-        "tags": [
-          "Auth / Policies"
-        ]
+        "tags": ["Auth / Policies"]
       }
     },
     "/auth/v1/providers": {
       "get": {
         "description": "Returns the list of social providers connected to the authenticated user's account.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5800,9 +5364,7 @@
           }
         ],
         "summary": "List connected social providers",
-        "tags": [
-          "Auth / User"
-        ]
+        "tags": ["Auth / User"]
       }
     },
     "/auth/v1/providers/{provider}": {
@@ -5828,16 +5390,12 @@
           }
         ],
         "summary": "Disconnect a social provider",
-        "tags": [
-          "Auth / User"
-        ]
+        "tags": ["Auth / User"]
       }
     },
     "/auth/v1/providers/connect": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Connects a social provider to the authenticated user's account using the supplied provider token.",
         "parameters": [
           {
@@ -5850,9 +5408,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5867,16 +5423,12 @@
           }
         ],
         "summary": "Connect a social provider",
-        "tags": [
-          "Auth / User"
-        ]
+        "tags": ["Auth / User"]
       }
     },
     "/auth/v1/register": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Registers a new user account from an email and password and starts email verification.",
         "parameters": [
           {
@@ -5889,9 +5441,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -5901,9 +5451,7 @@
           }
         },
         "summary": "Register with email and password",
-        "tags": [
-          "Auth / Authentication"
-        ]
+        "tags": ["Auth / Authentication"]
       }
     },
     "/auth/v1/token": {
@@ -5918,9 +5466,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5930,17 +5476,13 @@
           }
         },
         "summary": "Refresh access token",
-        "tags": [
-          "Auth / Authentication"
-        ]
+        "tags": ["Auth / Authentication"]
       }
     },
     "/auth/v1/userinfo": {
       "get": {
         "description": "Returns the profile information of the authenticated user.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5955,17 +5497,13 @@
           }
         ],
         "summary": "Get current user info",
-        "tags": [
-          "Auth / User"
-        ]
+        "tags": ["Auth / User"]
       }
     },
     "/auth/v1/users/current": {
       "get": {
         "description": "Returns the profile information of the authenticated user.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -5980,16 +5518,12 @@
           }
         ],
         "summary": "Get current user info",
-        "tags": [
-          "Auth / User"
-        ]
+        "tags": ["Auth / User"]
       }
     },
     "/auth/v1/users/current/emails": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Adds an email address to the authenticated account and sends a verification\ncode to it. The address becomes active only once it has been verified via\n`POST /auth/v1/email/verify`. Subject to rate limiting per account.",
         "parameters": [
           {
@@ -6002,9 +5536,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "Verification code sent to the new address",
@@ -6019,16 +5551,12 @@
           }
         ],
         "summary": "Add an email address",
-        "tags": [
-          "Auth / Email"
-        ]
+        "tags": ["Auth / Email"]
       }
     },
     "/auth/v1/users/current/emails/change": {
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Starts changing the authenticated account's email address. A verification\ncode is sent to the new address; the change is applied only after the code\nis confirmed via `POST /auth/v1/email/verify`. Subject to rate limiting per account.",
         "parameters": [
           {
@@ -6041,9 +5569,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "Verification code sent to the new address",
@@ -6058,17 +5584,13 @@
           }
         ],
         "summary": "Change the account email",
-        "tags": [
-          "Auth / Email"
-        ]
+        "tags": ["Auth / Email"]
       }
     },
     "/auth/v1/users/current/emails/status": {
       "get": {
         "description": "Returns the authenticated account's current email address together with\nwhether an email is set and whether it has been verified.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "Current email and verification status",
@@ -6083,16 +5605,12 @@
           }
         ],
         "summary": "Get email status",
-        "tags": [
-          "Auth / Email"
-        ]
+        "tags": ["Auth / Email"]
       }
     },
     "/auth/v1/users/current/name": {
       "patch": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Updates the authenticated user's full name to the provided value.",
         "parameters": [
           {
@@ -6105,9 +5623,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6122,17 +5638,13 @@
           }
         ],
         "summary": "Update the current user's name",
-        "tags": [
-          "Auth / User"
-        ]
+        "tags": ["Auth / User"]
       }
     },
     "/auth/v1/users/current/passkeys": {
       "get": {
         "description": "Returns all passkeys registered to the authenticated user.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6147,9 +5659,7 @@
           }
         ],
         "summary": "List the current user's passkeys",
-        "tags": [
-          "Auth / Passkeys"
-        ]
+        "tags": ["Auth / Passkeys"]
       }
     },
     "/auth/v1/users/current/passkeys/{id}": {
@@ -6175,14 +5685,10 @@
           }
         ],
         "summary": "Delete a passkey",
-        "tags": [
-          "Auth / Passkeys"
-        ]
+        "tags": ["Auth / Passkeys"]
       },
       "patch": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Renames the authenticated user's passkey identified by the path ID to the supplied name.",
         "parameters": [
           {
@@ -6202,9 +5708,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "No Content"
@@ -6216,17 +5720,13 @@
           }
         ],
         "summary": "Rename a passkey",
-        "tags": [
-          "Auth / Passkeys"
-        ]
+        "tags": ["Auth / Passkeys"]
       }
     },
     "/auth/v1/users/current/passkeys/register/begin": {
       "post": {
         "description": "Begins registering a new passkey for the authenticated user by returning a session_id and WebAuthn creation options.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "session_id and WebAuthn options",
@@ -6241,16 +5741,12 @@
           }
         ],
         "summary": "Begin passkey registration",
-        "tags": [
-          "Auth / Passkeys"
-        ]
+        "tags": ["Auth / Passkeys"]
       }
     },
     "/auth/v1/users/current/passkeys/register/finish": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Completes passkey registration by verifying the signed WebAuthn credential and storing it under the given name for the authenticated user.",
         "parameters": [
           {
@@ -6263,9 +5759,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -6280,9 +5774,7 @@
           }
         ],
         "summary": "Finish passkey registration",
-        "tags": [
-          "Auth / Passkeys"
-        ]
+        "tags": ["Auth / Passkeys"]
       }
     },
     "/auth/v1/users/current/totp/delete": {
@@ -6299,17 +5791,13 @@
           }
         ],
         "summary": "Disable TOTP",
-        "tags": [
-          "Auth / TOTP"
-        ]
+        "tags": ["Auth / TOTP"]
       }
     },
     "/auth/v1/users/current/totp/setup": {
       "post": {
         "description": "Begins TOTP setup for the authenticated user by generating and returning a provisioning secret and QR code that have not yet been enabled.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6324,17 +5812,13 @@
           }
         ],
         "summary": "Begin TOTP setup",
-        "tags": [
-          "Auth / TOTP"
-        ]
+        "tags": ["Auth / TOTP"]
       }
     },
     "/auth/v1/users/current/totp/status": {
       "get": {
         "description": "Returns whether the authenticated user currently has TOTP two-factor authentication enabled.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6349,16 +5833,12 @@
           }
         ],
         "summary": "Get TOTP status",
-        "tags": [
-          "Auth / TOTP"
-        ]
+        "tags": ["Auth / TOTP"]
       }
     },
     "/auth/v1/users/current/totp/verify": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Verifies the submitted TOTP code against the user's pending setup secret and, if valid, enables TOTP two-factor authentication and returns refreshed tokens.",
         "parameters": [
           {
@@ -6371,9 +5851,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6388,16 +5866,12 @@
           }
         ],
         "summary": "Verify and enable TOTP",
-        "tags": [
-          "Auth / TOTP"
-        ]
+        "tags": ["Auth / TOTP"]
       }
     },
     "/auth/v1/users/current/username": {
       "patch": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Updates the authenticated user's username to the provided value.",
         "parameters": [
           {
@@ -6410,9 +5884,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6427,16 +5899,12 @@
           }
         ],
         "summary": "Update the current user's username",
-        "tags": [
-          "Auth / User"
-        ]
+        "tags": ["Auth / User"]
       }
     },
     "/auth/v1/verify-totp": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Verifies the submitted TOTP code for a pending login session and, if valid, completes authentication and returns access tokens.",
         "parameters": [
           {
@@ -6449,9 +5917,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6461,17 +5927,13 @@
           }
         },
         "summary": "Verify TOTP during login",
-        "tags": [
-          "Auth / TOTP"
-        ]
+        "tags": ["Auth / TOTP"]
       }
     },
     "/billing/v1/address": {
       "get": {
         "description": "Returns the organization's billing address",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6486,14 +5948,10 @@
           }
         ],
         "summary": "Get billing address",
-        "tags": [
-          "Billing / Payments"
-        ]
+        "tags": ["Billing / Payments"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Create or update the organization's billing address",
         "parameters": [
           {
@@ -6506,9 +5964,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6523,17 +5979,13 @@
           }
         ],
         "summary": "Set billing address",
-        "tags": [
-          "Billing / Payments"
-        ]
+        "tags": ["Billing / Payments"]
       }
     },
     "/billing/v1/bandwidth-usage": {
       "get": {
         "description": "Returns the organization's bandwidth usage.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6548,9 +6000,7 @@
           }
         ],
         "summary": "Get bandwidth usage",
-        "tags": [
-          "Billing / Usage"
-        ]
+        "tags": ["Billing / Usage"]
       }
     },
     "/billing/v1/bandwidth-usage/history": {
@@ -6564,9 +6014,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6581,17 +6029,13 @@
           }
         ],
         "summary": "Bandwidth usage history",
-        "tags": [
-          "Billing / Usage"
-        ]
+        "tags": ["Billing / Usage"]
       }
     },
     "/billing/v1/bandwidth-usage/refresh": {
       "post": {
         "description": "Recalculate and persist the organization's bandwidth usage",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6606,16 +6050,12 @@
           }
         ],
         "summary": "Refresh bandwidth usage",
-        "tags": [
-          "Billing / Usage"
-        ]
+        "tags": ["Billing / Usage"]
       }
     },
     "/billing/v1/checkout": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Create a Stripe hosted checkout session",
         "parameters": [
           {
@@ -6628,9 +6068,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6645,16 +6083,12 @@
           }
         ],
         "summary": "Create checkout session",
-        "tags": [
-          "Billing / Payments"
-        ]
+        "tags": ["Billing / Payments"]
       }
     },
     "/billing/v1/contact-sales": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Submits a sales contact request for the organization.",
         "parameters": [
           {
@@ -6667,9 +6101,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -6684,17 +6116,13 @@
           }
         ],
         "summary": "Contact sales",
-        "tags": [
-          "Billing / Subscriptions"
-        ]
+        "tags": ["Billing / Subscriptions"]
       }
     },
     "/billing/v1/invoices": {
       "get": {
         "description": "Returns the organization's invoices.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6709,16 +6137,12 @@
           }
         ],
         "summary": "List invoices",
-        "tags": [
-          "Billing / Invoices"
-        ]
+        "tags": ["Billing / Invoices"]
       }
     },
     "/billing/v1/invoices/{invoiceId}/status": {
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Updates the status of an invoice (admin).",
         "parameters": [
           {
@@ -6738,9 +6162,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6755,9 +6177,7 @@
           }
         ],
         "summary": "Update invoice status",
-        "tags": [
-          "Billing / Invoices"
-        ]
+        "tags": ["Billing / Invoices"]
       }
     },
     "/billing/v1/jobs/cleanup-bandwidth-snapshots": {
@@ -6774,9 +6194,7 @@
           }
         ],
         "summary": "Cleanup old bandwidth snapshots",
-        "tags": [
-          "Billing / Usage"
-        ]
+        "tags": ["Billing / Usage"]
       }
     },
     "/billing/v1/jobs/daily-bandwidth-calculation": {
@@ -6793,9 +6211,7 @@
           }
         ],
         "summary": "Run daily bandwidth calculation",
-        "tags": [
-          "Billing / Usage"
-        ]
+        "tags": ["Billing / Usage"]
       }
     },
     "/billing/v1/jobs/monthly-bandwidth-calculation": {
@@ -6812,17 +6228,13 @@
           }
         ],
         "summary": "Run monthly bandwidth calculation",
-        "tags": [
-          "Billing / Usage"
-        ]
+        "tags": ["Billing / Usage"]
       }
     },
     "/billing/v1/payment-methods": {
       "get": {
         "description": "Returns the organization's payment methods.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6837,14 +6249,10 @@
           }
         ],
         "summary": "List payment methods",
-        "tags": [
-          "Billing / Payments"
-        ]
+        "tags": ["Billing / Payments"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Attach a payment method to the organization",
         "parameters": [
           {
@@ -6857,9 +6265,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6874,9 +6280,7 @@
           }
         ],
         "summary": "Add or update payment method",
-        "tags": [
-          "Billing / Payments"
-        ]
+        "tags": ["Billing / Payments"]
       }
     },
     "/billing/v1/payment-methods/{paymentMethodId}": {
@@ -6891,9 +6295,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "No Content"
@@ -6905,9 +6307,7 @@
           }
         ],
         "summary": "Delete payment method",
-        "tags": [
-          "Billing / Payments"
-        ]
+        "tags": ["Billing / Payments"]
       }
     },
     "/billing/v1/payment-methods/from-payment-intent": {
@@ -6922,9 +6322,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6939,9 +6337,7 @@
           }
         ],
         "summary": "Resolve payment method from payment intent",
-        "tags": [
-          "Billing / Payments"
-        ]
+        "tags": ["Billing / Payments"]
       }
     },
     "/billing/v1/payment-methods/from-setup-intent": {
@@ -6956,9 +6352,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6973,17 +6367,13 @@
           }
         ],
         "summary": "Resolve payment method from setup intent",
-        "tags": [
-          "Billing / Payments"
-        ]
+        "tags": ["Billing / Payments"]
       }
     },
     "/billing/v1/plans": {
       "get": {
         "description": "Returns the available billing plans.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -6993,9 +6383,7 @@
           }
         },
         "summary": "List billing plans",
-        "tags": [
-          "Billing / Plans"
-        ]
+        "tags": ["Billing / Plans"]
       }
     },
     "/billing/v1/plans/{planId}": {
@@ -7010,9 +6398,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7022,17 +6408,13 @@
           }
         },
         "summary": "Get a billing plan",
-        "tags": [
-          "Billing / Plans"
-        ]
+        "tags": ["Billing / Plans"]
       }
     },
     "/billing/v1/setup-intent": {
       "post": {
         "description": "Create a Stripe setup intent for adding a payment method",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7047,17 +6429,13 @@
           }
         ],
         "summary": "Create setup intent",
-        "tags": [
-          "Billing / Payments"
-        ]
+        "tags": ["Billing / Payments"]
       }
     },
     "/billing/v1/storage-usage": {
       "get": {
         "description": "Returns the organization's storage usage.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7072,9 +6450,7 @@
           }
         ],
         "summary": "Get storage usage",
-        "tags": [
-          "Billing / Usage"
-        ]
+        "tags": ["Billing / Usage"]
       }
     },
     "/billing/v1/storage-usage/history": {
@@ -7088,9 +6464,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7105,17 +6479,13 @@
           }
         ],
         "summary": "Storage usage history",
-        "tags": [
-          "Billing / Usage"
-        ]
+        "tags": ["Billing / Usage"]
       }
     },
     "/billing/v1/storage-usage/refresh": {
       "post": {
         "description": "Recalculate and persist the organization's storage usage",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7130,17 +6500,13 @@
           }
         ],
         "summary": "Refresh storage usage",
-        "tags": [
-          "Billing / Usage"
-        ]
+        "tags": ["Billing / Usage"]
       }
     },
     "/billing/v1/subscription": {
       "get": {
         "description": "Returns the current organization subscription.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7155,14 +6521,10 @@
           }
         ],
         "summary": "Get current subscription",
-        "tags": [
-          "Billing / Subscriptions"
-        ]
+        "tags": ["Billing / Subscriptions"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Create a subscription for the authenticated organization",
         "parameters": [
           {
@@ -7175,9 +6537,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7192,17 +6552,13 @@
           }
         ],
         "summary": "Create subscription",
-        "tags": [
-          "Billing / Subscriptions"
-        ]
+        "tags": ["Billing / Subscriptions"]
       }
     },
     "/billing/v1/subscription/cancel": {
       "put": {
         "description": "Cancel the organization's subscription at the end of the current period",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "No Content"
@@ -7214,17 +6570,13 @@
           }
         ],
         "summary": "Cancel subscription",
-        "tags": [
-          "Billing / Subscriptions"
-        ]
+        "tags": ["Billing / Subscriptions"]
       }
     },
     "/billing/v1/subscription/history": {
       "get": {
         "description": "Returns the organization's subscription history.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7239,17 +6591,13 @@
           }
         ],
         "summary": "Get subscription history",
-        "tags": [
-          "Billing / Subscriptions"
-        ]
+        "tags": ["Billing / Subscriptions"]
       }
     },
     "/billing/v1/subscription/reactivate": {
       "put": {
         "description": "Reactivate a subscription scheduled for cancellation",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "No Content"
@@ -7261,16 +6609,12 @@
           }
         ],
         "summary": "Reactivate subscription",
-        "tags": [
-          "Billing / Subscriptions"
-        ]
+        "tags": ["Billing / Subscriptions"]
       }
     },
     "/billing/v1/subscription/upgrade": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Upgrade the organization's subscription to a new plan",
         "parameters": [
           {
@@ -7283,9 +6627,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7300,16 +6642,12 @@
           }
         ],
         "summary": "Upgrade subscription",
-        "tags": [
-          "Billing / Subscriptions"
-        ]
+        "tags": ["Billing / Subscriptions"]
       }
     },
     "/billing/v1/tax/calculate": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Calculate tax for a plan purchase",
         "parameters": [
           {
@@ -7322,9 +6660,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7339,29 +6675,21 @@
           }
         ],
         "summary": "Calculate tax",
-        "tags": [
-          "Billing / Payments"
-        ]
+        "tags": ["Billing / Payments"]
       }
     },
     "/billing/webhooks/stripe": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Receives Stripe webhook events. The raw payload and signature are forwarded to the billing service for verification and processing.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "204": {
             "description": "No Content"
           }
         },
         "summary": "Stripe webhook",
-        "tags": [
-          "Billing / Webhooks"
-        ]
+        "tags": ["Billing / Webhooks"]
       }
     },
     "/media/v1/images/{imageId}": {
@@ -7376,9 +6704,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7388,17 +6714,13 @@
           }
         },
         "summary": "Get an image",
-        "tags": [
-          "Media / Images"
-        ]
+        "tags": ["Media / Images"]
       }
     },
     "/media/v1/languages": {
       "get": {
         "description": "Returns the language codes supported for audio tracks and subtitles.",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7408,9 +6730,7 @@
           }
         },
         "summary": "List supported languages",
-        "tags": [
-          "Media / Languages"
-        ]
+        "tags": ["Media / Languages"]
       }
     },
     "/media/v1/projects/{projectId}/images": {
@@ -7425,9 +6745,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7442,9 +6760,7 @@
           }
         ],
         "summary": "List images",
-        "tags": [
-          "Media / Images"
-        ]
+        "tags": ["Media / Images"]
       }
     },
     "/media/v1/projects/{projectId}/images/{imageId}": {
@@ -7466,9 +6782,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7483,9 +6797,7 @@
           }
         ],
         "summary": "Delete an image",
-        "tags": [
-          "Media / Images"
-        ]
+        "tags": ["Media / Images"]
       },
       "get": {
         "description": "Returns a single image within a project, including private media. Requires project access.",
@@ -7505,9 +6817,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7522,9 +6832,7 @@
           }
         ],
         "summary": "Get an image (project-scoped)",
-        "tags": [
-          "Media / Images"
-        ]
+        "tags": ["Media / Images"]
       }
     },
     "/media/v1/projects/{projectId}/images/{imageId}/upload/complete": {
@@ -7546,9 +6854,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7563,16 +6869,12 @@
           }
         ],
         "summary": "Complete an image upload",
-        "tags": [
-          "Media / Images"
-        ]
+        "tags": ["Media / Images"]
       }
     },
     "/media/v1/projects/{projectId}/images/{imageId}/visibility": {
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Updates an image's visibility (public, unlisted, or private). Requires project access.",
         "parameters": [
           {
@@ -7599,9 +6901,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7616,16 +6916,12 @@
           }
         ],
         "summary": "Set an image's visibility",
-        "tags": [
-          "Media / Images"
-        ]
+        "tags": ["Media / Images"]
       }
     },
     "/media/v1/projects/{projectId}/images/upload": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Initiates an image upload and returns upload details.",
         "parameters": [
           {
@@ -7645,9 +6941,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -7662,9 +6956,7 @@
           }
         ],
         "summary": "Create an image upload",
-        "tags": [
-          "Media / Images"
-        ]
+        "tags": ["Media / Images"]
       }
     },
     "/media/v1/projects/{projectId}/videos": {
@@ -7679,9 +6971,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7696,9 +6986,7 @@
           }
         ],
         "summary": "List videos in a project",
-        "tags": [
-          "Media / Videos"
-        ]
+        "tags": ["Media / Videos"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}": {
@@ -7720,9 +7008,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7737,9 +7023,7 @@
           }
         ],
         "summary": "Delete a video",
-        "tags": [
-          "Media / Videos"
-        ]
+        "tags": ["Media / Videos"]
       },
       "get": {
         "description": "Returns a single video within a project, including private media. Requires project access.",
@@ -7759,9 +7043,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7776,9 +7058,7 @@
           }
         ],
         "summary": "Get a video (project-scoped)",
-        "tags": [
-          "Media / Videos"
-        ]
+        "tags": ["Media / Videos"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/audio-tracks": {
@@ -7800,9 +7080,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7817,9 +7095,7 @@
           }
         ],
         "summary": "Delete all audio tracks",
-        "tags": [
-          "Media / Audio Tracks"
-        ]
+        "tags": ["Media / Audio Tracks"]
       },
       "get": {
         "description": "Returns a video's audio tracks within a project, including for private media. Requires project access.",
@@ -7839,9 +7115,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7856,9 +7130,7 @@
           }
         ],
         "summary": "List audio tracks (project-scoped)",
-        "tags": [
-          "Media / Audio Tracks"
-        ]
+        "tags": ["Media / Audio Tracks"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/audio-tracks/{trackId}": {
@@ -7887,9 +7159,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7904,9 +7174,7 @@
           }
         ],
         "summary": "Delete an audio track",
-        "tags": [
-          "Media / Audio Tracks"
-        ]
+        "tags": ["Media / Audio Tracks"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/audio-tracks/language/{lang}": {
@@ -7935,9 +7203,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -7952,16 +7218,12 @@
           }
         ],
         "summary": "Delete audio tracks by language",
-        "tags": [
-          "Media / Audio Tracks"
-        ]
+        "tags": ["Media / Audio Tracks"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/audio-tracks/upload": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Initiates one or more audio track uploads for a video.",
         "parameters": [
           {
@@ -7988,9 +7250,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -8005,16 +7265,12 @@
           }
         ],
         "summary": "Initiate audio track uploads",
-        "tags": [
-          "Media / Audio Tracks"
-        ]
+        "tags": ["Media / Audio Tracks"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/audio-tracks/upload/complete": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Finalizes previously initiated audio track uploads.",
         "parameters": [
           {
@@ -8041,9 +7297,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8058,9 +7312,7 @@
           }
         ],
         "summary": "Complete audio track uploads",
-        "tags": [
-          "Media / Audio Tracks"
-        ]
+        "tags": ["Media / Audio Tracks"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/chapters": {
@@ -8082,9 +7334,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8099,9 +7349,7 @@
           }
         ],
         "summary": "Delete all video chapters",
-        "tags": [
-          "Media / Chapters"
-        ]
+        "tags": ["Media / Chapters"]
       },
       "get": {
         "description": "Returns the chapters of a video.",
@@ -8121,9 +7369,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8138,14 +7384,10 @@
           }
         ],
         "summary": "Get video chapters",
-        "tags": [
-          "Media / Chapters"
-        ]
+        "tags": ["Media / Chapters"]
       },
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Replaces the chapters of a video.",
         "parameters": [
           {
@@ -8172,9 +7414,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8189,9 +7429,7 @@
           }
         ],
         "summary": "Update video chapters",
-        "tags": [
-          "Media / Chapters"
-        ]
+        "tags": ["Media / Chapters"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/chapters/{startTimeSec}": {
@@ -8220,9 +7458,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8237,9 +7473,7 @@
           }
         ],
         "summary": "Delete a single video chapter",
-        "tags": [
-          "Media / Chapters"
-        ]
+        "tags": ["Media / Chapters"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/subtitles": {
@@ -8261,9 +7495,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8278,9 +7510,7 @@
           }
         ],
         "summary": "Delete all subtitles",
-        "tags": [
-          "Media / Subtitles"
-        ]
+        "tags": ["Media / Subtitles"]
       },
       "get": {
         "description": "Returns a video's subtitles within a project, including for private media. Requires project access.",
@@ -8300,9 +7530,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8317,9 +7545,7 @@
           }
         ],
         "summary": "List subtitles (project-scoped)",
-        "tags": [
-          "Media / Subtitles"
-        ]
+        "tags": ["Media / Subtitles"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/subtitles/{subtitleId}": {
@@ -8348,9 +7574,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8365,9 +7589,7 @@
           }
         ],
         "summary": "Delete a subtitle",
-        "tags": [
-          "Media / Subtitles"
-        ]
+        "tags": ["Media / Subtitles"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/subtitles/language/{lang}": {
@@ -8396,9 +7618,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8413,16 +7633,12 @@
           }
         ],
         "summary": "Delete subtitles by language",
-        "tags": [
-          "Media / Subtitles"
-        ]
+        "tags": ["Media / Subtitles"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/subtitles/upload": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Initiates one or more subtitle uploads for a video.",
         "parameters": [
           {
@@ -8449,9 +7665,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -8466,16 +7680,12 @@
           }
         ],
         "summary": "Initiate subtitle uploads",
-        "tags": [
-          "Media / Subtitles"
-        ]
+        "tags": ["Media / Subtitles"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/subtitles/upload/complete": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Finalizes previously initiated subtitle uploads.",
         "parameters": [
           {
@@ -8502,9 +7712,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8519,16 +7727,12 @@
           }
         ],
         "summary": "Complete subtitle uploads",
-        "tags": [
-          "Media / Subtitles"
-        ]
+        "tags": ["Media / Subtitles"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/thumbnail": {
       "put": {
-        "consumes": [
-          "multipart/form-data"
-        ],
+        "consumes": ["multipart/form-data"],
         "description": "Replaces the thumbnail image for an existing video.",
         "parameters": [
           {
@@ -8553,9 +7757,7 @@
             "type": "file"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8570,9 +7772,7 @@
           }
         ],
         "summary": "Update video thumbnail",
-        "tags": [
-          "Media / Videos"
-        ]
+        "tags": ["Media / Videos"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/upload/complete": {
@@ -8594,9 +7794,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8611,16 +7809,12 @@
           }
         ],
         "summary": "Complete a video upload",
-        "tags": [
-          "Media / Videos"
-        ]
+        "tags": ["Media / Videos"]
       }
     },
     "/media/v1/projects/{projectId}/videos/{videoId}/visibility": {
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Updates a video's visibility (public, unlisted, or private). Requires project access.",
         "parameters": [
           {
@@ -8647,9 +7841,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8664,16 +7856,12 @@
           }
         ],
         "summary": "Set a video's visibility",
-        "tags": [
-          "Media / Videos"
-        ]
+        "tags": ["Media / Videos"]
       }
     },
     "/media/v1/projects/{projectId}/videos/upload": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Initiates a video upload and returns upload details.",
         "parameters": [
           {
@@ -8693,9 +7881,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -8710,9 +7896,7 @@
           }
         ],
         "summary": "Create a video upload",
-        "tags": [
-          "Media / Videos"
-        ]
+        "tags": ["Media / Videos"]
       }
     },
     "/media/v1/videos/{videoId}": {
@@ -8727,9 +7911,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8739,9 +7921,7 @@
           }
         },
         "summary": "Get a video",
-        "tags": [
-          "Media / Videos"
-        ]
+        "tags": ["Media / Videos"]
       }
     },
     "/media/v1/videos/{videoId}/audio-tracks": {
@@ -8756,9 +7936,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8768,9 +7946,7 @@
           }
         },
         "summary": "List audio tracks for a video",
-        "tags": [
-          "Media / Audio Tracks"
-        ]
+        "tags": ["Media / Audio Tracks"]
       }
     },
     "/media/v1/videos/{videoId}/subtitles": {
@@ -8785,9 +7961,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8797,9 +7971,7 @@
           }
         },
         "summary": "List subtitles for a video",
-        "tags": [
-          "Media / Subtitles"
-        ]
+        "tags": ["Media / Subtitles"]
       }
     },
     "/organization/{orgId}/projects": {
@@ -8815,9 +7987,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8832,14 +8002,10 @@
           }
         ],
         "summary": "List organization projects",
-        "tags": [
-          "Projects"
-        ]
+        "tags": ["Projects"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Create a new project under the given organization with specified video quality",
         "operationId": "createProjectsByOrgid",
         "parameters": [
@@ -8860,9 +8026,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -8877,9 +8041,7 @@
           }
         ],
         "summary": "Create project",
-        "tags": [
-          "Projects"
-        ]
+        "tags": ["Projects"]
       }
     },
     "/organization/{orgId}/projects/{projectId}": {
@@ -8902,9 +8064,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8919,9 +8079,7 @@
           }
         ],
         "summary": "Delete project (soft)",
-        "tags": [
-          "Projects"
-        ]
+        "tags": ["Projects"]
       },
       "get": {
         "description": "Retrieve a specific project under an organization",
@@ -8942,9 +8100,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -8959,9 +8115,7 @@
           }
         ],
         "summary": "Get project",
-        "tags": [
-          "Projects"
-        ]
+        "tags": ["Projects"]
       }
     },
     "/organization/{orgId}/projects/{projectId}/custom-domain": {
@@ -8984,9 +8138,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9001,14 +8153,10 @@
           }
         ],
         "summary": "Remove custom domain",
-        "tags": [
-          "Projects"
-        ]
+        "tags": ["Projects"]
       },
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Set or update a custom domain for a specific project",
         "operationId": "updateCustomDomainByProjectid",
         "parameters": [
@@ -9036,9 +8184,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9053,16 +8199,12 @@
           }
         ],
         "summary": "Set or update custom domain",
-        "tags": [
-          "Projects"
-        ]
+        "tags": ["Projects"]
       }
     },
     "/organization/{orgId}/projects/{projectId}/move": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Move a project from one organization to another (if user has access to both)",
         "operationId": "createMoveByProjectid",
         "parameters": [
@@ -9090,9 +8232,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9107,16 +8247,12 @@
           }
         ],
         "summary": "Move project to another organization",
-        "tags": [
-          "Projects"
-        ]
+        "tags": ["Projects"]
       }
     },
     "/organization/{orgId}/projects/{projectId}/name": {
       "patch": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Update the name of a specific project",
         "operationId": "patchNameByProjectid",
         "parameters": [
@@ -9144,9 +8280,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9161,16 +8295,12 @@
           }
         ],
         "summary": "Update project name",
-        "tags": [
-          "Projects"
-        ]
+        "tags": ["Projects"]
       }
     },
     "/organization/{orgId}/projects/{projectId}/video-quality": {
       "patch": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Update the default video quality setting for a project",
         "operationId": "patchVideoQualityByProjectid",
         "parameters": [
@@ -9198,9 +8328,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9215,9 +8343,7 @@
           }
         ],
         "summary": "Update project video quality",
-        "tags": [
-          "Projects"
-        ]
+        "tags": ["Projects"]
       }
     },
     "/platform/api-keys": {
@@ -9238,9 +8364,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9255,14 +8379,10 @@
           }
         ],
         "summary": "List organization API keys",
-        "tags": [
-          "Credentials / API Keys"
-        ]
+        "tags": ["Credentials / API Keys"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Create a new API key for a project in the authenticated organization",
         "operationId": "createApiKeyByOrgid",
         "parameters": [
@@ -9276,9 +8396,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9293,9 +8411,7 @@
           }
         ],
         "summary": "Create API key",
-        "tags": [
-          "Credentials / API Keys"
-        ]
+        "tags": ["Credentials / API Keys"]
       }
     },
     "/platform/api-keys/{keyId}": {
@@ -9311,9 +8427,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9328,9 +8442,7 @@
           }
         ],
         "summary": "Delete API key",
-        "tags": [
-          "Credentials / API Keys"
-        ]
+        "tags": ["Credentials / API Keys"]
       }
     },
     "/platform/api-keys/{keyId}/rotate": {
@@ -9346,9 +8458,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9363,16 +8473,12 @@
           }
         ],
         "summary": "Rotate API key",
-        "tags": [
-          "Credentials / API Keys"
-        ]
+        "tags": ["Credentials / API Keys"]
       }
     },
     "/platform/auth/refresh": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Trades a refresh token for a fresh access/refresh pair.",
         "parameters": [
           {
@@ -9385,9 +8491,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9397,16 +8501,12 @@
           }
         },
         "summary": "Refresh a platform access token",
-        "tags": [
-          "Platform Auth"
-        ]
+        "tags": ["Platform Auth"]
       }
     },
     "/platform/auth/token": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Trades an API key (`_`) for a short-lived platform access token plus a refresh token.",
         "parameters": [
           {
@@ -9419,9 +8519,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9431,9 +8529,7 @@
           }
         },
         "summary": "Exchange an API key for a platform access token",
-        "tags": [
-          "Platform Auth"
-        ]
+        "tags": ["Platform Auth"]
       }
     },
     "/platform/clientauth/credentials": {
@@ -9454,9 +8550,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9471,14 +8565,10 @@
           }
         ],
         "summary": "List client credentials",
-        "tags": [
-          "Credentials / Client Credentials"
-        ]
+        "tags": ["Credentials / Client Credentials"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Create a new client credential for the authenticated organization",
         "operationId": "createCredentialByOrgid",
         "parameters": [
@@ -9492,9 +8582,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9509,9 +8597,7 @@
           }
         ],
         "summary": "Create client credential",
-        "tags": [
-          "Credentials / Client Credentials"
-        ]
+        "tags": ["Credentials / Client Credentials"]
       }
     },
     "/platform/clientauth/credentials/{credentialId}/revoke": {
@@ -9527,9 +8613,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9544,16 +8628,12 @@
           }
         ],
         "summary": "Revoke client credential",
-        "tags": [
-          "Credentials / Client Credentials"
-        ]
+        "tags": ["Credentials / Client Credentials"]
       }
     },
     "/platform/clientauth/token": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Exchange client_id/client_secret for a short-lived access token. The request subject is an opaque client-defined label and is not treated as authoritative user identity for authorization.",
         "operationId": "createToken",
         "parameters": [
@@ -9567,9 +8647,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9579,9 +8657,7 @@
           }
         },
         "summary": "Mint client access token",
-        "tags": [
-          "Credentials / Client Credentials"
-        ]
+        "tags": ["Credentials / Client Credentials"]
       }
     },
     "/posts/v1/feeds/{feedId}": {
@@ -9609,9 +8685,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9621,9 +8695,7 @@
           }
         },
         "summary": "List posts in a feed",
-        "tags": [
-          "Posts"
-        ]
+        "tags": ["Posts"]
       }
     },
     "/posts/v1/feeds/{feedId}/{postId}": {
@@ -9646,9 +8718,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9658,9 +8728,7 @@
           }
         },
         "summary": "Get a post",
-        "tags": [
-          "Posts"
-        ]
+        "tags": ["Posts"]
       }
     },
     "/posts/v1/feeds/{feedId}/creators/{creatorId}": {
@@ -9695,9 +8763,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9707,9 +8773,7 @@
           }
         },
         "summary": "List posts by creator",
-        "tags": [
-          "Posts"
-        ]
+        "tags": ["Posts"]
       }
     },
     "/posts/v1/projects/{projectId}/feeds/{feedId}/posts": {
@@ -9744,9 +8808,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9761,14 +8823,10 @@
           }
         ],
         "summary": "List posts",
-        "tags": [
-          "Posts"
-        ]
+        "tags": ["Posts"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Create a new post in a feed",
         "operationId": "createPost",
         "parameters": [
@@ -9796,9 +8854,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -9813,9 +8869,7 @@
           }
         ],
         "summary": "Create a post",
-        "tags": [
-          "Posts"
-        ]
+        "tags": ["Posts"]
       }
     },
     "/posts/v1/projects/{projectId}/feeds/{feedId}/posts/{postId}": {
@@ -9845,9 +8899,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9862,9 +8914,7 @@
           }
         ],
         "summary": "Delete a post",
-        "tags": [
-          "Posts"
-        ]
+        "tags": ["Posts"]
       },
       "get": {
         "description": "Get a single post by ID",
@@ -9892,9 +8942,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9909,9 +8957,7 @@
           }
         ],
         "summary": "Get a post",
-        "tags": [
-          "Posts"
-        ]
+        "tags": ["Posts"]
       }
     },
     "/posts/v1/projects/{projectId}/feeds/{feedId}/posts/creators/{creatorId}": {
@@ -9953,9 +8999,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -9970,16 +9014,12 @@
           }
         ],
         "summary": "List posts by creator",
-        "tags": [
-          "Posts"
-        ]
+        "tags": ["Posts"]
       }
     },
     "/posts/v1/projects/{projectId}/feeds/{feedId}/posts/upload/complete": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Finalize a media upload and publish the post",
         "operationId": "completePostUpload",
         "parameters": [
@@ -10007,9 +9047,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -10024,16 +9062,12 @@
           }
         ],
         "summary": "Complete a post upload",
-        "tags": [
-          "Posts"
-        ]
+        "tags": ["Posts"]
       }
     },
     "/posts/v1/projects/{projectId}/feeds/{feedId}/posts/upload/init": {
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Begin a media upload and create a draft post",
         "operationId": "initPostUpload",
         "parameters": [
@@ -10061,9 +9095,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -10078,16 +9110,12 @@
           }
         ],
         "summary": "Initialize a post upload",
-        "tags": [
-          "Posts"
-        ]
+        "tags": ["Posts"]
       }
     },
     "/projects/{projectId}/feeds": {
       "get": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Lists all feeds for the active project with pagination.",
         "operationId": "listFeeds",
         "parameters": [
@@ -10118,9 +9146,7 @@
             "type": "integer"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -10135,14 +9161,10 @@
           }
         ],
         "summary": "List feeds",
-        "tags": [
-          "Feeds"
-        ]
+        "tags": ["Feeds"]
       },
       "post": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Creates a new feed under the active project.",
         "operationId": "createFeed",
         "parameters": [
@@ -10163,9 +9185,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created",
@@ -10180,16 +9200,12 @@
           }
         ],
         "summary": "Create a feed",
-        "tags": [
-          "Feeds"
-        ]
+        "tags": ["Feeds"]
       }
     },
     "/projects/{projectId}/feeds/{feedId}": {
       "delete": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Deletes a feed in the active project.",
         "operationId": "deleteFeed",
         "parameters": [
@@ -10209,9 +9225,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -10226,14 +9240,10 @@
           }
         ],
         "summary": "Delete a feed",
-        "tags": [
-          "Feeds"
-        ]
+        "tags": ["Feeds"]
       },
       "get": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Retrieves a feed by ID under the active project.",
         "operationId": "getFeed",
         "parameters": [
@@ -10253,9 +9263,7 @@
             "type": "string"
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -10270,14 +9278,10 @@
           }
         ],
         "summary": "Get a feed",
-        "tags": [
-          "Feeds"
-        ]
+        "tags": ["Feeds"]
       },
       "put": {
-        "consumes": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
         "description": "Updates an existing feed in the active project.",
         "operationId": "updateFeed",
         "parameters": [
@@ -10306,9 +9310,7 @@
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK",
@@ -10323,9 +9325,7 @@
           }
         ],
         "summary": "Update a feed",
-        "tags": [
-          "Feeds"
-        ]
+        "tags": ["Feeds"]
       }
     }
   },
@@ -10476,27 +9476,15 @@
     },
     {
       "name": "Projects",
-      "tags": [
-        "Projects"
-      ]
+      "tags": ["Projects"]
     },
     {
       "name": "Media",
-      "tags": [
-        "Media / Videos",
-        "Media / Images",
-        "Media / Audio Tracks",
-        "Media / Subtitles",
-        "Media / Chapters",
-        "Media / Languages"
-      ]
+      "tags": ["Media / Videos", "Media / Images", "Media / Audio Tracks", "Media / Subtitles", "Media / Chapters", "Media / Languages"]
     },
     {
       "name": "Feeds",
-      "tags": [
-        "Feeds",
-        "Posts"
-      ]
+      "tags": ["Feeds", "Posts"]
     },
     {
       "name": "Billing",
@@ -10511,23 +9499,15 @@
     },
     {
       "name": "Credentials",
-      "tags": [
-        "Credentials / API Keys",
-        "Credentials / Client Credentials"
-      ]
+      "tags": ["Credentials / API Keys", "Credentials / Client Credentials"]
     },
     {
       "name": "Analytics",
-      "tags": [
-        "Analytics"
-      ]
+      "tags": ["Analytics"]
     },
     {
       "name": "Platform",
-      "tags": [
-        "Platform Auth"
-      ]
+      "tags": ["Platform Auth"]
     }
   ]
 }
- 

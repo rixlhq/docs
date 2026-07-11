@@ -118,7 +118,9 @@
     border-radius: calc(var(--spacing) * 1.75);
     padding-inline: calc(var(--spacing) * 2.5);
     padding-block: calc(var(--spacing) * 1);
-    transition: background-color 160ms ease, color 160ms ease;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease;
   }
 
   #nd-nav nav > ul:first-of-type a[data-active="true"] {

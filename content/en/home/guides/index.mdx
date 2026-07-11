@@ -3,34 +3,21 @@ title: Guides & Examples
 description: Step-by-step tutorials, real-world examples, and practical implementation guides for building amazing media experiences with RIXL.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 Welcome to the **RIXL Guides** — your comprehensive resource for building media-rich applications. Whether you're implementing video streaming, delivering images, or creating dynamic content feeds, these guides provide practical, step-by-step instructions to help you succeed.
 
 ## Quick Actions
 
 <Columns cols={3}>
-  <Card
-    title="React Integration"
-    href="/en/sdk/getting-started/overview"
-    icon="layers"
-  >
+  <Card title="React Integration" href="/en/sdk/getting-started/overview" icon="layers">
     Drop-in components for video players, delivered images, and content feeds.
   </Card>
-  <Card
-    title="API Implementation"
-    href="/en/api"
-    icon="code"
-  >
+  <Card title="API Implementation" href="/en/api" icon="code">
     Build custom workflows with our comprehensive REST API.
   </Card>
-  <Card
-    title="Dashboard Workflow"
-    href="/en/home/platform/dashboard/guide"
-    icon="monitor"
-  >
+  <Card title="Dashboard Workflow" href="/en/home/platform/dashboard/guide" icon="monitor">
     Upload, manage, and deliver media through our web interface.
   </Card>
 </Columns>
@@ -145,14 +132,16 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
       );
     }
     ```
+
   </Tab>
 
 <Tab value="Image Gallery">
   ```jsx
   import {Image} from '@rixl/videosdk-react';
 
-  function ImageGallery({images}) {
-  return (
+function ImageGallery({images}) {
+return (
+
   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 {images.map((image) => (
   <div key={image.id} className="aspect-square">
@@ -174,8 +163,9 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
   ```jsx
   import {Feed} from '@rixl/videosdk-react';
 
-  function ContentFeed({feedId, creatorId}) {
-  return (
+function ContentFeed({feedId, creatorId}) {
+return (
+
   <div className="max-w-2xl mx-auto">
   <Feed
   feedId={feedId}
@@ -223,11 +213,15 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
     await fetch(video_presigned_url, {
     method: 'PUT',
     body: file
-  });
+
+});
 
     return video_id;
-  };
-    ```
+
+};
+
+````
+
   </Tab>
 
   <Tab value="Process Image">
@@ -253,7 +247,8 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
     await fetch(presigned_url, {
     method: 'PUT',
     body: imageFile
-  });
+
+});
 
     // Complete upload
     const completeResponse = await fetch('https://api.rixl.com/images/upload/complete', {
@@ -261,16 +256,19 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
     headers: {
     'X-API-Key': 'YOUR_PROJECT_API_KEY',
     'Content-Type': 'application/json'
-  },
-    body: JSON.stringify({
-    image_id: image_id
-  })
-  });
+
+},
+body: JSON.stringify({
+image_id: image_id
+})
+});
 
     const result = await completeResponse.json();
     return result.data;
-  };
-    ```
+
+};
+````
+
   </Tab>
 
   <Tab value="Get Feed Content">
@@ -283,13 +281,17 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
     const response = await fetch(`https://api.rixl.com/feeds/${feedId}?${params}`, {
     headers: {
     'X-API-Key': 'YOUR_PROJECT_API_KEY'
-  }
-  });
+
+}
+});
 
     const result = await response.json();
     return result.data;
-  };
-    ```
+
+};
+
+```
+
   </Tab>
 </Tabs>
 
@@ -328,31 +330,20 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
 Ready to start building? Choose your path:
 
 <Columns cols={3}>
-  <Card
-    title="React SDK Setup"
-    href="/en/sdk/getting-started/overview"
-    icon="layers"
-  >
+  <Card title="React SDK Setup" href="/en/sdk/getting-started/overview" icon="layers">
     Install and configure RIXL components in your React application.
   </Card>
-  <Card
-    title="API Integration"
-    href="/en/api"
-    icon="code"
-  >
+  <Card title="API Integration" href="/en/api" icon="code">
     Build custom workflows with our comprehensive REST API.
   </Card>
-  <Card
-    title="Dashboard Upload"
-    href="/en/home/platform/dashboard/guide"
-    icon="upload"
-  >
+  <Card title="Dashboard Upload" href="/en/home/platform/dashboard/guide" icon="upload">
     Start uploading and delivering media through our web interface.
   </Card>
 </Columns>
 
 <Callout type="tip" title="Need inspiration?">
   Explore our [Best Practices](/en/home/getting-started/best-practices) for performance tips, check out the [Platform
-  Documentation](/en/home/platform) for comprehensive features, or dive into the [API
-  Reference](/en/api) for detailed technical documentation.
+  Documentation](/en/home/platform) for comprehensive features, or dive into the [API Reference](/en/api) for detailed technical
+  documentation.
 </Callout>
+```

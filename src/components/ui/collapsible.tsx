@@ -11,7 +11,11 @@ const subscribe = () => () => {};
 
 const CollapsibleContent = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<typeof Primitive.CollapsibleContent>>(
   ({children, ...props}, ref) => {
-    const mounted = useSyncExternalStore(subscribe, () => true, () => false);
+    const mounted = useSyncExternalStore(
+      subscribe,
+      () => true,
+      () => false
+    );
     const hasRenderedRef = useRef(false);
     const animationsEnabled = hasRenderedRef.current;
     if (mounted) hasRenderedRef.current = true;

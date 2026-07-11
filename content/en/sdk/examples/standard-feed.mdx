@@ -3,23 +3,21 @@ title: "Feed: Standard Feed"
 description: "Simple implementation of an infinite-scrolling feed with automatic video playback"
 ---
 
-import {Feed} from '@/snippets';
-import {Callout} from 'fumadocs-ui/components/callout'
+import {Feed} from "@/snippets";
+import {Callout} from "fumadocs-ui/components/callout";
 
 The standard feed provides a TikTok-style vertical scrolling experience with automatic video playback. This is the most common implementation for social media platforms and content discovery apps.
 
 ## Live Example
+
 <div className="w-full h-[600px]">
-    <Feed
-        feedId="HhUQ5uOQjI"
-        className="w-full h-full"
-    />
+  <Feed feedId="HhUQ5uOQjI" className="w-full h-full" />
 </div>
 
 ## Complete Implementation
 
 ```tsx
-import { Feed } from '@rixl/videosdk-react';
+import {Feed} from "@rixl/videosdk-react";
 
 export default function FeedPage() {
   return (
@@ -30,9 +28,8 @@ export default function FeedPage() {
 }
 ```
 
-
 <Callout type="info">
-    The feed automatically handles infinite scrolling, video playback, and touch gestures. No additional configuration needed.
+  The feed automatically handles infinite scrolling, video playback, and touch gestures. No additional configuration needed.
 </Callout>
 
 ## Centered Layout
@@ -56,53 +53,42 @@ export default function FeedPage() {
 Add simple tab navigation between different feeds:
 
 ```tsx
-import { useState } from 'react';
-import { Feed } from '@rixl/videosdk-react';
+import {useState} from "react";
+import {Feed} from "@rixl/videosdk-react";
 
 export default function FeedWithTabs() {
-  const [activeTab, setActiveTab] = useState('following');
+  const [activeTab, setActiveTab] = useState("following");
 
   return (
     <div className="flex flex-col h-screen bg-black">
       {/* Tabs */}
       <nav className="flex border-b border-gray-800">
         <button
-          onClick={() => setActiveTab('following')}
-          className={`flex-1 py-4 ${
-            activeTab === 'following' ? 'text-white' : 'text-gray-500'
-          }`}
+          onClick={() => setActiveTab("following")}
+          className={`flex-1 py-4 ${activeTab === "following" ? "text-white" : "text-gray-500"}`}
         >
           Following
         </button>
-        <button
-          onClick={() => setActiveTab('foryou')}
-          className={`flex-1 py-4 ${
-            activeTab === 'foryou' ? 'text-white' : 'text-gray-500'
-          }`}
-        >
+        <button onClick={() => setActiveTab("foryou")} className={`flex-1 py-4 ${activeTab === "foryou" ? "text-white" : "text-gray-500"}`}>
           For You
         </button>
       </nav>
 
       {/* Feed */}
       <div className="flex-1">
-        <Feed
-          key={activeTab}
-          feedId={activeTab}
-        />
+        <Feed key={activeTab} feedId={activeTab} />
       </div>
     </div>
   );
 }
 ```
 
-
 ## Localized Feed
 
 Set the `lang` prop to localize feed UI elements like the "More"/"Less" description toggle:
 
 ```tsx
-import { Feed } from '@rixl/videosdk-react';
+import {Feed} from "@rixl/videosdk-react";
 
 export default function LocalizedFeed() {
   return (
@@ -113,16 +99,10 @@ export default function LocalizedFeed() {
 }
 ```
 
-<Callout type="info">
-    **Supported languages**: `en`, `de`, `es`, `fr`, `it`, `pl`, `ru`, `tr`, `uk`. Defaults to `en`.
-</Callout>
+<Callout type="info">**Supported languages**: `en`, `de`, `es`, `fr`, `it`, `pl`, `ru`, `tr`, `uk`. Defaults to `en`.</Callout>
 
 ## Best Practices
 
-<Callout type="info">
-    **Container Height**: Always use `h-screen` or `h-full` on the container for proper scrolling.
-</Callout>
+<Callout type="info">**Container Height**: Always use `h-screen` or `h-full` on the container for proper scrolling.</Callout>
 
-<Callout type="info">
-    **Centered Layout**: Use `mx-auto` with `md:w-2/5 w-[90%]` for a mobile-friendly centered feed.
-</Callout>
+<Callout type="info">**Centered Layout**: Use `mx-auto` with `md:w-2/5 w-[90%]` for a mobile-friendly centered feed.</Callout>

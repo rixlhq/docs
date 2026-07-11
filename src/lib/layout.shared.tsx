@@ -67,10 +67,7 @@ function buildNavLinks(lang: string) {
   ];
 }
 
-export function baseOptionsWithSectionLinks(
-  lang: string,
-  _sectionLinks?: SectionLinks
-): BaseLayoutProps {
+export function baseOptionsWithSectionLinks(lang: string, _sectionLinks?: SectionLinks): BaseLayoutProps {
   // TODO tanstack translations
   // const {t} = getServerTranslations(lang);
   return {

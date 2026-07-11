@@ -3,48 +3,26 @@ title: Video Processing
 description: Automated video transcoding with multiple quality levels and adaptive streaming.
 ---
 
-
-import {Step, Steps} from 'fumadocs-ui/components/steps';
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Step, Steps} from "fumadocs-ui/components/steps";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 import {Callout, Card, Columns} from "@/snippets";
-
 
 Our automated video system converts your uploads into multiple quality levels and streaming formats for smooth playback on all devices.
 
 <Columns cols={3}>
-  <Card
-    title="Quality Tiers"
-    href="/en/home/platform/uploads/videos/quality-tiers"
-    icon="settings"
-  >
+  <Card title="Quality Tiers" href="/en/home/platform/uploads/videos/quality-tiers" icon="settings">
     Choose the right processing tier for your content.
   </Card>
-  <Card
-    title="Supported Formats"
-    href="/en/home/platform/uploads/videos/supported-formats"
-    icon="file-type"
-  >
+  <Card title="Supported Formats" href="/en/home/platform/uploads/videos/supported-formats" icon="file-type">
     Video formats and encoding specifications.
   </Card>
-  <Card
-    title="Processing Pipeline"
-    href="/en/home/platform/uploads/videos-guide"
-    icon="workflow"
-  >
+  <Card title="Processing Pipeline" href="/en/home/platform/uploads/videos-guide" icon="workflow">
     How videos are transcoded and optimized.
   </Card>
-  <Card
-    title="Upload Implementation"
-    href="/en/home/platform/uploads/videos/upload-implementation"
-    icon="code"
-  >
+  <Card title="Upload Implementation" href="/en/home/platform/uploads/videos/upload-implementation" icon="code">
     Code examples for implementing video uploads.
   </Card>
-  <Card
-    title="Monitoring Status"
-    href="/en/home/platform/uploads/videos/monitoring-status"
-    icon="activity"
-  >
+  <Card title="Monitoring Status" href="/en/home/platform/uploads/videos/monitoring-status" icon="activity">
     Track processing progress and handle errors.
   </Card>
 </Columns>
@@ -56,36 +34,31 @@ Our automated video system converts your uploads into multiple quality levels an
     **Analysis & Planning**
 
     We analyze your video to determine the best quality settings and formats for your content.
+
   </Step>
 
   <Step>
     **Multi-Quality Encoding**
 
     Your video is processed into multiple resolutions and quality levels at the same time for faster results.
+
   </Step>
 
   <Step>
     **Streaming Package Creation**
 
     We create streaming formats (HLS/DASH) that automatically adjust quality based on viewer's internet speed.
+
   </Step>
 </Steps>
 
 ## Key Features
 
 <Columns cols={2}>
-  <Card title="Smart Encoding">
-    Automatically optimizes quality while keeping file sizes small using advanced H.265 compression
-  </Card>
-  <Card title="Adaptive Streaming">
-    Creates HLS and DASH formats that adjust video quality in real-time based on connection speed
-  </Card>
-  <Card title="Global Delivery">
-    Distributes your videos to servers worldwide for fast loading anywhere
-  </Card>
-  <Card title="Audio Optimization">
-    Processes audio separately with Opus format for the best sound quality and compression
-  </Card>
+  <Card title="Smart Encoding">Automatically optimizes quality while keeping file sizes small using advanced H.265 compression</Card>
+  <Card title="Adaptive Streaming">Creates HLS and DASH formats that adjust video quality in real-time based on connection speed</Card>
+  <Card title="Global Delivery">Distributes your videos to servers worldwide for fast loading anywhere</Card>
+  <Card title="Audio Optimization">Processes audio separately with Opus format for the best sound quality and compression</Card>
 </Columns>
 
 ## Quality Tiers Overview
@@ -93,7 +66,7 @@ Our automated video system converts your uploads into multiple quality levels an
 Choose the right processing tier for your content needs:
 
 | Tier       | Best For                 | Resolutions       | Features                               | Processing Speed |
-|------------|--------------------------|-------------------|----------------------------------------|------------------|
+| ---------- | ------------------------ | ----------------- | -------------------------------------- | ---------------- |
 | **Basic**  | Standard web content     | 720p, 480p, 240p  | Bandwidth efficient                    | ~1x real-time    |
 | **Shorts** | Mobile & vertical videos | 1080p, 720p, 480p | 60fps support                          | ~1.5x real-time  |
 | **Pro**    | Professional broadcasts  | 4K, 2K, 1080p+    | Premium quality, additional renditions | ~2-3x real-time  |
@@ -103,8 +76,7 @@ For complete specifications and detailed comparisons, see [Quality Tiers documen
 ## Performance Benefits
 
 <Callout type="success">
-  Our H.265 encoding creates files that are 30-50% smaller than older H.264 formats while maintaining the same visual
-  quality.
+  Our H.265 encoding creates files that are 30-50% smaller than older H.264 formats while maintaining the same visual quality.
 </Callout>
 
 <Tabs items={['File Size', 'Upload Handling', 'Streaming']}>
@@ -114,16 +86,14 @@ For complete specifications and detailed comparisons, see [Quality Tiers documen
     - Smart bitrate selection based on content complexity
   </Tab>
 
-  <Tab value="Upload Handling">
-    - Files over 100MB automatically use multipart uploads
-    - Resume capability if uploads are interrupted
-    - Multiple quality versions processed simultaneously for faster delivery
-  </Tab>
+<Tab value="Upload Handling">
+  - Files over 100MB automatically use multipart uploads - Resume capability if uploads are interrupted - Multiple quality versions
+  processed simultaneously for faster delivery
+</Tab>
 
-  <Tab value="Streaming">
-    - 6-second video segments for quick quality switching
-    - Content-aware compression optimizes each scene
-    - Automatic quality adjustment based on viewer's connection speed
-  </Tab>
+<Tab value="Streaming">
+  - 6-second video segments for quick quality switching - Content-aware compression optimizes each scene - Automatic quality adjustment
+  based on viewer's connection speed
+</Tab>
 
 </Tabs>

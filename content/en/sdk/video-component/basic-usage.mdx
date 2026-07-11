@@ -3,13 +3,12 @@ title: "Basic Usage"
 description: "Learn how to implement the Video component with common patterns and use cases"
 ---
 
-
 import {Callout} from "@/snippets";
 
 ## Importing the Video Component
 
 ```tsx
-import { Video } from '@rixl/videosdk-react';
+import {Video} from "@rixl/videosdk-react";
 ```
 
 ## Essential Props
@@ -28,7 +27,7 @@ Every Video component needs at minimum:
 Here's a basic implementation with common settings:
 
 ```tsx
-import { Video } from '@rixl/videosdk-react';
+import {Video} from "@rixl/videosdk-react";
 
 function BasicVideoPlayer() {
   return (
@@ -50,31 +49,32 @@ function BasicVideoPlayer() {
 
 ### Hero Video (Autoplay Background)
 
-   ```tsx
+```tsx
 function HeroVideo() {
-    return (
-        <section className="relative h-screen overflow-hidden">
-            <Video
-                id="D3OCjdLP60"
-                className="absolute inset-0 w-full h-full object-cover"
-                autoPlay={true}
-                muted={true}
-                loop={true}
-                progressBar={false}
-                allowPlayPause={false}
-                allowFullscreen={false}
-                theme={"hideUI"}
-            />
-            <div className="relative z-10 flex items-center justify-center h-full">
-                <h1 className="text-6xl font-bold text-white">Welcome</h1>
-            </div>
-        </section>
-    );
+  return (
+    <section className="relative h-screen overflow-hidden">
+      <Video
+        id="D3OCjdLP60"
+        className="absolute inset-0 w-full h-full object-cover"
+        autoPlay={true}
+        muted={true}
+        loop={true}
+        progressBar={false}
+        allowPlayPause={false}
+        allowFullscreen={false}
+        theme={"hideUI"}
+      />
+      <div className="relative z-10 flex items-center justify-center h-full">
+        <h1 className="text-6xl font-bold text-white">Welcome</h1>
+      </div>
+    </section>
+  );
 }
 ```
 
 <Callout type="tip">
-    **See it in action:** Check out the [AutoPlay Background video](/en/sdk/examples/autoplay-background) for a complete background video autoplay implementation.
+  **See it in action:** Check out the [AutoPlay Background video](/en/sdk/examples/autoplay-background) for a complete background video
+  autoplay implementation.
 </Callout>
 
 ### Content Video (Standard Player)
@@ -95,27 +95,26 @@ function ContentVideo() {
         volume={1.0}
       />
 
-      <p className="text-gray-600">
-        Watch our comprehensive product demonstration...
-      </p>
+      <p className="text-gray-600">Watch our comprehensive product demonstration...</p>
     </article>
   );
 }
 ```
 
 <Callout type="tip">
-    **See it in action:** Check out the [Standard player video example](/en/sdk/examples/standard-player) for a complete standard video player implementation.
+  **See it in action:** Check out the [Standard player video example](/en/sdk/examples/standard-player) for a complete standard video player
+  implementation.
 </Callout>
 
 ### Video Gallery/Playlist
 
 ```tsx
-import { useState } from 'react';
+import {useState} from "react";
 
 const videoList = [
-  { id: 'D3OCjdLP60', title: 'Introduction', duration: '2:30' },
-  { id: 'ABC123XYZ', title: 'Getting Started', duration: '5:45' },
-  { id: 'DEF456UVW', title: 'Advanced Features', duration: '8:15' }
+  {id: "D3OCjdLP60", title: "Introduction", duration: "2:30"},
+  {id: "ABC123XYZ", title: "Getting Started", duration: "5:45"},
+  {id: "DEF456UVW", title: "Advanced Features", duration: "8:15"},
 ];
 
 function VideoGallery() {
@@ -144,9 +143,7 @@ function VideoGallery() {
             key={video.id}
             onClick={() => setCurrentVideo(video)}
             className={`w-full p-3 text-left rounded-lg border ${
-              currentVideo.id === video.id
-                ? 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:bg-gray-50'
+              currentVideo.id === video.id ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50"
             }`}
           >
             <div className="font-medium">{video.title}</div>
@@ -166,10 +163,10 @@ function VideoGallery() {
 </Callout>
 
 <Callout type="info">
-  **Autoplay**: The SDK handles browser autoplay compliance automatically — just use `autoPlay={true}`. The video starts muted until the user interacts, and sound controls stay visible. Only add `muted={true}` for background videos where audio should be permanently disabled.
+  **Autoplay**: The SDK handles browser autoplay compliance automatically — just use `autoPlay={true}`. The video starts muted until the
+  user interacts, and sound controls stay visible. Only add `muted={true}` for background videos where audio should be permanently disabled.
 </Callout>
 
 <Callout type="info">
-  **Performance**: For video galleries, use the `key` prop to ensure proper component re-initialization when switching
-  videos.
+  **Performance**: For video galleries, use the `key` prop to ensure proper component re-initialization when switching videos.
 </Callout>

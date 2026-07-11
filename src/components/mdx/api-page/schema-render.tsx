@@ -33,9 +33,7 @@ export async function buildRenderedSchemaProperties(
         schema: propertySchema,
         required,
         description: propertySchema.description ? await ctx.renderMarkdown(propertySchema.description) : null,
-        children: canRecurse
-          ? await buildRenderedSchemaProperties(propertySchema, ctx, {depth: depth + 1, seen: nextSeen})
-          : [],
+        children: canRecurse ? await buildRenderedSchemaProperties(propertySchema, ctx, {depth: depth + 1, seen: nextSeen}) : [],
       };
     })
   );

@@ -3,67 +3,52 @@ title: Create Feed
 description: Step-by-step guide to creating new feeds in the dashboard.
 ---
 
-
-import {Callout} from 'fumadocs-ui/components/callout'
-import {Step, Steps} from 'fumadocs-ui/components/steps'
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs'
+import {Callout} from "fumadocs-ui/components/callout";
+import {Step, Steps} from "fumadocs-ui/components/steps";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 ## Feed Creation Workflow
 
 <Callout type="info">
-  Before creating feeds, make sure you have
-  [created a project](/en/home/platform/dashboard/projects/create-project).
-  Feeds are always linked to projects.
+  Before creating feeds, make sure you have [created a project](/en/home/platform/dashboard/projects/create-project). Feeds are always
+  linked to projects.
 </Callout>
-
 
 <Steps>
   <Step>
-    **Access Feed Creation**
-    Navigate to the [**Feeds** section](https://dash.rixl.com/feeds) from your project dashboard and click **Create
+    **Access Feed Creation** Navigate to the [**Feeds** section](https://dash.rixl.com/feeds) from your project dashboard and click **Create
     Feed**.
   </Step>
-  <Step>
-    **Select Feed Type**
-    Choose from available feed types (Video, Image, Mixed, Dynamic) depending on your content strategy.
-  </Step>
+  <Step>**Select Feed Type** Choose from available feed types (Video, Image, Mixed, Dynamic) depending on your content strategy.</Step>
   <Step>
     **Configure Feed Settings**
-    <Tabs items={['Basic Settings', 'Visibility Options']}>
+    <Tabs items={["Basic Settings", "Visibility Options"]}>
       <Tab value="Basic Settings">
-        - **Feed Name**: Give your feed a clear identifier
-        - **Description**: Provide context or purpose
-        - **Project Association**: Select the project the feed belongs to
-        - **Feed Type**: Choose or confirm the type of feed
+        - **Feed Name**: Give your feed a clear identifier - **Description**: Provide context or purpose - **Project Association**: Select
+        the project the feed belongs to - **Feed Type**: Choose or confirm the type of feed
       </Tab>
       <Tab value="Visibility Options">
-        - **Public**: Available to anyone with the link
-        - **Unlisted**: Hidden but accessible via direct URL
-        - **Private**: Restricted to project members only
+        - **Public**: Available to anyone with the link - **Unlisted**: Hidden but accessible via direct URL - **Private**: Restricted to
+        project members only
       </Tab>
     </Tabs>
   </Step>
   <Step>
-    **Define Rules & Organization**
-    - Filtering (tags, categories, metadata)
-    - Sorting (date, popularity, manual order)
-    - Content moderation or approval workflows
-    - Dynamic inclusion rules (e.g., auto-add new uploads by tag)
+    **Define Rules & Organization** - Filtering (tags, categories, metadata) - Sorting (date, popularity, manual order) - Content moderation
+    or approval workflows - Dynamic inclusion rules (e.g., auto-add new uploads by tag)
   </Step>
   <Step>
-    **Finalize & Deploy**
-    Review your configuration, then click **Create**.
-    Once created, the dashboard will generate **API endpoints** and **embed codes** for distribution.
+    **Finalize & Deploy** Review your configuration, then click **Create**. Once created, the dashboard will generate **API endpoints** and
+    **embed codes** for distribution.
   </Step>
 </Steps>
 
-<Callout type="info">
-  Feeds are always linked to a project. Make sure your project is set up before creating feeds.
-</Callout>
+<Callout type="info">Feeds are always linked to a project. Make sure your project is set up before creating feeds.</Callout>
 
 ## Content Management During Creation
 
 **Content Addition Methods:**
+
 - **Manual Addition**: Pick individual items from the media library
 - **Bulk Operations**: Use filters to select multiple items at once
 - **Dynamic Rules**: Automate inclusion based on metadata or upload behavior
@@ -71,6 +56,7 @@ import {Tab, Tabs} from 'fumadocs-ui/components/tabs'
 ## Next Steps After Creation
 
 Once your feed is created, you can:
+
 - Configure **display settings** and **permissions**
 - Generate **embed codes** for websites and apps
 - Access feeds programmatically via the API

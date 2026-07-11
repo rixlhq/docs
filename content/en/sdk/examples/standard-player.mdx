@@ -3,38 +3,39 @@ title: "Video: Standard Video Player"
 description: "Complete guide to the full-featured video player with all controls, quality selection, subtitles, and advanced features"
 ---
 
-import {Video} from '@/snippets';
-import {Callout} from 'fumadocs-ui/components/callout'
-import {Tabs, TabsContent, TabsList, TabsTrigger} from 'fumadocs-ui/components/tabs'
+import {Video} from "@/snippets";
+import {Callout} from "fumadocs-ui/components/callout";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/tabs";
 
 The standard video player provides a complete, professional media experience with all features enabled. This is the most common implementation for content platforms, educational sites, and any application requiring full video playback capabilities.
 
 ## Live Example
+
 <div className="w-full h-[500px]">
-    <Video
-        className="w-fit h-fit bg-transparent"
-        muted={false}
-        progressBar={true}
-        loop={true}
-        autoPlay={false}
-        allowPlayPause={true}
-        allowFullscreen={true}
-        allowPictureInPicture={true}
-        theme={"default"}
-        volume={1.0}
-        heatmap={true}
-        resumeProgress={true}
-    />
+  <Video
+    className="w-fit h-fit bg-transparent"
+    muted={false}
+    progressBar={true}
+    loop={true}
+    autoPlay={false}
+    allowPlayPause={true}
+    allowFullscreen={true}
+    allowPictureInPicture={true}
+    theme={"default"}
+    volume={1.0}
+    heatmap={true}
+    resumeProgress={true}
+  />
 </div>
 
 ## Complete Implementation
 
 ```tsx
-import { Video } from '@rixl/videosdk-react';
+import {Video} from "@rixl/videosdk-react";
 
 function StandardVideoPlayer() {
   return (
-   <div className="w-full h-[500px]">
+    <div className="w-full h-[500px]">
       <Video
         id="your-video-id"
         className="w-fit h-fit bg-transparent"
@@ -66,6 +67,7 @@ function StandardVideoPlayer() {
 The progress bar allows users to see playback progress and seek to any point in the video.
 
 **Key Features:**
+
 - **Visual Timeline**: Shows current position and buffered content
 - **Click to Seek**: Users can click anywhere on the bar to jump to that position
 - **Buffer Indicator**: Shows how much video has been downloaded
@@ -78,15 +80,14 @@ The progress bar allows users to see playback progress and seek to any point in 
 />
 ```
 
-<Callout type="info">
-    The progress bar automatically updates in real-time as the video plays and shows buffering status.
-</Callout>
+<Callout type="info">The progress bar automatically updates in real-time as the video plays and shows buffering status.</Callout>
 
 ### Play/Pause Controls
 
 Users can control playback with multiple methods:
 
 **Control Methods:**
+
 - **Play/Pause Button**: Click the button in the control bar
 - **Video Click**: Click anywhere on the video to toggle play/pause
 - **Spacebar**: Press spacebar for quick play/pause
@@ -101,8 +102,7 @@ Users can control playback with multiple methods:
 ```
 
 <Callout type="warning">
-    If you set `allowPlayPause={false}`, users won't be able to control playback. This is useful for background videos
-    or kiosk displays.
+  If you set `allowPlayPause={false}`, users won't be able to control playback. This is useful for background videos or kiosk displays.
 </Callout>
 
 ### Volume Control
@@ -110,6 +110,7 @@ Users can control playback with multiple methods:
 Complete audio management with visual feedback:
 
 **Features:**
+
 - **Volume Slider**: Adjust from 0% to 100%
 - **Mute Toggle**: Quick mute/unmute button
 - **Volume Persistence**: Settings remembered across page loads
@@ -124,6 +125,7 @@ Complete audio management with visual feedback:
 ```
 
 **Volume Settings:**
+
 - `volume={1.0}` - Full volume (100%)
 - `volume={0.5}` - Half volume (50%)
 - `volume={0.0}` - Silent (equivalent to muted)
@@ -133,6 +135,7 @@ Complete audio management with visual feedback:
 Adaptive streaming with manual quality control:
 
 **Quality Options:**
+
 - **Auto (Recommended)**: Automatically adjusts based on connection speed
 - **Other options**: Depends on video
 
@@ -145,8 +148,7 @@ Adaptive streaming with manual quality control:
 ```
 
 <Callout type="info">
-    Users can always override quality settings using the quality selector in the player controls, regardless of the
-    initial setting.
+  Users can always override quality settings using the quality selector in the player controls, regardless of the initial setting.
 </Callout>
 
 ### Subtitle Support
@@ -154,6 +156,7 @@ Adaptive streaming with manual quality control:
 Multi-language subtitles with extensive customization:
 
 **Features:**
+
 - **Multiple Languages**: Switch between available subtitle tracks
 - **On/Off Toggle**: Easy enable/disable
 - **Custom Styling**: Font, size, color, and background
@@ -162,6 +165,7 @@ Multi-language subtitles with extensive customization:
 **Subtitle Customization Options:**
 
 Users can customize:
+
 - **Font Family**: Monospaced Serif, Sans Serif, etc.
 - **Font Size**: 50% to 200%
 - **Font Color**: White, Yellow, Black, and more
@@ -170,8 +174,8 @@ Users can customize:
 - **Window Settings**: Additional styling options
 
 <Callout type="default">
-    Subtitle availability depends on the video content. If subtitles aren't available for a video, the subtitle controls
-    will be hidden automatically.
+  Subtitle availability depends on the video content. If subtitles aren't available for a video, the subtitle controls will be hidden
+  automatically.
 </Callout>
 
 ### Audio Track Selection
@@ -179,24 +183,24 @@ Users can customize:
 Switch between different audio options:
 
 **Available Tracks:**
+
 - **Primary Language Tracks**: Main audio in different languages
 - **Commentary Tracks**: Director's commentary, behind-the-scenes
 - **Descriptive Audio**: For visually impaired users
 - **Dubbed Versions**: Multiple language dubs
 
 **Example Tracks:**
+
 - English (Original)
 - Spanish
 - French
 - Commentary (English)
 - Descriptive Audio
 
-<Callout type="info">
-    Audio tracks switch instantly without interrupting playback. The selected track persists across page reloads.
-</Callout>
+<Callout type="info">Audio tracks switch instantly without interrupting playback. The selected track persists across page reloads.</Callout>
 <Callout type="default">
-    Audio track icon availability depends on the video content. If Audio tracks aren't available for a video, the
-    control will be hidden automatically.
+  Audio track icon availability depends on the video content. If Audio tracks aren't available for a video, the control will be hidden
+  automatically.
 </Callout>
 
 ### Fullscreen Mode
@@ -204,10 +208,12 @@ Switch between different audio options:
 Immersive viewing experience:
 
 **Entry Methods:**
+
 - **Fullscreen Button**: Click the icon in controls
 - **F Key**: Keyboard shortcut
 
 **Fullscreen Features:**
+
 - **Auto-hide Controls**: Controls fade after inactivity
 - **Hover to Show**: Move mouse to reveal controls
 - **All Features Available**: Quality, subtitles, etc. work in fullscreen
@@ -220,6 +226,7 @@ Immersive viewing experience:
 ```
 
 **Exit Fullscreen:**
+
 - **ESC Key**: Quick exit
 - **Fullscreen Button**: Click again
 - **F key**: Click again
@@ -229,6 +236,7 @@ Immersive viewing experience:
 Floating video window for multitasking:
 
 **Features:**
+
 - **Persistent Playback**: Video continues while browsing
 - **Resizable Window**: Drag corners to resize
 - **Moveable**: Position anywhere on screen
@@ -242,13 +250,12 @@ Floating video window for multitasking:
 ```
 
 **Use Cases:**
+
 - Video tutorials while coding
 - Webinars while taking notes
 - Entertainment while working
 
-<Callout type="info">
-    Press the **I** key to quickly toggle Picture-in-Picture mode.
-</Callout>
+<Callout type="info">Press the **I** key to quickly toggle Picture-in-Picture mode.</Callout>
 
 ### Engagement Heatmap
 
@@ -262,12 +269,13 @@ Display viewer engagement patterns directly on the progress bar. The heatmap sho
 ```
 
 **Features:**
+
 - **Visual Overlay**: Brighter areas on the progress bar indicate higher viewership
 - **Real-time Data**: Based on aggregated viewer behavior
 - **Non-intrusive**: Blends naturally with the progress bar
 
 <Callout type="info">
-    Heatmap data requires sufficient view history. New videos may not display heatmap data until enough views have been collected.
+  Heatmap data requires sufficient view history. New videos may not display heatmap data until enough views have been collected.
 </Callout>
 
 ### Resume Progress
@@ -282,13 +290,15 @@ Automatically remember where users stopped watching and resume from that point o
 ```
 
 **Features:**
+
 - **Automatic Save**: Progress is saved as the video plays
 - **Per-Video Storage**: Each video's progress is tracked independently
 - **Local Storage**: Progress is stored in the browser
 - **Seamless Resume**: Video starts from the saved position automatically
 
 <Callout type="info">
-    Resume progress is especially useful for long-form content like tutorials, courses, or documentaries where users may watch in multiple sessions.
+  Resume progress is especially useful for long-form content like tutorials, courses, or documentaries where users may watch in multiple
+  sessions.
 </Callout>
 
 ## Theming Options
@@ -341,32 +351,31 @@ The player comes with three built-in themes:
         **Features:**
         - Hides all Controls
     </TabsContent>
+
 </Tabs>
 
 ## Keyboard Shortcuts
 
 The standard player supports comprehensive keyboard controls:
 
-| Action | Shortcut | Alternative |
-|--------|----------|-------------|
-| Play/Pause | `Spacebar` | `K` |
-| Seek Forward 5s | `→` | - |
-| Seek Backward 5s | `←` | - |
-| Seek Forward 10s | `L` | - |
-| Seek Backward 10s | `J` | - |
-| Volume Up | `↑` | - |
-| Volume Down | `↓` | - |
-| Mute/Unmute | `M` | - |
-| Fullscreen | `F` | - |
-| Picture-in-Picture | `I` | - |
-| Jump to 0% | `0` | - |
-| Jump to 10% | `1` | - |
-| Jump to 50% | `5` | - |
-| Jump to 90% | `9` | - |
+| Action             | Shortcut   | Alternative |
+| ------------------ | ---------- | ----------- |
+| Play/Pause         | `Spacebar` | `K`         |
+| Seek Forward 5s    | `→`        | -           |
+| Seek Backward 5s   | `←`        | -           |
+| Seek Forward 10s   | `L`        | -           |
+| Seek Backward 10s  | `J`        | -           |
+| Volume Up          | `↑`        | -           |
+| Volume Down        | `↓`        | -           |
+| Mute/Unmute        | `M`        | -           |
+| Fullscreen         | `F`        | -           |
+| Picture-in-Picture | `I`        | -           |
+| Jump to 0%         | `0`        | -           |
+| Jump to 10%        | `1`        | -           |
+| Jump to 50%        | `5`        | -           |
+| Jump to 90%        | `9`        | -           |
 
-<Callout type="info">
-    All keyboard shortcuts work when the video player has focus. Click on the video to focus it.
-</Callout>
+<Callout type="info">All keyboard shortcuts work when the video player has focus. Click on the video to focus it.</Callout>
 
 ## Responsive Design
 
@@ -374,7 +383,7 @@ Make your video player adapt to different screen sizes:
 
 ```tsx
 function ResponsivePlayer() {
-    const isMobile = true;
+  const isMobile = true;
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4">
@@ -409,14 +418,13 @@ function ResponsivePlayer() {
 ## Best Practices
 
 <Callout type="info">
-    **Default Settings**: Start with auto quality and default theme for the best user experience. Users can customize
-    from there.
+  **Default Settings**: Start with auto quality and default theme for the best user experience. Users can customize from there.
 </Callout>
 
 <Callout type="info">
-    **Autoplay Policy**: Just use `autoPlay={true}` — the SDK handles browser compliance by starting muted until the user interacts. Only add `muted={true}` if you want to permanently disable audio.
+  **Autoplay Policy**: Just use `autoPlay={true}` — the SDK handles browser compliance by starting muted until the user interacts. Only add
+  `muted={true}` if you want to permanently disable audio.
 </Callout>
-
 
 ## Common Configurations
 
@@ -447,7 +455,6 @@ function ResponsivePlayer() {
   allowFullscreen={true}
   subtitles={true}
   volume={0.8}
-
 />
 ```
 
@@ -470,11 +477,7 @@ function ResponsivePlayer() {
 
 ```tsx
 // The SDK handles autoplay compliance automatically
-<Video
-  id="your-video-id"
-  autoPlay={true}
-  onError={(error) => console.error('Playback error:', error)}
-/>
+<Video id="your-video-id" autoPlay={true} onError={(error) => console.error("Playback error:", error)} />
 ```
 
 ### Quality Issues
@@ -484,7 +487,7 @@ function ResponsivePlayer() {
 <Video
   id="your-video-id"
   quality="720p" // Lock quality
-  onQualityChange={(q) => console.log('Quality changed to:', q)}
+  onQualityChange={(q) => console.log("Quality changed to:", q)}
 />
 ```
 

@@ -3,17 +3,16 @@ title: Posts
 description: Create social media-style posts by uploading media directly to feeds.
 ---
 
-
-import {Callout} from '@/snippets';
+import {Callout} from "@/snippets";
 
 Feed posts combine media uploads with social metadata to create rich content for structured feeds.
 This process uploads media and creates the post simultaneously.
 
-[//]  # (// TODO: Add a screenshot of the post creation interface.)
+[//] # (// TODO: Add a screenshot of the post creation interface.)
 
 <Callout type="info">
-  Feed posts require an existing feed. Learn about [creating feeds](/en/home/platform/dashboard/feeds/overview) if you haven't
-  set one up yet.
+  Feed posts require an existing feed. Learn about [creating feeds](/en/home/platform/dashboard/feeds/overview) if you haven't set one up
+  yet.
 </Callout>
 
 ## Post Types
@@ -31,6 +30,7 @@ Posts combine media upload with feed creation in a single streamlined process:
     ### Initialize Upload
 
     Use the `/feeds/{feedId}/upload/init` endpoint to create a new post. Specify the feed ID where you want to publish.
+
   </Step>
 
   <Step>
@@ -38,18 +38,21 @@ Posts combine media upload with feed creation in a single streamlined process:
 
     Include content type (image/video), file name, format, creator ID, and description. Optionally set video quality and
     image format.
+
   </Step>
 
   <Step>
     ### Upload Media
 
     Use the returned presigned URLs to upload your media files directly to cloud storage.
+
   </Step>
 
   <Step>
     ### Confirm Upload
 
     Call the completion endpoint to finalize the post and trigger processing.
+
   </Step>
 </Steps>
 
@@ -104,6 +107,7 @@ Posts combine media upload with feed creation in a single streamlined process:
       "upload_expires": 1640995200
     }
     ```
+
   </Tab>
 
   <Tab value="Image Post">
@@ -135,6 +139,7 @@ Posts combine media upload with feed creation in a single streamlined process:
       "upload_expires": 1640995200
     }
     ```
+
   </Tab>
 </Tabs>
 
@@ -173,6 +178,7 @@ Use the provided presigned URLs to upload your files directly to storage:
     <Callout type="tip">
       You can upload a custom poster image. If you don't, RIXL will automatically generate one from the video.
     </Callout>
+
   </Tab>
 </Tabs>
 
@@ -196,8 +202,7 @@ curl -f -s -S \
 ```
 
 <Callout type="success">
-  A successful response will return the complete Post object with all its details, confirming your new post is live in
-  the feed.
+  A successful response will return the complete Post object with all its details, confirming your new post is live in the feed.
 </Callout>
 
 ## Managing Your Posts
@@ -248,9 +253,7 @@ curl -f -s -S \
   --max-time 30
 ```
 
-<Callout type="warn">
-  Deleting a post will permanently remove it from the feed and cannot be undone.
-</Callout>
+<Callout type="warn">Deleting a post will permanently remove it from the feed and cannot be undone.</Callout>
 
 ## Best Practices
 
