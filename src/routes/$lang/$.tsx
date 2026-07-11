@@ -1,15 +1,16 @@
 import {createFileRoute} from "@tanstack/react-router";
-import {getPageImage} from "@/lib/images";
-import {DocsBody, DocsDescription, DocsPage, DocsTitle} from "fumadocs-ui/page";
-import browserCollections from "fumadocs-mdx:collections/browser";
-import SharedLayout from "@/components/layout/shared/shared-layout";
-import {getMDXComponents} from "@/components/mdx-components";
-import {Footer} from "@/components/layout/footer/footer";
-import {LLMCopyButton} from "@/components/page-actions/llm-copy-button";
-import {loader} from "@/lib/server/docs-loader";
-import {Suspense} from "react";
+import type {TOCItemType} from "fumadocs-core/toc";
 import {useFumadocsLoader} from "fumadocs-core/source/client";
+import browserCollections from "fumadocs-mdx:collections/browser";
+import React, {Suspense} from "react";
+import SharedLayout from "@/components/layout/shared/shared-layout";
+import {Footer} from "@/components/layout/footer/footer";
 import {StaticApiHtml} from "@/components/mdx/static-api-html";
+import {getMDXComponents} from "@/components/mdx-components";
+import {LLMCopyButton} from "@/components/page-actions/llm-copy-button";
+import {getPageImage} from "@/lib/images";
+import {loader, type DocsLoaderData} from "@/lib/server/docs-loader";
+import {DocsBody, DocsDescription, DocsPage, DocsTitle} from "fumadocs-ui/page";
 
 export const Route = createFileRoute("/$lang/$")({
   component: Page,
@@ -22,9 +23,9 @@ export const Route = createFileRoute("/$lang/$")({
     }
     return data;
   },
-  head: ({loaderData: _loaderData}) => {
-    if (!_loaderData) return {};
-    const {page} = _loaderData;
+  head: ({loaderData}) => {
+    if (!loaderData) return {};
+    const {page} = loaderData;
     const appName = "Rixl";
     const imageUrl = getPageImage(page.slugs, page.locale).url;
 
@@ -47,7 +48,7 @@ export const Route = createFileRoute("/$lang/$")({
 });
 
 interface LoadedDoc {
-  toc: unknown;
+  toc: TOCItemType[];
   frontmatter: {
     title?: string;
     description?: string;
@@ -57,38 +58,16 @@ interface LoadedDoc {
   }>;
 }
 
-interface StaticOpenApiPage {
-  toc: unknown;
-  html: string;
-}
-
 const clientLoader = browserCollections.docs.createClientLoader({
   component: DocsContent,
 });
 
 function Page() {
   const {lang, _splat} = Route.useParams();
-  const loaderData = Route.useLoaderData() as {
-    tree: unknown;
-    sectionLinks: {
-      home: string;
-      sdk: string;
-      api: string;
-    };
-    path: string;
-    page: {
-      slugs: string[];
-      locale: string;
-      data: {
-        title: string;
-        description: string;
-      };
-    };
-    apiPage?: StaticOpenApiPage;
-  };
-  const data = useFumadocsLoader(loaderData);
-  const isApiPage = !!loaderData.apiPage;
-  const Content = isApiPage ? undefined : clientLoader.getComponent(loaderData.path);
+  const loaderData = Route.useLoaderData();
+  const data = useFumadocsLoader(loaderData) as {tree: object};
+  const isApiPage = Boolean(loaderData.apiPage);
+  const Content = isApiPage ? null : (clientLoader.getComponent(loaderData.path) as (() => React.ReactElement) | null);
   const section = _splat?.split("/")[0] ?? "root";
 
   return (
@@ -99,7 +78,7 @@ function Page() {
       treeKey={`${lang}:${section}`}
       isApiPage={isApiPage}
     >
-      {isApiPage ? <ApiContent apiPage={loaderData.apiPage} page={loaderData.page} /> : Content ? <Content /> : null}
+      {isApiPage && loaderData.apiPage ? <ApiContent apiPage={loaderData.apiPage} page={loaderData.page} /> : Content ? <Content /> : null}
     </SharedLayout>
   );
 }
@@ -108,15 +87,8 @@ function ApiContent({
   apiPage,
   page,
 }: {
-  apiPage?: StaticOpenApiPage;
-  page: {
-    slugs: string[];
-    locale: string;
-    data: {
-      title: string;
-      description: string;
-    };
-  };
+  apiPage?: DocsLoaderData["apiPage"];
+  page: DocsLoaderData["page"];
 }) {
   const {lang, _splat} = Route.useParams();
   if (!apiPage) return null;
@@ -128,7 +100,7 @@ function ApiContent({
     <DocsPage
       className="api-docs-page max-w-[1880px] pt-3 md:pt-4 xl:pt-5 md:px-6 xl:px-8"
       full={false}
-      toc={(apiPage.toc as never) ?? []}
+      toc={[]}
       tableOfContent={{
         enabled: false,
       }}
@@ -157,37 +129,31 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
   const githubPath = pageSlug ? `content/${lang}/${pageSlug}` : `content/${lang}`;
 
   return (
-    <>
-      <DocsPage
-        className="pt-6 md:pt-8 xl:pt-10 md:px-7 xl:px-10"
-        full={false}
-        toc={toc}
-        footer={{
-          children: <Footer lang={lang} />,
-        }}
-      >
-        <header className="relative space-y-2">
-          <div className="space-y-2.5">
-            <p className="text-sm font-medium text-fd-primary">{category}</p>
+    <DocsPage
+      className="pt-6 md:pt-8 xl:pt-10 md:px-7 xl:px-10"
+      full={false}
+      toc={toc}
+      footer={{
+        children: <Footer lang={lang} />,
+      }}
+    >
+      <header className="relative space-y-2">
+        <div className="space-y-2.5">
+          <p className="text-sm font-medium text-fd-primary">{category}</p>
 
-            <div className="flex items-center justify-between gap-2">
-              <DocsTitle>{frontmatter.title}</DocsTitle>
-              <LLMCopyButton markdownUrl={markdownPath} githubUrl={`https://github.com/qeeqez/docs/tree/main/${githubPath}`} />
-            </div>
+          <div className="flex items-center justify-between gap-2">
+            <DocsTitle>{frontmatter.title}</DocsTitle>
+            <LLMCopyButton markdownUrl={markdownPath} githubUrl={`https://github.com/qeeqez/docs/tree/main/${githubPath}`} />
           </div>
-          <DocsDescription>{frontmatter.description}</DocsDescription>
-        </header>
-        <DocsBody>
-          <Suspense fallback={null}>
-            <MDX
-              components={getMDXComponents({
-                // a: createRelativeLink(source, page), TODO keke
-              })}
-            />
-          </Suspense>
-        </DocsBody>
-      </DocsPage>
-    </>
+        </div>
+        <DocsDescription>{frontmatter.description}</DocsDescription>
+      </header>
+      <DocsBody>
+        <Suspense fallback={null}>
+          <MDX components={getMDXComponents({})} />
+        </Suspense>
+      </DocsBody>
+    </DocsPage>
   );
 }
 

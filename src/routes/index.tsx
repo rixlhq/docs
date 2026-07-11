@@ -3,7 +3,11 @@ import {createFileRoute, redirect} from "@tanstack/react-router";
 export const Route = createFileRoute("/")({
   beforeLoad: () => {
     throw redirect({
-      to: "/en/home/getting-started/overview",
+      to: "/$lang/$",
+      params: {
+        lang: "en",
+        _splat: "home/getting-started/overview",
+      },
     });
   },
 });

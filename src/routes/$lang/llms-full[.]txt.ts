@@ -1,4 +1,13 @@
 import {createFileRoute} from "@tanstack/react-router";
+import type {LLMPage} from "@/lib/get-llm-text/types";
+
+function isSupportedPage(page: unknown): page is LLMPage & {locale?: string} {
+  if (!page || typeof page !== "object") return false;
+  const data = (page as {data?: LLMPage["data"]}).data;
+  if (!data || typeof data !== "object") return false;
+
+  return typeof data.getText === "function" || (typeof data.getAPIPageProps === "function" && typeof data.getSchema === "function");
+}
 
 export const Route = createFileRoute("/$lang/llms-full.txt")({
   server: {
@@ -7,17 +16,8 @@ export const Route = createFileRoute("/$lang/llms-full.txt")({
         const [{getLLMText}, {source}] = await Promise.all([import("@/lib/get-llm-text/index.server"), import("@/lib/source.server")]);
         const scan = source
           .getPages()
-          .filter((page) => {
-            if (page.locale !== params.lang) return false;
-
-            const hasMarkdownText = typeof page.data.getText === "function";
-            const hasOpenApiData =
-              typeof (page.data as {getAPIPageProps?: unknown}).getAPIPageProps === "function" &&
-              typeof (page.data as {getSchema?: unknown}).getSchema === "function";
-
-            return hasMarkdownText || hasOpenApiData;
-          })
-          .map((page) => getLLMText(page as Parameters<typeof getLLMText>[0]));
+          .filter((page) => page.locale === params.lang && isSupportedPage(page))
+          .map((page) => getLLMText(page));
         const scanned = await Promise.all(scan);
         return new Response(scanned.join("\n\n"), {
           headers: {
