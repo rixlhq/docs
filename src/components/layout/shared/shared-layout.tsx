@@ -1,4 +1,5 @@
 import {DocsLayout} from "fumadocs-ui/layouts/docs";
+import type {DocsLayoutProps} from "fumadocs-ui/layouts/docs";
 import {HomeLayout} from "fumadocs-ui/layouts/home";
 import {ReactNode} from "react";
 import {baseOptions} from "@/lib/layout.shared";
@@ -40,7 +41,7 @@ function getLayoutWidthClasses(isApiPage: boolean): LayoutWidthClasses {
   };
 }
 
-function buildDocsLayoutProps({tree, options, docsLayoutWidthClass, searchToggle, sidebar}: DocsLayoutPropsConfig) {
+function buildDocsLayoutProps({tree, options, docsLayoutWidthClass, searchToggle, sidebar}: DocsLayoutPropsConfig): DocsLayoutProps {
   return {
     tree,
     ...options,
@@ -59,6 +60,7 @@ function buildDocsLayoutProps({tree, options, docsLayoutWidthClass, searchToggle
     themeSwitch: {
       enabled: false,
     },
+    tabs: false,
     sidebar: {
       enabled: sidebar,
       footer: null,
