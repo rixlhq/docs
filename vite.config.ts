@@ -1,5 +1,5 @@
 import path from "node:path";
-import {defineConfig} from "vite";
+import {defineConfig, lazyPlugins} from "vite-plus";
 import {tanstackStart} from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -29,7 +29,37 @@ const sectionRootRedirectPages = i18n.languages.flatMap((lang) => [
 ]);
 
 export default defineConfig({
-  plugins: [
+  fmt: {
+    printWidth: 140,
+    tabWidth: 2,
+    useTabs: false,
+    semi: true,
+    singleQuote: false,
+    trailingComma: "es5",
+    arrowParens: "always",
+    bracketSpacing: false,
+    bracketSameLine: false,
+    endOfLine: "lf",
+  },
+  lint: {
+    rules: {
+      "react/react-in-jsx-scope": "off",
+      "typescript/no-explicit-any": "warn",
+      "eslint/complexity": ["error", {max: 10}],
+      "eslint/max-lines-per-function": ["error", {max: 50, skipComments: true}],
+      "eslint/max-lines": ["error", {max: 250, skipBlankLines: true, skipComments: true}],
+      "eslint/max-params": ["error", 3],
+      "eslint/max-depth": ["error", 3],
+      "eslint/max-statements": ["error", 25],
+      "eslint/max-classes-per-file": ["error", 1],
+      "vite-plus/prefer-vite-plus-imports": "error",
+    },
+    plugins: ["react", "react-perf", "typescript", "jsx-a11y"],
+    ignorePatterns: ["*.html", "docker", "public", "__tests__", "*.test.ts", "routeTree.gen.ts"],
+    options: {typeAware: true, typeCheck: true},
+    jsPlugins: [{name: "vite-plus", specifier: "vite-plus/oxlint-plugin"}],
+  },
+  plugins: lazyPlugins(async () => [
     extractIconsPlugin(),
     mdx(await import("./source.config")),
     tailwindcss(),
@@ -71,7 +101,7 @@ export default defineConfig({
       ],
     }),
     react(),
-  ],
+  ]),
   resolve: {
     alias: {
       "@/snippets": `${__dirname}/src/components/mdx`,

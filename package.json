@@ -5,16 +5,16 @@
   "type": "module",
   "sideEffects": false,
   "scripts": {
-    "build": "bun run clean && bun lint && vite build",
+    "build": "vp run clean && vp lint && vp build",
     "clean": "rm -rf dist",
-    "dev": "vite dev",
-    "start": "vite preview",
-    "serve": "bunx serve@latest --no-port-switching dist/client -l tcp://127.0.0.1:4173",
-    "serve:spa": "bunx serve@latest --no-port-switching -s dist/client -l tcp://127.0.0.1:4173",
-    "lint": "oxlint --max-warnings=0 && fumadocs-mdx",
-    "lint:links": "bun ./scripts/lint.ts",
-    "lint:fix": "oxlint --fix",
-    "format": "oxfmt",
+    "dev": "vp dev",
+    "start": "vp preview",
+    "serve": "vpx serve@latest --no-port-switching dist/client -l tcp://127.0.0.1:4173",
+    "serve:spa": "vpx serve@latest --no-port-switching -s dist/client -l tcp://127.0.0.1:4173",
+    "lint": "vp lint --max-warnings=0 && fumadocs-mdx",
+    "lint:links": "bun run ./scripts/lint.ts",
+    "lint:fix": "vp lint --fix",
+    "format": "vp fmt",
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
@@ -51,16 +51,16 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "next-validate-link": "^1.6.6",
-    "oxfmt": "^0.58.0",
-    "oxlint": "^1.73.0",
     "tailwindcss": "^4.3.2",
     "typescript": "^7.0.2",
-    "vite": "^8.1.4",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.4",
+    "vite-plus": "0.2.4",
     "wrangler": "^4.110.0"
   },
   "overrides": {
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.4"
   },
   "devEngines": {
     "packageManager": {
