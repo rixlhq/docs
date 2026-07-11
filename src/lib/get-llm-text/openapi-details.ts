@@ -97,7 +97,6 @@ function appendServerDetails(lines: string[], operation: OpenApiOperation, schem
 
   lines.push("", "- Servers:");
   for (const server of servers) {
-    if (!server.url) continue;
     const description = normalizeInlineText(server.description);
     lines.push(`  - \`${server.url}\`${description ? `: ${description}` : ""}`);
     appendServerVariables(lines, server);

@@ -86,7 +86,7 @@ export interface OpenApiRootSchema {
 export interface LLMPage {
   url: string;
   data: {
-    title: string;
+    title?: string;
     description?: string;
     type?: string;
     getText?: (format: "processed") => Promise<string>;

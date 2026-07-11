@@ -11,6 +11,10 @@ export interface ApiServer {
   variables?: Record<string, ApiServerVariable | undefined>;
 }
 
+export interface ResolvedApiServer extends ApiServer {
+  url: string;
+}
+
 export interface ApiServerRoot {
   servers?: ApiServer[];
   host?: string;
@@ -48,7 +52,7 @@ export function buildApiUrlFromSwaggerHost(host: string, schemes?: string[], bas
   return absolutizeApiUrl(`${scheme}://${host}${normalizedBasePath}`);
 }
 
-export function resolveOpenApiServers(root: ApiServerRoot | undefined, operationServers?: ApiServer[]) {
+export function resolveOpenApiServers(root: ApiServerRoot | undefined, operationServers?: ApiServer[]): ResolvedApiServer[] {
   const operationResolved = normalizeServerList(operationServers);
   if (operationResolved.length > 0) return operationResolved;
 
@@ -83,21 +87,21 @@ function trimTrailingSlash(value: string) {
   return value.endsWith("/") ? value.slice(0, -1) : value;
 }
 
-function normalizeServerList(servers: ApiServer[] | undefined) {
+function normalizeServerList(servers: ApiServer[] | undefined): ResolvedApiServer[] {
   if (!servers || servers.length === 0) return [];
 
   const seen = new Set<string>();
-  return servers
-    .map((server) => {
-      const resolvedUrl = resolveApiServerTemplate(server);
-      if (!resolvedUrl) return;
-      if (seen.has(resolvedUrl)) return;
-      seen.add(resolvedUrl);
+  const normalized: ResolvedApiServer[] = [];
 
-      return {
-        ...server,
-        url: resolvedUrl,
-      };
-    })
-    .filter((server): server is ApiServer => Boolean(server?.url));
+  for (const server of servers) {
+    const resolvedUrl = resolveApiServerTemplate(server);
+    if (!resolvedUrl || seen.has(resolvedUrl)) continue;
+    seen.add(resolvedUrl);
+    normalized.push({
+      ...server,
+      url: resolvedUrl,
+    });
+  }
+
+  return normalized;
 }
