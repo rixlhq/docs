@@ -1,4 +1,4 @@
-import type {ReactNode} from "react";
+import type {ReactElement} from "react";
 import type {OpenApiRenderContext, RenderedSchemaProperty, SchemaLite} from "./types";
 
 const MAX_SCHEMA_DEPTH = 3;
@@ -41,7 +41,7 @@ export async function buildRenderedSchemaProperties(
   );
 }
 
-export function renderSchemaProperties(properties: RenderedSchemaProperty[], keyPrefix: string, depth = 0): JSX.Element[] {
+export function renderSchemaProperties(properties: RenderedSchemaProperty[], keyPrefix: string, depth = 0): ReactElement[] {
   return properties.map((property, index) => (
     <div
       key={`${keyPrefix}:${depth}:${property.name}:${index}`}
@@ -55,7 +55,7 @@ export function renderSchemaProperties(properties: RenderedSchemaProperty[], key
         <span className="text-sm font-mono text-fd-muted-foreground">{schemaTypeLabel(property.schema)}</span>
       </div>
 
-      <div className="prose-no-margin pt-2.5 empty:hidden">{property.description as ReactNode}</div>
+      <div className="prose-no-margin pt-2.5 empty:hidden">{property.description}</div>
 
       {property.schema.enum && property.schema.enum.length > 0 ? (
         <div className="flex flex-row gap-2 flex-wrap my-2 not-prose">

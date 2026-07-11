@@ -1,9 +1,10 @@
-import type {OpenApiRenderContext, MethodWithPath, RequestMediaTypeLite} from "./types";
+import type {ReactNode} from "react";
+import type {MethodWithPath, OpenApiRenderContext, RequestMediaTypeLite} from "./types";
 import {buildRenderedSchemaProperties, getRequestExample, renderSchemaProperties} from "./schema-utils";
 
 type RenderedRequestSection = {
   mediaType: string;
-  renderedExample: unknown;
+  renderedExample: ReactNode;
   properties: Awaited<ReturnType<typeof buildRenderedSchemaProperties>>;
 };
 
@@ -41,9 +42,7 @@ export async function renderStaticRequestBodySection(operation: MethodWithPath, 
         <div key={section.mediaType} className="space-y-4">
           <code className="text-xs text-fd-muted-foreground">{section.mediaType}</code>
           {section.renderedExample}
-          {section.properties.length > 0 ? (
-            <div className="flex flex-col">{renderSchemaProperties(section.properties, section.mediaType)}</div>
-          ) : null}
+          {section.properties.length > 0 ? <div className="flex flex-col">{renderSchemaProperties(section.properties, section.mediaType)}</div> : null}
         </div>
       ))}
     </section>

@@ -58,7 +58,10 @@ function buildRequestItems(requestUrl: string, encoded: EncodedRequestData, ctx:
     id: resolveGeneratorId(generator),
     label: generator.label ?? generator.lang,
     lang: generator.lang,
-    code: generator.generate({...encoded, url: requestUrl} as Parameters<CodeUsageGenerator["generate"]>[0], {mediaAdapters: ctx.mediaAdapters}),
+    code: generator.generate({...encoded, url: requestUrl} as Parameters<CodeUsageGenerator["generate"]>[0], {
+      mediaAdapters: ctx.mediaAdapters,
+      custom: undefined,
+    }),
   }));
 }
 

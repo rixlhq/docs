@@ -1,5 +1,6 @@
 import {ChevronRight} from "lucide-react";
-import type {OpenApiRenderContext, MethodWithPath, ResponseMediaTypeLite, ResponseObjectLite, SchemaLite} from "./types";
+import type {ReactElement, ReactNode} from "react";
+import type {MethodWithPath, OpenApiRenderContext, ResponseMediaTypeLite, ResponseObjectLite, SchemaLite} from "./types";
 import {
   buildRenderedSchemaProperties,
   collectResponseExamples,
@@ -12,7 +13,7 @@ type MediaBlock = {
   mediaType: string;
   rootType: string | null;
   properties: Awaited<ReturnType<typeof buildRenderedSchemaProperties>>;
-  exampleNode: unknown;
+  exampleNode: ReactNode;
 };
 
 type MediaBlockInput = {
@@ -25,7 +26,7 @@ type MediaBlockInput = {
 
 async function buildMediaBlock({status, response, mediaType, media, ctx}: MediaBlockInput): Promise<MediaBlock> {
   const properties = await buildRenderedSchemaProperties(media.schema as SchemaLite | undefined, ctx);
-  let exampleNode: unknown = null;
+  let exampleNode: ReactNode = null;
 
   if (properties.length === 0) {
     const [example] = collectResponseExamples(media);
@@ -84,7 +85,7 @@ async function renderResponseEntry(
   status: string,
   response: ResponseObjectLite,
   ctx: OpenApiRenderContext
-): Promise<JSX.Element> {
+): Promise<ReactElement> {
   const descriptionNode = response.description ? await ctx.renderMarkdown(response.description) : null;
   const mediaEntries = Object.entries(response.content ?? {});
   const mediaBlocks = await buildMediaBlocks({status, response, mediaEntries, ctx});
