@@ -7,6 +7,7 @@ import mdx from "fumadocs-mdx/vite";
 import {extractIconsPlugin} from "./plugins/vite-plugin-extract-icons";
 import {i18n} from "./src/lib/i18n";
 import {collectDocsPrerenderPages, createOgPrerenderPages, toStaticPages} from "./scripts/lib/prerender-pages";
+import {devtools} from "@tanstack/devtools-vite";
 
 // import { nitro } from 'nitro/vite'
 
@@ -64,9 +65,9 @@ export default defineConfig({
     jsPlugins: [{name: "vite-plus", specifier: "vite-plus/oxlint-plugin"}],
   },
   plugins: lazyPlugins(async () => [
+    devtools({consolePiping: {enabled: false}}),
     extractIconsPlugin(),
     mdx(await import("./source.config")),
-    tailwindcss(),
     tanstackStart({
       spa: {
         enabled: true,
@@ -105,15 +106,13 @@ export default defineConfig({
       ],
     }),
     react(),
+    tailwindcss(),
   ]),
   resolve: {
     alias: {
       "@/snippets": `${__dirname}/src/components/mdx`,
     },
     tsconfigPaths: true,
-  },
-  optimizeDeps: {
-    include: ["xml-js/lib/js2xml"],
   },
   ssr: {
     noExternal: ["@rixl/videosdk-react"],
