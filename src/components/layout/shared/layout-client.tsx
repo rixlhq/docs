@@ -10,6 +10,6 @@ export function Body({children}: {children: ReactNode}): ReactElement {
 
 export function useMode(): string | undefined {
   const params = useParams({strict: false});
-  const slug = params?.slug;
-  return typeof slug === "string" && slug.includes("/") ? slug.split("/")[0] : slug;
+  const splat = params?._splat;
+  return typeof splat === "string" && splat.includes("/") ? splat.split("/")[0] : splat;
 }

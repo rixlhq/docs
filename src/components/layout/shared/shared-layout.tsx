@@ -61,7 +61,6 @@ function buildDocsLayoutProps({tree, options, docsLayoutWidthClass, searchToggle
     },
     sidebar: {
       enabled: sidebar,
-      tabs: false,
       footer: null,
       collapsible: false,
     },

@@ -2,6 +2,7 @@ import {Link} from "@tanstack/react-router";
 import {ArrowUpRight} from "lucide-react";
 import type {IconName} from "lucide-react/dynamic";
 import type {HTMLAttributes, ReactNode} from "react";
+import {isValidElement} from "react";
 import {Icon} from "@/components/mdx/icon";
 import {cn} from "@/lib/cn";
 
@@ -30,6 +31,17 @@ const showArrow = (href?: string, arrow?: ArrowType) => {
   return isExternalLink(href);
 };
 
+function getTitleText(title: ReactNode): string | undefined {
+  if (typeof title === "string") return title;
+  if (typeof title === "number") return String(title);
+  if (Array.isArray(title)) {
+    const parts = title.map(getTitleText).filter((part): part is string => Boolean(part));
+    return parts.length > 0 ? parts.join(" ") : undefined;
+  }
+  if (isValidElement(title)) return undefined;
+  return undefined;
+}
+
 type CardWrapperProps = Omit<HTMLAttributes<HTMLElement>, "title" | "children"> & {
   href?: string;
   isExternal: boolean;
@@ -52,7 +64,8 @@ function buildCardClassName(href: string | undefined, className: string | undefi
 }
 
 function CardWrapper({href, isExternal, title, className, children, ...props}: CardWrapperProps) {
-  const ariaLabel = href ? `Navigate to ${title}` : undefined;
+  const titleText = getTitleText(title);
+  const ariaLabel = href && titleText ? `Navigate to ${titleText}` : undefined;
 
   if (!href) {
     return (
@@ -137,7 +150,7 @@ export const Card = ({
   children,
   ...props
 }: Props) => {
-  const isExternal = Boolean(href) && isExternalLink(href);
+  const isExternal = href ? isExternalLink(href) : false;
   const cardClassName = buildCardClassName(href, className);
 
   return (
