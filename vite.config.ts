@@ -29,6 +29,9 @@ const sectionRootRedirectPages = i18n.languages.flatMap((lang) => [
 ]);
 
 export default defineConfig({
+  staged: {
+    "*": "vp check --fix",
+  },
   fmt: {
     printWidth: 140,
     tabWidth: 2,
@@ -40,6 +43,7 @@ export default defineConfig({
     bracketSpacing: false,
     bracketSameLine: false,
     endOfLine: "lf",
+    ignorePatterns: ["routeTree.gen.ts"],
   },
   lint: {
     rules: {
