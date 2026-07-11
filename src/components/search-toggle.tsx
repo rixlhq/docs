@@ -1,5 +1,4 @@
 "use client";
-import {useI18n} from "fumadocs-ui/contexts/i18n";
 import {useSearchContext} from "fumadocs-ui/contexts/search";
 import {Search} from "lucide-react";
 import type {ComponentProps} from "react";
@@ -42,7 +41,6 @@ export function LargeSearchToggle({
   hideIfDisabled?: boolean;
 }) {
   const {enabled, hotKey, setOpenSearch} = useSearchContext();
-  const {text} = useI18n();
   if (hideIfDisabled && !enabled) return null;
 
   return (
@@ -59,7 +57,7 @@ export function LargeSearchToggle({
       }}
     >
       <Search className="size-4" />
-      {text.search}
+      {"Search"}
       <div className="ms-auto inline-flex gap-0.5">
         {hotKey.map((k, i) => (
           <kbd key={typeof k.key === "string" ? k.key : i} className="rounded-md border bg-fd-background px-1.5">

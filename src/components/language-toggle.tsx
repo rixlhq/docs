@@ -5,6 +5,8 @@ import {cn} from "../lib/cn";
 import {buttonVariants} from "./ui/button";
 import {Popover, PopoverContent, PopoverTrigger} from "./ui/popover";
 
+const chooseLanguageLabel = "Choose Language";
+
 type LanguageSelectProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function LanguageToggle(props: LanguageSelectProps): React.ReactElement {
@@ -14,7 +16,7 @@ export function LanguageToggle(props: LanguageSelectProps): React.ReactElement {
   return (
     <Popover>
       <PopoverTrigger
-        aria-label={context.text.chooseLanguage}
+        aria-label={chooseLanguageLabel}
         {...props}
         className={cn(
           buttonVariants({
@@ -27,7 +29,7 @@ export function LanguageToggle(props: LanguageSelectProps): React.ReactElement {
         {props.children}
       </PopoverTrigger>
       <PopoverContent className="flex flex-col overflow-hidden p-0">
-        <p className="mb-1 p-2 text-xs font-medium text-fd-muted-foreground">{context.text.chooseLanguage}</p>
+        <p className="mb-1 p-2 text-xs font-medium text-fd-muted-foreground">{chooseLanguageLabel}</p>
         {context.locales.map((item) => (
           <button
             key={item.locale}

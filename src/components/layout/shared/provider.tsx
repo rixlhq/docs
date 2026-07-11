@@ -8,28 +8,15 @@ import {i18n} from "@/lib/i18n.ts";
 const SearchDialog = lazy(() => import("@/components/search"));
 
 const {provider} = defineI18nUI(i18n, {
-  translations: {
-    en: {
-      displayName: "English",
-      search: "Search",
-      toc: "On This Page",
-      tocNoHeadings: "No headings found",
-      lastUpdate: "Last updated on",
-      searchNoResult: "No results found",
-      chooseLanguage: "Choose Language",
-      chooseTheme: "Choose Theme",
-    },
-    // TODO: Uncomment to enable ru
-    // ru: {
-    //     displayName: 'Русский',
-    //     search: 'Искать',
-    //     toc: 'На этой странице',
-    //     tocNoHeadings: 'Заголовки не найдены',
-    //     lastUpdate: 'Последнее обновление',
-    //     searchNoResult: 'Ничего не найдено',
-    //     chooseLanguage: 'Выберите язык',
-    //     chooseTheme: 'Выберите тему',
-    // },
+  en: {
+    displayName: "English",
+    "Search(search dialog)": "Search",
+    "No results found(search dialog)": "No results found",
+    "On this page(table of contents)": "On This Page",
+    "No Headings(table of contents)": "No headings found",
+    "Last updated on(page footer)": "Last updated on",
+    "Choose a language(language switcher)": "Choose Language",
+    "Choose a language(language switcher)(aria-label)": "Choose Language",
   },
 });
 
