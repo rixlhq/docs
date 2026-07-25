@@ -1,0 +1,249 @@
+---
+title: "Installation"
+description: "Install and configure RIXL Video SDK for React in your project"
+---
+
+import {Callout} from "@/snippets";
+import {Steps} from 'fumadocs-ui/components/steps';
+import {Tabs, TabsContent, TabsList, TabsTrigger} from 'fumadocs-ui/components/tabs';
+
+## Requirements
+
+Before installing the RIXL Video SDK for React, ensure your project meets these requirements:
+
+- **React**: 18.0 or higher
+- **Node.js**: 24.0 or higher
+- **TailwindCSS**: 4.0.9 or higher *(recommended but optional)*
+
+## NPM Installation
+
+Install the RIXL Video SDK for React using your preferred package manager:
+
+<Tabs defaultValue="npm">
+  <TabsList>
+    <TabsTrigger value="npm">npm</TabsTrigger>
+    <TabsTrigger value="yarn">yarn</TabsTrigger>
+    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
+    <TabsTrigger value="bun">bun</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="npm">
+    ```bash
+    npm install @rixl/videosdk-react
+    ```
+  </TabsContent>
+
+  <TabsContent value="yarn">
+    ```bash
+    yarn add @rixl/videosdk-react
+    ```
+  </TabsContent>
+
+  <TabsContent value="pnpm">
+    ```bash
+    pnpm add @rixl/videosdk-react
+    ```
+  </TabsContent>
+
+  <TabsContent value="bun">
+    ```bash
+    bun add @rixl/videosdk-react
+    ```
+  </TabsContent>
+</Tabs>
+
+## Setting Up Your First Video
+
+### 1. Upload Your Media
+
+Before using the SDK, you need to upload your media content:
+
+<Steps>
+  <Step>
+    **Upload to Dashboard**
+
+    Go to [dash.rixl.com/videos](https://dash.rixl.com/videos) for videos or [dash.rixl.com/images](https://dash.rixl.com/images) for images
+  </Step>
+  <Step>
+    **Get Media ID**
+
+    Copy the generated media ID (e.g., `"FU9aVtA88m"`)
+  </Step>
+  <Step>
+    **Use in Your App**
+
+    Reference the media ID in your React components
+  </Step>
+</Steps>
+
+### 2. Import the Styles and Components
+
+```tsx
+import "@rixl/videosdk-react/style.css";
+import { Video, Image, Feed } from '@rixl/videosdk-react';
+```
+
+### 3. Use in Your Component
+
+```tsx
+import "@rixl/videosdk-react/style.css";
+import { Video } from '@rixl/videosdk-react';
+
+function App() {
+  return (
+    <div className="container mx-auto p-4">
+      <h1>My First RIXL Video</h1>
+      <Video
+        id="D3OCjdLP60"
+        className="w-full h-auto rounded-lg"
+      />
+    </div>
+  );
+}
+```
+
+<Callout type="info">
+  Need custom controls instead of the built-in player UI? Render them inside `<Video theme="hideUI">` or wrap `<Video>` and sibling controls in `<VideoPlayer>`, then read state with hooks like [`usePlayback`](/de/sdk/hooks/use-playback) and [`usePlayerProgress`](/de/sdk/hooks/use-player-progress) — they bind to the enclosing player scope automatically.
+</Callout>
+
+## Basic Implementation Example
+
+Here's a complete example showing how to integrate RIXL components into a React application:
+
+### Complete App Example
+
+```tsx
+import React from 'react';
+import "@rixl/videosdk-react/style.css";
+import { Video, Image } from '@rixl/videosdk-react';
+
+function MediaShowcase() {
+  return (
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      {/* Hero Video */}
+      <section className="text-center">
+        <h1 className="text-3xl font-bold mb-4">Welcome to Our Platform</h1>
+        <Video
+          id="FU9aVtA88m"
+          className="w-full h-auto rounded-xl shadow-lg"
+          autoPlay={false}
+          muted={false}
+          progressBar={true}
+          allowFullscreen={true}
+        />
+      </section>
+
+      {/* Image Gallery */}
+      <section>
+        <h2 className="text-2xl font-semibold mb-4">Featured Images</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Image
+            id="featured-1"
+            alt="Featured content 1"
+            className="aspect-square object-cover rounded-lg"
+          />
+          <Image
+            id="featured-2"
+            alt="Featured content 2"
+            className="aspect-square object-cover rounded-lg"
+          />
+          <Image
+            id="featured-3"
+            alt="Featured content 3"
+            className="aspect-square object-cover rounded-lg"
+          />
+        </div>
+      </section>
+
+      {/* Background Video */}
+      <section className="relative h-96 rounded-xl overflow-hidden">
+        <Video
+          id="background-video"
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay={true}
+          muted={true}
+          loop={true}
+          progressBar={false}
+          allowPlayPause={false}
+        />
+        <div className="relative z-10 flex items-center justify-center h-full">
+          <h2 className="text-4xl font-bold text-white text-center">
+            Beautiful Background Video
+          </h2>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+export default MediaShowcase;
+```
+
+## Styling Setup (Optional)
+
+### With TailwindCSS
+
+If you're using TailwindCSS (recommended), the examples above will work out of the box. Ensure TailwindCSS is properly configured in your project.
+
+### Without TailwindCSS
+
+You can use regular CSS classes or CSS-in-JS solutions:
+
+```tsx
+// Using regular CSS classes
+<Video
+  id="D3OCjdLP60"
+  className="custom-video-player"
+/>
+
+<Image
+  id="hero-image"
+  className="custom-image"
+/>
+```
+
+```css
+/* styles.css */
+.custom-video-player {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+```
+
+### Troubleshooting
+
+<Callout type="warning">
+  **Media not loading?**
+  - Verify your media ID is correct
+  - Check that the media exists in your RIXL dashboard
+  - Ensure you have proper network connectivity
+</Callout>
+
+<Callout type="info">
+  **TypeScript errors?**
+  - Ensure you're using React 18+
+  - Update your `@types/react` package if needed
+</Callout>
+
+<Callout type="info">
+  **Style issues?**
+  - Check that your CSS framework is properly configured
+  - Verify className props are being applied correctly
+</Callout>
+
+## What's Next?
+
+Now that you have the RIXL Video SDK installed and working:
+
+- Learn about [Video Component](/de/sdk/video-component) properties and advanced features
+- Explore [Hooks](/de/sdk/hooks) when you want custom controls or player state
+- Explore [Image Component](/de/sdk/image-component) optimization options
+- Browse [SDK Overview](/de/sdk/getting-started) for complete documentation

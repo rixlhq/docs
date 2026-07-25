@@ -1,0 +1,57 @@
+---
+title: "usePlayerProgress"
+description: "Read timeline state and perform seeking without reaching for a DOM video ref."
+---
+
+`usePlayerProgress()` is the preferred public hook for custom timeline UI with the public `Video` component.
+
+## Signature
+
+```tsx
+const progress = usePlayerProgress();
+```
+
+It returns:
+
+- `currentTime`
+- `duration`
+- `progress`
+- `buffered`
+- `seekTo(seconds)`
+- `seekBy(deltaSeconds)`
+
+`progress` and `buffered` are ratios from `0` to `1`.
+
+## Example
+
+```tsx
+import {Video, usePlayerProgress} from "@rixl/videosdk-react";
+
+function CustomProgressControls() {
+  const {currentTime, duration, progress, buffered, seekBy} = usePlayerProgress();
+
+  return (
+    <div className="space-y-2">
+      <div>{`${Math.round(currentTime)}s / ${Math.round(duration)}s`}</div>
+      <div>{`Played: ${Math.round(progress * 100)}% | Buffered: ${Math.round(buffered * 100)}%`}</div>
+      <button type="button" onClick={() => seekBy(10)}>
+        Seek +10s
+      </button>
+    </div>
+  );
+}
+
+function CustomPlayer() {
+  return (
+    <Video id="your-video-id" theme="hideUI" analytics={false}>
+      <CustomProgressControls />
+    </Video>
+  );
+}
+```
+
+## Notes
+
+- This hook resolves the current player from scope. Use it inside `<Video>` or inside a shared `<VideoPlayer>` wrapper.
+- Before metadata is ready, timeline values can be `0`.
+- Prefer this hook over `useProgressBar` when you are building on top of the public `Video` component.

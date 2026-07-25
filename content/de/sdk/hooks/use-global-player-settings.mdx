@@ -1,0 +1,63 @@
+---
+title: "useGlobalPlayerSettings"
+description: "Coordinate shared playback and preference changes across multiple mounted Video instances."
+---
+
+`useGlobalPlayerSettings()` is the advanced page-level hook for shared controls.
+
+## Signature
+
+```tsx
+const settings = useGlobalPlayerSettings();
+```
+
+It returns shared values and fan-out actions for mounted players, including:
+
+- `muted`
+- `volume`
+- `playbackRate`
+- `preferredQuality`
+- `preferredAudioLanguage`
+- `preferredSubtitleLanguage`
+- `setMuted(muted)`
+- `setVolume(volume)`
+- `setPlaybackRate(rate)`
+- `setPreferredQuality(quality)`
+- `setPreferredAudioLanguage(language)`
+- `setPreferredSubtitleLanguage(language)`
+- `pauseAll()`
+
+## Example
+
+```tsx
+import {Video, useGlobalPlayerSettings} from "@rixl/videosdk-react";
+
+function PageLevelPlayerControls() {
+  const {muted, setMuted, pauseAll} = useGlobalPlayerSettings();
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <Video id="video-a" theme="hideUI" analytics={false} />
+        <Video id="video-b" theme="hideUI" analytics={false} />
+      </div>
+
+      <div className="flex items-center gap-3">
+        <button type="button" onClick={() => setMuted(!muted)}>
+          {muted ? "Unmute all" : "Mute all"}
+        </button>
+
+        <button type="button" onClick={() => pauseAll()}>
+          Pause all
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Notes
+
+- This hook is for page-level coordination, not a replacement for player-scoped hooks.
+- Shared language preferences only apply when a mounted player exposes matching tracks.
+- For single-player custom UI, prefer the player-scoped hooks in this section.

@@ -1,0 +1,15 @@
+{
+  "title": "Hooks",
+  "description": "Öffentliche React-Hooks zum Erstellen benutzerdefinierter RIXL-Videosteuerungen und zur Player-Koordination auf Seitenebene.",
+  "pages": [
+    "index",
+    "use-media-settings",
+    "use-playback",
+    "use-player-progress",
+    "use-player-ui",
+    "use-player-tracks",
+    "use-global-player-settings",
+    "use-progress-bar",
+    "..."
+  ]
+}

@@ -1,0 +1,170 @@
+---
+title: Teamverwaltung
+description: Verwalten Sie die Teameinstellungen Ihrer Organisation, laden Sie Mitglieder ein und steuern Sie den Zugriff.
+---
+
+
+import {Callout} from '@/snippets';
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+Rufen Sie die Teamverwaltung auf, indem Sie in der Seitenleiste Ihres Dashboards zu **Organisationseinstellungen → Team** navigieren.
+
+<Tabs items={['General', 'Members']}>
+
+  <Tab value="General">
+
+    ## Allgemeine Teameinstellungen
+
+    Konfigurieren Sie die grundlegenden Teaminformationen und -einstellungen Ihrer Organisation.
+
+    ### Über Sie (Organisations-Owner)
+
+    Ihre Profilinformationen, wie sie Teammitgliedern angezeigt werden:
+
+    - **Name:** Ihr Anzeigename (z. B. „James“)
+    - **Benutzername:** Ihre eindeutige Kennung (z. B. „james123“)
+
+    <Steps>
+      <Step>
+        Klicken Sie auf das Bearbeiten-Symbol neben Ihrem Namen oder Benutzernamen, um es zu ändern
+      </Step>
+
+      <Step>
+        Nehmen Sie Ihre Änderungen vor und speichern Sie
+      </Step>
+
+      <Step>
+        Die Änderungen werden in der gesamten Organisation übernommen
+      </Step>
+    </Steps>
+
+  </Tab>
+
+  <Tab value="Members">
+
+    ## Verwaltung der Teammitglieder
+
+    Sehen und verwalten Sie alle Mitglieder Ihrer Organisation.
+
+    ### Aktuelle Teammitglieder
+
+    Die Mitgliedertabelle zeigt:
+    - **Mitglied:** Name und Benutzername mit Profil-Avatar
+    - **Rolle:** Aktuelle Rolle (Owner, Admin, Member)
+    - **Status:** Kontostatus (ausstehend, angenommen)
+    - **Beigetreten am:** Wann sie der Organisation beigetreten sind
+    - **Aktionen:** Verfügbare Verwaltungsoptionen
+
+    ### Neue Mitglieder einladen
+
+    <Steps>
+      <Step>
+        Klicken Sie oben rechts auf die Schaltfläche **Mitglied einladen**
+      </Step>
+
+      <Step>
+        **Füllen Sie das Einladungsformular aus:**
+        - **Benutzername:** Geben Sie den Benutzernamen der einzuladenden Person ein
+        - **Rolle:** Wählen Sie aus dem Dropdown (Admin oder Member)
+      </Step>
+
+      <Step>
+        Klicken Sie auf **Einladung senden**
+      </Step>
+    </Steps>
+
+    <Callout type="info" title="Benutzername erforderlich">
+      Sie müssen den exakten Benutzernamen der Person eingeben, die Sie einladen möchten. Sie muss bereits ein RIXL-Konto besitzen, um
+      Einladungen zu erhalten.
+    </Callout>
+
+    ### Bestehende Mitglieder verwalten
+
+    **Mitgliederrollen ändern:**
+    - Klicken Sie auf das Rollen-Dropdown neben einem Mitglied
+    - Wählen Sie die neue Rolle (Admin oder Member)
+    - Bestätigen Sie die Rollenänderung
+
+    **Mitglieder entfernen:**
+    - Klicken Sie in der Spalte „Aktionen“ neben dem Mitglied auf **Entfernen**
+    - Bestätigen Sie das Entfernen, wenn Sie dazu aufgefordert werden
+
+  </Tab>
+
+</Tabs>
+
+## Referenz der Rollenberechtigungen
+
+<table>
+  <thead>
+  <tr>
+    <th>Rolle</th>
+    <th>Berechtigungen</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><strong>Owner</strong></td>
+    <td>
+      Vollständige Kontrolle über Organisationseinstellungen, Abrechnungsverwaltung, Hinzufügen/Entfernen aller Mitglieder, Erstellen/Ändern/Löschen
+      beliebiger Projekte; kann von anderen Mitgliedern nicht entfernt werden
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Admin</strong></td>
+    <td>
+      Erstellen/Verwalten von Projekten, Einladen/Verwalten von Teammitgliedern (außer Owner), Konfigurieren von Organisationseinstellungen; kann nicht
+      auf die Abrechnung zugreifen oder den Owner entfernen
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Member</strong></td>
+    <td>
+      Zugriff nur auf zugewiesene Projekte, Erstellen/Verwalten von Inhalten innerhalb erlaubter Projekte; kann keine Projekte erstellen oder
+      Organisationseinstellungen verwalten
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+## Sicherheits-Best-Practices
+
+### Zugriffsverwaltung
+- Überprüfen Sie den Zugriff der Teammitglieder vierteljährlich
+- Entfernen Sie inaktive oder ausgeschiedene Teammitglieder
+- Auditieren Sie Rollenzuweisungen auf Angemessenheit
+- Verwenden Sie exakte Benutzernamen für Einladungen
+- Befolgen Sie das Prinzip der geringsten Rechte
+
+### Projektzugriff verwalten
+
+<Steps>
+  <Step>
+    Navigieren Sie zu den Einstellungen des jeweiligen Projekts
+  </Step>
+
+  <Step>
+    Gehen Sie zu **Projekteinstellungen → Team**
+  </Step>
+
+  <Step>
+    Fügen Sie dem Projekt Teammitglieder mit passenden Rollen hinzu
+  </Step>
+</Steps>
+
+<Callout type="warning" title="Wichtig">
+  Berechtigungen auf Organisationsebene können Berechtigungen auf Projektebene außer Kraft setzen. Ein Organisations-Admin kann auf jedes Projekt zugreifen,
+  unabhängig von projektspezifischen Rollenzuweisungen.
+</Callout>
+
+## Fehlerbehebung
+
+### Einladungsprobleme
+- **Benutzername wird nicht gefunden:** Überprüfen Sie die exakte Schreibweise und bestätigen Sie, dass der Nutzer ein RIXL-Konto hat
+- **Ausstehende Einladungen:** Prüfen Sie Benachrichtigungen, senden Sie bei Bedarf erneut
+- **Rollenänderungen greifen nicht:** Geben Sie der Übernahme etwas Zeit, versuchen Sie eine Ab-/Anmeldung
+
+### Zugriffsprobleme
+- **Mitglied kann nicht auf Projekte zugreifen:** Überprüfen Sie die Organisationsrolle und die Projektberechtigungen
+- **Admin-Einschränkungen:** Einige Funktionen sind ausschließlich dem Owner vorbehalten (Abrechnung, Löschen der Organisation)

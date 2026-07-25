@@ -1,0 +1,63 @@
+---
+title: "useMediaSettings"
+description: "Read and update player-scoped mute and volume state for the current Video instance."
+---
+
+`useMediaSettings()` exposes player-scoped audio state and actions.
+
+## Signature
+
+```tsx
+const media = useMediaSettings();
+```
+
+It returns:
+
+- `muted`
+- `volume`
+- `previousVolume`
+- `mute()`
+- `unmute()`
+- `toggleMute()`
+- `setVolume(volume)`
+
+## Example
+
+```tsx
+import {Video, useMediaSettings} from "@rixl/videosdk-react";
+
+function CustomVolumeControls() {
+  const {muted, volume, toggleMute, setVolume} = useMediaSettings();
+
+  return (
+    <div className="flex items-center gap-3">
+      <button type="button" onClick={() => toggleMute()}>
+        {muted ? "Unmute" : "Mute"}
+      </button>
+
+      <input
+        type="range"
+        min={0}
+        max={1}
+        step={0.05}
+        value={volume}
+        onChange={(event) => setVolume(Number(event.target.value))}
+      />
+    </div>
+  );
+}
+
+function CustomPlayer() {
+  return (
+    <Video id="your-video-id" theme="hideUI" analytics={false}>
+      <CustomVolumeControls />
+    </Video>
+  );
+}
+```
+
+## Notes
+
+- This hook only affects the current scoped player.
+- `muted` reflects the effective audible state, including volume `0` and the interaction gate.
+- Use [`useGlobalPlayerSettings()`](/de/sdk/hooks/use-global-player-settings) only when one control should intentionally fan out to every mounted player on the page.

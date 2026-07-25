@@ -1,0 +1,9 @@
+{
+  "title": "Feeds",
+  "description": "Projekt- und Team-Aktivitäts-Feeds verwalten",
+  "pages": [
+    "overview",
+    "create-feed",
+    "manage-feeds"
+  ]
+}

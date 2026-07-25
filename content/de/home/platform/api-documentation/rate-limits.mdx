@@ -1,0 +1,55 @@
+---
+title: Rate-Limits
+description: Entwerfen Sie API-Clients, die Drosselung elegant handhaben und sich automatisch erholen.
+---
+
+import {Callout} from "@/snippets";
+
+RIXL-API-Anfragen können gedrosselt werden, wenn das Anfragevolumen die zulässigen Limits für Ihren Schlüssel oder Ihr Projekt überschreitet.
+
+## Wenn Sie gedrosselt werden
+
+Wenn Ihre Anfragen gedrosselt werden, gibt die API zurück:
+
+- `429 Too Many Requests`
+
+## Empfohlenes Client-Verhalten
+
+1. Erkennen Sie `429`-Antworten.
+2. Wiederholen Sie mit exponentiellem Backoff und Jitter.
+3. Reduzieren Sie Anfrage-Bursts durch Bündelung und Caching, wo möglich.
+4. Vermeiden Sie unbegrenzte Wiederholungsschleifen.
+
+```javascript
+const baseDelayMs = 500;
+const maxAttempts = 5;
+
+async function requestWithBackoff(fetcher) {
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    const response = await fetcher();
+    if (response.status !== 429) return response;
+
+    const jitter = Math.floor(Math.random() * 200);
+    const delay = baseDelayMs * (2 ** attempt) + jitter;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+  }
+
+  throw new Error("Rate limit retries exhausted");
+}
+```
+
+## Betriebshinweise
+
+- Verwenden Sie separate API-Schlüssel pro Umgebung (`dev`, `staging`, `prod`), um den Datenverkehr zu isolieren.
+- Bevorzugen Sie warteschlangenbasierte Verarbeitung für stoßweise Ingestion-Workloads.
+- Überwachen Sie die `429`-Häufigkeit und passen Sie die Nebenläufigkeit an, bevor Sie den Datenverkehr hochskalieren.
+
+<Callout type="warning" title="Limits nicht fest codieren">
+  Die genauen Limits können je nach Tarif variieren und sich ändern. Entwickeln Sie für adaptive Drosselung statt für feste numerische Annahmen.
+</Callout>
+
+## Verwandtes
+
+- [API-Referenz](/de/api)
+- [API-Schlüssel](/de/home/platform/api-documentation/api-keys)
+- [Fehlerbehandlung](/de/home/platform/api-documentation/error-handling)

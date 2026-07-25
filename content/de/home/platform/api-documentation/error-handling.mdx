@@ -1,0 +1,83 @@
+---
+title: API-Fehlerbehandlung
+description: Beheben Sie häufige API-Fehler und implementieren Sie robustes Wiederholungsverhalten.
+---
+
+import {Callout} from "@/snippets";
+
+
+Verwenden Sie diese Seite, um die häufigsten Fehler der RIXL-API zu diagnostizieren und die richtige Wiederherstellungsstrategie zu wählen.
+
+## Triage nach Statuscode
+
+| Code | Bedeutung | Primäre Lösung |
+|------|-----------|----------------|
+| `401` | Fehlender, ungültiger, widerrufener oder abgelaufener API-Schlüssel | Überprüfen Sie `X-API-Key`, rotieren Sie bei Bedarf den Schlüssel |
+| `403` | Schlüssel kann nicht auf diesen Ressourcenbereich zugreifen | Prüfen Sie Projekt-/Schlüsselbereich und Endpunktziel |
+| `404` | Ressource existiert nicht | Validieren Sie ID und Route |
+| `429` | Anfragerate überschritten | Wiederholen mit Backoff und geringerer Nebenläufigkeit |
+| `5xx` | Serverseitiger Fehler | Wiederholen mit begrenztem Backoff, dann eskalieren |
+
+## 401 Unauthorized
+
+Prüfen Sie in dieser Reihenfolge:
+
+- Stellen Sie sicher, dass der Header `X-API-Key` vorhanden ist.
+- Stellen Sie sicher, dass Sie `https://api.rixl.com` als Basis-URL verwenden.
+- Stellen Sie sicher, dass der Schlüsselwert vollständig ist (keine Kürzung oder zusätzliche Zeichen).
+- Falls es weiterhin fehlschlägt, widerrufen Sie den Schlüssel und erstellen Sie einen Ersatzschlüssel.
+
+## 403 Forbidden
+
+Der Schlüssel ist gültig, aber nicht für die Zielressource autorisiert.
+
+- Bestätigen Sie, dass der Schlüssel zum selben Projekt bzw. zur selben Ressource gehört, die Sie anfragen.
+- Überprüfen Sie den Endpunktpfad und die Kennungen.
+- Testen Sie zunächst erneut mit einem bekannten funktionierenden Lese-Endpunkt (z. B. Projekte/Videos auflisten).
+
+## 404 Not Found
+
+Ein 404 bedeutet in der Regel, dass die ID oder Route falsch ist.
+
+- Überprüfen Sie die Pfadparameter (`videoId`, `imageId`, `feedId`).
+- Bestätigen Sie, dass Sie die erwartete Methode auf dem erwarteten Pfad aufrufen.
+- Stellen Sie sicher, dass die Ressourcenerstellung vor dem Abruf abgeschlossen wurde.
+
+## 429 Too Many Requests
+
+Implementieren Sie adaptive Wiederholung mit exponentiellem Backoff und Jitter:
+
+```javascript
+async function requestWithRetry(send, maxAttempts = 5, baseDelayMs = 500) {
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    const response = await send();
+    if (response.status !== 429 && response.status < 500) return response;
+
+    const jitter = Math.floor(Math.random() * 200);
+    const delay = baseDelayMs * (2 ** attempt) + jitter;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+  }
+
+  throw new Error("Request failed after retries");
+}
+```
+
+Weitere Hinweise zur Drosselung finden Sie unter [Rate-Limits](/de/home/platform/api-documentation/rate-limits).
+
+## 5xx-Serverfehler
+
+- Wiederholen Sie idempotente Operationen mit begrenztem exponentiellem Backoff.
+- Erfassen Sie Anfrage-IDs, Endpunkt und Zeitstempel für die Vorfallsanalyse.
+- Bei anhaltenden Fehlern eskalieren Sie mit reproduzierbaren Anfragedetails.
+
+## Verlorener API-Schlüssel
+
+<Callout type="error" title="Schlüssel können nicht abgerufen werden">
+  API-Schlüssel werden nur einmal bei der Erstellung angezeigt. Falls der Wert verloren geht, widerrufen Sie den Schlüssel und erstellen Sie einen neuen.
+</Callout>
+
+## Verwandtes
+
+- [API-Schlüssel](/de/home/platform/api-documentation/api-keys)
+- [Rate-Limits](/de/home/platform/api-documentation/rate-limits)
+- [API-Referenz](/de/api)

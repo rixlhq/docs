@@ -1,0 +1,106 @@
+---
+title: Project Management
+description: Manage projects through the dashboard with navigation, collaboration, and usage monitoring tools.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+
+Once a project is created, you can manage it directly from the dashboard.  
+This includes switching between projects, tracking usage, monitoring team activity, and performing management actions.
+
+---
+
+## Project Navigation
+
+<Columns cols={3}>
+  <Card title="Switch Projects" icon="workflow">
+    Use the sidebar selector to change the active project
+  </Card>
+  <Card title="Dashboard Context" icon="bar-chart-3">
+    All dashboard views reflect the currently selected project
+  </Card>
+  <Card title="Org-Wide Settings" icon="building">
+    Billing and account settings apply across all projects
+  </Card>
+</Columns>
+
+<Callout type="tip">
+  Create separate projects for **different environments** (development, staging, production) or business units to keep
+  data and access cleanly separated.
+</Callout>
+
+---
+
+## Project Dashboard Overview
+
+<Tabs items={['Project Info', 'Usage Metrics', 'Team Activity']}>
+  <Tab value="Project Info">
+    - **Name & Region**: Identifies the project and where it’s hosted
+    - **Optimization Settings**: Current video processing tier
+    - **Created Date**: When the project was set up
+    - **Visibility**: Public or private access level
+  </Tab>
+  <Tab value="Usage Metrics">
+    - **Storage & Bandwidth**: Current usage and quotas
+    - **Processing Queue**: Ongoing transcoding or optimization jobs
+    - **API Activity**: Request volume and trends
+  </Tab>
+  <Tab value="Team Activity">
+    - **Members Overview**: Roles and permissions distribution
+    - **Recent Updates**: Project edits and media uploads
+    - **Invitations**: Pending team invites
+  </Tab>
+</Tabs>
+
+---
+
+## Management Actions
+
+<Columns cols={3}>
+  <Card title="Rename Project">
+    Update the display name for easier identification
+  </Card>
+  <Card title="Change Optimization Tier">
+    Switch the default video processing strategy
+  </Card>
+  <Card title="Delete Project">
+    Permanently remove the project and its contents
+  </Card>
+</Columns>
+
+<Callout type="error">
+  **Warning**: Deleting a project is permanent and removes all content, feeds, and settings. This action cannot be
+  undone.
+</Callout>
+
+---
+
+## Collaboration & Team Access
+
+Projects include built-in team collaboration:
+
+- Invite new team members and assign roles
+- Monitor project activity and contributions
+- Adjust permissions as your team grows
+- Ensure secure access with project-scoped API keys
+
+For details on roles and permissions, see [Project Settings → Access & Permissions](/de/home/platform/dashboard/projects/project-settings).
+
+---
+
+## Best Practices
+
+<Callout type="tip">
+  Well-organized projects improve efficiency, security, and scaling.
+</Callout>
+
+- Use clear, descriptive project names
+- Separate environments into different projects
+- Review permissions quarterly
+- Archive unused projects or content regularly
+- Document project purpose and ownership
+
+---

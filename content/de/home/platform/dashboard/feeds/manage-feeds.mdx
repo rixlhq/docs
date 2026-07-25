@@ -1,0 +1,229 @@
+---
+title: Manage Feeds
+description: Learn how to edit, configure, and analyze feeds.
+---
+
+
+import {Callout} from 'fumadocs-ui/components/callout'
+import {Step, Steps} from 'fumadocs-ui/components/steps'
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs'
+import {Card, Columns} from '@/snippets';
+
+## Feed Overview
+
+<Columns cols={4}>
+  <Card title="Feed Overview">View feed settings, performance metrics, and configuration options</Card>
+  <Card title="Content Management">Add, remove, and organize feed content with drag-and-drop tools</Card>
+  <Card title="Analytics Dashboard">Monitor feed performance, engagement, and usage statistics</Card>
+  <Card title="Integration Tools">Access embedding codes, API endpoints, and sharing options</Card>
+</Columns>
+
+## Adding Content
+
+<Tabs items={['Manual Addition', 'Bulk Operations', 'Dynamic Rules']}>
+  <Tab value="Manual Addition">
+    <Steps>
+      <Step>Navigate to the feed dashboard and click **Add Content**</Step>
+      <Step>Browse or search through your media library</Step>
+      <Step>Select individual items to add to the feed</Step>
+      <Step>Arrange content order using drag-and-drop</Step>
+      <Step>Click **Add to Feed** to confirm additions</Step>
+    </Steps>
+  </Tab>
+  <Tab value="Bulk Operations">
+    <Steps>
+      <Step>Navigate to the feed dashboard and click **Bulk Add**</Step>
+      <Step>
+        **Use Advanced Filters:**
+        - Content type filtering
+        - Date range selection
+        - Tag-based filtering
+        - Performance metrics filtering
+      </Step>
+      <Step>Select multiple items using checkboxes</Step>
+      <Step>Click **Add Selected** to add all items simultaneously</Step>
+    </Steps>
+  </Tab>
+  <Tab value="Dynamic Rules">
+    Define rules once, and content is added automatically:
+    - By type (video, image, mixed)
+    - Tags or categories
+    - Upload date ranges
+    - Performance thresholds
+    - Sorting rules (newest, trending, most viewed)
+  </Tab>
+</Tabs>
+
+
+#### Reordering Content
+
+<Steps>
+  <Step>Click **Reorder** to enter reorder mode in feed dashboard</Step>
+  <Step>Drag items to desired positions using the drag handles</Step>
+  <Step>Click **Save Order** to apply changes</Step>
+</Steps>
+
+<Callout type="tip">
+  You can schedule items to appear or expire automatically for fresh, timely feeds.
+</Callout>
+
+## Configuring Feeds
+
+<Tabs items={['Basic Settings', 'Display Options', 'Access Control']}>
+  <Tab value="Basic Settings">
+    - **Feed Name**: Update feed identification
+    - **Description**: Modify feed description and purpose
+    - **Visibility Level**: Change public, unlisted, or private status
+    - **Project Association**: Move feed between projects
+    - **Feed Type**: Modify feed type (when compatible)
+  </Tab>
+  <Tab value="Display Options">
+    - **Thumbnail Style**: Grid, list, carousel, masonry layouts
+    - **Default Sorting**: Newest, oldest, most popular, custom order
+    - **Pagination**: Items per page configuration
+    - **Cover Image**: Featured image representing the feed
+    - **Preview Settings**: Thumbnail sizes and aspect ratios
+  </Tab>
+  <Tab value="Access Control">
+    - **Visibility Levels**: Public, unlisted, private access
+    - **User Permissions**: Specific user access for private feeds
+    - **Domain Restrictions**: Limit embedding to specific domains
+    - **API Access**: Control programmatic access permissions
+  </Tab>
+</Tabs>
+
+## Feed Integration & Distribution
+
+### Website Embedding
+
+<Steps>
+  <Step>Navigate to your feed dashboard and click the **Embed** button</Step>
+  <Step>Customize embedded feed appearance (size, theme, features)</Step>
+  <Step>Copy the generated iframe code</Step>
+  <Step>Paste the embed code into your website's HTML</Step>
+</Steps>
+
+**Example Embed Code:**
+```html
+<iframe 
+  src="https://feeds.rixl.com/embed/feed_123456" 
+  width="100%" 
+  height="600" 
+  frameborder="0"
+  allowfullscreen>
+</iframe>
+```
+
+### API Integration
+
+```bash
+curl -X GET https://api.rixl.com/feeds/{feedId} \
+     -H "X-API-Key: YOUR_PROJECT_API_KEY"
+```
+
+## Specialized Feed Types
+
+### Creator-Based Feeds
+
+<Columns cols={3}>
+  <Card title="Single Creator">Showcase content from one specific creator</Card>
+  <Card title="Multi-Creator">Combine content from multiple selected creators</Card>
+  <Card title="Creator Collections">Organize creators into themed collections</Card>
+</Columns>
+
+### Interactive Feed Features
+
+<Tabs items={['Engagement Tools', 'Social Features', 'Call-to-Actions']}>
+  <Tab value="Engagement Tools">
+    - Like/favorite buttons with counts
+    - Comment sections with moderation
+    - View tracking and analytics
+    - Share counters and viral metrics
+  </Tab>
+  <Tab value="Social Features">
+    - Social media sharing buttons
+    - User-generated content integration
+    - Community features and discussions
+    - Creator interaction tools
+  </Tab>
+  <Tab value="Call-to-Actions">
+    - Custom call-to-action buttons
+    - Lead capture forms
+    - E-commerce integration
+    - Newsletter subscription options
+  </Tab>
+</Tabs>
+
+## Analytics & Performance
+
+<Columns cols={4}>
+  <Card title="Engagement Metrics">Views, clicks, time spent, and interaction rates</Card>
+  <Card title="Audience Insights">Geographic data, device types, and referral sources</Card>
+  <Card title="Content Performance">Individual item performance and trending analysis</Card>
+  <Card title="Real-time Data">Live feed performance and usage statistics</Card>
+</Columns>
+
+**Key Performance Metrics:**
+- Total Views, Unique Visitors, Session Duration, Engagement Rate
+
+<Steps>
+  <Step>Navigate to your feed dashboard</Step>
+  <Step>Click on the **Analytics** tab</Step>
+  <Step>Select a date range</Step>
+  <Step>Review metrics and identify trends</Step>
+  <Step>Export data as CSV or PDF</Step>
+</Steps>
+
+## Video Feed Customization
+
+<Tabs items={['Playback Settings', 'Quality Options', 'Player Theme']}>
+  <Tab value="Playback Settings">
+    - Autoplay, continuous play, loop options, mute settings
+  </Tab>
+  <Tab value="Quality Options">
+    - Default quality, adaptive streaming, manual selection, mobile optimization
+  </Tab>
+  <Tab value="Player Theme">
+    - Dark/light themes, branding, custom styling for controls and progress bar
+  </Tab>
+</Tabs>
+
+## Troubleshooting Guide
+
+<Tabs items={['Display Issues', 'Content Problems', 'Integration Issues']}>
+  <Tab value="Display Issues">
+    - Verify visibility and permissions
+    - Optimize performance (pagination, asset sizes)
+    - Check domain whitelist for embedding
+  </Tab>
+  <Tab value="Content Problems">
+    - Ensure items match feed rules
+    - Review ordering settings
+    - Check dynamic rules for freshness
+  </Tab>
+  <Tab value="Integration Issues">
+    - Verify API key and rate limits
+    - Validate embed HTML and check console errors
+    - Refresh RSS output settings if applicable
+  </Tab>
+</Tabs>
+
+## Best Practices
+
+<Callout type="tip">
+  Well-organized feeds significantly improve engagement and discoverability.
+</Callout>
+
+**Organization:** Related themes, consistent updates, metadata for search.  
+**Performance:** Optimize images, limit feed size, use lazy loading, caching.
+
+## Next Steps
+
+<Columns cols={1}>
+  <Card
+    title="Feed API Integration"
+    href="/de/api"
+  >
+    Implement custom feed integrations and advanced API usage
+  </Card>
+</Columns>

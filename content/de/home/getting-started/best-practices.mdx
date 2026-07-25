@@ -1,0 +1,423 @@
+---
+title: Best Practices
+description: Grundlegende Richtlinien und Empfehlungen zur Optimierung Ihres RIXL-Workflows – von der Medienvorbereitung bis zum Produktions-Deployment.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+Holen Sie mit diesen bewährten Best Practices das Beste aus **RIXL** heraus. Ob Sie gerade erst anfangen oder einen bestehenden Workflow optimieren – diese Richtlinien helfen Ihnen, bessere Leistung, Qualität und Effizienz zu erreichen.
+
+## Best Practices für die Medienverarbeitung
+
+### Auswahl des Videoformats
+
+**Wählen Sie das richtige Format für optimale Verarbeitungsgeschwindigkeit und Qualität:**
+
+<Columns cols={3}>
+  <Card title="MP4 + H.264 (empfohlen)" icon="zap">
+    Schnellste Verarbeitung bei universeller Kompatibilität. Für die meisten Inhalte geeignet.
+  </Card>
+  <Card title="MOV (Apple-Inhalte)" icon="smartphone">
+    Hervorragend für Inhalte von iPhone-, iPad- und Mac-Geräten.
+  </Card>
+  <Card title="Veraltete Formate vermeiden" icon="alert-triangle">
+    AVI und FLV erfordern zusätzlichen Konvertierungsaufwand. Konvertieren Sie zuerst zu MP4.
+  </Card>
+</Columns>
+
+### Auswahl der Qualitätsstufe
+
+Wählen Sie die passende [Qualitätsstufe](/de/home/platform/uploads/videos/quality-tiers) basierend auf Ihren Inhalten und Ihrer Zielgruppe:
+
+<Tabs items={['Basic Tier', 'Shorts Tier', 'Pro Tier']}>
+  <Tab value="Basic Tier">
+    **Am besten geeignet für:**
+    - Web-Inhalte und Tutorials
+    - Desktop-orientiertes Anschauen
+    - Anforderungen an schnelle Verarbeitung
+    - Bandbreitenschonende Auslieferung
+
+    **Spezifikationen:**
+    - Maximale Auflösung 720p HD
+    - Bildraten 24 fps/30 fps
+    - Schnellste Verarbeitungszeiten
+    - Kleinste Dateigrößen
+  </Tab>
+  <Tab value="Shorts Tier">
+    **Am besten geeignet für:**
+    - Social-Media-Inhalte
+    - Mobile-First-Erlebnisse
+    - Vertikale Videoinhalte
+    - Flüssige 60-fps-Bewegung
+
+    **Spezifikationen:**
+    - Maximal 1080p Full HD
+    - Bildraten bis zu 60 fps
+    - Mobil-optimierte Kodierung
+    - Mittlere Verarbeitungszeiten
+  </Tab>
+  <Tab value="Pro Tier">
+    **Am besten geeignet für:**
+    - Professionelle Ausstrahlungen
+    - 4K-/HDR-Inhalte
+    - Premium-Streaming-Erlebnisse
+    - Ausgabe in Produktionsqualität
+
+    **Spezifikationen:**
+    - Unterstützung von 4K Ultra HD
+    - Bis zu 60 fps mit HDR
+    - Professionelle Audioverarbeitung
+    - Längste Verarbeitungszeiten
+  </Tab>
+</Tabs>
+
+### Richtlinien zur Dateivorbereitung
+
+<Steps>
+  <Step>
+    **Quellqualität**
+
+    Laden Sie die höchste verfügbare Qualität hoch. RIXL optimiert automatisch auf passende Größen herunter.
+    - **Video**: Bis zu 2 GB pro Datei
+    - **Bilder**: Bis zu 100 MB pro Datei
+    - **Auflösung**: Originalauflösung beibehalten, Hochskalieren vermeiden
+  </Step>
+  <Step>
+    **Audioverarbeitung**
+
+    Verwenden Sie die empfohlenen Audioeinstellungen für beste Ergebnisse:
+    - **Codec**: Opus (bevorzugt) oder MP3
+    - **Bitrate**: 128 kbps für die meisten Inhalte
+    - **Kanäle**: Stereo für Standardinhalte
+  </Step>
+  <Step>
+    **Bildraten-Standards**
+
+    Halten Sie sich für optimale Verarbeitung an Standard-Bildraten:
+    - **24 fps**: Filmische Inhalte
+    - **30 fps**: Standard-Webvideo
+    - **60 fps**: Flüssige Bewegung (Shorts-/Pro-Stufen)
+  </Step>
+</Steps>
+
+## Best Practices für den Plattform-Workflow
+
+### Projektorganisation
+
+**Strukturieren Sie Ihre Projekte für Skalierbarkeit und Teamzusammenarbeit:**
+
+<Columns cols={2}>
+  <Card title="Projekttrennung" icon="folder-plus">
+    Erstellen Sie separate Projekte für verschiedene Kampagnen, Marken oder Umgebungen
+    (Dev/Staging/Prod).
+  </Card>
+  <Card title="Serverstandort" icon="globe">
+    Wählen Sie Serverregionen, die Ihrer Hauptzielgruppe am nächsten liegen, für optimale
+    Auslieferungsleistung.
+  </Card>
+</Columns>
+
+### Organisation der Mediathek
+
+Befolgen Sie diese Organisationsstrategien für eine effiziente Inhaltsverwaltung:
+
+**Best Practices für die Ordnerstruktur:**
+- Nach Projekt oder Kampagne organisieren
+- Einheitliche Namenskonventionen verwenden
+- Datumsbasierte Ordner für zeitkritische Inhalte anlegen
+- Inhaltstypen trennen (Videos, Bilder, Dokumente)
+
+**Tagging-Strategie:**
+- Beschreibende, durchsuchbare Tags verwenden
+- Tag-Hierarchien für komplexe Kategorisierung erstellen
+- Massen-Tagging für mehr Effizienz einsetzen
+- Zweck-Tags einbeziehen (Hero, Vorschaubild, Hintergrund)
+
+**Verwaltung des Content-Lebenszyklus:**
+- Mit dem Entwurfsstatus zur Überprüfung beginnen
+- Freigabe-Workflows für Teaminhalte verwenden
+- Ungenutzte oder veraltete Inhalte archivieren
+- Regelmäßige Bereinigung doppelter Inhalte
+### Teamzusammenarbeit
+
+**Richten Sie effektive Team-Workflows ein:**
+
+<Steps>
+  <Step>
+    **Rollenbasierter Zugriff**
+
+    Weisen Sie basierend auf den Zuständigkeiten der Teammitglieder passende Rollen zu:
+    - **Owner**: Vollzugriff einschließlich Abrechnung
+    - **Admin**: Projekt- und Teamverwaltung
+    - **Member**: Hochladen und Verwalten von Inhalten
+    - **Viewer**: Nur-Lese-Zugriff
+  </Step>
+  <Step>
+    **Freigabe-Workflows**
+
+    Implementieren Sie Prozesse zur Inhaltsfreigabe:
+    - Workflow Entwurf → Überprüfung → Veröffentlicht
+    - Teamkommentare und Feedback
+    - Nachverfolgung des Versionsverlaufs
+    - Verwaltung des Inhaltsstatus
+  </Step>
+  <Step>
+    **Projektvorlagen**
+
+    Erstellen Sie wiederverwendbare Projektstrukturen:
+    - Vorkonfigurierte Ordnerhierarchien
+    - Standard-Tag-Sets
+    - Standard-Verarbeitungseinstellungen
+    - Vorlagen für Teamberechtigungen
+  </Step>
+</Steps>
+
+## Best Practices für die SDK-Implementierung
+
+### Installation und Einrichtung
+
+**Befolgen Sie die richtigen Installationsschritte für zuverlässige Leistung:**
+
+<Callout type="info">
+  Verwenden Sie stets die neueste stabile Version des SDK und stellen Sie sicher, dass Ihre React-Version 18.0 oder höher ist.
+</Callout>
+
+**Paketverwaltung:**
+```bash
+# Use your preferred package manager
+npm install @rixl/videosdk-react
+# or
+yarn add @rixl/videosdk-react
+```
+
+**TypeScript-Konfiguration:**
+- Strict-Modus für bessere Typsicherheit aktivieren
+- Die bereitgestellten TypeScript-Definitionen verwenden
+- Komponenten mit korrekter Typisierung importieren
+
+### Nutzungsmuster für Komponenten
+
+**Best Practices für die Video-Komponente:**
+
+<Tabs items={['Basic Usage', 'Advanced Features', 'Performance']}>
+  <Tab value="Basic Usage">
+    ```tsx
+    import {Video} from '@rixl/videosdk-react';
+
+    // Basic implementation
+    <Video
+      id="your-media-id"
+      className="w-full h-auto rounded-lg"
+      autoPlay={false}
+      muted={false}
+      progressBar={true}
+      allowFullscreen={true}
+    />
+    ```
+  </Tab>
+  <Tab value="Advanced Features">
+    ```tsx
+    // Advanced configuration
+    <Video
+      id="your-media-id"
+      className="aspect-video"
+      autoPlay={true}
+      muted={true}
+      loop={true}
+      progressBar={false}
+      allowPlayPause={false}
+      // For background videos
+    />
+    ```
+  </Tab>
+  <Tab value="Performance">
+    ```tsx
+    // Performance optimized
+    <Video
+      id="your-media-id"
+      className="w-full h-auto"
+      // Let RIXL handle quality selection
+      // Enable lazy loading for off-screen content
+      loading="lazy"
+    />
+    ```
+  </Tab>
+</Tabs>
+
+**Best Practices für die Image-Komponente:**
+
+```tsx
+import { Image } from '@rixl/videosdk-react';
+
+// Optimized image usage
+<Image
+  id="your-image-id"
+  alt="Descriptive alt text for accessibility"
+  className="w-full h-auto object-cover"
+  // Automatic format selection (WebP, AVIF)
+  // Responsive sizing
+  // Thumbhash placeholders
+/>
+```
+
+### Barrierefreiheit umsetzen
+
+**Stellen Sie sicher, dass Ihre Medienkomponenten barrierefrei sind:**
+
+<Columns cols={2}>
+  <Card title="Alternativtext" icon="eye">
+    Geben Sie stets beschreibenden Alternativtext für Bilder und aussagekräftige Titel für
+    Videos an.
+  </Card>
+  <Card title="Tastaturnavigation" icon="keyboard">
+    RIXL-Komponenten enthalten eine integrierte Unterstützung für die Tastaturnavigation.
+  </Card>
+  <Card title="Screenreader" icon="volume-2">
+    Die Komponenten sind WCAG-2.1-konform mit korrekten ARIA-Attributen.
+  </Card>
+  <Card title="Untertitel" icon="captions">
+    Nutzen Sie die Untertitelunterstützung für die Barrierefreiheit von Videoinhalten.
+  </Card>
+</Columns>
+
+### Browserkompatibilität
+
+**Sorgen Sie für breite Kompatibilität:**
+
+- **Moderne Browser**: Voller Funktionsumfang (Chrome 88+, Firefox 85+, Safari 14+, Edge 88+)
+- **Mobile Browser**: Native Unterstützung für iOS Safari und Android Chrome
+- **Elegante Fallbacks**: Automatische Rückstufung für ältere Browser
+- **Testen**: Auf Zielbrowsern und -geräten testen
+
+## Best Practices für die API-Integration
+
+### Authentifizierung und Sicherheit
+
+**Schützen Sie Ihre API-Schlüssel und setzen Sie sichere Praktiken um:**
+
+<Callout type="warning">
+  **API-Schlüssel sind wie Passwörter für Ihr Projekt**. Bewahren Sie sie sicher auf und geben Sie sie niemals öffentlich weiter
+  oder committen Sie sie in die Versionsverwaltung.
+</Callout>
+
+**Sicherheitsrichtlinien:**
+- API-Schlüssel in Umgebungsvariablen speichern
+- Unterschiedliche Schlüssel für Entwicklung und Produktion verwenden
+- Schlüssel regelmäßig rotieren
+- API-Schlüssel-Nutzung auf verdächtige Aktivitäten überwachen
+- Angemessene Fehlerbehandlung für Authentifizierungsfehler implementieren
+
+### Upload-Implementierung
+
+**Befolgen Sie bewährte Muster für zuverlässige Uploads:**
+
+<Steps>
+  <Step>
+    **Upload initialisieren**
+
+    Verwenden Sie den dreistufigen Upload-Prozess:
+    1. Upload initialisieren, um vorsignierte URLs zu erhalten
+    2. Datei direkt in den sicheren Cloud-Speicher hochladen
+    3. Upload abschließen, um die Verarbeitung auszulösen
+  </Step>
+  <Step>
+    **Fehlerbehandlung**
+
+    Implementieren Sie eine umfassende Fehlerbehandlung:
+    - Wiederholungslogik für fehlgeschlagene Uploads
+    - Fortschrittsverfolgung und Nutzerrückmeldung
+    - Timeout-Behandlung für große Dateien
+    - Wiederherstellung bei Netzwerkfehlern
+  </Step>
+  <Step>
+    **Leistung**
+
+    Verbessern Sie die Upload-Leistung:
+    - Mehrteilige Uploads für Dateien > 100 MB verwenden
+    - Fortsetzungsfähigkeit für unterbrochene Uploads implementieren
+    - Upload-Fortschritt überwachen und Rückmeldung geben
+    - Mehrere Uploads effizient bündeln
+  </Step>
+</Steps>
+
+### Überwachung und Statusverfolgung
+
+**Implementieren Sie eine effektive Überwachung:**
+
+```javascript
+// Example status monitoring pattern
+const monitorProcessing = async (videoId) => {
+  const pollInterval = 5000; // 5 seconds
+
+  while (true) {
+    const status = await checkProcessingStatus(videoId);
+
+    if (status.state === 'completed') {
+      break;
+    } else if (status.state === 'failed') {
+      handleProcessingError(status.error);
+      break;
+    }
+
+    // Adjust polling frequency based on processing stage
+    await new Promise(resolve => setTimeout(resolve, pollInterval));
+  }
+};
+```
+
+**Best Practices für die Überwachung:**
+- Intelligente Abfrageintervalle verwenden (anfangs häufig, mit der Zeit reduzieren)
+- Exponentielles Backoff bei Fehlern implementieren
+- Statusantworten kurz zwischenspeichern, um API-Aufrufe zu reduzieren
+- Überwachungsressourcen nach Abschluss freigeben
+- Mehrere Elemente effizient gebündelt überwachen
+
+## Best Practices für Sicherheit und Leistung
+
+### Inhaltssicherheit
+
+**Schützen Sie Ihre Inhalte und wahren Sie die Sicherheit:**
+
+<Columns cols={3}>
+  <Card title="Zugriffssteuerung" icon="shield">
+    Nutzen Sie Projektberechtigungen und API-Schlüssel, um zu steuern, wer auf Ihre Medien
+    zugreifen kann.
+  </Card>
+  <Card title="Sichere Auslieferung" icon="lock">
+    Liefern Sie Inhalte über HTTPS mit sicheren, signierten URLs für private Medien aus.
+  </Card>
+  <Card title="Regelmäßige Audits" icon="check-square">
+    Überprüfen Sie regelmäßig Zugriffsprotokolle und Berechtigungen, um die Sicherheit
+    zu gewährleisten.
+  </Card>
+</Columns>
+
+### Leistungsoptimierung
+
+**Maximieren Sie Auslieferungsgeschwindigkeit und Effizienz:**
+
+<Columns cols={3}>
+  <Card title="CDN nutzen" icon="globe">
+    Das globale CDN von RIXL cacht Inhalte automatisch nah bei Ihren Nutzern.
+  </Card>
+  <Card title="Lazy Loading verwenden" icon="zap">
+    Laden Sie Bilder und Videos erst, wenn sie in den Sichtbereich gelangen, um Bandbreite
+    zu sparen.
+  </Card>
+  <Card title="Platzhalter optimieren" icon="image">
+    Nutzen Sie intelligente Platzhalter, um die wahrgenommene Ladezeit zu verbessern und
+    Layout-Verschiebungen zu vermeiden.
+  </Card>
+</Columns>
+
+## Wie geht es weiter?
+
+<Callout type="tip">
+  Bereit, diese Praktiken umzusetzen? Beginnen Sie mit der
+  [5-Minuten-Schnellstartanleitung](/de/home/getting-started/quick-start) oder erkunden Sie die
+  [Dashboard-Anleitung der Plattform](/de/home/platform/dashboard/guide) für vertiefende
+  Workflows.
+</Callout>

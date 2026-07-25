@@ -1,0 +1,94 @@
+---
+title: "Props Reference"
+description: "Complete API reference for all Feed component props and TypeScript interfaces"
+---
+
+import {Callout} from "@/snippets"
+
+## Core Props
+
+### `feedId` **(Required)**
+
+**Type:** `string`
+
+The unique feed identifier from your RIXL dashboard. Create a feed at [dash.rixl.com/feeds](https://dash.rixl.com/feeds) to get this ID.
+
+```tsx
+<Feed feedId="your-feed-id" />
+```
+
+<Callout type="info">
+  Each feed can contain multiple posts with videos and images. Manage your feed content through the RIXL dashboard.
+</Callout>
+
+
+## Localization & Styling
+
+### `lang` **(Optional)**
+
+**Type:** `"en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" | "uk"` | **Default:** `'en'`
+
+Sets the language of the feed UI elements (e.g., "More"/"Less" toggle on post descriptions).
+
+```tsx
+<Feed feedId="your-feed-id" lang="de" />
+```
+
+### `feedFont` **(Optional)**
+
+**Type:** `FontFamilyKey` | **Default:** `undefined`
+
+Sets the font family for feed content. Available options:
+
+- `'monospace_serif'` - Courier New, Nimbus Mono L
+- `'proportional_serif'` - Times New Roman, Georgia
+- `'monospace_sans'` - Deja Vu Sans Mono, Lucida Console
+- `'proportional_sans'` - Roboto, Arial, Helvetica
+- `'casual'` - Comic Sans MS, Impact, Handlee
+- `'cursive'` - Monotype Corsiva, URW Chancery L
+- `'small_caps'` - Arial with Marcellus SC fallback
+
+```tsx
+<Feed feedId="your-feed-id" feedFont="proportional_sans" />
+```
+
+## Layout Recommendations
+
+The Feed component works best when given explicit height constraints:
+
+```tsx
+// Full viewport height
+<div className="h-screen">
+  <Feed feedId="your-feed-id" />
+</div>
+
+// Fixed height container
+<div className="h-[600px]">
+  <Feed feedId="your-feed-id" />
+</div>
+```
+
+<Callout type="warning">
+  The Feed component requires a parent container with a defined height. Without height constraints, the infinite scroll behavior may not work correctly.
+</Callout>
+
+## TypeScript Interface
+
+```typescript
+interface FeedProps extends HTMLProps<HTMLDivElement> {
+  feedId: string;
+  lang?: SupportedLanguage;
+  feedFont?: FontFamilyKey;
+}
+
+type SupportedLanguage = "en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" | "uk";
+
+type FontFamilyKey =
+  | "monospace_serif"
+  | "proportional_serif"
+  | "monospace_sans"
+  | "proportional_sans"
+  | "casual"
+  | "cursive"
+  | "small_caps";
+```

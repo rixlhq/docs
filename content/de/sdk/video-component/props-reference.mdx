@@ -1,0 +1,295 @@
+---
+title: "Props Reference"
+description: "Complete API reference for all Video component props and TypeScript interfaces"
+---
+
+
+import {Callout} from "@/snippets"
+
+## Core Props
+
+### `id` **(Required)**
+
+**Type:** `string`
+
+The media identifier from your RIXL dashboard. Pass this to `<Video />` so the SDK can load the video metadata and source URLs it needs for playback.
+
+```tsx
+<Video id="D3OCjdLP60" />
+```
+
+<Callout type="info">
+  Need custom controls? Render them inside `<Video theme="hideUI">` when possible, or wrap detached sibling controls in
+  `<VideoPlayer>`. Player hooks read from the enclosing scope automatically — no prop wiring needed.
+</Callout>
+
+### `className` **(Optional)**
+
+**Type:** `string` | **Default:** `undefined`
+
+CSS classes for styling the video container. Supports all CSS frameworks including TailwindCSS.
+
+```tsx
+<Video
+  id="D3OCjdLP60"
+  className="w-full h-auto rounded-lg shadow-lg"
+/>
+```
+
+## Playback Controls
+
+### `muted` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+Permanently disables audio and hides all sound controls (mute button, volume slider). Use this for background or ambient videos where sound should never play.
+
+```tsx
+<Video id="D3OCjdLP60" muted={true} />
+```
+
+<Callout type="warning">
+  When `muted={true}` is set, the mute button and volume controls are completely hidden. Users will not be able to unmute the video. Only use this for background videos or scenarios where audio is intentionally disabled. For autoplay with the ability to unmute, use `autoPlay={true}` without `muted={true}`.
+</Callout>
+
+### `autoPlay` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+Automatically starts playback when the component loads. The SDK automatically handles browser autoplay compliance by starting the video muted, so you do **not** need to pass `muted={true}`. The player shows sound controls that let users unmute when they choose.
+
+```tsx
+<Video
+  id="D3OCjdLP60"
+  autoPlay={true}
+/>
+```
+
+<Callout type="info">
+  The SDK handles browser autoplay policies internally — the video starts muted until the user interacts with the player. Sound controls remain visible so users can unmute at any time. You only need `muted={true}` if you want to permanently disable audio (e.g. background videos).
+</Callout>
+
+<Callout type="warning">
+  **Hover theme exception:** When `theme="hover"` is set, `autoPlay` is ignored. The video is paused by default and only plays when the user hovers over it. See the [Hover Preview](/de/sdk/examples/hover-preview) example for details.
+</Callout>
+
+### `loop` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+Automatically restarts the video when it reaches the end.
+
+```tsx
+<Video id="D3OCjdLP60" loop={true} />
+```
+
+### `volume` **(Optional)**
+
+**Type:** `number` (0.0 - 1.0) | **Default:** `1.0`
+
+Sets the initial volume level. Must be between 0.0 (silent) and 1.0 (full volume).
+
+```tsx
+<Video id="D3OCjdLP60" volume={0.8} />
+```
+
+## UI Controls
+
+### `progressBar` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Shows or hides the video progress bar and scrub controls.
+
+```tsx
+<Video id="D3OCjdLP60" progressBar={false} />
+```
+
+### `allowPlayPause` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Enables or disables play/pause controls and click-to-play functionality.
+
+```tsx
+<Video id="D3OCjdLP60" allowPlayPause={false} />
+```
+
+### `allowFullscreen` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Shows or hides the fullscreen button and enables fullscreen functionality.
+
+```tsx
+<Video id="D3OCjdLP60" allowFullscreen={true} />
+```
+
+### `allowPictureInPicture` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Enables Picture-in-Picture mode support for supported browsers.
+
+```tsx
+<Video id="D3OCjdLP60" allowPictureInPicture={true} />
+```
+
+## Advanced Features
+
+### `theme` **(Optional)**
+
+**Type:** `'default' | 'minimal' | 'hover' | 'feed' | 'hideUI'` | **Default:** `'default'`
+
+Selects the player theme and control styling.
+
+```tsx
+<Video id="D3OCjdLP60" theme="minimal" />
+```
+
+**Available Themes:**
+- `'default'` - Full-featured player with all standard controls
+- `'minimal'` - Clean, simplified interface with Progressbar and Mute button only
+- `'hover'` - Video plays on mouse enter, pauses on mouse leave. Shows only a mute button and progress bar. Ideal for video thumbnails and preview cards.
+- `'feed'` - Always-visible UI with expandable video description, mute button, and progress bar. This is the theme used by the Feed component. Use this when building custom feed layouts.
+- `'hideUI'` - No built-in controls are shown. Use this when you want to provide your own controls through the hook APIs.
+
+### `lang` **(Optional)**
+
+**Type:** `"en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" | "uk"` | **Default:** `'en'`
+
+Sets the language of the player.
+
+```tsx
+<Video id="D3OCjdLP60" lang="de" />
+```
+
+## Analytics
+
+### `analytics` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Enables built-in view tracking and engagement analytics. When enabled, the SDK automatically tracks video views, watch duration, and engagement metrics.
+
+```tsx
+<Video id="D3OCjdLP60" analytics={true} />
+```
+
+### `analyticsPage` **(Optional)**
+
+**Type:** `"feed" | "standalone" | "profile"` | **Default:** `"standalone"`
+
+Specifies the page context for analytics reporting. This helps segment your analytics data by where the video is being viewed.
+
+```tsx
+<Video id="D3OCjdLP60" analyticsPage="feed" />
+```
+
+**Available Contexts:**
+- `'standalone'` - Video on its own dedicated page
+- `'feed'` - Video within a scrolling feed
+- `'profile'` - Video on a user profile page
+
+
+## Engagement Features
+
+### `heatmap` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Displays a visual heatmap overlay on the progress bar showing viewer engagement patterns. Brighter areas indicate sections with higher viewership.
+
+```tsx
+<Video id="D3OCjdLP60" heatmap={false} />
+```
+
+### `hotSegments` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Shows high-engagement segments on the player timeline when heatmap data is available.
+
+```tsx
+<Video id="D3OCjdLP60" hotSegments={false} />
+```
+
+### `resumeProgress` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Automatically resumes playback from where the user previously stopped watching.
+
+```tsx
+<Video id="D3OCjdLP60" resumeProgress={false} />
+```
+
+### `userId` **(Optional)**
+
+**Type:** `string` | **Default:** `undefined`
+
+Associates player analytics and progress restoration with a stable application user identifier.
+
+```tsx
+<Video id="D3OCjdLP60" userId="user_123" />
+```
+
+### `userProperties` **(Optional)**
+
+**Type:** `Record<string, string>` | **Default:** `undefined`
+
+Adds custom string properties to analytics events for this player.
+
+```tsx
+<Video
+  id="D3OCjdLP60"
+  userProperties={{plan: "pro", team: "growth"}}
+/>
+```
+
+### `chapters` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Enables video chapters on the progress bar. When enabled, chapters you've added to the video on your [RIXL dashboard](https://dash.rixl.com/videos) will be displayed, allowing viewers to quickly navigate to specific sections of the video—similar to YouTube chapters.
+
+```tsx
+<Video id="D3OCjdLP60" chapters={true} />
+```
+
+<Callout type="info">
+  To use chapters, first add them to your video in the RIXL dashboard. Each chapter requires a timestamp and title. Once added, enable this prop to display them in the player.
+</Callout>
+
+## TypeScript Interface
+
+```typescript
+interface VideoProps extends Omit<HTMLProps<HTMLVideoElement>, "onEnded"> {
+  id: string;
+  volume?: number;
+
+  // UI Controls
+  progressBar?: boolean;
+  allowPlayPause?: boolean;
+  allowFullscreen?: boolean;
+  allowPictureInPicture?: boolean;
+
+  // Theme & Localization
+  theme?: "default" | "minimal" | "hover" | "feed" | "hideUI";
+  lang?: "en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" | "uk";
+
+  // Analytics
+  analytics?: boolean;
+  analyticsPage?: "feed" | "standalone" | "profile";
+
+  // Engagement Features
+  heatmap?: boolean;
+  hotSegments?: boolean;
+  resumeProgress?: boolean;
+  userId?: string;
+  userProperties?: Record<string, string>;
+  chapters?: boolean;
+}
+```
+
+`VideoProps` also supports most standard HTML video props through inheritance, including `className`, `muted`, `autoPlay`, `loop`, `playsInline`, and most event handlers. `onEnded` is not part of the public `<Video />` props surface; for custom UI, use `usePlayback().ended` inside the player scope instead.

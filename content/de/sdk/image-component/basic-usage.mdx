@@ -1,0 +1,151 @@
+---
+title: "Basic Usage"
+description: "Learn how to implement the Image component with common patterns and examples"
+---
+
+import {Tabs, TabsContent, TabsList, TabsTrigger} from 'fumadocs-ui/components/tabs'
+import {Callout} from 'fumadocs-ui/components/callout'
+
+# Basic Usage
+
+## Importing the Image Component
+
+```tsx
+import { Image } from '@rixl/videosdk-react';
+```
+
+## Essential Props
+
+Every Image component needs at minimum:
+
+```tsx
+    <Image
+      id="your-image-id" // Required: Your image ID from dash.rixl.com/images
+    />
+```
+
+## Simple Image Display Example
+
+Here's a basic implementation:
+
+```tsx
+import { Image } from '@rixl/videosdk-react';
+
+function BasicImage() {
+  return (
+    <div className="max-w-2xl mx-auto">
+      <Image
+        id="your-image-id"
+        className="object-contain w-full h-full rounded-lg"
+      />
+    </div>
+  );
+}
+```
+
+## Common Use Cases
+
+### Hero Image
+
+<Tabs defaultValue="hero">
+  <TabsList>
+    <TabsTrigger value="hero">Full Width Hero</TabsTrigger>
+    <TabsTrigger value="contained">Contained Hero</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="hero">
+    ```tsx
+    function HeroImage() {
+        return (
+            <section className="relative h-96 overflow-hidden">
+                <Image
+                    id="hero-image-id"
+                    className="absolute inset-0 w-full h-full object-cover"
+                />
+
+                <div className="relative z-10 flex items-center justify-center h-full">
+                    <h1 className="text-4xl font-bold text-white">Welcome</h1>
+                </div>
+            </section>
+        );
+    }
+    ```
+  </TabsContent>
+
+  <TabsContent value="contained">
+    ```tsx
+    function ContainedHero() {
+
+    return (
+        <section className="max-w-4xl mx-auto py-12">
+            <div className="aspect-video rounded-xl overflow-hidden">
+                <Image
+                id="hero-image-id"
+                className="w-full h-full object-cover"
+                />
+            </div>
+        </section>
+    );
+  }
+    ```
+  </TabsContent>
+</Tabs>
+
+### Image Gallery
+
+```tsx
+const galleryImages = [
+  { id: 'image-1', alt: 'Gallery image 1' },
+  { id: 'image-2', alt: 'Gallery image 2' },
+  { id: 'image-3', alt: 'Gallery image 3' },
+  { id: 'image-4', alt: 'Gallery image 4' }
+];
+
+function ImageGallery() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {galleryImages.map((image) => (
+        <div key={image.id} className="aspect-square rounded-lg overflow-hidden">
+          <Image
+            id={image.id}
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+### Profile/Avatar Images
+
+```tsx
+function UserProfile() {
+  return (
+    <div className="flex items-center space-x-4">
+      <div className="w-16 h-16 rounded-full overflow-hidden">
+        <Image
+          id="user-avatar-id"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div>
+        <h3 className="font-semibold">John Doe</h3>
+        <p className="text-gray-600">Software Engineer</p>
+      </div>
+    </div>
+  );
+}
+```
+
+
+## Best Practices
+
+<Callout type="default">
+  **Aspect Ratios**: Use CSS aspect ratio classes to prevent layout shifts during image loading.
+</Callout>
+
+<Callout type="warning">
+  **Object Fit**: Use `object-contain` to preserve aspect ratio or `object-cover` to fill the container while cropping
+  if necessary.
+</Callout>

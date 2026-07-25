@@ -1,0 +1,10 @@
+{
+  "title": "Medienverwaltung",
+  "description": "Laden Sie Ihre Inhalte hoch, organisieren und verwalten Sie sie",
+  "pages": [
+    "overview",
+    "upload-images",
+    "upload-videos",
+    "organize-media"
+  ]
+}

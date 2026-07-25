@@ -1,0 +1,294 @@
+---
+title: Quick Start Guide
+description: Get up and running with RIXL in under 5 minutes — from account setup to uploading your first media.
+
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+
+Welcome to **RIXL**! This quick guide will have you uploading and delivering media in a few minutes. Onboard with no complex setup — just create a project, upload media, and watch RIXL deliver automatically.
+
+## Quick Actions
+
+<Columns cols={3}>
+  <Card
+    title="Create Project"
+    href="/de/home/platform/dashboard/projects/overview"
+    icon="folder-plus"
+  >
+    Set up your first workspace for media organization.
+  </Card>
+  <Card
+    title="Upload Media"
+    href="/de/home/platform/dashboard/media/overview"
+    icon="upload"
+  >
+    Start delivering videos and images immediately.
+  </Card>
+  <Card
+    title="Generate API Key"
+    href="/de/home/platform/api-documentation/api-keys"
+    icon="key"
+  >
+    Get keys for integrating RIXL into your apps.
+  </Card>
+</Columns>
+
+## What You'll Need
+
+**Before we start:**
+- A RIXL account ([create one here](https://dash.rixl.com/signup))
+- Some sample media files (video or image)
+- About 5 minutes
+
+**By the end of this guide:** you'll have a project, uploaded media, seen delivery in action, and optionally created API keys and invited teammates.
+
+## Your First RIXL Project
+
+<Steps>
+  <Step>
+    **Create Your Workspace**
+
+    Projects keep your media, team, and settings separate. Go to **Settings →
+    Projects → Create New Project** and fill in:
+
+    - **Project Name**: Something you'll recognize (like "Marketing Videos" or
+    "Product Photos")
+    - **Description** (optional)
+  </Step>
+  <Step>
+    **Pick Server Location**
+
+    Choose the region closest to your users for best delivery performance:
+
+    - **US East**, **US West**, **Europe**
+
+    <Callout type="warning">
+      Server location cannot be changed after creation — choose carefully.
+    </Callout>
+  </Step>
+  <Step>
+    **Select Default Delivery**
+
+    Pick a default video quality tier:
+
+    - **Shorts** — social/mobile
+    - **Standard** — general web delivery
+    - **Pro** — VOD / high-fidelity
+  </Step>
+  <Step>
+    **Create & Continue**
+
+    After creation you can immediately start
+    [uploading media](/de/home/platform/dashboard/media/overview) and create
+    [API keys](/de/home/platform/api-documentation/api-keys) if needed.
+  </Step>
+  <Step>
+    **Upload Something (Quick)**
+
+    In your project, go to the
+    [Media section](/de/home/platform/dashboard/media/overview) and drag in some files.
+
+    **What you can upload:**
+
+    - **Videos**: MP4, MOV, AVI, and more (up to 2GB each)
+    - **Images**: JPG, PNG, HEIC, SVG, and others (up to 100MB each)
+
+    RIXL will automatically deliver everything for web delivery — you'll see the
+    magic happen in real-time.
+  </Step>
+  <Step>
+    **Get Your API Keys** *(Optional for getting started)*
+
+    If you plan to integrate RIXL into an app or website, you'll need
+    [API keys](/de/home/platform/api-documentation/api-keys). Each project gets its own set of
+    keys for security.
+
+    Don't worry about this step if you're just testing things out — you can always
+    come back to it later.
+
+    <Callout type="warning">
+      API keys are like passwords for your project. Keep them secure and never
+      share them publicly.
+    </Callout>
+  </Step>
+  <Step>
+    **Invite Your Team** *(Optional but recommended)*
+
+    Working with others? Set up an
+    [Organization](/de/home/platform/account-teams/team-management) and invite your team.
+
+    **Available roles:**
+
+    - **Owner**: Can do everything (including manage billing)
+    - **Admin**: Can manage projects and team members
+    - **Member**: Can upload and manage content
+    - **Viewer**: Can view content but not make changes
+  </Step>
+</Steps>
+
+<Callout type="tip">
+  New to the UI? Visit the [Dashboard Overview](/de/home/platform/dashboard/overview) to see where features live and how to
+  switch projects.
+</Callout>
+
+## Interface Overview
+
+### Primary Work Areas
+
+The dashboard is organized into functional modules for efficient content management:
+
+<Columns cols={4}>
+  <Card title="Project Home" icon="book-open">
+    Dashboard overview with usage metrics and quick actions
+  </Card>
+  <Card title="Video Library" icon="video">
+    Upload, transcode, and manage video content
+  </Card>
+  <Card title="Image Library" icon="image">
+    Upload and process images with real-time transformations
+  </Card>
+  <Card title="Content Feeds" icon="activity">
+    Organize content into structured feeds
+  </Card>
+</Columns>
+
+### First Upload Workflows
+
+#### Upload Your First Video
+
+<Steps>
+  <Step>
+    **Select Files**
+
+    Drag and drop videos into the upload area or browse to select files.
+  </Step>
+  <Step>
+    **Configure Processing**
+
+    Choose transcoding quality, thumbnail settings, and delivery preferences.
+  </Step>
+  <Step>
+    **Monitor Progress**
+
+    Watch real-time processing status with detailed progress indicators.
+  </Step>
+  <Step>
+    **Access Content**
+
+    Get share URLs, embed codes, and view analytics.
+  </Step>
+</Steps>
+
+#### Upload Your First Image
+
+<Steps>
+  <Step>
+    **Start Upload**
+
+    Navigate to the Images section in your dashboard and click the upload button
+    to select your files.
+  </Step>
+  <Step>
+    **Configure Settings**
+
+    Set upload preferences and transformation options.
+  </Step>
+  <Step>
+    **Immediate Availability**
+
+    Images are instantly available with real-time transformation capabilities.
+  </Step>
+  <Step>
+    **Optimize Delivery**
+
+    Use URL-based transformations for automatic optimization and CDN delivery.
+  </Step>
+</Steps>
+
+## Navigation Essentials
+
+<Columns cols={3}>
+  <Card title="Project Switching" icon="workflow">
+    Use the project selector in the sidebar to switch between projects
+  </Card>
+  <Card title="Quick Actions" icon="activity">
+    Most sections include quick action buttons for common tasks
+  </Card>
+  <Card title="Usage Monitoring" icon="bar-chart-3">
+    Storage usage and recent activity are visible on the project home page
+  </Card>
+</Columns>
+
+### Administrative Functions
+
+<Columns cols={4}>
+  <Card title="Project Settings" icon="folder">
+    Configure processing preferences and team permissions
+  </Card>
+  <Card title="Team Management" icon="users">
+    Invite members and manage role-based access control
+  </Card>
+  <Card title="API Keys" icon="key">
+    Generate and manage API keys for programmatic access
+  </Card>
+  <Card title="Billing & Usage" icon="credit-card">
+    Monitor consumption and manage subscription preferences
+  </Card>
+</Columns>
+
+## Key Management Areas
+
+### Team & Account Setup
+
+<Columns cols={2}>
+  <Card
+    title="Team Management"
+    href="/de/home/platform/account-teams/organizations-overview"
+    icon="users"
+  >
+    Set up your team and assign roles for collaborative work.
+  </Card>
+  <Card
+    title="Account Settings"
+    href="/de/home/platform/account-teams"
+    icon="settings"
+  >
+    Configure your personal account settings and security.
+  </Card>
+</Columns>
+
+### API & Integration Setup
+
+<Columns cols={2}>
+  <Card
+    title="Create API Keys"
+    href="/de/home/platform/api-documentation/api-keys"
+    icon="key"
+  >
+    Generate your first API keys for programmatic access.
+  </Card>
+  <Card
+    title="Billing Setup"
+    href="/de/home/platform/billing/overview"
+    icon="credit-card"
+  >
+    Configure your billing and subscription preferences.
+  </Card>
+</Columns>
+
+## Next Steps
+
+After completing this guide:
+
+1. **Explore Media Management** - Learn advanced features in [Media Management](/de/home/platform/dashboard/media/overview)
+2. **Set Up Content Feeds** - Create dynamic feeds in [Feeds Management](/de/home/platform/dashboard/feeds/overview)
+3. **Team Collaboration** - Learn about [Organizations & Team Management](/de/home/platform/account-teams/organizations-overview)
+4. **API Integration** - Explore the [API Reference](/de/api)
+
+<Callout type="tip">
+  Take your time exploring each section. The dashboard is designed to be intuitive, and most features include helpful
+  tooltips and guidance.
+</Callout>

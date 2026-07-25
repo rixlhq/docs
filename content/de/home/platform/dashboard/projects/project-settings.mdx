@@ -1,0 +1,125 @@
+---
+title: Project Settings
+description: Configure and manage project settings through the dashboard
+---
+
+
+import {Callout} from '@/snippets'
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+Each project in **RIXL** has configurable settings that control its name, media optimization, storage, and access. You can update most options from the dashboard at any time.
+
+<Callout type="info">
+  Access project settings from Dashboard → Settings → Project Settings.
+</Callout>
+
+---
+
+<Tabs items={['Basic Information', 'Video Processing', 'Project Management']}>
+  <Tab value="Basic Information">
+    ## Project Details
+
+    You can modify the following basic project information:
+
+    | Setting | Description | Editable |
+    |---------|-------------|----------|
+    | **Project Name** | Display name of your project | ✓ |
+    | **Region** | Geographic region where project data is stored | ✗ |
+    | **Video Optimization** | Processing quality settings for uploaded videos | ✓ |
+    | **Created Date** | When the project was initially created | ✗ |
+    | **Storage Usage** | Current storage consumption and file counts | ✗ |
+
+    ### How to Update
+    1. Go to **Settings → Project Settings**.
+    2. Edit the fields you want to change.
+    3. Click **Save Changes**.
+
+    ### Region Information
+
+    A project’s region determines:
+    - Where your media files live
+    - Processing performance for uploads
+    - Delivery optimization for end-users
+
+    <Callout type="warn">
+      The **region cannot be changed** after creation. To move regions, create a new project and migrate your content.
+    </Callout>
+  </Tab>
+
+  <Tab value="Video Processing">
+
+    ## Processing Tiers
+
+    Projects support different video processing strategies based on your content needs:
+
+    Choose the right optimization tier based on your content:
+
+    | Tier | Quality | Resolution | Features | Best For |
+    |------|---------|------------|----------|----------|
+    | **Basic** | Standard | Up to 720p | Basic transcoding | Development & Testing |
+    | **Shorts** | Mobile Optimized | Up to 1080p | Fast processing, adaptive streaming | Social Media Content |
+    | **Pro** | Professional | Up to 4K | Multiple quality levels, analytics | Video-on-Demand |
+
+    ### Features Comparison
+
+    | Feature | Basic | Shorts | Pro |
+    |---------|-------|--------|-----|
+    | Thumbnail Generation | ✓ | ✓ | ✓ |
+    | Multiple Quality Levels | - | ✓ | ✓ |
+    | Adaptive Bitrate | - | ✓ | ✓ |
+    | Custom Watermarks | - | - | ✓ |
+    | Priority Processing | - | ✓ | ✓ |
+    | Advanced Analytics | - | - | ✓ |
+
+    <Callout type="info">
+      Processing changes only apply to **new uploads**. Existing videos keep their current processing.
+    </Callout>
+
+  </Tab>
+
+  <Tab value="Project Management">
+    ## Administration & Controls
+
+    ### Management Actions
+
+    | Action | Description | Access |
+    |--------|-------------|--------|
+    | **Rename Project** | Update the display name | Admin |
+    | **View Storage** | Monitor usage & file counts | Admin |
+    | **Change Processing** | Switch optimization tier | Admin |
+    | **Export Data** | Download all project content | Admin |
+    | **Delete Project** | Permanently remove a project | Owner |
+
+    ### Storage Information
+
+    The project settings page shows your current storage usage and file counts:
+
+    - **Total Storage Used** - Cumulative size of all project files
+    - **Video Files** - Count and size of video content
+    - **Image Files** - Count and size of image content
+    - **Processing Queue** - Files currently being processed
+
+    ### Project Deletion
+
+    <Callout type="error" title="Permanent Action">
+      Deleting a project permanently removes all videos, images, feeds, and settings. This action cannot be reversed.
+    </Callout>
+
+    **Before deleting a project:**
+    1. Export any content you want to keep
+    2. Update any applications using the project's API keys
+    3. Notify team members of the upcoming deletion
+    4. Confirm you have backups of important content
+
+    ### Access & Permissions
+
+    | Role | Basic Info | Video Processing | Project Management |
+    |------|------------|------------------|-------------------|
+    | **Owner** | Full Access | Full Access | Full Access |
+    | **Admin** | Edit | Edit | View Only |
+    | **Member** | View Only | View Only | No Access |
+
+    For team management and member permissions, visit [Account →
+    Organizations](/de/home/platform/account-teams/organizations-overview).
+  </Tab>
+</Tabs>

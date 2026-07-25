@@ -1,0 +1,98 @@
+---
+title: Zahlung & Rechnungen
+description: Verwalten Sie Zahlungsmethoden und greifen Sie auf Ihren Abrechnungsverlauf zu.
+---
+
+
+import {Callout} from '@/snippets';
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+
+## Zahlungsmethoden
+
+### Aktuelle Zahlungsmethode
+
+Ihre aktive Zahlungsmethode wird im Abrechnungs-Dashboard angezeigt und umfasst:
+- **Kartentyp:** Visa, Mastercard usw.
+- **Letzte 4 Ziffern:** Aus Sicherheitsgründen werden nur die letzten 4 Ziffern angezeigt
+- **Ablaufdatum:** Monat und Jahr, in dem die Karte abläuft
+
+### Zahlungsinformationen aktualisieren
+
+<Steps>
+  <Step>
+    Navigieren Sie zu **Projekteinstellungen → Abrechnung**.
+  </Step>
+  <Step>
+    Klicken Sie im Abschnitt „Zahlungsmethode“ auf **Zahlungsmethode aktualisieren**.
+  </Step>
+  <Step>
+    Geben Sie Ihre neuen Kartendetails und Ihre Rechnungsadresse ein.
+  </Step>
+  <Step>
+    Klicken Sie auf **Speichern**, um Ihre Zahlungsinformationen zu aktualisieren.
+  </Step>
+</Steps>
+
+### Unterstützte Zahlungsoptionen
+
+RIXL akzeptiert die folgenden Zahlungsmethoden:
+- **Kreditkarten:** Visa, Mastercard, American Express, Discover
+- **Debitkarten:** Karten mit den Logos großer Netzwerke
+- **Internationale Karten:** Unterstützung mehrerer Währungen für Nutzer weltweit
+
+<Callout type="info">
+  Zahlungsinformationen werden sicher verarbeitet und verschlüsselt. Kartendetails werden niemals auf RIXL-Servern gespeichert.
+</Callout>
+
+### Zahlungsprobleme & Fehlerbehebung
+
+Wenn eine Zahlung fehlschlägt, erhalten Sie sofort eine Benachrichtigung und haben eine **7-tägige Kulanzfrist**, um das Problem zu beheben.
+
+Häufige Lösungen:
+1. **Kartendetails überprüfen:** Prüfen Sie Kartennummer, Ablauf und CVV
+2. **Rechnungsadresse bestätigen:** Muss mit der registrierten Adresse Ihrer Karte übereinstimmen
+3. **Bankbeschränkungen prüfen:** Einige Banken blockieren internationale Transaktionen
+4. **Ausreichende Deckung:** Stellen Sie ein ausreichendes Kontoguthaben sicher
+5. **Alternative Karte versuchen:** Verwenden Sie eine andere Zahlungsmethode
+
+<Callout type="warning">
+  Der Dienst kann nach Ablauf der 7-tägigen Kulanzfrist ausgesetzt werden, wenn Zahlungsprobleme nicht behoben werden.
+</Callout>
+
+## Rechnungen
+
+### Ihr Rechnungsverlauf
+
+Finden Sie Ihre Rechnungen im Abschnitt „Aktuelle Rechnungen“:
+- Rechnungsnummer (INV-001, INV-002 usw.)
+- Erstellungsdatum
+- Berechneter Betrag
+- Zahlungsstatus
+- Download-Schaltfläche
+
+### Rechnungen herunterladen
+
+<Steps>
+  <Step>Finden Sie die gewünschte Rechnung</Step>
+  <Step>Klicken Sie in der Spalte „Aktionen“ auf **Herunterladen**</Step>
+  <Step>Das PDF wird auf Ihr Gerät heruntergeladen</Step>
+</Steps>
+
+**Jede Rechnung enthält:**
+- Zeitraum des Abrechnungszeitraums
+- Monatliche Abonnementgebühr
+- Etwaige Überschreitungsgebühren
+- Steuern
+- Verwendete Zahlungsmethode
+
+### E-Mail-Benachrichtigungen
+
+Sie erhalten E-Mails für:
+- Neue Rechnungen
+- Erfolgreiche Zahlungen
+- Fehlgeschlagene Zahlungen
+- Zahlungswiederholungen
+
+<Callout type="info">
+  Pro- und Enterprise-Kunden erhalten schnelleren Abrechnungssupport: Pro (24 Std.), Enterprise (4 Std.).
+</Callout>

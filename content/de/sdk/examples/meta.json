@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "index",
+    "standard-player",
+    "autoplay-background",
+    "minimal-player",
+    "!hero-image",
+    "!profile-avatar",
+    "!standard-feed",
+    "..."
+  ]
+}

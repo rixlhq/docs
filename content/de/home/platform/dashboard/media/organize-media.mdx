@@ -1,0 +1,276 @@
+---
+title: Organize Media
+description: Structure and manage your media assets effectively in the RIXL Media.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+Manage your growing media library with **advanced organization, filtering, and collaboration features**. This guide explains how to structure, tag, and optimize assets for faster access and team workflows.
+
+---
+
+## Media Library Interface
+
+<Steps>
+  <Step>
+    ### Access Media Library
+    From your dashboard, select **Media Library** to view all uploaded content.
+  </Step>
+  <Step>
+    ### Browse Content
+    Switch between grid and list views to explore images, videos, and other assets.
+  </Step>
+  <Step>
+    ### Apply Filters
+    Narrow results by media type, upload date, tags, or processing status.
+  </Step>
+  <Step>
+    ### Organize Content
+    Create folders, apply tags, and build collections to keep your library structured.
+  </Step>
+</Steps>
+
+[//]  # ([IMAGE NEEDED: Screenshot of media library dashboard interface])
+
+## Content Organization
+
+### Folder Structure
+
+<Columns cols={2}>
+  <Card title="Project Folders">
+    Dedicated folders with automated project tagging.
+  </Card>
+  <Card title="Content Type">
+    Automatic detection with manual folder options.
+  </Card>
+  <Card title="Date-Based">
+    Smart date-based grouping with custom ranges.
+  </Card>
+  <Card title="Custom Categories">
+    Flexible organization system
+  </Card>
+</Columns>
+
+### Tagging System
+
+**Content Tagging Features:**
+- **Auto-tags**: Automatically applied based on content analysis
+- **Manual Tags**: Custom tags for specific organization needs
+- **Tag Hierarchies**: Nested tag structures for complex categorization
+- **Bulk Tagging**: Apply tags to multiple items simultaneously
+
+<Tabs items={['Auto Tags', 'Manual Tags', 'Tag Management']}>
+  <Tab value="Auto Tags">
+    - Content type (image, video, document)
+    - Format (jpg, png, mp4, etc.)
+    - Processing status (raw, processed, optimized)
+    - Dimensions (vertical, horizontal, square)
+    - Project (based on upload context)
+  </Tab>
+  <Tab value="Manual Tags">
+    - Campaign: marketing, social, website
+    - Purpose: hero, thumbnail, background
+    - Status: approved, pending, archived
+    - Team: design, marketing, development
+    - Priority: urgent, normal, low
+  </Tab>
+  <Tab value="Tag Management">
+    - Create or edit tags
+    - Merge duplicates
+    - Delete unused tags
+    - Track tag usage analytics
+  </Tab>
+</Tabs>
+
+---
+
+## Search and Filtering
+
+### Advanced Search
+
+**Search Capabilities:**
+- **Text Search**: Search titles, descriptions, and metadata
+- **Tag Search**: Find content by specific tags
+- **Date Range**: Filter by upload or modification dates
+- **File Type**: Filter by format, size, or processing status
+- **Content Analysis**: Search by colors, subjects, or detected content
+
+[//]  # ([IMAGE NEEDED: Screenshot of advanced search interface])
+
+### Filter Options
+
+<Columns cols={3}>
+  <Card title="Media Type">
+    Filter by content type with format-specific options
+  </Card>
+  <Card title="Processing Status">
+    View content by processing stage and optimization status
+  </Card>
+  <Card title="Upload Date">
+    Date-based filtering with quick presets and custom ranges
+  </Card>
+  <Card title="Project Context">
+    Project-specific content filtering and organization
+  </Card>
+  <Card title="File Size">
+    Size-based filtering for storage management
+  </Card>
+  <Card title="Usage Status">
+    Track content usage across projects and campaigns
+  </Card>
+</Columns>
+
+---
+
+## Batch Operations
+
+### Managing Multiple Items
+
+<Steps>
+  <Step>
+    **Select Content**
+
+    Use checkboxes or select-all options to choose multiple items
+  </Step>
+  <Step>
+    **Choose Operation**
+
+    Select from available batch operations: move, tag, delete, or export
+  </Step>
+  <Step>
+    **Configure Settings**
+
+    Set parameters for the operation (folder destination, tags to apply, etc.)
+  </Step>
+  <Step>
+    **Execute and Monitor**
+
+    Run the operation with progress tracking and completion notifications
+  </Step>
+</Steps>
+
+
+<Tabs items={['Organization', 'Metadata', 'Export/Share']}>
+  <Tab value="Organization">
+    - **Move to Folder**: Relocate multiple items to different folders
+    - **Apply Tags**: Add or remove tags from multiple items
+    - **Archive Content**: Move items to archive status
+    - **Duplicate Detection**: Find and manage duplicate content
+  </Tab>
+  <Tab value="Metadata">
+    - **Bulk Edit**: Modify titles, descriptions, and metadata
+    - **Status Updates**: Change processing or approval status
+    - **Copyright Info**: Apply licensing and rights information
+    - **Alt Text**: Add accessibility descriptions in bulk
+  </Tab>
+  <Tab value="Export/Share">
+    - **Bulk Download**: Download multiple items as ZIP
+    - **Share Links**: Generate shareable links for multiple items
+    - **Export Metadata**: Download content information as CSV
+    - **Embed Codes**: Generate embed codes for multiple items
+  </Tab>
+</Tabs>
+
+---
+
+## Content Lifecycle Management
+
+### Status Workflow
+
+<Steps>
+  <Step>
+    **Draft**
+
+    Newly uploaded content starts in draft status for review and organization
+  </Step>
+  <Step>
+    **Review**
+
+    Content moves through review stages with approval workflows
+  </Step>
+  <Step>
+    **Published**
+
+    Approved content becomes available for use in projects and sharing
+  </Step>
+  <Step>
+    **Archived**
+
+    Unused or outdated content can be archived for storage optimization
+  </Step>
+</Steps>
+
+### Workflow Automation
+- **Auto-folders**: Automatically organize content based on rules
+- **Smart Tagging**: AI-powered tag suggestions and application
+- **Duplicate Detection**: Automatic identification of similar content
+- **Cleanup Schedules**: Automated archiving of old or unused content
+
+---
+
+## Collaboration & Integration
+
+### Project Integration
+- Group content by active projects
+- Track where assets are used
+- Apply project templates for faster setup
+- Share across multiple projects
+
+### Team Tools
+
+<Columns cols={2}>
+  <Card title="Team Access">
+    Team-based permissions and collaborative organization features
+  </Card>
+  <Card title="Comments">
+    Content-specific comments and review discussions
+  </Card>
+  <Card title="Approval Workflow">
+    Configurable approval processes for content publication
+  </Card>
+  <Card title="Version History">
+    Complete history of modifications and organizational changes
+  </Card>
+</Columns>
+
+### Metadata Management
+
+<Tabs items={['Standard', 'Custom', 'Project-Specific']}>
+  <Tab value="Standard">
+    **Built-in Metadata:**
+    - **Title**: Content title and identifier
+    - **Description**: Detailed content description
+    - **Alt Text**: Accessibility descriptions
+    - **Copyright**: Rights and licensing information
+    - **Keywords**: SEO and searchability tags
+  </Tab>
+  <Tab value="Custom">
+    **User-Defined Fields:**
+    - **Campaign**: Marketing campaign association
+    - **Brand Guidelines**: Brand compliance status
+    - **Usage Rights**: Specific usage permissions
+    - **Expiration**: Content expiration dates
+    - **Priority**: Content importance levels
+  </Tab>
+  <Tab value="Project-Specific">
+    **Project Metadata:**
+    - **Project Phase**: Development stage association
+    - **Asset Type**: Role within project (hero, thumbnail, etc.)
+    - **Approval Status**: Project-specific approval state
+    - **Usage Context**: Where and how content will be used
+  </Tab>
+</Tabs>
+
+## Performance Optimization
+
+- **Lazy Loading**: Load content as needed for faster browsing
+- **Thumbnail Generation**: Quick preview images for all content
+- **Search Indexing**: Fast search across large content libraries
+
+<Callout type="success">
+  Well-organized media saves time, improves collaboration, and ensures assets are always ready for campaigns and
+  projects.
+</Callout>

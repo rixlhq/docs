@@ -1,0 +1,85 @@
+---
+title: API-Schlüssel
+description: Erstellen, verwenden, rotieren und widerrufen Sie API-Schlüssel für sicheren serverseitigen API-Zugriff.
+---
+
+
+import {Callout} from "@/snippets";
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+
+RIXL authentifiziert API-Anfragen mit projektbezogenen Schlüsseln, die im Header `X-API-Key` gesendet werden.
+
+<Callout type="warning" title="Nur serverseitig">
+  Legen Sie API-Schlüssel niemals in Frontend-Code, mobilen Binärdateien oder öffentlichen Repositorys offen.
+</Callout>
+
+## Einen API-Schlüssel erstellen
+
+<Steps>
+  <Step>
+    Öffnen Sie Ihr Projekt im Dashboard und navigieren Sie zu **Einstellungen → API-Schlüssel**.
+  </Step>
+  <Step>
+    Klicken Sie auf **API-Schlüssel erstellen** und wählen Sie einen beschreibenden Namen (Beispiel: `prod-ingest-service`).
+  </Step>
+  <Step>
+    Kopieren Sie den Schlüssel sofort und speichern Sie ihn in Ihrem Secret-Manager oder in Umgebungsvariablen.
+  </Step>
+</Steps>
+
+<Callout type="warn" title="Nur einmal angezeigt">
+  Der rohe Schlüsselwert wird nur einmal bei der Erstellung angezeigt. Falls er verloren geht, widerrufen Sie ihn und erstellen Sie einen neuen Schlüssel.
+</Callout>
+
+## Anfragen authentifizieren
+
+Verwenden Sie die API-Basis-URL `https://api.rixl.com` und fügen Sie bei jeder Anfrage `X-API-Key` hinzu.
+
+```bash
+curl -X GET "https://api.rixl.com/projects" \
+  -H "X-API-Key: YOUR_PROJECT_API_KEY"
+```
+
+```javascript
+const response = await fetch("https://api.rixl.com/projects", {
+  headers: {
+    "X-API-Key": process.env.RIXL_API_KEY,
+  },
+});
+```
+
+## Einrichtung überprüfen
+
+Senden Sie eine Leseanfrage mit Ihrem Schlüssel:
+
+```bash
+curl -X GET "https://api.rixl.com/projects" \
+  -H "X-API-Key: YOUR_PROJECT_API_KEY"
+```
+
+- `200` bedeutet, dass die Authentifizierung funktioniert.
+- `401` bedeutet in der Regel einen fehlenden, fehlerhaften, widerrufenen oder abgelaufenen Schlüssel.
+- `403` bedeutet in der Regel eine nicht übereinstimmende Projekt-/Schlüsselberechtigung.
+
+## Schlüssel rotieren und widerrufen
+
+1. Erstellen Sie einen Ersatzschlüssel.
+2. Verteilen Sie den neuen Schlüssel an alle Dienste.
+3. Bestätigen Sie, dass der Datenverkehr den neuen Schlüssel verwendet.
+4. Widerrufen Sie den alten Schlüssel.
+
+Widerrufen Sie kompromittierte oder ungenutzte Schlüssel sofort.
+
+## Sicherheits-Checkliste
+
+- Verwenden Sie separate Schlüssel pro Umgebung (`dev`, `staging`, `prod`).
+- Verwenden Sie separate Schlüssel pro Dienst, um Auditierbarkeit und Schadensbegrenzung zu verbessern.
+- Verwenden Sie beschreibende Schlüsselnamen für Dienstzuständigkeit und Audits.
+- Bewahren Sie Schlüssel in Secret-Managern auf, nicht im Quellcode.
+- Überwachen Sie wiederholte `401`-/`403`-Fehler und richten Sie Warnungen dafür ein.
+
+## Verwandtes
+
+- [Rate-Limits](/de/home/platform/api-documentation/rate-limits)
+- [Fehlerbehandlung](/de/home/platform/api-documentation/error-handling)
+- [API-Referenz](/de/api)

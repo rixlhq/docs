@@ -1,0 +1,19 @@
+{
+  "root": true,
+  "title": "SDK",
+  "description": "Vollständige Anleitung zur RIXL SDK-Bibliothek",
+  "pages": [
+    "---Erste Schritte---",
+    "...getting-started",
+    "---Video---",
+    "...video-component",
+    "---Hooks---",
+    "...hooks",
+    "---Bild---",
+    "...image-component",
+    "---Feed---",
+    "...feed-component",
+    "---Beispiele---",
+    "...examples"
+  ]
+}

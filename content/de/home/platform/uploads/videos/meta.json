@@ -1,0 +1,11 @@
+{
+  "title": "Videoverarbeitung",
+  "description": "Professionelles Video-Transcoding mit Qualitätsstufen und adaptivem Streaming",
+  "pages": [
+    "overview",
+    "quality-tiers",
+    "supported-formats",
+    "upload-implementation",
+    "monitoring-status"
+  ]
+}

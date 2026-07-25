@@ -1,0 +1,16 @@
+{
+  "title": "Konto & Teams",
+  "description": "Verwalten Sie Ihr persönliches Konto, Teameinstellungen und Organisationseinstellungen",
+  "pages": [
+    "overview",
+    "---Persönliches Konto---",
+    "security",
+    "membership",
+    "general-settings",
+    "invitations",
+    "---Organisationen & Teams---",
+    "organizations-overview",
+    "create-organization",
+    "team-management"
+  ]
+}

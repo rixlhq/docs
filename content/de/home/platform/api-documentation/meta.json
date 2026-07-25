@@ -1,0 +1,5 @@
+{
+  "title": "API-Integration",
+  "description": "Authentifizierung, Limits und Anleitungen zur Fehlerbehebung für API-Nutzer",
+  "pages": ["api-keys", "rate-limits", "error-handling"]
+}

@@ -1,0 +1,169 @@
+---
+title: Tarife & Nutzung
+description: Vergleichen Sie Abonnements und überwachen Sie Ihre Ressourcennutzung.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+
+## Aktueller Tarif
+
+Ihre aktuellen Abonnementdetails werden oben im Abrechnungs-Dashboard angezeigt und umfassen:
+
+- **Tariftyp:** Ihre aktive Abonnementstufe
+- **Monatliche Kosten:** Abrechnungsbetrag und -zyklus
+- **Nächstes Abrechnungsdatum:** Wann Ihre nächste Zahlung fällig ist
+- **Zahlungsmethode:** Die letzten 4 Ziffern Ihrer Zahlungskarte
+
+### Ihren Tarif ändern
+
+<Steps>
+  <Step>
+    Navigieren Sie zu **Projekteinstellungen → Abrechnung**.
+  </Step>
+  <Step>
+    Klicken Sie auf **Tarif ändern**, um die verfügbaren Optionen anzuzeigen.
+  </Step>
+  <Step>
+    Wählen Sie im Modal-Fenster Ihren gewünschten Tarif aus.
+  </Step>
+  <Step>
+    Überprüfen Sie die Preise und bestätigen Sie die Änderung.
+  </Step>
+</Steps>
+
+## Verfügbare Tarife
+<Columns cols={3}>
+  <Card title="Free">
+    Für persönliche Projekte und kleine Teams.
+    <p className="mt-1 text-sm text-muted-foreground">0 $<span
+      className="text-base font-normal text-muted-foreground">/Monat</span></p>
+    <a href="https://dash.rixl.com/signup"
+       className="mt-4 block w-full rounded-md bg-secondary px-4 py-2 text-center text-sm font-medium text-secondary-foreground">Loslegen</a>
+    <ul className="mt-6 space-y-2 text-sm">
+      <li>✓ 50 GB Videospeicher</li>
+      <li>✓ 1 GB Bildspeicher</li>
+      <li>✓ Bis zu 3 Teammitglieder</li>
+      <li>✓ 100 API-Aufrufe/Stunde</li>
+      <li>✓ Community-Support</li>
+    </ul>
+  </Card>
+
+  <Card title="Pro">
+    Für Profis und wachsende Unternehmen.
+    <div
+      className="absolute top-0 -translate-y-1/2 rounded-full bg-fd-primary px-3 py-1 text-sm font-semibold text-fd-primary-foreground">
+      Am beliebtesten
+    </div>
+    <p className="mt-4 text-3xl font-bold">49 $<span
+      className="text-base font-normal text-muted-foreground">/Monat</span></p>
+    <a href="https://dash.rixl.com/settings/billing"
+       className="mt-4 block w-full rounded-md bg-fd-primary px-4 py-2 text-center text-sm font-medium text-fd-primary-foreground">Auf Pro upgraden</a>
+    <ul className="mt-6 space-y-2 text-sm">
+      <li>✓ 500 GB Videospeicher</li>
+      <li>✓ 50 GB Bildspeicher</li>
+      <li>✓ Bis zu 10 Teammitglieder</li>
+      <li>✓ 1.000 API-Aufrufe/Stunde</li>
+      <li>✓ Priorisierter Support</li>
+      <li>✓ Eigene Domains</li>
+    </ul>
+  </Card>
+
+  <Card title="Enterprise">
+    Für großangelegte Anwendungen.
+    <p className="mt-4 text-3xl font-bold">299 $/Monat</p>
+    <a href="mailto:sales@rixl.com"
+       className="mt-4 block w-full rounded-md bg-secondary px-4 py-2 text-center text-sm font-medium text-secondary-foreground">Vertrieb kontaktieren</a>
+    <ul className="mt-6 space-y-2 text-sm">
+      <li>✓ Individueller Speicher & Limits</li>
+      <li>✓ Unbegrenzte Teammitglieder</li>
+      <li>✓ Priorisierter Support rund um die Uhr & SLA</li>
+      <li>✓ Dedizierter Account Manager</li>
+      <li>✓ Individuelle Analysen</li>
+    </ul>
+  </Card>
+</Columns>
+
+<Callout type="info">
+  Enterprise-Kunden können sich für individuelle Speicherlimits, API-Kontingente und spezielle Support-Optionen an den Vertrieb wenden.
+</Callout>
+
+## Nutzungsverfolgung
+
+Das Abrechnungs-Dashboard bietet Echtzeit-Überwachung über all Ihre Projekte hinweg:
+
+<Columns cols={3}>
+  <Card title="Videospeicher">
+    Verfolgt alle hochgeladenen Videodateien über Projekte hinweg.
+    <ul className="list-disc pl-4 space-y-1 mt-2">
+      <li>**Aktuelle Nutzung:** Verbrauchte GB im Vergleich zu Ihrem Tariflimit</li>
+      <li>**Nutzungsbalken:** Visueller Fortschrittsbalken mit verbrauchtem Prozentsatz</li>
+      <li>**Enthalten:** MP4, MOV, AVI und andere unterstützte Videodateien</li>
+      <li>**Automatische Warnungen:** Benachrichtigungen, wenn Sie 80 % des Kontingents erreichen</li>
+    </ul>
+  </Card>
+
+  <Card title="Bildspeicher">
+    Verfolgt alle Bilder, Vorschaubilder und statischen Assets.
+    <ul className="list-disc pl-4 space-y-1 mt-2">
+      <li>**Aktuelle Nutzung:** Verbrauchte GB im Vergleich zu Ihrem Tariflimit</li>
+      <li>**Nutzungsbalken:** Visueller Fortschrittsbalken mit verbrauchtem Prozentsatz</li>
+      <li>**Enthalten:** JPEG, PNG, GIF, WebP, Vorschaubilder und statische Medien</li>
+      <li>**Automatische Bereinigung:** Option zum automatischen Archivieren alter/ungenutzter Assets</li>
+    </ul>
+  </Card>
+
+  <Card title="API-Aufrufe">
+    Echtzeit-Überwachung des API-Verbrauchs über Projekte hinweg.
+    <ul className="list-disc pl-4 space-y-1 mt-2">
+      <li>**Stündliches Limit:** Basierend auf Ihrer Tarifstufe</li>
+      <li>**Aktuelle Nutzung:** Live-Verfolgung der pro Stunde getätigten Aufrufe</li>
+      <li>**Ratenbegrenzung:** Drosselung wird bei Annäherung an die Limits angewendet</li>
+      <li>**Überschreitungswarnungen:** E-Mails, wenn Sie die Free-/Pro-Limits überschreiten</li>
+    </ul>
+  </Card>
+</Columns>
+
+<Callout type="warning">
+  Rot werdende Nutzungsbalken zeigen an, dass Sie sich den Tariflimits nähern. Erwägen Sie ein Upgrade, um Serviceunterbrechungen zu vermeiden.
+</Callout>
+
+## Überschreitungen
+
+Wenn Sie Ihre Tariflimits überschreiten, fallen folgende Gebühren an:
+
+<Columns cols={2}>
+  <Card title="Speicherüberschreitungen">
+    Zusätzliche Gebühren für das Überschreiten der Speicherlimits.
+    <ul className="list-disc pl-4 space-y-1 mt-2">
+      <li>**Video:** 0,10 $ pro GB/Monat</li>
+      <li>**Bilder:** 0,05 $ pro GB/Monat</li>
+      <li>**Abrechnung:** Monatlich berechnet und der nächsten Rechnung hinzugefügt</li>
+    </ul>
+  </Card>
+
+  <Card title="API-Überschreitungen">
+    Zusätzliche Gebühren für das Überschreiten der API-Anfragelimits.
+    <ul className="list-disc pl-4 space-y-1 mt-2">
+      <li>**Aufrufe:** 0,001 $ pro Anfrage über dem stündlichen Limit</li>
+      <li>**Verfolgung:** Echtzeit-Überwachung im Abrechnungs-Dashboard</li>
+      <li>**Benachrichtigungen:** Warnungen werden beim Überschreiten von Schwellenwerten gesendet</li>
+    </ul>
+  </Card>
+</Columns>
+
+<Card title="Tipps zum Geldsparen">
+  Best Practices zur Kostenoptimierung.
+  <ul className="list-disc pl-4 space-y-1 mt-2">
+    <li>Überwachen Sie die Nutzungs-Dashboards regelmäßig</li>
+    <li>Archivieren oder löschen Sie ungenutzte Dateien</li>
+    <li>Aktivieren Sie die automatische Bereinigung für temporäre Assets</li>
+    <li>Führen Sie ein Upgrade durch, um bei großem Umfang mehr Gegenwert zu erhalten</li>
+  </ul>
+</Card>
+
+<Callout type="warning">
+  Rot werdende Nutzungsbalken zeigen an, dass Sie sich den Tariflimits nähern.
+  Erwägen Sie ein Upgrade, um Serviceunterbrechungen zu vermeiden.
+</Callout>

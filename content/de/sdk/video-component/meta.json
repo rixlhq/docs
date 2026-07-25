@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "index",
+    "basic-usage",
+    "props-reference",
+    "player-controls",
+    "analytics-integration",
+    "..."
+  ]
+}
