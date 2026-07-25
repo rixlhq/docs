@@ -3,6 +3,7 @@ import {FooterSection} from "@/components/layout/footer/footer-content-section.t
 import {DiscordIcon, GithubIcon, LogoWide, XIcon, YoutubeIcon} from "@/components/icons";
 import {ArrowUpRightIcon} from "lucide-react";
 import {ThemeToggle} from "@/components/theme-toggle";
+import {m} from "@/paraglide/messages.js";
 
 /**
  * Shared layout configurations
@@ -44,9 +45,9 @@ function buildNavLinks(lang: string) {
   const apiUrl = `/${lang}/api`;
 
   return [
-    buildPrimaryLink("Home", homeUrl),
-    buildPrimaryLink("SDK", sdkUrl),
-    buildPrimaryLink("API", apiUrl),
+    buildPrimaryLink(m.home({}, {locale: lang}), homeUrl),
+    buildPrimaryLink(m.sdk({}, {locale: lang}), sdkUrl),
+    buildPrimaryLink(m.api({}, {locale: lang}), apiUrl),
     {
       type: "button" as const,
       on: "nav" as const,
