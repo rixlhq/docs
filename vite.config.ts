@@ -1,4 +1,5 @@
 import path from "node:path";
+import {paraglideVitePlugin} from "@inlang/paraglide-js";
 import {defineConfig} from "vite";
 import {tanstackStart} from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
@@ -30,6 +31,7 @@ const sectionRootRedirectPages = i18n.languages.flatMap((lang) => [
 
 export default defineConfig({
   plugins: [
+    paraglideVitePlugin({project: "./project.inlang", outdir: "./src/paraglide"}),
     extractIconsPlugin(),
     mdx(await import("./source.config")),
     tailwindcss(),

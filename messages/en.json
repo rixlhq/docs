@@ -1,0 +1,8 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "suggestEdits": "Suggest edits",
+  "raiseIssue": "Raise issue",
+  "home": "Home",
+  "sdk": "SDKs",
+  "api": "APIs"
+}
