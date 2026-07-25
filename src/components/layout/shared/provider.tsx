@@ -2,7 +2,6 @@ import {defineI18nUI} from "fumadocs-ui/i18n";
 import {RootProvider} from "fumadocs-ui/provider/base";
 import type {ReactNode} from "react";
 import {lazy} from "react";
-import {CustomTranslationProvider} from "@/components/custom-translation-provider";
 import {i18n} from "@/lib/i18n.ts";
 
 const SearchDialog = lazy(() => import("@/components/search"));
@@ -36,7 +35,7 @@ const {provider} = defineI18nUI(i18n, {
 export function Provider({children, lang}: {children: ReactNode; lang?: string}) {
   return (
     <RootProvider i18n={provider(lang)} search={{SearchDialog}}>
-      <CustomTranslationProvider locale={lang}>{children}</CustomTranslationProvider>
+      {children}
     </RootProvider>
   );
 }

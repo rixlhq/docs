@@ -71,8 +71,6 @@ export function baseOptionsWithSectionLinks(
   lang: string,
   _sectionLinks?: SectionLinks
 ): BaseLayoutProps {
-  // TODO tanstack translations
-  // const {t} = getServerTranslations(lang);
   return {
     // i18n, TODO: Enable language switcher
     nav: {
