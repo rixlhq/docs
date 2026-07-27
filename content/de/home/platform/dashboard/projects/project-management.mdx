@@ -1,6 +1,6 @@
 ---
-title: Project Management
-description: Manage projects through the dashboard with navigation, collaboration, and usage monitoring tools.
+title: Projektverwaltung
+description: Verwalten Sie Projekte über das Dashboard mit Navigations-, Kollaborations- und Nutzungsüberwachungswerkzeugen.
 ---
 
 
@@ -8,99 +8,99 @@ import {Callout, Card, Columns} from "@/snippets";
 import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
 
 
-Once a project is created, you can manage it directly from the dashboard.  
-This includes switching between projects, tracking usage, monitoring team activity, and performing management actions.
+Sobald ein Projekt erstellt ist, können Sie es direkt vom Dashboard aus verwalten.  
+Dazu gehören das Wechseln zwischen Projekten, das Verfolgen der Nutzung, das Überwachen der Teamaktivität und das Durchführen von Verwaltungsaktionen.
 
 ---
 
-## Project Navigation
+## Projektnavigation
 
 <Columns cols={3}>
-  <Card title="Switch Projects" icon="workflow">
-    Use the sidebar selector to change the active project
+  <Card title="Projekte wechseln" icon="workflow">
+    Verwenden Sie die Auswahl in der Seitenleiste, um das aktive Projekt zu ändern
   </Card>
-  <Card title="Dashboard Context" icon="bar-chart-3">
-    All dashboard views reflect the currently selected project
+  <Card title="Dashboard-Kontext" icon="bar-chart-3">
+    Alle Dashboard-Ansichten spiegeln das aktuell ausgewählte Projekt wider
   </Card>
-  <Card title="Org-Wide Settings" icon="building">
-    Billing and account settings apply across all projects
+  <Card title="Organisationsweite Einstellungen" icon="building">
+    Abrechnungs- und Kontoeinstellungen gelten für alle Projekte
   </Card>
 </Columns>
 
 <Callout type="tip">
-  Create separate projects for **different environments** (development, staging, production) or business units to keep
-  data and access cleanly separated.
+  Erstellen Sie separate Projekte für **verschiedene Umgebungen** (Entwicklung, Staging, Produktion) oder Geschäftsbereiche, um
+  Daten und Zugriff sauber getrennt zu halten.
 </Callout>
 
 ---
 
-## Project Dashboard Overview
+## Übersicht des Projekt-Dashboards
 
 <Tabs items={['Project Info', 'Usage Metrics', 'Team Activity']}>
   <Tab value="Project Info">
-    - **Name & Region**: Identifies the project and where it’s hosted
-    - **Optimization Settings**: Current video processing tier
-    - **Created Date**: When the project was set up
-    - **Visibility**: Public or private access level
+    - **Name & Region**: Identifiziert das Projekt und wo es gehostet wird
+    - **Optimierungseinstellungen**: Aktuelle Videoverarbeitungsstufe
+    - **Erstellungsdatum**: Wann das Projekt eingerichtet wurde
+    - **Sichtbarkeit**: Öffentliche oder private Zugriffsebene
   </Tab>
   <Tab value="Usage Metrics">
-    - **Storage & Bandwidth**: Current usage and quotas
-    - **Processing Queue**: Ongoing transcoding or optimization jobs
-    - **API Activity**: Request volume and trends
+    - **Speicher & Bandbreite**: Aktuelle Nutzung und Kontingente
+    - **Verarbeitungswarteschlange**: Laufende Transcoding- oder Optimierungsaufträge
+    - **API-Aktivität**: Anfragevolumen und Trends
   </Tab>
   <Tab value="Team Activity">
-    - **Members Overview**: Roles and permissions distribution
-    - **Recent Updates**: Project edits and media uploads
-    - **Invitations**: Pending team invites
+    - **Mitgliederübersicht**: Verteilung von Rollen und Berechtigungen
+    - **Letzte Aktualisierungen**: Projektbearbeitungen und Medien-Uploads
+    - **Einladungen**: Ausstehende Teameinladungen
   </Tab>
 </Tabs>
 
 ---
 
-## Management Actions
+## Verwaltungsaktionen
 
 <Columns cols={3}>
-  <Card title="Rename Project">
-    Update the display name for easier identification
+  <Card title="Projekt umbenennen">
+    Aktualisieren Sie den Anzeigenamen zur leichteren Identifikation
   </Card>
-  <Card title="Change Optimization Tier">
-    Switch the default video processing strategy
+  <Card title="Optimierungsstufe ändern">
+    Wechseln Sie die Standardstrategie zur Videoverarbeitung
   </Card>
-  <Card title="Delete Project">
-    Permanently remove the project and its contents
+  <Card title="Projekt löschen">
+    Entfernen Sie das Projekt und seine Inhalte dauerhaft
   </Card>
 </Columns>
 
 <Callout type="error">
-  **Warning**: Deleting a project is permanent and removes all content, feeds, and settings. This action cannot be
-  undone.
+  **Warnung**: Das Löschen eines Projekts ist dauerhaft und entfernt alle Inhalte, Feeds und Einstellungen. Diese Aktion kann nicht
+  rückgängig gemacht werden.
 </Callout>
 
 ---
 
-## Collaboration & Team Access
+## Zusammenarbeit & Teamzugriff
 
-Projects include built-in team collaboration:
+Projekte enthalten eine integrierte Teamzusammenarbeit:
 
-- Invite new team members and assign roles
-- Monitor project activity and contributions
-- Adjust permissions as your team grows
-- Ensure secure access with project-scoped API keys
+- Laden Sie neue Teammitglieder ein und weisen Sie Rollen zu
+- Überwachen Sie Projektaktivität und Beiträge
+- Passen Sie Berechtigungen an, wenn Ihr Team wächst
+- Sorgen Sie für sicheren Zugriff mit projektbezogenen API-Schlüsseln
 
-For details on roles and permissions, see [Project Settings → Access & Permissions](/de/home/platform/dashboard/projects/project-settings).
+Details zu Rollen und Berechtigungen finden Sie unter [Projekteinstellungen → Zugriff & Berechtigungen](/de/home/platform/dashboard/projects/project-settings).
 
 ---
 
 ## Best Practices
 
 <Callout type="tip">
-  Well-organized projects improve efficiency, security, and scaling.
+  Gut organisierte Projekte verbessern Effizienz, Sicherheit und Skalierung.
 </Callout>
 
-- Use clear, descriptive project names
-- Separate environments into different projects
-- Review permissions quarterly
-- Archive unused projects or content regularly
-- Document project purpose and ownership
+- Verwenden Sie klare, beschreibende Projektnamen
+- Trennen Sie Umgebungen in verschiedene Projekte
+- Überprüfen Sie Berechtigungen vierteljährlich
+- Archivieren Sie ungenutzte Projekte oder Inhalte regelmäßig
+- Dokumentieren Sie Zweck und Zuständigkeit des Projekts
 
 ---

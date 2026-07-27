@@ -1,6 +1,6 @@
 ---
-title: Create Feed
-description: Step-by-step guide to creating new feeds in the dashboard.
+title: Feed erstellen
+description: Schritt-für-Schritt-Anleitung zum Erstellen neuer Feeds im Dashboard.
 ---
 
 
@@ -8,75 +8,75 @@ import {Callout} from 'fumadocs-ui/components/callout'
 import {Step, Steps} from 'fumadocs-ui/components/steps'
 import {Tab, Tabs} from 'fumadocs-ui/components/tabs'
 
-## Feed Creation Workflow
+## Workflow zur Feed-Erstellung
 
 <Callout type="info">
-  Before creating feeds, make sure you have
-  [created a project](/de/home/platform/dashboard/projects/create-project).
-  Feeds are always linked to projects.
+  Bevor Sie Feeds erstellen, stellen Sie sicher, dass Sie ein
+  [Projekt erstellt haben](/de/home/platform/dashboard/projects/create-project).
+  Feeds sind immer mit Projekten verknüpft.
 </Callout>
 
 
 <Steps>
   <Step>
-    **Access Feed Creation**
-    Navigate to the [**Feeds** section](https://dash.rixl.com/feeds) from your project dashboard and click **Create
-    Feed**.
+    **Feed-Erstellung aufrufen**
+    Navigieren Sie im Projekt-Dashboard zum [**Feeds**-Bereich](https://dash.rixl.com/feeds) und klicken Sie auf **Feed
+    erstellen**.
   </Step>
   <Step>
-    **Select Feed Type**
-    Choose from available feed types (Video, Image, Mixed, Dynamic) depending on your content strategy.
+    **Feed-Typ auswählen**
+    Wählen Sie je nach Ihrer Inhaltsstrategie aus den verfügbaren Feed-Typen (Video, Bild, Gemischt, Dynamisch).
   </Step>
   <Step>
-    **Configure Feed Settings**
+    **Feed-Einstellungen konfigurieren**
     <Tabs items={['Basic Settings', 'Visibility Options']}>
       <Tab value="Basic Settings">
-        - **Feed Name**: Give your feed a clear identifier
-        - **Description**: Provide context or purpose
-        - **Project Association**: Select the project the feed belongs to
-        - **Feed Type**: Choose or confirm the type of feed
+        - **Feed-Name**: Geben Sie Ihrem Feed eine klare Kennung
+        - **Beschreibung**: Geben Sie Kontext oder Zweck an
+        - **Projektzuordnung**: Wählen Sie das Projekt, zu dem der Feed gehört
+        - **Feed-Typ**: Wählen oder bestätigen Sie den Feed-Typ
       </Tab>
       <Tab value="Visibility Options">
-        - **Public**: Available to anyone with the link
-        - **Unlisted**: Hidden but accessible via direct URL
-        - **Private**: Restricted to project members only
+        - **Öffentlich**: Für jeden mit dem Link verfügbar
+        - **Nicht gelistet**: Verborgen, aber über die direkte URL zugänglich
+        - **Privat**: Nur auf Projektmitglieder beschränkt
       </Tab>
     </Tabs>
   </Step>
   <Step>
-    **Define Rules & Organization**
-    - Filtering (tags, categories, metadata)
-    - Sorting (date, popularity, manual order)
-    - Content moderation or approval workflows
-    - Dynamic inclusion rules (e.g., auto-add new uploads by tag)
+    **Regeln & Organisation definieren**
+    - Filterung (Tags, Kategorien, Metadaten)
+    - Sortierung (Datum, Beliebtheit, manuelle Reihenfolge)
+    - Inhaltsmoderations- oder Freigabe-Workflows
+    - Dynamische Einschlussregeln (z. B. neue Uploads nach Tag automatisch hinzufügen)
   </Step>
   <Step>
-    **Finalize & Deploy**
-    Review your configuration, then click **Create**.
-    Once created, the dashboard will generate **API endpoints** and **embed codes** for distribution.
+    **Abschließen & bereitstellen**
+    Überprüfen Sie Ihre Konfiguration und klicken Sie dann auf **Erstellen**.
+    Nach der Erstellung generiert das Dashboard **API-Endpunkte** und **Einbettungscodes** für die Verteilung.
   </Step>
 </Steps>
 
 <Callout type="info">
-  Feeds are always linked to a project. Make sure your project is set up before creating feeds.
+  Feeds sind immer mit einem Projekt verknüpft. Stellen Sie sicher, dass Ihr Projekt eingerichtet ist, bevor Sie Feeds erstellen.
 </Callout>
 
-## Content Management During Creation
+## Inhaltsverwaltung während der Erstellung
 
-**Content Addition Methods:**
-- **Manual Addition**: Pick individual items from the media library
-- **Bulk Operations**: Use filters to select multiple items at once
-- **Dynamic Rules**: Automate inclusion based on metadata or upload behavior
+**Methoden zum Hinzufügen von Inhalten:**
+- **Manuelles Hinzufügen**: Wählen Sie einzelne Elemente aus der Mediathek aus
+- **Massenoperationen**: Verwenden Sie Filter, um mehrere Elemente auf einmal auszuwählen
+- **Dynamische Regeln**: Automatisieren Sie den Einschluss basierend auf Metadaten oder Upload-Verhalten
 
-## Next Steps After Creation
+## Nächste Schritte nach der Erstellung
 
-Once your feed is created, you can:
-- Configure **display settings** and **permissions**
-- Generate **embed codes** for websites and apps
-- Access feeds programmatically via the API
-- Share feeds with team members for collaboration
+Sobald Ihr Feed erstellt ist, können Sie:
+- **Anzeigeeinstellungen** und **Berechtigungen** konfigurieren
+- **Einbettungscodes** für Websites und Apps generieren
+- Über die API programmatisch auf Feeds zugreifen
+- Feeds zur Zusammenarbeit mit Teammitgliedern teilen
 
-## API Method (Coming Soon)
+## API-Methode (in Kürze verfügbar)
 
-Currently, feeds can only be created via the dashboard.  
-API-based creation is planned for future versions to support automation workflows.
+Derzeit können Feeds nur über das Dashboard erstellt werden.  
+Die API-basierte Erstellung ist für zukünftige Versionen geplant, um Automatisierungs-Workflows zu unterstützen.
