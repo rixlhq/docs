@@ -1,0 +1,65 @@
+---
+title: "Overview"
+description: "Optimized image display with lazy loading, thumbhash placeholders, and automatic CDN delivery"
+---
+
+
+import {Callout} from "@/snippets";
+
+## Overview
+
+The Image component provides optimized image display with automatic lazy loading, thumbhash placeholders, and intelligent CDN delivery. Built for performance and accessibility, it seamlessly handles responsive images while maintaining aspect ratios and providing smooth loading experiences.
+
+### Quick Example
+
+```tsx
+import { Image } from '@rixl/videosdk-react';
+
+function ImageDisplay() {
+  return (
+    <Image
+      id="your-image-id"
+      className="object-contain w-full h-full rounded-lg"
+      alt="Product showcase"
+    />
+  );
+}
+```
+
+### Key Features
+
+**Automatic Processing**
+- Lazy loading by default for improved page performance
+- Thumbhash placeholders during loading for visual continuity
+- Automatic format selection (WebP, AVIF) based on browser support
+- Responsive image serving based on device pixel density
+
+**Developer Experience**
+- Simple API with minimal required props
+- Full TypeScript support with type safety
+- CSS framework compatibility (TailwindCSS, etc.)
+- Accessibility-first with proper alt text handling
+
+**Performance Benefits**
+- CDN delivery for global distribution
+- Automatic image processing and resizing
+- Progressive loading for better perceived performance
+- Memory-efficient rendering and cleanup
+
+<Callout type="info">
+  All images are automatically optimized for different screen sizes and device capabilities. No additional configuration
+  needed for basic usage.
+</Callout>
+
+### When to Use
+
+The Image component is perfect for:
+- **Product galleries** requiring high-quality image display
+- **Hero sections** with responsive background images
+- **Content management** with user-uploaded images
+- **E-commerce platforms** needing optimized product photos
+- **Portfolio websites** showcasing visual work
+
+### Browser Support
+
+Works across all modern browsers with automatic fallbacks for older browsers that don't support advanced image formats.

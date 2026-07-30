@@ -1,0 +1,10 @@
+{
+  "title": "Projekte",
+  "description": "Erstellen und verwalten Sie Ihre Medienprojekte",
+  "pages": [
+    "overview",
+    "create-project",
+    "project-settings",
+    "project-management"
+  ]
+}

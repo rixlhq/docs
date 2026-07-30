@@ -9,22 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from "./routes/__root"
-import { Route as SitemapDotxmlRouteImport } from "./routes/sitemap[.]xml"
-import { Route as RobotsDottxtRouteImport } from "./routes/robots[.]txt"
 import { Route as IndexRouteImport } from "./routes/index"
+import { Route as RobotsDottxtRouteImport } from "./routes/robots[.]txt"
+import { Route as SitemapDotxmlRouteImport } from "./routes/sitemap[.]xml"
 import { Route as LangIndexRouteImport } from "./routes/$lang/index"
-import { Route as ApiSearchRouteImport } from "./routes/api/search"
-import { Route as LangChar123Char125DotmdRouteImport } from "./routes/$lang/{$}[.]md"
-import { Route as LangLlmsFullDottxtRouteImport } from "./routes/$lang/llms-full[.]txt"
 import { Route as LangSplatRouteImport } from "./routes/$lang/$"
-import { Route as LangSdkIndexRouteImport } from "./routes/$lang/sdk/index"
-import { Route as LangHomeIndexRouteImport } from "./routes/$lang/home/index"
+import { Route as LangLlmsFullDottxtRouteImport } from "./routes/$lang/llms-full[.]txt"
+import { Route as LangChar123Char125DotmdRouteImport } from "./routes/$lang/{$}[.]md"
+import { Route as ApiSearchRouteImport } from "./routes/api/search"
 import { Route as LangApiIndexRouteImport } from "./routes/$lang/api/index"
+import { Route as LangHomeIndexRouteImport } from "./routes/$lang/home/index"
 import { Route as LangOgSplatRouteImport } from "./routes/$lang/og/$"
+import { Route as LangSdkIndexRouteImport } from "./routes/$lang/sdk/index"
 
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: "/sitemap.xml",
-  path: "/sitemap.xml",
+const IndexRoute = IndexRouteImport.update({
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -32,9 +32,9 @@ const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   path: "/robots.txt",
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: "/sitemap.xml",
+  path: "/sitemap.xml",
   getParentRoute: () => rootRouteImport,
 } as any)
 const LangIndexRoute = LangIndexRouteImport.update({
@@ -42,14 +42,9 @@ const LangIndexRoute = LangIndexRouteImport.update({
   path: "/$lang/",
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiSearchRoute = ApiSearchRouteImport.update({
-  id: "/api/search",
-  path: "/api/search",
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LangChar123Char125DotmdRoute = LangChar123Char125DotmdRouteImport.update({
-  id: "/$lang/{$}.md",
-  path: "/$lang/{$}.md",
+const LangSplatRoute = LangSplatRouteImport.update({
+  id: "/$lang/$",
+  path: "/$lang/$",
   getParentRoute: () => rootRouteImport,
 } as any)
 const LangLlmsFullDottxtRoute = LangLlmsFullDottxtRouteImport.update({
@@ -57,19 +52,14 @@ const LangLlmsFullDottxtRoute = LangLlmsFullDottxtRouteImport.update({
   path: "/$lang/llms-full.txt",
   getParentRoute: () => rootRouteImport,
 } as any)
-const LangSplatRoute = LangSplatRouteImport.update({
-  id: "/$lang/$",
-  path: "/$lang/$",
+const LangChar123Char125DotmdRoute = LangChar123Char125DotmdRouteImport.update({
+  id: "/$lang/{$}.md",
+  path: "/$lang/{$}.md",
   getParentRoute: () => rootRouteImport,
 } as any)
-const LangSdkIndexRoute = LangSdkIndexRouteImport.update({
-  id: "/$lang/sdk/",
-  path: "/$lang/sdk/",
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LangHomeIndexRoute = LangHomeIndexRouteImport.update({
-  id: "/$lang/home/",
-  path: "/$lang/home/",
+const ApiSearchRoute = ApiSearchRouteImport.update({
+  id: "/api/search",
+  path: "/api/search",
   getParentRoute: () => rootRouteImport,
 } as any)
 const LangApiIndexRoute = LangApiIndexRouteImport.update({
@@ -77,9 +67,19 @@ const LangApiIndexRoute = LangApiIndexRouteImport.update({
   path: "/$lang/api/",
   getParentRoute: () => rootRouteImport,
 } as any)
+const LangHomeIndexRoute = LangHomeIndexRouteImport.update({
+  id: "/$lang/home/",
+  path: "/$lang/home/",
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LangOgSplatRoute = LangOgSplatRouteImport.update({
   id: "/$lang/og/$",
   path: "/$lang/og/$",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LangSdkIndexRoute = LangSdkIndexRouteImport.update({
+  id: "/$lang/sdk/",
+  path: "/$lang/sdk/",
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -188,11 +188,11 @@ export interface RootRouteChildren {
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    "/sitemap.xml": {
-      id: "/sitemap.xml"
-      path: "/sitemap.xml"
-      fullPath: "/sitemap.xml"
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
+    "/": {
+      id: "/"
+      path: "/"
+      fullPath: "/"
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/robots.txt": {
@@ -202,11 +202,11 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof RobotsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    "/": {
-      id: "/"
-      path: "/"
-      fullPath: "/"
-      preLoaderRoute: typeof IndexRouteImport
+    "/sitemap.xml": {
+      id: "/sitemap.xml"
+      path: "/sitemap.xml"
+      fullPath: "/sitemap.xml"
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/$lang/": {
@@ -216,18 +216,11 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LangIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    "/api/search": {
-      id: "/api/search"
-      path: "/api/search"
-      fullPath: "/api/search"
-      preLoaderRoute: typeof ApiSearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/$lang/{$}.md": {
-      id: "/$lang/{$}.md"
-      path: "/$lang/{$}.md"
-      fullPath: "/$lang/{$}.md"
-      preLoaderRoute: typeof LangChar123Char125DotmdRouteImport
+    "/$lang/$": {
+      id: "/$lang/$"
+      path: "/$lang/$"
+      fullPath: "/$lang/$"
+      preLoaderRoute: typeof LangSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/$lang/llms-full.txt": {
@@ -237,25 +230,18 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LangLlmsFullDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
-    "/$lang/$": {
-      id: "/$lang/$"
-      path: "/$lang/$"
-      fullPath: "/$lang/$"
-      preLoaderRoute: typeof LangSplatRouteImport
+    "/$lang/{$}.md": {
+      id: "/$lang/{$}.md"
+      path: "/$lang/{$}.md"
+      fullPath: "/$lang/{$}.md"
+      preLoaderRoute: typeof LangChar123Char125DotmdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    "/$lang/sdk/": {
-      id: "/$lang/sdk/"
-      path: "/$lang/sdk"
-      fullPath: "/$lang/sdk/"
-      preLoaderRoute: typeof LangSdkIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    "/$lang/home/": {
-      id: "/$lang/home/"
-      path: "/$lang/home"
-      fullPath: "/$lang/home/"
-      preLoaderRoute: typeof LangHomeIndexRouteImport
+    "/api/search": {
+      id: "/api/search"
+      path: "/api/search"
+      fullPath: "/api/search"
+      preLoaderRoute: typeof ApiSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/$lang/api/": {
@@ -265,11 +251,25 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LangApiIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    "/$lang/home/": {
+      id: "/$lang/home/"
+      path: "/$lang/home"
+      fullPath: "/$lang/home/"
+      preLoaderRoute: typeof LangHomeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     "/$lang/og/$": {
       id: "/$lang/og/$"
       path: "/$lang/og/$"
       fullPath: "/$lang/og/$"
       preLoaderRoute: typeof LangOgSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/$lang/sdk/": {
+      id: "/$lang/sdk/"
+      path: "/$lang/sdk"
+      fullPath: "/$lang/sdk/"
+      preLoaderRoute: typeof LangSdkIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

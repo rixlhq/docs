@@ -1,0 +1,190 @@
+---
+title: Schnellstart
+description: In unter 5 Minuten mit RIXL startklar – von der Kontoeinrichtung über das Hochladen Ihrer ersten Medien bis zum Optimierungsergebnis in Aktion.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+
+Willkommen bei **RIXL**! Mit dieser Schnellstartanleitung laden Sie in nur wenigen Minuten Medien hoch und optimieren sie. Keine komplexe Einrichtung erforderlich – erstellen Sie einfach ein Konto, laden Sie Medien hoch und sehen Sie zu, wie RIXL automatisch optimiert.
+
+## Schnellaktionen
+
+<Columns cols={3}>
+  <Card
+    title="Dashboard-Anleitung"
+    href="/de/home/platform/dashboard/guide"
+    icon="book-open"
+  >
+    Laden Sie Ihre erste Mediendatei hoch und erkunden Sie das Dashboard in unter 5 Minuten.
+  </Card>
+  <Card
+    title="API-Integration"
+    href="/de/api"
+    icon="code"
+  >
+    Beginnen Sie mit unseren REST-APIs und der umfassenden Dokumentation zu entwickeln.
+  </Card>
+  <Card
+    title="React SDK"
+    href="/de/sdk/getting-started/overview"
+    icon="layers"
+  >
+    Sofort einsatzbereite Komponenten für Videoplayer und optimierte Bilder.
+  </Card>
+</Columns>
+
+## Was Sie benötigen
+
+**Bevor wir beginnen:**
+- Ein RIXL-Konto ([hier erstellen](https://dash.rixl.com/signup))
+- Einige Beispiel-Mediendateien (Video oder Bild)
+- Etwa 5 Minuten
+
+**Am Ende dieser Anleitung** haben Sie Medien hochgeladen, die Optimierung in Aktion gesehen und sind bereit, RIXL in Ihre Anwendungen zu integrieren.
+
+## Wählen Sie Ihren Integrationsweg
+
+<Columns cols={3}>
+  <Card title="Dashboard-Upload" icon="monitor">
+    Perfekt für Content-Ersteller und Teams. Laden Sie Medien über unsere intuitive
+    Weboberfläche hoch, organisieren und verwalten Sie sie.
+  </Card>
+  <Card title="API-Integration" icon="code">
+    Ideal für Entwickler, die Backend-Integrationen erstellen. Programmatische Uploads,
+    Verarbeitung und Auslieferung.
+  </Card>
+  <Card title="React-Komponenten" icon="layers">
+    Für Frontend-Entwickler, die React-Apps erstellen. Sofort einsatzbereite Komponenten
+    mit automatischer Optimierung.
+  </Card>
+</Columns>
+
+## In 5 Minuten loslegen
+
+<Steps>
+  <Step>
+    **Erstellen Sie Ihr Konto**
+
+    Registrieren Sie sich für ein kostenloses RIXL-Konto unter [dash.rixl.com/signup](https://dash.rixl.com/signup)
+
+    - Keine Kreditkarte erforderlich
+    - 1 GB kostenloser Speicher
+    - 10 GB kostenlose Bandbreite pro Monat
+    - Sofortige Kontoaktivierung
+  </Step>
+
+  <Step>
+    **Erstellen Sie Ihr erstes Projekt**
+
+    Projekte organisieren Ihre Medien und den Teamzugriff. In Ihrem Dashboard:
+
+    - Klicken Sie auf **Projekt erstellen**
+    - Wählen Sie einen aussagekräftigen Namen
+    - Wählen Sie Ihre bevorzugten Einstellungen
+    - Ihr Projekt ist in Sekunden bereit
+  </Step>
+
+  <Step>
+    **Laden Sie Ihre ersten Medien hoch**
+
+    Wählen Sie Ihre bevorzugte Upload-Methode:
+
+    **Dashboard-Upload:**
+    - Ziehen Sie Dateien per Drag-and-drop direkt in die Weboberfläche
+    - Fortschrittsverfolgung in Echtzeit
+    - Automatische Optimierung startet sofort
+
+    **API-Upload:**
+    ```bash
+    curl -X POST https://api.rixl.com/videos/upload/init \
+    -H "X-API-Key: YOUR_PROJECT_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"file_name": "your-video.mp4", "video_quality": "pro"}'
+    ```
+  </Step>
+
+  <Step>
+    **Beobachten Sie die automatische Optimierung**
+
+    RIXL beginnt sofort mit der Verarbeitung Ihrer Medien:
+
+    - **Videos:** Mehrere Qualitätsstufen, adaptives Streaming, Vorschaubilder
+    - **Bilder:** AVIF-Komprimierung, responsive Formate, Platzhalter
+    - **Globales CDN:** Verteilung an über 200 Edge-Standorte weltweit
+  </Step>
+
+  <Step>
+    **Integrieren Sie in Ihre App**
+
+    Verwenden Sie Ihre optimierten Medien überall:
+
+    **React-Komponenten:**
+    ```jsx
+    import {Video, Image} from '@rixl/videosdk-react';
+
+    <Video id="your-video-id" progressBar={true} allowFullscreen={true}/>
+    <Image id="your-image-id" alt="Description" className="w-full h-auto"/>
+    ```
+
+    **Direkte URLs:**
+    - Videos: Automatisches HLS-Streaming
+    - Bilder: Optimiertes AVIF mit Fallbacks
+  </Step>
+</Steps>
+
+## Wie geht es weiter?
+
+Nachdem Sie Ihre ersten Medien hochgeladen haben, erkunden Sie diese nächsten Schritte:
+
+<Columns cols={3}>
+  <Card
+    title="Das Dashboard erkunden"
+    href="/de/home/platform/dashboard/overview"
+    icon="monitor"
+  >
+    Erfahren Sie mehr über Projekte, Medienverwaltung und Funktionen zur Teamzusammenarbeit.
+  </Card>
+  <Card
+    title="API-Integration"
+    href="/de/api"
+    icon="code"
+  >
+    Erstellen Sie programmatische Workflows mit unserer umfassenden REST-API.
+  </Card>
+  <Card
+    title="React-Komponenten"
+    href="/de/sdk/getting-started/overview"
+    icon="layers"
+  >
+    Sofort einsatzbereite Video- und Image-Komponenten für React-Anwendungen.
+  </Card>
+  <Card
+    title="Upload-Optimierung"
+    href="/de/home/platform/uploads/overview"
+    icon="upload"
+  >
+    Erfahren Sie mehr über Video-Qualitätsstufen, Bildformate und Verarbeitungsoptionen.
+  </Card>
+  <Card
+    title="Best Practices"
+    href="/de/home/getting-started/best-practices"
+    icon="check-circle"
+  >
+    Produktionsreife Tipps für Leistung, Sicherheit und Optimierung.
+  </Card>
+  <Card
+    title="Teamzusammenarbeit"
+    href="/de/home/platform/account-teams/organizations-overview"
+    icon="users"
+  >
+    Laden Sie Teammitglieder ein, richten Sie Organisationen ein und verwalten Sie Berechtigungen.
+  </Card>
+</Columns>
+
+<Callout type="tip" title="Bereit zu entwickeln?">
+    Beginnen Sie mit unserer [Dashboard-Anleitung](/de/home/platform/dashboard/guide), um alle Funktionen zu erkunden, oder
+    steigen Sie in die [API-Referenz](/de/api) ein, um programmatisch zu entwickeln. React-Entwickler finden in unseren
+    [SDK-Komponenten](/de/sdk/getting-started/overview) sofort einsatzbereite Medienoptimierung.
+</Callout>

@@ -1,0 +1,45 @@
+---
+title: Konto & Einstellungen
+description: Verwalten Sie Ihr RIXL-Konto, Sicherheit, Teamzugriff und Abrechnung an einem Ort.
+---
+
+
+import {Card, Columns} from '@/snippets';
+
+<Columns cols={2}>
+  <Card
+    title="Kontoübersicht"
+    href="/de/home/platform/account-teams/overview"
+    icon="users"
+  >
+    Sehen Sie Ihre Kontodetails, letzten Aktivitäten und wichtigsten Einstellungen ein.
+  </Card>
+  <Card
+    title="Profil & Sicherheit"
+    href="/de/home/platform/account-teams/general-settings"
+    icon="settings"
+  >
+    Aktualisieren Sie Ihr Profil, ändern Sie Ihr Passwort und aktivieren Sie die Zwei-Faktor-Authentifizierung.
+  </Card>
+  <Card
+    title="Entwicklerzugriff"
+    href="/de/home/platform/api-documentation/api-keys"
+    icon="key"
+  >
+    Erstellen und verwalten Sie API-Schlüssel, um RIXL mit Ihren Anwendungen zu verbinden.
+  </Card>
+  <Card
+    title="Abrechnung & Nutzung"
+    href="/de/home/platform/billing/overview"
+    icon="credit-card"
+  >
+    Prüfen Sie Ihren Tarif, verfolgen Sie die Nutzung, aktualisieren Sie Zahlungsmethoden und laden Sie Rechnungen herunter.
+  </Card>
+  <Card
+    title="Team & Organisationen"
+    href="/de/home/platform/account-teams/organizations-overview"
+    icon="building"
+  >
+    Erstellen Sie Organisationen, laden Sie Teammitglieder ein und verwalten Sie Rollen über Projekte hinweg.
+  </Card>
+</Columns>

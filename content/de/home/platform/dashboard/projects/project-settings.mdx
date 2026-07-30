@@ -1,0 +1,126 @@
+---
+title: Projekteinstellungen
+description: Konfigurieren und verwalten Sie Projekteinstellungen über das Dashboard
+---
+
+
+import {Callout} from '@/snippets'
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+Jedes Projekt in **RIXL** verfügt über konfigurierbare Einstellungen, die seinen Namen, die Medienoptimierung, den Speicher und den Zugriff steuern. Die meisten Optionen können Sie jederzeit über das Dashboard aktualisieren.
+
+<Callout type="info">
+  Rufen Sie die Projekteinstellungen über Dashboard → Einstellungen → Projekteinstellungen auf.
+</Callout>
+
+---
+
+<Tabs items={['Basic Information', 'Video Processing', 'Project Management']}>
+  <Tab value="Basic Information">
+    ## Projektdetails
+
+    Sie können die folgenden grundlegenden Projektinformationen ändern:
+
+    | Einstellung | Beschreibung | Bearbeitbar |
+    |-------------|--------------|-------------|
+    | **Projektname** | Anzeigename Ihres Projekts | ✓ |
+    | **Region** | Geografische Region, in der Projektdaten gespeichert werden | ✗ |
+    | **Videooptimierung** | Verarbeitungsqualitätseinstellungen für hochgeladene Videos | ✓ |
+    | **Erstellungsdatum** | Wann das Projekt ursprünglich erstellt wurde | ✗ |
+    | **Speichernutzung** | Aktueller Speicherverbrauch und Dateianzahl | ✗ |
+
+    ### So aktualisieren Sie
+
+    1. Gehen Sie zu **Einstellungen → Projekteinstellungen**.
+    2. Bearbeiten Sie die Felder, die Sie ändern möchten.
+    3. Klicken Sie auf **Änderungen speichern**.
+
+    ### Regionsinformationen
+
+    Die Region eines Projekts bestimmt:
+    - Wo Ihre Mediendateien liegen
+    - Die Verarbeitungsleistung für Uploads
+    - Die Auslieferungsoptimierung für Endnutzer
+
+    <Callout type="warn">
+      Die **Region kann nach der Erstellung nicht geändert werden**. Um Regionen zu wechseln, erstellen Sie ein neues Projekt und migrieren Sie Ihre Inhalte.
+    </Callout>
+  </Tab>
+
+  <Tab value="Video Processing">
+
+    ## Verarbeitungsstufen
+
+    Projekte unterstützen unterschiedliche Videoverarbeitungsstrategien je nach Ihren Inhaltsanforderungen:
+
+    Wählen Sie die passende Optimierungsstufe basierend auf Ihren Inhalten:
+
+    | Stufe | Qualität | Auflösung | Funktionen | Am besten für |
+    |-------|----------|-----------|------------|---------------|
+    | **Basic** | Standard | Bis zu 720p | Grundlegendes Transcoding | Entwicklung & Tests |
+    | **Shorts** | Mobil optimiert | Bis zu 1080p | Schnelle Verarbeitung, adaptives Streaming | Social-Media-Inhalte |
+    | **Pro** | Professionell | Bis zu 4K | Mehrere Qualitätsstufen, Analysen | Video-on-Demand |
+
+    ### Funktionsvergleich
+
+    | Funktion | Basic | Shorts | Pro |
+    |----------|-------|--------|-----|
+    | Vorschaubildgenerierung | ✓ | ✓ | ✓ |
+    | Mehrere Qualitätsstufen | - | ✓ | ✓ |
+    | Adaptive Bitrate | - | ✓ | ✓ |
+    | Eigene Wasserzeichen | - | - | ✓ |
+    | Priorisierte Verarbeitung | - | ✓ | ✓ |
+    | Erweiterte Analysen | - | - | ✓ |
+
+    <Callout type="info">
+      Verarbeitungsänderungen gelten nur für **neue Uploads**. Bestehende Videos behalten ihre aktuelle Verarbeitung.
+    </Callout>
+
+  </Tab>
+
+  <Tab value="Project Management">
+    ## Administration & Steuerung
+
+    ### Verwaltungsaktionen
+
+    | Aktion | Beschreibung | Zugriff |
+    |--------|--------------|---------|
+    | **Projekt umbenennen** | Anzeigenamen aktualisieren | Admin |
+    | **Speicher anzeigen** | Nutzung & Dateianzahl überwachen | Admin |
+    | **Verarbeitung ändern** | Optimierungsstufe wechseln | Admin |
+    | **Daten exportieren** | Alle Projektinhalte herunterladen | Admin |
+    | **Projekt löschen** | Ein Projekt dauerhaft entfernen | Owner |
+
+    ### Speicherinformationen
+
+    Die Seite der Projekteinstellungen zeigt Ihre aktuelle Speichernutzung und Dateianzahl:
+
+    - **Gesamter belegter Speicher** – Kumulierte Größe aller Projektdateien
+    - **Videodateien** – Anzahl und Größe der Videoinhalte
+    - **Bilddateien** – Anzahl und Größe der Bildinhalte
+    - **Verarbeitungswarteschlange** – Dateien, die gerade verarbeitet werden
+
+    ### Projektlöschung
+
+    <Callout type="error" title="Dauerhafte Aktion">
+      Das Löschen eines Projekts entfernt dauerhaft alle Videos, Bilder, Feeds und Einstellungen. Diese Aktion kann nicht rückgängig gemacht werden.
+    </Callout>
+
+    **Bevor Sie ein Projekt löschen:**
+    1. Exportieren Sie alle Inhalte, die Sie behalten möchten
+    2. Aktualisieren Sie alle Anwendungen, die die API-Schlüssel des Projekts verwenden
+    3. Benachrichtigen Sie Teammitglieder über die bevorstehende Löschung
+    4. Bestätigen Sie, dass Sie Sicherungen wichtiger Inhalte haben
+
+    ### Zugriff & Berechtigungen
+
+    | Rolle | Basisinfos | Videoverarbeitung | Projektverwaltung |
+    |-------|------------|-------------------|-------------------|
+    | **Owner** | Vollzugriff | Vollzugriff | Vollzugriff |
+    | **Admin** | Bearbeiten | Bearbeiten | Nur ansehen |
+    | **Member** | Nur ansehen | Nur ansehen | Kein Zugriff |
+
+    Für Teamverwaltung und Mitgliederberechtigungen besuchen Sie [Konto →
+    Organisationen](/de/home/platform/account-teams/organizations-overview).
+  </Tab>
+</Tabs>

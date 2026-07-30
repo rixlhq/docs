@@ -1,0 +1,20 @@
+{
+  "root": true,
+  "title": "Dokumentation – Startseite",
+  "description": "Vollständige Anleitung zur RIXL-Medienverarbeitungsplattform",
+  "pages": [
+    "---Erste Schritte---",
+    "...getting-started",
+    "index",
+    "---Videoverarbeitung---",
+    "...video",
+    "---Bildverarbeitung---",
+    "...images",
+    "---Plattform---",
+    "...platform",
+    "---Anleitungen & Beispiele---",
+    "...guides",
+    "---Rechtliches---",
+    "...legal"
+  ]
+}

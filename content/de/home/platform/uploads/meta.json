@@ -1,0 +1,12 @@
+{
+  "title": "Hochladen & Optimieren",
+  "description": "Laden Sie Ihre Medien hoch und transformieren Sie sie mit automatischer Optimierung",
+  "pages": [
+    "overview",
+    "images",
+    "videos-guide",
+    "---Videoverarbeitung---",
+    "...videos",
+    "posts"
+  ]
+}

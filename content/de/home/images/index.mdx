@@ -1,0 +1,353 @@
+---
+title: Bildverarbeitung
+description: Verwandeln Sie jedes Bild in blitzschnelle AVIF-Dateien mit intelligenten Platzhaltern, responsiver Auslieferung und globaler CDN-Verteilung.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+
+Willkommen bei der **RIXL-Bildverarbeitung** – wo jedes Bild zum Leistungswunder wird. Laden Sie ein beliebiges Format hoch und erhalten Sie perfekt verarbeitete AVIF-Dateien mit intelligenten Platzhaltern, responsiver Größenanpassung und sofortiger globaler Auslieferung zurück.
+
+## Schnellaktionen
+
+<Columns cols={3}>
+  <Card
+    title="Bilder hochladen"
+    href="/de/home/platform/uploads/images"
+    icon="upload"
+  >
+    Transformieren Sie Bilder mit automatischer AVIF-Komprimierung und intelligenten Platzhaltern.
+  </Card>
+  <Card
+    title="React-Komponente"
+    href="/de/sdk/image-component"
+    icon="layers"
+  >
+    Sofort einsatzbereite Image-Komponente mit Lazy Loading und responsiver Größenanpassung.
+  </Card>
+  <Card
+    title="Dashboard-Verwaltung"
+    href="/de/home/platform/dashboard/media/overview"
+    icon="monitor"
+  >
+    Laden Sie Bilder über unsere Weboberfläche hoch, organisieren und verwalten Sie sie.
+  </Card>
+</Columns>
+
+## So transformiert RIXL Ihre Bilder
+
+<Steps>
+  <Step>
+    **Beliebiges Format hochladen**
+
+    Laden Sie JPEG, PNG, WebP, HEIC oder jedes gängige Bildformat hoch. RIXL akzeptiert Dateien mit bis zu je 100 MB.
+  </Step>
+
+  <Step>
+    **Automatische AVIF-Konvertierung**
+
+    Jedes Bild wird in das AVIF-Format konvertiert – für 50 % kleinere Dateigrößen ohne sichtbaren Qualitätsverlust.
+  </Step>
+
+  <Step>
+    **Intelligente Platzhaltergenerierung**
+
+    Sofortige Blur-Platzhalter werden erstellt, um während des Ladens der vollständigen Bilder ein reibungsloses Ladeerlebnis zu bieten.
+  </Step>
+
+  <Step>
+    **Globale CDN-Auslieferung**
+
+    Ihre Bilder werden an über 200 Edge-Standorte weltweit verteilt – für sofortiges Laden überall.
+  </Step>
+</Steps>
+
+## Funktionen der Bildverarbeitung
+
+<Columns cols={3}>
+  <Card title="AVIF-Transformation" icon="zap">
+    50 % kleinere Dateien als JPEG ohne sichtbaren Qualitätsverlust. Automatische Fallbacks inklusive.
+  </Card>
+  <Card title="Intelligente Platzhalter" icon="eye">
+    Sofortige Blur-Platzhalter verhindern Layout-Verschiebungen und verbessern die wahrgenommene Leistung.
+  </Card>
+  <Card title="Responsive Auslieferung" icon="smartphone">
+    Automatische Größenanpassung für unterschiedliche Geräte und Bildschirmdichten.
+  </Card>
+  <Card title="Lazy Loading" icon="clock">
+    Integriertes Lazy Loading reduziert die anfängliche Seitenladezeit und spart Bandbreite.
+  </Card>
+  <Card title="Format-Fallbacks" icon="shield">
+    Automatische WebP- und JPEG-Fallbacks für ältere Browser.
+  </Card>
+  <Card title="Globales CDN" icon="globe">
+    Edge-Caching und intelligentes Routing für sofortige Auslieferung weltweit.
+  </Card>
+</Columns>
+
+## Unterstützte Formate
+
+### Eingabeformate
+RIXL akzeptiert alle gängigen Bildformate zur Verarbeitung:
+
+<Columns cols={3}>
+  <Card title="Gängige Formate" icon="image">
+    JPEG, PNG, WebP, GIF, BMP – die Formate, die Sie täglich verwenden.
+  </Card>
+  <Card title="Professionelle Formate" icon="camera">
+    HEIC/HEIF, TIFF, JPEG 2000 – hochwertige Formate von Kameras und professionellen Tools.
+  </Card>
+  <Card title="Vektorgrafiken" icon="layers">
+    SVG-Dateien werden unverändert beibehalten, für gestochen scharfe Skalierung in jeder Größe.
+  </Card>
+</Columns>
+
+### Ausgabevorbereitung
+Jedes Bild wird automatisch für die Web-Auslieferung vorbereitet:
+
+- **Primär:** AVIF-Format (50 % kleiner als JPEG)
+- **Fallback:** WebP-Format (30 % kleiner als JPEG)
+- **Legacy:** JPEG-Format (universelle Kompatibilität)
+- **Platzhalter:** Sofortige Blur-Platzhalter für reibungsloses Laden
+
+## Implementierungsbeispiele
+
+### Verwendung der React-Komponente
+
+<Tabs items={['Basic Usage', 'Responsive Gallery', 'E-commerce Product']}>
+  <Tab value="Basic Usage">
+    ```jsx
+    import {Image} from '@rixl/videosdk-react';
+
+    function ProfilePhoto({imageId}) {
+    return (
+    <Image
+    id={imageId}
+       alt="User profile photo"
+       className="w-32 h-32 rounded-full object-cover"
+       loading="eager"
+       priority={true}
+  />
+  );
+  }
+  ```
+</Tab>
+
+<Tab value="Responsive Gallery">
+  ```jsx
+  import {Image} from '@rixl/videosdk-react';
+
+  function ImageGallery({images}) {
+  return (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+{images.map((image, index) => (
+  <div key={image.id} className="aspect-square">
+  <Image
+    id={image.id}
+    alt={image.description}
+    className="w-full h-full object-cover rounded-lg hover:scale-105 transition-transform"
+    loading={index < 6 ? "eager" : "lazy"}
+    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  />
+</div>
+))}
+</div>
+);
+}
+```
+</Tab>
+
+<Tab value="E-commerce Product">
+  ```jsx
+  import {Image} from '@rixl/videosdk-react';
+
+  function ProductImage({product}) {
+  return (
+  <div className="product-image-container">
+  <Image
+  id={product.mainImageId}
+     alt={`${product.name} - main product image`}
+     className="w-full h-96 object-cover rounded-lg"
+     priority={true}
+     sizes="(max-width: 768px) 100vw, 50vw"
+     onLoad={() => console.log('Product image loaded')}
+/>
+
+<div className="flex gap-2 mt-4">
+  {product.thumbnailIds.map((thumbId, index) => (
+    <Image
+      key={thumbId}
+      id={thumbId}
+      alt={`${product.name} - view ${index + 1}`}
+      className="w-16 h-16 object-cover rounded cursor-pointer hover:opacity-75"
+      loading="lazy"
+    />
+  ))}
+</div>
+</div>
+);
+}
+```
+</Tab>
+</Tabs>
+
+### API-Integration
+
+<Tabs items={['Upload Image', 'Get Image Details', 'List Images']}>
+  <Tab value="Upload Image">
+    ```javascript
+    // Upload image via API
+    const uploadImage = async (imageFile) => {
+    // Initialize upload
+    const initResponse = await fetch('https://api.rixl.com/images/upload/init', {
+    method: 'POST',
+    headers: {
+    'X-API-Key': 'YOUR_PROJECT_API_KEY',
+    'Content-Type': 'application/json'
+  },
+    body: JSON.stringify({
+    name: imageFile.name,
+    format: 'jpg'
+  })
+  });
+
+    const {image_id, presigned_url} = await initResponse.json();
+
+    // Upload file to presigned URL
+    await fetch(presigned_url, {
+    method: 'PUT',
+    body: imageFile
+  });
+
+    // Complete upload
+    const completeResponse = await fetch('https://api.rixl.com/images/upload/complete', {
+    method: 'POST',
+    headers: {
+    'X-API-Key': 'YOUR_PROJECT_API_KEY',
+    'Content-Type': 'application/json'
+  },
+    body: JSON.stringify({
+    image_id: image_id
+  })
+  });
+
+    const result = await completeResponse.json();
+    return result.data.image_id;
+  };
+    ```
+  </Tab>
+
+  <Tab value="Get Image Details">
+    ```javascript
+    // Get image details and delivery status
+    const getImageDetails = async (imageId) => {
+    const response = await fetch(`https://api.rixl.com/images/${imageId}`, {
+    headers: {
+    'X-API-Key': 'YOUR_PROJECT_API_KEY'
+  }
+  });
+
+    const result = await response.json();
+    return result.data;
+  };
+    ```
+  </Tab>
+
+  <Tab value="List Images">
+    ```javascript
+    // List images with pagination
+    const listImages = async (page = 0, limit = 25) => {
+    const response = await fetch(`https://api.rixl.com/images?offset=${page * limit}&limit=${limit}`, {
+    headers: {
+    'X-API-Key': 'YOUR_PROJECT_API_KEY'
+  }
+  });
+
+    const result = await response.json();
+    return result.data;
+  };
+    ```
+  </Tab>
+</Tabs>
+
+## Praxisnahe Anwendungsfälle
+
+### E-Commerce-Anwendungen
+
+<Columns cols={3}>
+  <Card title="Produktgalerien" icon="shopping-cart">
+    Hochwertige Produktbilder mit sofortigem Laden und Zoomfunktion.
+  </Card>
+  <Card title="Nutzergenerierte Inhalte" icon="users">
+    Kundenfotos und -bewertungen mit automatischer Vorbereitung und Moderation.
+  </Card>
+  <Card title="Kategoriebanner" icon="layout">
+    Hero-Bilder und Werbebanner, ausgeliefert für alle Geräte.
+  </Card>
+</Columns>
+
+### Inhalte & Medien
+
+<Columns cols={3}>
+  <Card title="Redaktionelle Inhalte" icon="file-text">
+    Nachrichtenartikel, Blogbeiträge und Magazin-Layouts mit ausgelieferten Bildern.
+  </Card>
+  <Card title="Portfolio-Websites" icon="camera">
+    Fotografie- und Design-Portfolios mit hochwertiger Bildauslieferung.
+  </Card>
+  <Card title="Social-Plattformen" icon="users">
+    Nutzerprofile, Beiträge und Feeds mit automatischer Bildvorbereitung.
+  </Card>
+</Columns>
+
+### Leistungsvorteile
+
+<Columns cols={3}>
+  <Card title="50 % kleinere Dateien" icon="zap">
+    Die AVIF-Komprimierung reduziert Dateigrößen im Vergleich zu JPEG um 50 % ohne Qualitätsverlust.
+  </Card>
+  <Card title="Schnellere Seitenladezeiten" icon="clock">
+    Lazy Loading und intelligente Platzhalter verbessern die wahrgenommene Leistung.
+  </Card>
+  <Card title="Bessere SEO" icon="trending-up">
+    Schneller ladende Bilder verbessern die Core Web Vitals und das Suchmaschinenranking.
+  </Card>
+</Columns>
+
+## Wie geht es weiter?
+
+Bereit, Ihre Bilder auszuliefern? Wählen Sie Ihren Ansatz:
+
+<Columns cols={3}>
+  <Card
+    title="Ihr erstes Bild hochladen"
+    href="/de/home/platform/uploads/images"
+    icon="upload"
+  >
+    Sehen Sie die AVIF-Transformation in Aktion mit unserem Dashboard-Upload.
+  </Card>
+  <Card
+    title="React-Integration"
+    href="/de/sdk/image-component"
+    icon="layers"
+  >
+    Fügen Sie Ihrer React-Anwendung die Image-Komponente hinzu.
+  </Card>
+  <Card
+    title="API-Implementierung"
+    href="/de/api"
+    icon="code"
+  >
+    Erstellen Sie individuelle Bild-Workflows mit unserer REST-API.
+  </Card>
+</Columns>
+
+<div className="mt-12">
+  <Callout type="tip" title="Bereit, den Unterschied zu sehen?">
+    Beginnen Sie mit unserem [Dashboard-Upload](/de/home/platform/uploads/images), um die AVIF-Transformation in Aktion zu sehen, oder
+    steigen Sie in die [Anleitung zur React-Komponente](/de/sdk/image-component) ein, um ausgelieferte Bilder zu Ihrer Anwendung
+    hinzuzufügen. Für individuelle Workflows erkunden Sie unsere [API-Dokumentation](/de/api).
+  </Callout>
+</div>

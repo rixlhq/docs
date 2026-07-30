@@ -1,0 +1,106 @@
+---
+title: Projektverwaltung
+description: Verwalten Sie Projekte über das Dashboard mit Navigations-, Kollaborations- und Nutzungsüberwachungswerkzeugen.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+
+Sobald ein Projekt erstellt ist, können Sie es direkt vom Dashboard aus verwalten.  
+Dazu gehören das Wechseln zwischen Projekten, das Verfolgen der Nutzung, das Überwachen der Teamaktivität und das Durchführen von Verwaltungsaktionen.
+
+---
+
+## Projektnavigation
+
+<Columns cols={3}>
+  <Card title="Projekte wechseln" icon="workflow">
+    Verwenden Sie die Auswahl in der Seitenleiste, um das aktive Projekt zu ändern
+  </Card>
+  <Card title="Dashboard-Kontext" icon="bar-chart-3">
+    Alle Dashboard-Ansichten spiegeln das aktuell ausgewählte Projekt wider
+  </Card>
+  <Card title="Organisationsweite Einstellungen" icon="building">
+    Abrechnungs- und Kontoeinstellungen gelten für alle Projekte
+  </Card>
+</Columns>
+
+<Callout type="tip">
+  Erstellen Sie separate Projekte für **verschiedene Umgebungen** (Entwicklung, Staging, Produktion) oder Geschäftsbereiche, um
+  Daten und Zugriff sauber getrennt zu halten.
+</Callout>
+
+---
+
+## Übersicht des Projekt-Dashboards
+
+<Tabs items={['Project Info', 'Usage Metrics', 'Team Activity']}>
+  <Tab value="Project Info">
+    - **Name & Region**: Identifiziert das Projekt und wo es gehostet wird
+    - **Optimierungseinstellungen**: Aktuelle Videoverarbeitungsstufe
+    - **Erstellungsdatum**: Wann das Projekt eingerichtet wurde
+    - **Sichtbarkeit**: Öffentliche oder private Zugriffsebene
+  </Tab>
+  <Tab value="Usage Metrics">
+    - **Speicher & Bandbreite**: Aktuelle Nutzung und Kontingente
+    - **Verarbeitungswarteschlange**: Laufende Transcoding- oder Optimierungsaufträge
+    - **API-Aktivität**: Anfragevolumen und Trends
+  </Tab>
+  <Tab value="Team Activity">
+    - **Mitgliederübersicht**: Verteilung von Rollen und Berechtigungen
+    - **Letzte Aktualisierungen**: Projektbearbeitungen und Medien-Uploads
+    - **Einladungen**: Ausstehende Teameinladungen
+  </Tab>
+</Tabs>
+
+---
+
+## Verwaltungsaktionen
+
+<Columns cols={3}>
+  <Card title="Projekt umbenennen">
+    Aktualisieren Sie den Anzeigenamen zur leichteren Identifikation
+  </Card>
+  <Card title="Optimierungsstufe ändern">
+    Wechseln Sie die Standardstrategie zur Videoverarbeitung
+  </Card>
+  <Card title="Projekt löschen">
+    Entfernen Sie das Projekt und seine Inhalte dauerhaft
+  </Card>
+</Columns>
+
+<Callout type="error">
+  **Warnung**: Das Löschen eines Projekts ist dauerhaft und entfernt alle Inhalte, Feeds und Einstellungen. Diese Aktion kann nicht
+  rückgängig gemacht werden.
+</Callout>
+
+---
+
+## Zusammenarbeit & Teamzugriff
+
+Projekte enthalten eine integrierte Teamzusammenarbeit:
+
+- Laden Sie neue Teammitglieder ein und weisen Sie Rollen zu
+- Überwachen Sie Projektaktivität und Beiträge
+- Passen Sie Berechtigungen an, wenn Ihr Team wächst
+- Sorgen Sie für sicheren Zugriff mit projektbezogenen API-Schlüsseln
+
+Details zu Rollen und Berechtigungen finden Sie unter [Projekteinstellungen → Zugriff & Berechtigungen](/de/home/platform/dashboard/projects/project-settings).
+
+---
+
+## Best Practices
+
+<Callout type="tip">
+  Gut organisierte Projekte verbessern Effizienz, Sicherheit und Skalierung.
+</Callout>
+
+- Verwenden Sie klare, beschreibende Projektnamen
+- Trennen Sie Umgebungen in verschiedene Projekte
+- Überprüfen Sie Berechtigungen vierteljährlich
+- Archivieren Sie ungenutzte Projekte oder Inhalte regelmäßig
+- Dokumentieren Sie Zweck und Zuständigkeit des Projekts
+
+---

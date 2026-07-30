@@ -1,0 +1,10 @@
+{
+  "title": "Erste Schritte",
+  "description": "Willkommen bei RIXL – beginnen Sie hier, um die Grundlagen zu lernen und Ihren Weg zu wählen",
+  "pages": [
+    "overview",
+    "quick-start",
+    "best-practices",
+    "quick-links"
+  ]
+}

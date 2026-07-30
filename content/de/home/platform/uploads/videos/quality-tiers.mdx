@@ -1,0 +1,196 @@
+---
+title: Quality Tiers
+description: Choose the right video processing tier for your content.
+---
+
+
+import {Callout, Card, Columns} from '@/snippets';
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+Pick a quality tier when you upload your videos. Each tier works best for different content types and viewing situations.
+
+## Compare quality tiers
+
+<Tabs items={["Basic", "Shorts", "Pro"]}>
+  <Tab value="Basic">
+
+    Standard web videos that load fast:
+
+    - 720p HD (1280×720) — 2.5 Mbps
+    - 480p SD (854×480) — 1.0 Mbps
+    - 240p Mobile (426×240) — 500 Kbps
+
+    Best for: web content, tutorials, presentations
+
+  </Tab>
+
+  <Tab value="Shorts">
+
+    Made for short vertical videos:
+
+    - 1080p Full HD (1920×1080) — 4.0 Mbps, up to 60fps
+    - 720p HD (1280×720) — 2.5 Mbps, up to 60fps
+    - 480p SD (854×480) — 1.0 Mbps, typically 30fps
+
+    Best for: social media, mobile videos, vertical content
+
+  </Tab>
+
+  <Tab value="Pro">
+
+    High-quality videos with full resolution:
+
+    - 4K Ultra HD (3840×2160) — 15 Mbps, up to 60fps
+    - 2K Quad HD (2560×1440) — 8.0 Mbps, up to 60fps
+    - 1080p Full HD (1920×1080) — 4.0 Mbps, up to 60fps
+    - Lower resolutions included for all devices
+
+    Best for: professional content, broadcasts, high-quality media
+
+  </Tab>
+</Tabs>
+
+## Tier details
+
+| Feature              | Basic                                                                | Shorts                                                                                      | Pro                                                                                                                           |
+|----------------------|----------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| **Best For**         | Web content, tutorials, educational videos, company communications   | Social media content, mobile-first videos, TikTok/Instagram/YouTube Shorts, 60fps content   | TV/broadcast content, premium streaming, professional production, 4K content                                                  |
+| **Video Quality**    | 720p HD (2.5 Mbps)<br/>480p SD (1.0 Mbps)<br/>240p Mobile (500 Kbps) | 1080p Full HD (4.0 Mbps, 60fps)<br/>720p HD (2.5 Mbps, 60fps)<br/>480p SD (1.0 Mbps, 30fps) | 4K Ultra HD (15 Mbps, 60fps)<br/>2K Quad HD (8.0 Mbps, 60fps)<br/>1080p Full HD (4.0 Mbps, 60fps)<br/>+ all lower resolutions |
+| **Frame Rate**       | 24fps, 30fps                                                         | Up to 60fps                                                                                 | Up to 60fps                                                                                                                   |
+| **Special Features** | Standard compression, web optimized                                  | Vertical video optimization, mobile-focused encoding, enhanced motion handling              | HDR support, 10-bit encoding, AV1 codec, professional audio                                                                   |
+| **Processing Speed** | ~1x video length                                                     | ~1.5x video length                                                                          | ~2-3x video length                                                                                                            |
+| **File Size**        | Smallest                                                             | Medium                                                                                      | Largest                                                                                                                       |
+| **Audio**            | Opus 128kbps                                                         | Opus 128kbps                                                                                | Professional audio processing                                                                                                 |
+
+## How to Choose
+
+### Look at Your Content
+
+<Steps>
+  <Step>
+    ### Check your video resolution
+    Pick a tier that matches or exceeds your source video quality.
+  </Step>
+  <Step>
+    ### Consider your audience
+    Think about what devices they use and their internet speeds.
+  </Step>
+  <Step>
+    ### Decide on quality vs speed
+    Balance quality needs with processing time requirements.
+  </Step>
+  <Step>
+    ### Plan for the future
+    Consider scalability and future quality requirements.
+  </Step>
+</Steps>
+
+### Quick decision guide
+
+<Columns cols={3}>
+  <Card
+    title="Choose Basic"
+  >
+    Source is 1080p or smaller. Fast loading, desktop-focused, quick processing.
+  </Card>
+
+  <Card
+    title="Choose Shorts"
+  >
+    Mobile/vertical-first content, 60fps source, social platforms, primarily phone viewers.
+  </Card>
+
+  <Card
+    title="Choose Pro"
+  >
+    2K/4K or higher source, HDR or broadcast requirements, production-quality output.
+  </Card>
+</Columns>
+
+## Technical Details
+
+### Processing Times
+
+<Tabs items={['Basic', 'Shorts', 'Pro']}>
+  <Tab value="Basic">
+    **Fastest processing** - great for quick uploads and fast turnaround times.
+  </Tab>
+  <Tab value="Shorts">
+    **Medium speed** with 60fps optimization for smooth motion content.
+  </Tab>
+  <Tab value="Pro">
+    **Slowest processing** but delivers the highest quality results.
+  </Tab>
+</Tabs>
+
+### File Sizes and Storage
+
+<Callout type="info">
+  **Basic**: Smallest files across all video sizes
+  **Shorts**: Medium size with better quality for key resolutions
+  **Pro**: Largest files with complete video size range
+</Callout>
+
+### Device Support
+
+All tiers work on all devices and browsers. Pro tier also works with professional broadcast equipment, while Shorts tier is extra optimized for mobile apps.
+
+## Smart Video Delivery
+
+### Automatic Quality Selection
+
+The system automatically:
+
+- Picks the best video quality for each viewer's internet speed
+- Switches quality smoothly without stopping playback
+- Reduces buffering and loading times
+- Chooses the right resolution for each device
+
+### Performance Benefits
+
+<Columns cols={4}>
+  <Card title="Optimal Quality">Viewers get the best quality their connection can handle</Card>
+  <Card title="Fast Startup">Videos start playing faster with less buffering</Card>
+  <Card title="Efficient Bandwidth">Uses internet bandwidth efficiently</Card>
+  <Card title="Reliable Playback">Still works well on slow connections</Card>
+</Columns>
+
+## Best Practices
+
+### Choosing Your Tier
+
+<Steps>
+  <Step>
+    ### Match source quality
+    Select a tier that matches your source video resolution and quality.
+  </Step>
+  <Step>
+    ### Consider distribution
+    Think about where and how people will watch your content.
+  </Step>
+  <Step>
+    ### Balance needs
+    Weigh processing speed against quality requirements.
+  </Step>
+  <Step>
+    ### Plan ahead
+    Consider future scalability and changing quality needs.
+  </Step>
+</Steps>
+
+### Getting the Best Results
+
+<Callout type="tip">
+  - Upload the highest quality video you have
+  - Use recommended file formats for faster processing
+  - Consider your content type (motion-heavy vs static)
+  - Test across different devices and connection speeds
+</Callout>
+
+## Next Steps
+
+Continue learning about video processing:
+
+- [Supported File Formats](/de/home/platform/uploads/videos/supported-formats) - Check compatible formats for best results
+- [Upload Implementation](/de/home/platform/uploads/videos/upload-implementation) - Start uploading with your chosen tier

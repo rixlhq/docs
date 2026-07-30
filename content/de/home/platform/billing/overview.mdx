@@ -1,0 +1,66 @@
+---
+title: Abrechnungsübersicht
+description: Verwalten Sie Ihr Abonnement, Ihre Abrechnung und Ihre Zahlungsinformationen für Ihr Projekt bei RIXL.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+
+Im Abschnitt „Abrechnung“ können Sie Ihr Abonnement verwalten, die Nutzung überwachen, Zahlungsmethoden aktualisieren
+und auf Ihren Rechnungsverlauf zugreifen. Rufen Sie ihn über **Projekteinstellungen → Abrechnung** auf.
+
+<Columns cols={2}>
+  <Card
+    title="Aktueller Tarif & Nutzung"
+    href="/de/home/platform/billing/subscription-plans"
+  >
+    Sehen Sie Ihr aktives Abonnement ein und überwachen Sie die Ressourcennutzung über alle Projekte hinweg.
+  </Card>
+  <Card
+    title="Zahlung & Rechnungen"
+    href="/de/home/platform/billing/payment_invoice"
+  >
+    Verwalten Sie Zahlungsmethoden und laden Sie den Abrechnungsverlauf herunter.
+  </Card>
+</Columns>
+
+## Zusammenfassung des aktuellen Tarifs
+
+Ihr Abrechnungs-Dashboard zeigt:
+- **Aktiver Tarif:** Aktuelle Abonnementstufe und monatliche Kosten
+- **Abrechnungszyklus:** Nächstes Abrechnungsdatum und Zahlungsmethode
+- **Nutzungsmetriken:** Echtzeit-Verfolgung von Speicher- und API-Nutzung
+- **Aktuelle Rechnungen:** Schneller Zugriff auf den Abrechnungsverlauf
+
+## Tarife
+
+<Tabs items={['Free', 'Pro', 'Enterprise']}>
+  <Tab value="Free">
+    **0 $/Monat**
+    - 5 GB Videospeicher
+    - 1 GB Bildspeicher
+    - 3 Teammitglieder
+    - 100 API-Aufrufe/Stunde
+  </Tab>
+  <Tab value="Pro">
+    **49 $/Monat**
+    - 50 GB Videospeicher
+    - 10 GB Bildspeicher
+    - 10 Teammitglieder
+    - 1.000 API-Aufrufe/Stunde
+    - Priorisierter Support
+  </Tab>
+  <Tab value="Enterprise">
+    **299 $/Monat**
+    - Individueller Speicher
+    - Unbegrenzte Teammitglieder
+    - Individuelle API-Limits
+    - Support rund um die Uhr
+  </Tab>
+</Tabs>
+
+<Callout type="warning">
+  Das Überschreiten Ihrer Limits kann zu Zusatzkosten führen. Führen Sie ein Upgrade durch, bevor Sie die Limits erreichen.
+</Callout>

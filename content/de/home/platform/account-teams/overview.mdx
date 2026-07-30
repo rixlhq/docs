@@ -1,0 +1,134 @@
+---
+title: Konto & Teams – Übersicht
+description: Verwalten Sie Ihre persönlichen Kontoeinstellungen, Teammitgliedschaften und Organisationseinstellungen an einem Ort.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+
+Willkommen in Ihrer Zentrale für RIXL-Konto- und Teamverwaltung. Von hier aus können Sie Ihre persönlichen Informationen aktualisieren, Ihr Konto mit Sicherheitswerkzeugen schützen, Teammitgliedschaften verwalten, Organisationen erstellen und den Zugriff über all Ihre Projekte hinweg steuern.
+
+## Schnellaktionen
+
+### Persönliches Konto
+<Columns cols={3}>
+  <Card
+    title="Profil aktualisieren"
+    href="/de/home/platform/account-teams/general-settings"
+    icon="settings"
+  >
+    Bearbeiten Sie Ihren Anzeigenamen, Benutzernamen und Ihre E-Mail-Adresse.
+  </Card>
+  <Card
+    title="Konto absichern"
+    href="/de/home/platform/account-teams/security"
+    icon="shield"
+  >
+    Richten Sie die Zwei-Faktor-Authentifizierung ein und verwalten Sie Sitzungen.
+  </Card>
+  <Card
+    title="API-Schlüssel generieren"
+    href="/de/home/platform/api-documentation/api-keys"
+    icon="key"
+  >
+    Erstellen Sie sichere Schlüssel für die Integration mit der RIXL-API.
+  </Card>
+</Columns>
+
+### Organisationen & Teams
+<Columns cols={3}>
+  <Card
+    title="Organisation erstellen"
+    href="/de/home/platform/account-teams/create-organization"
+    icon="building"
+  >
+    Richten Sie eine neue Organisation für Ihr Team oder Unternehmen ein.
+  </Card>
+  <Card
+    title="Teamverwaltung"
+    href="/de/home/platform/account-teams/team-management"
+    icon="users"
+  >
+    Laden Sie Mitglieder ein und verwalten Sie deren Zugriff auf Ihre Organisation.
+  </Card>
+  <Card
+    title="Mitgliedschaften ansehen"
+    href="/de/home/platform/account-teams/membership"
+    icon="user-check"
+  >
+    Prüfen Sie alle Organisationen, denen Sie angehören, und Ihre jeweilige Rolle.
+  </Card>
+</Columns>
+
+## Ihre Konto-Grundlagen
+
+<Steps>
+  <Step>
+    **Profil & persönliche Angaben**
+
+    Halten Sie Ihren Anzeigenamen, Ihre E-Mail und Ihren Benutzernamen aktuell, damit Ihr Team Sie leicht erkennen und mit Ihnen in Kontakt treten kann.
+  </Step>
+
+  <Step>
+    **Sicherheit & Datenschutz**
+
+    Schützen Sie Ihr Konto mit starken Passwörtern und Zwei-Faktor-Authentifizierung und überwachen Sie aktive Anmeldesitzungen auf
+    verdächtige Aktivitäten.
+  </Step>
+
+  <Step>
+    **Teamzusammenarbeit**
+
+    Sehen Sie all Ihre Organisationsmitgliedschaften ein, verwalten Sie Ihre Rollen und beantworten Sie Teameinladungen von Kollegen.
+  </Step>
+
+  <Step>
+    **Organisationsverwaltung**
+
+    Erstellen Sie Organisationen für Ihr Team oder Unternehmen, laden Sie Mitglieder ein und steuern Sie den Zugriff auf Projekte und Ressourcen.
+  </Step>
+
+  <Step>
+    **Entwicklerwerkzeuge**
+
+    Generieren und verwalten Sie API-Schlüssel für die Integration von RIXL in Ihre Anwendungen und automatisierten Workflows.
+  </Step>
+
+  <Step>
+    **Abrechnung & Nutzung**
+
+    Verfolgen Sie Ihre Nutzung über Projekte hinweg und verwalten Sie die Abrechnung für Organisationen, in denen Sie Admin-Zugriff haben.
+  </Step>
+</Steps>
+
+## Organisationsrollen verstehen
+
+Bei der Arbeit mit Teams hilft Ihnen das Verständnis der Rollen zu wissen, was Sie in jeder Organisation tun können:
+
+<Columns cols={3}>
+  <Card title="Owner" icon="crown">Volle Kontrolle über alles. Verwaltet die Abrechnung, fügt Personen hinzu/entfernt sie und steuert alle
+    Projekte.</Card>
+
+  <Card title="Admin" icon="shield">Erstellt und verwaltet Projekte. Lädt Teammitglieder ein und konfiguriert Einstellungen.</Card>
+
+  <Card title="Member" icon="user">Arbeitet nur an zugewiesenen Projekten. Kann Inhalte erstellen, aber die
+    Organisation nicht verwalten.</Card>
+</Columns>
+
+## Best Practices
+
+### Sicherheit
+- **Aktivieren Sie die Zwei-Faktor-Authentifizierung** für alle Konten, besonders wenn Sie Owner oder Admin einer Organisation sind
+- **Überprüfen Sie aktive Sitzungen** regelmäßig und entziehen Sie unbekannten Geräten den Zugriff
+- **Verwenden Sie starke, eindeutige Passwörter** und ziehen Sie einen Passwortmanager in Betracht
+
+### Teamverwaltung
+- **Weisen Sie passende Rollen zu** – Geben Sie Teammitgliedern die minimalen Berechtigungen, die sie für ihre Arbeit benötigen
+- **Regelmäßige Zugriffsüberprüfungen** – Prüfen Sie regelmäßig, wer Zugriff auf Ihre Organisationen und Projekte hat
+- **Klare Namenskonventionen** – Verwenden Sie beschreibende Organisations- und Projektnamen, die für Ihr Team sinnvoll sind
+
+<Callout type="tip">
+  **Schnellzugriff:** Klicken Sie auf Ihr Profilbild oben rechts und wählen Sie **Kontoeinstellungen**, um direkt zu
+  einem dieser Abschnitte zu springen.
+</Callout>

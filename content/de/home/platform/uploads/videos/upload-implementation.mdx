@@ -1,0 +1,901 @@
+---
+title: Upload Implementation
+description: Code examples and best practices for implementing video uploads
+---
+
+
+import {Card, Columns} from '@/snippets';
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+Implement video uploads with comprehensive code examples and best practices for reliable, efficient video processing.
+
+## Upload Implementation
+
+### Implementation Overview
+
+**Three-step upload process**:
+1. **Initialize upload**: Get presigned URLs and upload configuration
+2. **Upload video file**: Direct upload to secure cloud storage
+3. **Complete upload**: Trigger processing pipeline
+
+### Upload Optimization Guidelines
+
+<Columns cols={3}>
+  <Card title="Format: MP4 + H.264">
+    Fastest processing with universal compatibility
+  </Card>
+  <Card title="Resolution: Upload Highest Available">
+    Up to 4K for Pro tier, system scales down appropriately
+  </Card>
+  <Card title="Frame Rate: 30fps or 60fps">
+    Standard rates for optimal processing and compatibility
+  </Card>
+  <Card title="Audio: Opus Codec">
+    Best compatibility and quality for source material
+  </Card>
+</Columns>
+
+## Code Examples
+
+<Tabs items={['JavaScript', 'Python', 'cURL']}>
+  <Tab value="JavaScript">
+    ```typescript
+    /**
+    * Video upload implementation with TypeScript
+    * Handles the complete upload workflow with proper error handling
+    */
+
+    interface UploadInitRequest {
+    file_name: string;
+    video_quality: 'basic' | 'shorts' | 'pro';
+    image_format: 'jpg' | 'png' | 'webp';
+  }
+
+    interface UploadInitResponse {
+    video_id: string;
+    video_presigned_url: string;
+    expires_at: string;
+  }
+
+    async function uploadVideo(
+    videoFile: File,
+    apiKey: string,
+    options: UploadInitRequest
+    ): Promise
+    <string> {
+      try {
+      // Step 1: Initialize upload with validation
+      const initResponse = await fetch('https://api.rixl.com/videos/upload/init', {
+      method: 'POST',
+      headers: {
+      'X-API-Key': apiKey,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+      body: JSON.stringify(options)
+    });
+
+      if (!initResponse.ok) {
+      const errorData = await initResponse.json().catch(() => ({}));
+      throw new Error(`Upload initialization failed: ${errorData.message || initResponse.statusText}`);
+    }
+
+      const uploadData: UploadInitResponse = await initResponse.json();
+
+      // Step 2: Upload video file to presigned URL
+      const uploadResponse = await fetch(uploadData.video_presigned_url, {
+      method: 'PUT',
+      body: videoFile,
+      headers: {
+      'Content-Type': videoFile.type || 'video/mp4'
+    }
+    });
+
+      if (!uploadResponse.ok) {
+      throw new Error(`Video upload failed: ${uploadResponse.statusText}`);
+    }
+
+      // Step 3: Complete upload and trigger processing
+      const completeResponse = await fetch(
+      `https://api.rixl.com/videos/${uploadData.video_id}/upload/complete/`,
+    {
+      method: 'POST',
+      headers: {
+      'X-API-Key': apiKey,
+      'Content-Type': 'application/json'
+    }
+    }
+      );
+
+      if (!completeResponse.ok) {
+      const errorData = await completeResponse.json().catch(() => ({}));
+      throw new Error(`Upload completion failed: ${errorData.message || completeResponse.statusText}`);
+    }
+
+      console.log('Video processing started successfully');
+      console.log(`📹 Video ID: ${uploadData.video_id}`);
+
+      return uploadData.video_id;
+
+    } catch (error) {
+      console.error('Upload failed:', error);
+      throw error;
+    }
+    }
+
+      // Usage example with modern async/await
+      const handleVideoUpload = async (file: File) => {
+        const videoId = await uploadVideo(file, 'YOUR_PROJECT_API_KEY', {
+        file_name: file.name,
+        video_quality: 'pro',
+        image_format: 'jpg'
+      });
+
+        return videoId;
+      };
+      ```
+  </Tab>
+
+  <Tab value="Python">
+    ```python
+    """
+    Modern Python video upload implementation with proper error handling
+    and type hints for better code quality and maintainability.
+    """
+
+    import requests
+    from typing import Dict, Any, Optional
+    from pathlib import Path
+    import logging
+
+    # Configure logging for better debugging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
+    class VideoUploadError(Exception):
+    """Custom exception for video upload errors"""
+    pass
+
+    def upload_video(
+    file_path: Path,
+    api_key: str,
+    video_quality: str = 'pro',
+    image_format: str = 'jpg',
+    timeout: int = 300
+    ) -> str:
+    """
+    Upload a video file to RIXL platform with comprehensive error handling.
+
+    Args:
+    file_path: Path to the video file
+    api_key: Your RIXL project API key
+    video_quality: Quality tier ('basic', 'shorts', 'pro')
+    image_format: Thumbnail format ('jpg', 'png', 'webp')
+    timeout: Request timeout in seconds
+
+    Returns:
+    str: Video ID of the uploaded video
+
+    Raises:
+    VideoUploadError: If any step of the upload process fails
+    """
+
+    if not file_path.exists():
+    raise VideoUploadError(f"Video file not found: {file_path}")
+
+    session = requests.Session()
+    session.headers.update({
+    'X-API-Key': api_key,
+  })
+
+    try:
+    # Step 1: Initialize upload
+    logger.info(f"🚀 Initializing upload for {file_path.name}")
+
+    init_response = session.post(
+    'https://api.rixl.com/videos/upload/init',
+    json={
+    'file_name': file_path.name,
+    'video_quality': video_quality,
+    'image_format': image_format
+  },
+    timeout=timeout
+    )
+
+    init_response.raise_for_status()
+    upload_data = init_response.json()
+
+    # Step 2: Upload video file
+    logger.info(f"Uploading video file...")
+
+    with open(file_path, 'rb') as video_file:
+    upload_response = session.put(
+    upload_data['video_presigned_url'],
+    data=video_file,
+    headers={'Content-Type': 'video/mp4'},
+    timeout=timeout
+    )
+
+    upload_response.raise_for_status()
+
+    # Step 3: Complete upload
+    logger.info(f"Completing upload...")
+
+    complete_response = session.post(
+    f"https://api.rixl.com/videos/{upload_data['video_id']}/upload/complete/",
+    timeout=timeout
+    )
+
+    complete_response.raise_for_status()
+
+    video_id = upload_data['video_id']
+    logger.info(f"Upload successful! Video ID: {video_id}")
+
+    return video_id
+
+    except requests.exceptions.HTTPError as e:
+    error_msg = f"HTTP error during upload: {e.response.status_code}"
+    if e.response.content:
+    try:
+    error_data = e.response.json()
+    error_msg += f" - {error_data.get('message', 'Unknown error')}"
+    except ValueError:
+    pass
+    raise VideoUploadError(error_msg) from e
+
+    except requests.exceptions.RequestException as e:
+    raise VideoUploadError(f"Network error during upload: {str(e)}") from e
+
+    except Exception as e:
+    raise VideoUploadError(f"Unexpected error during upload: {str(e)}") from e
+
+    # Usage example
+    if __name__ == "__main__":
+    try:
+    video_id = upload_video(
+    file_path=Path("my-video.mp4"),
+    api_key="YOUR_PROJECT_API_KEY",
+    video_quality="pro",
+    image_format="jpg"
+    )
+    print(f"Success! Video uploaded with ID: {video_id}")
+
+    except VideoUploadError as e:
+    logger.error(f"Upload failed: {e}")
+
+    except Exception as e:
+    logger.error(f"Unexpected error: {e}")
+    ```
+  </Tab>
+
+  <Tab value="cURL">
+    ```bash
+    #!/bin/bash
+    # Bash script for video upload with proper error handling
+    # Requires: curl, jq (for JSON parsing)
+
+    set -euo pipefail # Exit on error, undefined vars, pipe failures
+
+    # Configuration
+    readonly API_KEY="${RIXL_API_KEY:-YOUR_PROJECT_API_KEY}"
+    readonly VIDEO_FILE="${1:-my-video.mp4}"
+    readonly VIDEO_QUALITY="${2:-pro}"
+    readonly IMAGE_FORMAT="${3:-jpg}"
+
+    # Colors for better output
+    readonly GREEN='\033[0;32m'
+    readonly RED='\033[0;31m'
+    readonly NC='\033[0m'
+
+    log_info() {echo - e "${GREEN}[INFO]${NC} $1";}
+    log_error() {echo - e "${RED}[ERROR]${NC} $1" >&2;}
+
+    # Check if video file exists
+    if [[ ! -f "$VIDEO_FILE" ]]; then
+    log_error "Video file not found: $VIDEO_FILE"
+    exit 1
+    fi
+
+    log_info "Starting upload for $(basename "$VIDEO_FILE")"
+
+    # Step 1: Initialize upload with error handling
+    log_info "Initializing upload..."
+    INIT_RESPONSE=$(curl -f -s -w "%{http_code}" \
+    -X POST https://api.rixl.com/videos/upload/init \
+    -H "X-API-Key: $API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    --retry 3 \
+    --retry-delay 1 \
+    --max-time 30 \
+    --data "{
+    \"file_name\": \"$(basename "$VIDEO_FILE")\",
+    \"video_quality\": \"$VIDEO_QUALITY\",
+    \"image_format\": \"$IMAGE_FORMAT\"
+  }")
+
+    # Extract HTTP status code and response body
+    HTTP_CODE="${INIT_RESPONSE: -3}"
+    RESPONSE_BODY="${INIT_RESPONSE % ?? ?}"
+
+    if [[ "$HTTP_CODE" != "200" ]]; then
+    log_error "Upload initialization failed with HTTP $HTTP_CODE"
+    exit 1
+    fi
+
+    # Parse JSON response (requires jq)
+    VIDEO_ID=$(echo "$RESPONSE_BODY" | jq -r '.video_id')
+    PRESIGNED_URL=$(echo "$RESPONSE_BODY" | jq -r '.video_presigned_url')
+
+    if [[ "$VIDEO_ID" == "null" || "$PRESIGNED_URL" == "null" ]]; then
+    log_error "Invalid response from server"
+    exit 1
+    fi
+
+    log_info "Upload initialized. Video ID: $VIDEO_ID"
+
+    # Step 2: Upload video file with progress
+    log_info "Uploading video file..."
+    if ! curl -# -f \
+    -X PUT "$PRESIGNED_URL" \
+    --upload-file "$VIDEO_FILE" \
+    -H "Content-Type: video/mp4"; then
+    log_error "Video file upload failed"
+    exit 1
+    fi
+
+    log_info "Video uploaded successfully"
+
+    # Step 3: Complete upload
+    log_info "Completing upload..."
+    if ! curl -f -s -S \
+    -X POST "https://api.rixl.com/videos/$VIDEO_ID/upload/complete/" \
+    -H "X-API-Key: $API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    --retry 3 \
+    --retry-delay 1 \
+    --max-time 30 \
+    -o /dev/null; then
+    log_error "Upload completion failed"
+    exit 1
+    fi
+
+    log_info "Upload completed successfully!"
+    log_info "Video ID: $VIDEO_ID"
+    log_info "Processing started. Check your dashboard for status."
+    ```
+  </Tab>
+</Tabs>
+
+## Advanced Implementation
+
+### Error Handling and Retry Logic
+
+**Robust upload implementation**:
+
+```javascript
+async function uploadVideoWithRetry(file, maxRetries = 3) {
+for (let attempt = 1; attempt <= maxRetries; attempt++) {
+  try {
+    // Initialize upload
+    const initResponse = await fetch('https://api.rixl.com/videos/upload/init', {
+      method: 'POST',
+      headers: {
+        'X-API-Key': 'YOUR_PROJECT_API_KEY',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        file_name: file.name,
+        video_quality: 'basic',
+        image_format: 'jpg'
+      })
+    });
+
+
+
+    if (!initResponse.ok) {
+      throw new Error(`Initialization failed: ${initResponse.status}`);
+    }
+
+
+
+    const uploadData = await initResponse.json();
+
+
+
+    // Upload with progress tracking
+    const uploadResponse = await uploadWithProgress(
+      uploadData.video_presigned_url,
+      file,
+      (progress) => console.log(`Upload progress: ${progress}%`)
+    );
+
+
+
+    // Complete upload
+    const completeResponse = await fetch(
+      `https://api.rixl.com/videos/${uploadData.video_id}/upload/complete/`,
+      {
+        method: 'POST',
+        headers: {'X-API-Key': 'YOUR_PROJECT_API_KEY'}
+      }
+    );
+
+
+
+    if (!completeResponse.ok) {
+      throw new Error(`Completion failed: ${completeResponse.status}`);
+    }
+
+
+
+    return uploadData.video_id;
+
+
+
+  } catch (error) {
+    console.log(`Attempt ${attempt} failed:`, error.message);
+
+
+    if (attempt === maxRetries) {
+      throw new Error(`Upload failed after ${maxRetries} attempts: ${error.message}`);
+    }
+
+
+    // Exponential backoff
+    await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+  }
+}
+}
+
+async function uploadWithProgress(url, file, onProgress) {
+return new Promise((resolve, reject) => {
+  const xhr = new XMLHttpRequest();
+
+
+  xhr.upload.addEventListener('progress', (event) => {
+    if (event.lengthComputable) {
+      const progress = Math.round((event.loaded / event.total) * 100);
+      onProgress(progress);
+    }
+  });
+
+
+  xhr.addEventListener('load', () => {
+    if (xhr.status === 200) {
+      resolve(xhr.response);
+    } else {
+      reject(new Error(`Upload failed with status: ${xhr.status}`));
+    }
+  });
+
+
+  xhr.addEventListener('error', () => {
+    reject(new Error('Upload failed due to network error'));
+  });
+
+
+  xhr.open('PUT', url);
+  xhr.setRequestHeader('Content-Type', file.type);
+  xhr.send(file);
+});
+}
+```
+
+### Large File Handling
+
+**Multipart upload for files >100MB**:
+
+```python
+import requests
+from requests_toolbelt.multipart.encoder import MultipartEncoder, MultipartEncoderMonitor
+
+def upload_large_video(file_path, progress_callback=None):
+"""Upload large video files with progress tracking and resume capability."""
+
+# Initialize upload
+init_response = requests.post(
+'https://api.rixl.com/videos/upload/init',
+headers={
+'X-API-Key': 'YOUR_PROJECT_API_KEY',
+  'Content-Type': 'application/json'
+},
+json={
+'file_name': os.path.basename(file_path),
+  'video_quality': 'pro',
+  'image_format': 'jpg',
+  'multipart': True  # Enable multipart upload
+}
+)
+
+if init_response.status_code != 200:
+raise Exception('Upload initialization failed')
+
+upload_data = init_response.json()
+
+# Upload with progress monitoring
+def progress_monitor(monitor):
+if progress_callback:
+progress = int((monitor.bytes_read / monitor.len) * 100)
+progress_callback(progress)
+
+with open(file_path, 'rb') as f:
+encoder = MultipartEncoder(
+fields={'file': (os.path.basename(file_path), f, 'video/mp4')}
+)
+monitor = MultipartEncoderMonitor(encoder, progress_monitor)
+
+upload_response = requests.put(
+upload_data['video_presigned_url'],
+data=monitor,
+headers={'Content-Type': monitor.content_type}
+)
+
+if upload_response.status_code != 200:
+raise Exception('Video upload failed')
+
+# Complete upload
+complete_response = requests.post(
+f"https://api.rixl.com/videos/{upload_data['video_id']}/upload/complete/",
+headers={'X-API-Key': 'YOUR_PROJECT_API_KEY'}
+)
+
+if complete_response.status_code != 200:
+raise Exception('Upload completion failed')
+
+return upload_data['video_id']
+
+# Usage with progress tracking
+def print_progress(percentage):
+print(f"Upload progress: {percentage}%")
+
+video_id = upload_large_video('large-video.mp4', print_progress)
+print(f"Upload complete! Video ID: {video_id}")
+```
+
+## Implementation Best Practices
+
+### Quality Tier Selection
+
+**Programmatic tier selection**:
+
+```javascript
+function selectOptimalTier(videoMetadata) {
+const {width, height, duration, fileSize} = videoMetadata;
+const resolution = width * height;
+const isVertical = height > width;
+
+// 4K or higher resolution
+if (resolution >= 3840 * 2160) {
+  return 'pro';
+}
+
+// Vertical content or high frame rate
+if (isVertical || videoMetadata.frameRate >= 50) {
+  return 'shorts';
+}
+
+// Large files likely high quality
+if (fileSize > 500 * 1024 * 1024) { // 500MB
+  return 'pro';
+}
+
+// Default to basic for standard content
+return 'basic';
+}
+
+// Usage
+const optimalTier = selectOptimalTier({
+width: 1920,
+  height: 1080,
+  duration: 300, // 5 minutes
+  fileSize: 200 * 1024 * 1024, // 200MB
+  frameRate: 30
+});
+```
+
+### Processing Optimization
+
+**Upload timing optimization**:
+
+```python
+from datetime import datetime, timezone
+import pytz
+
+def get_optimal_upload_time():
+"""Determine optimal upload time based on timezone and server load."""
+
+# Convert to UTC for server processing
+utc_now = datetime.now(timezone.utc)
+hour_utc = utc_now.hour
+
+# Off-peak hours (UTC): 2 AM - 8 AM
+if 2 <= hour_utc <= 8:
+return True, "Optimal time - off-peak hours"
+
+# Peak hours (UTC): 12 PM - 6 PM
+elif 12 <= hour_utc <= 18:
+return False, "Peak hours - consider uploading later"
+
+# Moderate load
+else:
+return True, "Moderate load - acceptable upload time"
+
+# Usage
+is_optimal, message = get_optimal_upload_time()
+if is_optimal:
+print(f"Good time to upload: {message}")
+else:
+print(f"Consider waiting: {message}")
+```
+
+### Security and Access Control
+
+**Secure upload implementation**:
+
+```javascript
+class SecureVideoUploader {
+constructor(apiKey, projectId) {
+  this.apiKey = apiKey;
+  this.projectId = projectId;
+  this.baseUrl = 'https://api.rixl.com';
+}
+
+async validateFile(file) {
+  // File size validation (2GB limit)
+  if (file.size > 2 * 1024 * 1024 * 1024) {
+    throw new Error('File size exceeds 2GB limit');
+  }
+
+
+  // MIME type validation
+  const allowedTypes = ['video/mp4', 'video/quicktime', 'video/webm'];
+  if (!allowedTypes.includes(file.type)) {
+    throw new Error('Unsupported file type');
+  }
+
+
+  return true;
+}
+
+async uploadVideo(file, options = {}) {
+  // Validate file before upload
+  await this.validateFile(file);
+
+
+  const requestBody = {
+    file_name: file.name,
+    video_quality: options.quality || 'basic',
+    image_format: options.imageFormat || 'jpg',
+    project_id: this.projectId
+  };
+
+
+  // Initialize with authentication
+  const initResponse = await fetch(`${this.baseUrl}/videos/upload/init`, {
+    method: 'POST',
+    headers: {
+      'X-API-Key': this.apiKey,
+      'Content-Type': 'application/json',
+      'User-Agent': 'RIXL-SDK/1.0'
+    },
+    body: JSON.stringify(requestBody)
+  });
+
+
+  if (!initResponse.ok) {
+    const error = await initResponse.json();
+    throw new Error(`Upload initialization failed: ${error.message}`);
+  }
+
+
+  const uploadData = await initResponse.json();
+
+
+  // Verify presigned URL is secure (HTTPS)
+  if (!uploadData.video_presigned_url.startsWith('https://')) {
+    throw new Error('Insecure upload URL provided');
+  }
+
+
+  // Upload with timeout
+  const uploadResponse = await Promise.race([
+    fetch(uploadData.video_presigned_url, {
+      method: 'PUT',
+      body: file,
+      headers: {'Content-Type': file.type}
+    }),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Upload timeout')), 300000) // 5 minutes
+    )
+  ]);
+
+
+  if (!uploadResponse.ok) {
+    throw new Error(`Upload failed: ${uploadResponse.status}`);
+  }
+
+
+  // Complete upload
+  const completeResponse = await fetch(
+    `${this.baseUrl}/videos/${uploadData.video_id}/upload/complete/`,
+    {
+      method: 'POST',
+      headers: {'X-API-Key': this.apiKey}
+    }
+  );
+
+
+  if (!completeResponse.ok) {
+    throw new Error('Upload completion failed');
+  }
+
+
+  return uploadData.video_id;
+}
+}
+
+// Usage
+const uploader = new SecureVideoUploader('YOUR_API_KEY', 'YOUR_PROJECT_ID');
+
+try {
+const videoId = await uploader.uploadVideo(videoFile, {
+  quality: 'pro',
+  imageFormat: 'jpg'
+});
+console.log('Upload successful:', videoId);
+} catch (error) {
+console.error('Upload failed:', error.message);
+}
+```
+
+## Performance Optimization
+
+### Batch Upload Implementation
+
+**Efficient multiple file uploads**:
+
+```javascript
+async function batchUploadVideos(files, options = {}) {
+const {concurrency = 3, quality = 'basic'} = options;
+const results = [];
+
+// Process files in batches to avoid overwhelming the server
+for (let i = 0; i < files.length; i += concurrency) {
+  const batch = files.slice(i, i + concurrency);
+
+
+  const batchPromises = batch.map(async (file, index) => {
+    try {
+      console.log(`Starting upload ${i + index + 1}/${files.length}: ${file.name}`);
+
+
+      const videoId = await uploadVideoWithRetry(file);
+
+
+      return {
+        success: true,
+        fileName: file.name,
+        videoId: videoId
+      };
+    } catch (error) {
+      return {
+        success: false,
+        fileName: file.name,
+        error: error.message
+      };
+    }
+  });
+
+
+  const batchResults = await Promise.all(batchPromises);
+  results.push(...batchResults);
+
+
+  // Brief pause between batches
+  if (i + concurrency < files.length) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+}
+
+return results;
+}
+
+// Usage
+const files = [video1, video2, video3, video4];
+const results = await batchUploadVideos(files, {
+concurrency: 2,
+  quality: 'pro'
+});
+
+results.forEach(result => {
+if (result.success) {
+  console.log(`${result.fileName} → ${result.videoId}`);
+} else {
+  console.log(`${result.fileName} → ${result.error}`);
+}
+});
+```
+
+## Troubleshooting
+
+### Common Implementation Issues
+
+**Upload failures and solutions**:
+
+```javascript
+class UploadTroubleshooter {
+static diagnoseError(error, context) {
+  const {statusCode, message, file} = context;
+
+
+  // File size issues
+  if (file?.size > 2 * 1024 * 1024 * 1024) {
+    return {
+      issue: 'File size limit exceeded',
+      solution: 'Compress video or split into smaller segments',
+      code: 'FILE_TOO_LARGE'
+    };
+  }
+
+
+  // Network issues
+  if (statusCode >= 500 || message.includes('network')) {
+    return {
+      issue: 'Server or network error',
+      solution: 'Retry upload with exponential backoff',
+      code: 'NETWORK_ERROR'
+    };
+  }
+
+
+  // Authentication issues
+  if (statusCode === 401 || statusCode === 403) {
+    return {
+      issue: 'Authentication failed',
+      solution: 'Verify API key and project permissions',
+      code: 'AUTH_ERROR'
+    };
+  }
+
+
+  // Presigned URL expiration
+  if (statusCode === 403 && message.includes('expired')) {
+    return {
+      issue: 'Upload URL expired',
+      solution: 'Reinitialize upload to get new presigned URL',
+      code: 'URL_EXPIRED'
+    };
+  }
+
+
+  return {
+    issue: 'Unknown error',
+    solution: 'Check error logs and contact support if persistent',
+    code: 'UNKNOWN_ERROR'
+  };
+}
+}
+
+// Usage in error handling
+try {
+await uploadVideo(file);
+} catch (error) {
+const diagnosis = UploadTroubleshooter.diagnoseError(error, {
+  statusCode: error.status,
+  message: error.message,
+  file: file
+});
+
+console.log(`Issue: ${diagnosis.issue}`);
+console.log(`Solution: ${diagnosis.solution}`);
+console.log(`Code: ${diagnosis.code}`);
+}
+```
+
+## Next Steps
+
+- Set up [processing status monitoring](/de/home/platform/uploads/videos/monitoring-status) to track upload progress
+- Learn about [quality tiers](/de/home/platform/uploads/videos/quality-tiers) to optimize processing choices
+- Review [supported formats](/de/home/platform/uploads/videos/supported-formats) for optimal compatibility

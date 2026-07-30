@@ -1,0 +1,165 @@
+---
+title: Upload Videos
+description: Upload, process, and distribute videos in the RIXL dashboard with automated transcoding and integration features.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+
+Upload videos directly through the RIXL dashboard with **automatic transcoding, quality tiers, and project integration**.
+
+<Callout type="info">
+  For detailed technical specifications, formats, and encoding, see the [video processing
+  documentation](/de/home/platform/uploads/videos-guide).
+</Callout>
+
+---
+
+## Upload Workflow
+
+<Steps>
+  <Step>
+    **Access Video Upload**
+
+    Go to **Media → Videos** in your project dashboard.
+  </Step>
+  <Step>
+    **Select Quality Tier**
+
+    Choose a **Quality Tier**: Basic, Shorts, or Pro.
+  </Step>
+  <Step>
+    **Configure Video Settings**
+
+    Set metadata: title, description, tags, and project assignment.
+  </Step>
+  <Step>
+    **Monitor Processing**
+
+    Track progress with real-time transcoding updates.
+  </Step>
+</Steps>
+
+---
+
+## Quality Tiers
+
+Choose the right processing tier for your content during upload:
+
+- **Basic**: Standard web content (720p, efficient processing)
+- **Shorts**: Optimized for mobile (1080p, 60fps support)
+- **Pro**: High-quality production (4K support, premium features)
+
+<Callout type="info">
+  See full details in [Video Processing Quality Tiers](/de/home/platform/uploads/videos/quality-tiers).
+</Callout>
+
+---
+
+## Project Integration
+
+<Columns cols={3}>
+  <Card title="Project Assignment" icon="folder-plus">
+    Organize videos by project automatically
+  </Card>
+  <Card title="Processing Queue" icon="clock">
+    Track transcoding progress in real-time
+  </Card>
+  <Card title="Team Access" icon="users">
+    Collaborate and share with teammates
+  </Card>
+</Columns>
+
+---
+
+## Processing Status
+
+Each video moves through clear dashboard states:
+
+<Columns cols={4}>
+  <Card title="Uploaded" icon="upload">
+    Video queued for processing
+  </Card>
+  <Card title="Processing" icon="loader">
+    Transcoding in progress
+  </Card>
+  <Card title="Ready" icon="check-circle">
+    Available in all selected qualities
+  </Card>
+  <Card title="Failed" icon="alert-triangle">
+    Processing error occurred
+  </Card>
+</Columns>
+
+---
+
+## Media Library Features
+
+Uploaded videos appear in the **Media Library** with:
+
+- **Smart Categorization** - Automatic sorting by project, date, and content type
+- **Thumbnail Management** - Custom thumbnails or auto-generated options
+- **Batch Operations** - Bulk editing, moving, and tagging
+- **Search & Filter** - Find videos quickly using metadata and processing status
+
+**Dashboard Views:**
+- **Processing Queue** - Monitor transcoding progress across all uploads
+- **Video Gallery** - Playback previews with actions
+- **Analytics View** - Processing time and file size analytics
+
+
+## Using Uploaded Videos
+
+<Steps>
+  <Step>
+    **Upload Videos**
+
+    Add videos through dashboard with with your chosen tier.
+  </Step>
+  <Step>
+    **Monitor Processing**
+
+    Track transcoding progress in real-time processing queue
+  </Step>
+  <Step>
+    **Organize Content**
+
+    Structure your library with [media organization tools](/de/home/platform/dashboard/media/organize-media).
+  </Step>
+  <Step>
+    **Create Feeds**
+
+    Add finished videos to [content feeds](/de/home/platform/dashboard/feeds/overview) for distribution.
+  </Step>
+</Steps>
+
+### Export & Sharing
+
+<Columns cols={4}>
+  <Card title="Streaming URLs" icon="play">
+    Adaptive playback across devices
+  </Card>
+  <Card title="Embed Codes" icon="code">
+    Player-ready HTML or Markdown snippets
+  </Card>
+  <Card title="API Access" icon="database">
+    Programmatic upload and management
+  </Card>
+  <Card title="Download Links" icon="download">
+    Access original or processed versions
+  </Card>
+</Columns>
+
+---
+
+## Behind the Scenes
+
+All videos are transcoded automatically into multiple qualities with:
+
+- **Tier-based encoding settings**
+- **Adaptive streaming support**
+- **Optimized compression** for performance
+- **Error handling** with retry and failure states
+
+For complete specifications, see the [video processing reference](/de/home/platform/uploads/videos-guide).

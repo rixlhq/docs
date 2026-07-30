@@ -1,0 +1,96 @@
+---
+title: "Overview"
+description: "Use the public VideoSDK hooks to build custom player controls and coordinate multiple players."
+---
+
+The React package exports a small set of public hooks for custom player UI.
+
+## Recommended Pattern
+
+The public player hooks are scope-based.
+
+- Controls rendered inside `<Video theme="hideUI">` can call zero-argument hooks directly.
+- Detached sibling controls should be wrapped with `<VideoPlayer>`.
+- `useGlobalPlayerSettings()` is the only page-level hook that intentionally fans out to all mounted players.
+
+### Inline controls
+
+```tsx
+import {Video, usePlayback, usePlayerProgress} from "@rixl/videosdk-react";
+
+function CustomControls() {
+  const {paused, togglePlay} = usePlayback();
+  const {progress, seekBy} = usePlayerProgress();
+
+  return (
+    <div className="flex items-center gap-3">
+      <button type="button" onClick={() => void togglePlay()}>
+        {paused ? "Play" : "Pause"}
+      </button>
+      <button type="button" onClick={() => seekBy(10)}>
+        Skip +10s
+      </button>
+      <span>{Math.round(progress * 100)}%</span>
+    </div>
+  );
+}
+
+function ProductDemoPlayer() {
+  return (
+    <Video id="your-video-id" theme="hideUI" analytics={false}>
+      <CustomControls />
+    </Video>
+  );
+}
+```
+
+### Detached sibling controls
+
+```tsx
+import {Video, VideoPlayer, usePlayback} from "@rixl/videosdk-react";
+
+function DetachedControls() {
+  const {paused, togglePlay} = usePlayback();
+
+  return (
+    <button type="button" onClick={() => void togglePlay()}>
+      {paused ? "Play" : "Pause"}
+    </button>
+  );
+}
+
+function DetachedPlayer() {
+  return (
+    <VideoPlayer>
+      <Video id="your-video-id" theme="hideUI" analytics={false} />
+      <DetachedControls />
+    </VideoPlayer>
+  );
+}
+```
+
+## Choose a Hook
+
+| Hook | Use it for | Notes |
+| --- | --- | --- |
+| `useMediaSettings()` | Mute, unmute, volume, and previous volume | Player-scoped audio only |
+| `usePlayback()` | Play, pause, playback rate, loading, ended, `pauseOthers()` | Best for transport controls |
+| `usePlayerProgress()` | Current time, duration, buffered progress, seeking | Preferred public timeline hook |
+| `usePlayerUI()` | Fullscreen, Picture-in-Picture, controls visibility | Exposes durable chrome state only |
+| `usePlayerTracks()` | Audio track and subtitle track selection | Track styling and global caption prefs stay elsewhere |
+| `useGlobalPlayerSettings()` | Page-level coordination across mounted players | Advanced API for shared controls |
+| `useProgressBar({video})` | Low-level drag handling for a raw `HTMLVideoElement` | Prefer `usePlayerProgress()` with `Video` |
+
+## Which Hook Should Most Apps Start With?
+
+- Start with `usePlayback()` for play-pause UI.
+- Add `usePlayerProgress()` for a custom timeline or seek buttons.
+- Add `useMediaSettings()` for mute and volume controls.
+- Add `usePlayerTracks()` only if your videos expose audio or subtitle track choices.
+- Use `useGlobalPlayerSettings()` only when one page-level control should affect several mounted players.
+
+## Related Docs
+
+- [Video component overview](/de/sdk/video-component)
+- [Video props reference](/de/sdk/video-component/props-reference)
+- [Player controls guide](/de/sdk/video-component/player-controls)

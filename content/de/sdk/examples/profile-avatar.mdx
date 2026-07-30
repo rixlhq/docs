@@ -1,0 +1,150 @@
+---
+title: "Image: Profile Avatar"
+description: "Circular profile images in multiple sizes for user profiles and comments"
+---
+
+import {Image} from '@/snippets';
+import { Callout } from 'fumadocs-ui/components/callout'
+
+## Live Example
+
+<div className="max-w-4xl mx-auto mb-8 flex items-center gap-6 p-8 bg-gray-50 rounded-lg">
+    <div className="w-24 h-24 rounded-full overflow-hidden">
+        <Image
+            id="Hq3GhYYwSY"
+            className="w-full h-full object-cover"
+        />
+    </div>
+    <div className="w-16 h-16 rounded-full overflow-hidden">
+        <Image
+            id="Hq3GhYYwSY"
+            className="w-full h-full object-cover"
+        />
+    </div>
+    <div className="w-10 h-10 rounded-full overflow-hidden">
+        <Image
+            id="Hq3GhYYwSY"
+            className="w-full h-full object-cover"
+        />
+    </div>
+</div>
+
+## Basic Implementation
+
+```tsx
+import { Image } from '@rixl/videosdk-react';
+
+export function ProfileAvatar({ imageId, name, size = 'medium' }) {
+  const sizeClasses = {
+    small: 'w-10 h-10',
+    medium: 'w-16 h-16',
+    large: 'w-24 h-24'
+  };
+
+  return (
+    <div className={`${sizeClasses[size]} rounded-full overflow-hidden`}>
+      <Image
+        id={imageId}
+        className="w-full h-full object-cover"
+      />
+    </div>
+  );
+}
+```
+
+<Callout type="info">
+    **Size variants**: Three predefined sizes (small, medium, large) for consistent avatar styling across your application.
+</Callout>
+
+## Available Sizes
+
+* `small` - 40×40px - For comments, mentions
+* `medium` - 64×64px (default) - For profiles, cards
+* `large` - 96×96px - For headers, detailed profiles
+
+## Use Cases
+
+### User Profile Header
+
+```tsx
+function UserProfile({ user }) {
+  return (
+    <div className="flex items-center gap-4 p-6">
+      <div className="w-24 h-24 rounded-full overflow-hidden">
+        <Image
+          id={user.imageId}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div>
+        <h2 className="text-2xl font-bold">{user.name}</h2>
+        <p className="text-gray-600">@{user.username}</p>
+      </div>
+    </div>
+  );
+}
+```
+
+### Comment Section
+
+```tsx
+function Comment({ comment }) {
+  return (
+    <div className="flex gap-3 p-4">
+      <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+        <Image
+          id={comment.author.imageId}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="flex-1">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="font-semibold">{comment.author.name}</span>
+          <span className="text-gray-500 text-sm">{comment.timestamp}</span>
+        </div>
+        <p className="text-gray-700">{comment.text}</p>
+      </div>
+    </div>
+  );
+}
+```
+
+### User Card Grid
+
+```tsx
+function UserCard({ user }) {
+  return (
+    <div className="border rounded-lg p-6 text-center hover:shadow-lg transition">
+      <div className="w-16 h-16 rounded-full overflow-hidden mx-auto mb-4">
+        <Image
+          id={user.imageId}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <h3 className="font-semibold mb-1">{user.name}</h3>
+      <p className="text-gray-600 text-sm">{user.role}</p>
+      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm">
+        Follow
+      </button>
+    </div>
+  );
+}
+```
+
+### Navigation Bar
+
+```tsx
+function NavBar({ currentUser }) {
+  return (
+    <nav className="flex items-center justify-between p-4 border-b">
+      <div className="text-xl font-bold">Logo</div>
+      <div className="w-10 h-10 rounded-full overflow-hidden cursor-pointer">
+        <Image
+          id={currentUser.imageId}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    </nav>
+  );
+}
+```

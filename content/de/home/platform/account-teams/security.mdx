@@ -1,0 +1,184 @@
+---
+title: Sicherheitseinstellungen
+description: Schützen Sie Ihr Konto mit starker Authentifizierung, verbundenen Konten und aktiver Überwachung.
+---
+
+
+import {Callout} from '@/snippets';
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+
+Halten Sie Ihr RIXL-Konto sicher – mit Multi-Faktor-Authentifizierung, verbundenen Konten für SSO und Sitzungsüberwachung.
+Diese Einstellungen helfen Ihnen zu steuern, wer auf Ihr Konto zugreifen kann und wie.
+
+## Verbundene Konten
+
+Verknüpfen Sie vertrauenswürdige Drittanbieterdienste für Single Sign-On (SSO).
+
+**Derzeit unterstützt:**
+- **Google:** Melden Sie sich mit Ihrem Google-Konto an
+- **Apple:** Melden Sie sich sicher mit Ihrer Apple-ID an
+- **Telegram:** Verbinden Sie es für zusätzliche Sicherheitsfunktionen
+
+### Verbundene Konten verwalten
+
+<Steps>
+  <Step>
+    **Ein Konto verbinden:**
+    - Klicken Sie neben dem gewünschten Dienst auf **Verbinden**
+    - Folgen Sie den Autorisierungsaufforderungen des Anbieters
+    - Bestätigen Sie die Verbindung in Ihren RIXL-Sicherheitseinstellungen
+  </Step>
+
+  <Step>
+    **Ein Konto trennen:**
+    - Klicken Sie neben dem verbundenen Dienst auf **Trennen**
+    - Bestätigen Sie die Aktion, wenn Sie dazu aufgefordert werden
+    - Stellen Sie sicher, dass Sie eine alternative Anmeldemethode konfiguriert haben
+  </Step>
+</Steps>
+
+<Callout type="warn" title="Vor dem Trennen">
+  Wenn Sie ein verbundenes Konto als einzige Anmeldemethode nutzen, erstellen Sie **vor** dem Trennen ein Passwort für Ihr
+  RIXL-Konto, um eine Aussperrung zu vermeiden.
+</Callout>
+
+## Zwei-Faktor-Authentifizierung
+
+Fügen Sie mit 2FA über eine Authentifizierungs-App eine zusätzliche Sicherheitsebene hinzu.
+
+### 2FA einrichten
+
+<Steps>
+  <Step>
+    **Laden Sie eine Authentifizierungs-App herunter**
+    - Google Authenticator, Authy oder 1Password
+    - Verfügbar für iOS und Android
+  </Step>
+
+  <Step>
+    **Aktivieren Sie 2FA in RIXL**
+    - Gehen Sie zu den [Sicherheitseinstellungen](/de/home/platform/account-teams/security)
+    - Klicken Sie auf **Zwei-Faktor-Authentifizierung aktivieren**
+    - Scannen Sie den QR-Code mit Ihrer Authentifizierungs-App
+  </Step>
+
+  <Step>
+    **Überprüfen Sie die Einrichtung**
+    - Geben Sie den 6-stelligen Code aus Ihrer Authentifizierungs-App ein
+    - Speichern Sie Ihre Backup-Codes an einem sicheren Ort
+    - Testen Sie die Anmeldung mit aktivierter 2FA
+  </Step>
+</Steps>
+
+### Wiederherstellungscodes
+
+Beim Aktivieren von 2FA erhalten Sie Backup-Wiederherstellungscodes:
+
+- **Sicher aufbewahren**: Bewahren Sie diese in einem Passwortmanager oder an einem sicheren Ort auf
+- **Einmalig verwenden**: Jeder Code kann nur ein einziges Mal verwendet werden
+- **Neue Codes generieren**: Generieren Sie neue Codes, wenn Sie mehrere verbraucht haben
+
+<Callout type="info">
+  Mit Wiederherstellungscodes können Sie auf Ihr Konto zugreifen, wenn Sie Ihre Authentifizierungs-App verlieren.
+</Callout>
+
+## Passwortverwaltung
+
+### Ihr Passwort ändern
+
+<Steps>
+  <Step>
+    Gehen Sie zu **[Sicherheitseinstellungen](/de/home/platform/account-teams/security) → Passwort**
+  </Step>
+
+  <Step>
+    Geben Sie zur Überprüfung Ihr aktuelles Passwort ein
+  </Step>
+
+  <Step>
+    Erstellen Sie ein neues, starkes Passwort:
+    - Mindestens 12 Zeichen lang
+    - Enthält Groß- und Kleinbuchstaben, Zahlen und Symbole
+    - Vermeiden Sie gängige Wörter oder persönliche Informationen
+  </Step>
+
+  <Step>
+    Bestätigen Sie Ihr neues Passwort und speichern Sie die Änderungen
+  </Step>
+</Steps>
+
+### Passwortanforderungen
+
+RIXL-Passwörter müssen enthalten:
+- Mindestens 8 Zeichen (12+ empfohlen)
+- Mindestens einen Großbuchstaben
+- Mindestens einen Kleinbuchstaben
+- Mindestens eine Zahl
+- Darf kein häufig verwendetes Passwort sein
+
+## Aktive Sitzungen
+
+Überprüfen und verwalten Sie alle Geräte, die derzeit in Ihrem Konto angemeldet sind.
+
+### Sitzungsinformationen
+
+Für jede Sitzung sehen Sie:
+- **Gerätetyp**: Browser, mobile App oder API-Client
+- **Standort**: Ungefähre geografische Region
+- **Letzte Aktivität**: Zeitpunkt der letzten Nutzung
+- **IP-Adresse**: Netzwerkkennung
+
+### Sitzungen verwalten
+
+<Steps>
+  <Step>
+    Öffnen Sie die Liste **Aktive Sitzungen** in den Sicherheitseinstellungen
+  </Step>
+
+  <Step>
+    **Verdächtige Sitzungen beenden:**
+    - Klicken Sie neben einer unbekannten Anmeldung auf **Sitzung beenden**
+    - Sitzungen werden sofort beendet
+  </Step>
+
+  <Step>
+    **Alle anderen Sitzungen beenden:**
+    - Verwenden Sie diese Option, wenn Sie unbefugten Zugriff vermuten
+    - Ihre aktuelle Sitzung bleibt aktiv
+  </Step>
+</Steps>
+
+<Callout type="tip">
+  Prüfen Sie Ihre aktiven Sitzungen regelmäßig, besonders wenn Sie RIXL auf gemeinsam genutzten oder öffentlichen Geräten verwenden.
+</Callout>
+
+## Sicherheitsbenachrichtigungen
+
+Wählen Sie, wie RIXL Sie über Kontoaktivitäten benachrichtigt:
+
+- **Anmeldewarnungen**: Wenn sich ein neues Gerät anmeldet
+- **Sicherheitsänderungen**: Aktualisierungen, wenn Sicherheitseinstellungen geändert werden
+- **Verdächtige Aktivität**: Warnungen bei ungewöhnlichem Kontoverhalten
+- **[API-Schlüssel](/de/home/platform/api-documentation/api-keys)-Nutzung**: Benachrichtigungen zur Aktivität von Entwicklerschlüsseln
+
+## Kontowiederherstellung
+
+### Wenn Sie ausgesperrt sind
+
+1. **Passwort vergessen**: Verwenden Sie den Link zum Zurücksetzen des Passworts auf der Anmeldeseite
+2. **2FA-Gerät verloren**: Verwenden Sie Ihre gespeicherten Wiederherstellungscodes
+3. **Kein Zugriff auf E-Mail**: Wenden Sie sich mit den Kontoverifizierungsdetails an den RIXL-Support
+
+### Sicherheits-Best-Practices
+
+- Aktivieren Sie die Zwei-Faktor-Authentifizierung (2FA)
+- Verwenden Sie ein starkes, eindeutiges Passwort
+- Überprüfen Sie regelmäßig aktive Sitzungen
+- Bewahren Sie Wiederherstellungscodes sicher und zugänglich auf
+- Überwachen Sie verbundene Konten auf unbefugte Änderungen
+
+## Verwandte Einstellungen
+
+- **[Allgemeine Einstellungen](/de/home/platform/account-teams/general-settings)** – Profil- und Kontoinformationen
+- **[API-Zugriff](/de/home/platform/api-documentation/api-keys)** – Entwicklerschlüssel und Sicherheit
+- **[Mitgliedschaft](/de/home/platform/account-teams/membership)** – Sicherheitsrollen in Organisationen

@@ -1,0 +1,82 @@
+---
+title: Feed erstellen
+description: Schritt-für-Schritt-Anleitung zum Erstellen neuer Feeds im Dashboard.
+---
+
+
+import {Callout} from 'fumadocs-ui/components/callout'
+import {Step, Steps} from 'fumadocs-ui/components/steps'
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs'
+
+## Workflow zur Feed-Erstellung
+
+<Callout type="info">
+  Bevor Sie Feeds erstellen, stellen Sie sicher, dass Sie ein
+  [Projekt erstellt haben](/de/home/platform/dashboard/projects/create-project).
+  Feeds sind immer mit Projekten verknüpft.
+</Callout>
+
+
+<Steps>
+  <Step>
+    **Feed-Erstellung aufrufen**
+    Navigieren Sie im Projekt-Dashboard zum [**Feeds**-Bereich](https://dash.rixl.com/feeds) und klicken Sie auf **Feed
+    erstellen**.
+  </Step>
+  <Step>
+    **Feed-Typ auswählen**
+    Wählen Sie je nach Ihrer Inhaltsstrategie aus den verfügbaren Feed-Typen (Video, Bild, Gemischt, Dynamisch).
+  </Step>
+  <Step>
+    **Feed-Einstellungen konfigurieren**
+    <Tabs items={['Basic Settings', 'Visibility Options']}>
+      <Tab value="Basic Settings">
+        - **Feed-Name**: Geben Sie Ihrem Feed eine klare Kennung
+        - **Beschreibung**: Geben Sie Kontext oder Zweck an
+        - **Projektzuordnung**: Wählen Sie das Projekt, zu dem der Feed gehört
+        - **Feed-Typ**: Wählen oder bestätigen Sie den Feed-Typ
+      </Tab>
+      <Tab value="Visibility Options">
+        - **Öffentlich**: Für jeden mit dem Link verfügbar
+        - **Nicht gelistet**: Verborgen, aber über die direkte URL zugänglich
+        - **Privat**: Nur auf Projektmitglieder beschränkt
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step>
+    **Regeln & Organisation definieren**
+    - Filterung (Tags, Kategorien, Metadaten)
+    - Sortierung (Datum, Beliebtheit, manuelle Reihenfolge)
+    - Inhaltsmoderations- oder Freigabe-Workflows
+    - Dynamische Einschlussregeln (z. B. neue Uploads nach Tag automatisch hinzufügen)
+  </Step>
+  <Step>
+    **Abschließen & bereitstellen**
+    Überprüfen Sie Ihre Konfiguration und klicken Sie dann auf **Erstellen**.
+    Nach der Erstellung generiert das Dashboard **API-Endpunkte** und **Einbettungscodes** für die Verteilung.
+  </Step>
+</Steps>
+
+<Callout type="info">
+  Feeds sind immer mit einem Projekt verknüpft. Stellen Sie sicher, dass Ihr Projekt eingerichtet ist, bevor Sie Feeds erstellen.
+</Callout>
+
+## Inhaltsverwaltung während der Erstellung
+
+**Methoden zum Hinzufügen von Inhalten:**
+- **Manuelles Hinzufügen**: Wählen Sie einzelne Elemente aus der Mediathek aus
+- **Massenoperationen**: Verwenden Sie Filter, um mehrere Elemente auf einmal auszuwählen
+- **Dynamische Regeln**: Automatisieren Sie den Einschluss basierend auf Metadaten oder Upload-Verhalten
+
+## Nächste Schritte nach der Erstellung
+
+Sobald Ihr Feed erstellt ist, können Sie:
+- **Anzeigeeinstellungen** und **Berechtigungen** konfigurieren
+- **Einbettungscodes** für Websites und Apps generieren
+- Über die API programmatisch auf Feeds zugreifen
+- Feeds zur Zusammenarbeit mit Teammitgliedern teilen
+
+## API-Methode (in Kürze verfügbar)
+
+Derzeit können Feeds nur über das Dashboard erstellt werden.  
+Die API-basierte Erstellung ist für zukünftige Versionen geplant, um Automatisierungs-Workflows zu unterstützen.

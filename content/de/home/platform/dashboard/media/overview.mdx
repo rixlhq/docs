@@ -1,0 +1,263 @@
+---
+title: Media Library
+description: Manage and optimize videos and images in your RIXL projects with intelligent processing, secure delivery, and advanced organization tools.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+The **Media Library** is your creative hub where you upload, optimize, and manage all your video and image assets. RIXL handles the heavy lifting — from transcoding and compression to secure delivery — so you can focus on creating and shipping.
+
+<Callout type="info">
+  Select a project and open **Media** from the left sidebar to get started.
+</Callout>
+
+## What You Can Do
+
+<Columns cols={3}>
+  <Card
+    title="Video Processing"
+    href="/de/home/platform/dashboard/media/upload-videos"
+    icon="video"
+  >
+    Upload any video format and get back multiple quality levels with adaptive streaming.
+  </Card>
+  <Card
+    title="Image Optimization"
+    href="/de/home/platform/dashboard/media/upload-images"
+    icon="image"
+  >
+    Transform images into lightning-fast AVIF files with smart placeholders and instant loading.
+  </Card>
+  <Card
+    title="Library Organization"
+    href="/de/home/platform/dashboard/media/organize-media"
+    icon="folder"
+  >
+    Keep your creative assets organized with powerful search, filtering, and categorization tools.
+  </Card>
+</Columns>
+
+<Callout type="tip">
+  **Quick tip:** Each project keeps its media organized separately for better team collaboration and access control.
+</Callout>
+
+---
+
+## Quick Actions
+
+<Columns cols={2}>
+  <Card
+    title="Upload New Video"
+    href="/de/home/platform/dashboard/media/upload-videos"
+  >
+    Quickly add video content to your project
+  </Card>
+  <Card
+    title="Upload New Image"
+    href="/de/home/platform/dashboard/media/upload-images"
+  >
+    Add new image assets instantly
+  </Card>
+  <Card
+    title="Create API Key"
+    href="/de/home/platform/api-documentation/api-keys"
+  >
+    Generate API keys for media workflows
+  </Card>
+  <Card
+    title="Invite Team Member"
+    href="/de/home/platform/account-teams/organizations-overview"
+  >
+    Collaborate with teammates on your media library
+  </Card>
+</Columns>
+
+---
+
+## Library Features
+
+<Tabs items={['Upload & Processing', 'Media Library', 'Organization & Tools']}>
+  <Tab value="Upload & Processing">
+
+    ### Quick Upload Workflow
+
+    <Steps>
+      <Step>
+        **Select Upload Type**
+
+        Click "Upload Video" or "Upload Image" from the dashboard home page
+      </Step>
+      <Step>
+        **Choose Files**
+
+        Select one or more files from your device using the file browser
+      </Step>
+      <Step>
+        **Add Metadata**
+
+        Enter titles, descriptions, and tags for your content
+      </Step>
+      <Step>
+        **Upload & Process**
+
+        Files begin uploading and processing automatically with real-time status updates
+      </Step>
+    </Steps>
+
+    ### Processing Features
+
+    | Processing Tier | Quality | Resolution | Features |
+    |----------------|---------|------------|----------|
+    | **Basic** | Standard | Up to 720p | Basic transcoding, standard formats |
+    | **Shorts** | Mobile Optimized | Up to 1080p | Fast processing, mobile optimization |
+    | **Pro** | Professional | Up to 4K | Multiple formats, advanced options |
+
+    **Additional Video Features:**
+    - Automatic thumbnail generation
+    - Web-optimized formats (MP4, WebM)
+    - Adaptive bitrate streaming support
+    - Processing status monitoring
+
+    ### Image Processing Capabilities
+
+    | Feature | Description | Benefit |
+    |---------|-------------|---------|
+    | **Smart Compression** | Automatic optimization algorithms | Reduced file sizes without quality loss |
+    | **Format Optimization** | WebP, AVIF, JPEG selection | Modern format support |
+    | **Responsive Variants** | Multiple size generations | Optimized for different screen sizes |
+    | **URL Transformations** | Real-time image modifications | Dynamic image delivery |
+
+    <Callout type="tip">
+      Processing settings are inherited from your project's video optimization tier. You can change this in [Project
+      Settings](/de/home/platform/dashboard/projects/project-settings).
+    </Callout>
+  </Tab>
+
+  <Tab value="Media Library">
+    ### Content Management
+
+    <Columns cols={3}>
+      <Card title="Video Library" icon="video">
+        View all videos with thumbnails, processing status, and metadata management
+      </Card>
+      <Card title="Image Library" icon="image">
+        Browse and organize your image collection with preview and search capabilities
+      </Card>
+      <Card title="Content Search" icon="search">
+        Advanced search and filtering options to find media quickly
+      </Card>
+    </Columns>
+
+    ### Key Features
+
+    | Feature | Videos | Images | Description |
+    |---------|--------|--------|-------------|
+    | **Thumbnail Preview** | ✓ | ✓ | Visual content preview |
+    | **Processing Status** | ✓ | ✓ | Real-time processing updates |
+    | **Metadata Management** | ✓ | ✓ | Custom titles, descriptions, tags |
+    | **Bulk Operations** | ✓ | ✓ | Multi-select actions |
+    | **Advanced Search** | ✓ | ✓ | Filter by type, date, tags |
+    | **Usage Analytics** | ✓ | ✓ | View counts and performance |
+
+  </Tab>
+
+  <Tab value="Organization & Tools">
+
+    ### Organization Methods
+
+    <Columns cols={2}>
+      <Card title="Folder Structure" icon="folder">
+        Create logical folder hierarchies for better content organization
+      </Card>
+      <Card title="Tagging System" icon="tag">
+        Apply custom tags for flexible content categorization and search
+      </Card>
+    </Columns>
+
+    ### Best Practices
+
+    - Organize by project or campaign
+    - Apply consistent naming conventions
+    - Use tags for faster discovery
+    - Audit and clean up content regularly
+
+    <Callout type="tip">
+      Well-organized media libraries improve team productivity and make content discovery much faster.
+    </Callout>
+  </Tab>
+</Tabs>
+
+---
+
+## Analytics & Security
+
+### Media Analytics
+
+Track how your media is being processed, stored, and accessed:
+
+- Storage usage and growth trends
+- Processing metrics and optimization tips
+- Access patterns and engagement insights
+- API usage tracking
+
+### Security & Permissions
+
+Media access follows your project’s security model:
+
+- Team roles define dashboard permissions ([Membership Settings](/de/home/platform/account-teams/membership))
+- API keys control programmatic access ([API Access](/de/home/platform/api-documentation/api-keys))
+- Assets can be private or shared via secure URLs
+
+<Callout type="warning">
+  For critical media, always maintain backups in addition to RIXL’s secure storage.
+</Callout>
+
+
+---
+
+## Common Use Cases
+
+<Columns cols={4}>
+  <Card title="Content Creation" icon="upload">
+    Upload and process raw media for web delivery
+  </Card>
+  <Card title="Team Collaboration" icon="users">
+    Organize media for team access and collaboration
+  </Card>
+  <Card title="API Integration" icon="code">
+    Programmatic media management through API
+  </Card>
+  <Card title="Content Distribution" icon="activity">
+    Optimized delivery for websites and applications
+  </Card>
+</Columns>
+
+---
+
+## Next Steps
+
+<Steps>
+  <Step>
+    **Organize Content**
+
+    Use [media organization](/de/home/platform/dashboard/media/organize-media) tools to structure your library
+  </Step>
+  <Step>
+    **Create Feeds**
+
+    Structure content with [content feeds](/de/home/platform/dashboard/feeds/overview) for dynamic distribution
+  </Step>
+  <Step>
+    **API Integration**
+
+    Access media through [API keys](/de/home/platform/api-documentation/api-keys) for programmatic usage
+  </Step>
+  <Step>
+    **Team Sharing**
+
+    Configure [team access](/de/home/platform/account-teams/team-management) for collaboration
+  </Step>
+</Steps>

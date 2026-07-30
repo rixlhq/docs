@@ -1,0 +1,58 @@
+---
+title: "usePlayerUI"
+description: "Control fullscreen, Picture-in-Picture, and stable player chrome state."
+---
+
+`usePlayerUI()` exposes stable player chrome state and UI actions.
+
+## Signature
+
+```tsx
+const ui = usePlayerUI();
+```
+
+It returns:
+
+- `controlsVisible`
+- `isFullscreen`
+- `isPictureInPicture`
+- `showControls()`
+- `hideControls()`
+- `toggleFullscreen()`
+- `togglePictureInPicture()`
+
+## Example
+
+```tsx
+import {Video, usePlayerUI} from "@rixl/videosdk-react";
+
+function CustomDisplayControls() {
+  const {isFullscreen, isPictureInPicture, toggleFullscreen, togglePictureInPicture} = usePlayerUI();
+
+  return (
+    <div className="flex items-center gap-3">
+      <button type="button" onClick={() => void toggleFullscreen()}>
+        {isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+      </button>
+
+      <button type="button" onClick={() => void togglePictureInPicture()}>
+        {isPictureInPicture ? "Exit PiP" : "Enter PiP"}
+      </button>
+    </div>
+  );
+}
+
+function CustomPlayer() {
+  return (
+    <Video id="your-video-id" theme="hideUI" analytics={false}>
+      <CustomDisplayControls />
+    </Video>
+  );
+}
+```
+
+## Notes
+
+- This hook exposes durable chrome state only.
+- Internal settings-menu and diagnostics-panel state are not part of this API.
+- PiP availability still depends on browser support and media policies.

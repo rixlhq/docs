@@ -1,0 +1,200 @@
+---
+title: Mitgliedschaftsverwaltung
+description: Sehen und verwalten Sie Ihre Rollen in verschiedenen Organisationen und Teams.
+---
+
+
+import {Callout} from '@/snippets';
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+
+Verwalten Sie Ihre Teilnahme an [Organisationen](/de/home/platform/account-teams/organizations-overview), sehen Sie Ihre Rollen und Berechtigungen ein und steuern Sie Ihren gemeinsamen Zugriff in RIXL.
+
+## Aktuelle Organisationsmitgliedschaften
+
+Sehen Sie alle Organisationen, denen Sie angehören, und Ihre jeweilige Rolle ein.
+
+### Mitgliedschaftsübersicht
+
+Ihr [Mitgliedschafts-Dashboard](/de/home/platform/account-teams/membership) zeigt:
+- **Organisationsname**: Der Name jeder Organisation, der Sie angehören
+- **Ihre Rolle**: Ihre konkrete Rolle (Owner, Admin, Member)
+- **Beitrittsdatum**: Wann Sie Mitglied wurden
+- **Status**: Aktiv, ausstehend oder etwaige Einschränkungen
+
+<Steps>
+    <Step>
+        Überprüfen Sie Ihre aktuellen Organisationsmitgliedschaften in der Tabelle
+    </Step>
+
+    <Step>
+        Klicken Sie neben einer Organisation auf **Details anzeigen**, um Folgendes zu sehen:
+        - Ihre konkreten Berechtigungen
+        - Teammitglieder und deren Rollen
+        - Organisationsprojekte, auf die Sie zugreifen können
+    </Step>
+
+    <Step>
+        Verwenden Sie **Verwalten** für Organisationen, in denen Sie Admin-Rechte haben
+    </Step>
+</Steps>
+
+## Rollen verstehen
+
+### Rollen auf Organisationsebene
+
+<div className="grid gap-6 sm:grid-cols-3 mt-6">
+    <div className="border rounded-lg p-4">
+        <h4 className="font-semibold">Owner</h4>
+        <p>Volle Kontrolle über alles. Verwaltet die Abrechnung, fügt Personen hinzu/entfernt sie und steuert alle Projekte.</p>
+        <ul className="text-sm mt-2 space-y-1">
+            <li> Abrechnungs- und Abonnementverwaltung</li>
+            <li> Jedes Teammitglied hinzufügen/entfernen</li>
+            <li> Projekte erstellen und löschen</li>
+            <li> Organisationseinstellungen ändern</li>
+        </ul>
+    </div>
+
+    <div className="border rounded-lg p-4">
+        <h4 className="font-semibold">Admin</h4>
+        <p>Erstellt und verwaltet Projekte. Lädt Teammitglieder ein und konfiguriert Einstellungen.</p>
+        <ul className="text-sm mt-2 space-y-1">
+            <li> Projekte erstellen und verwalten</li>
+            <li> Teammitglieder einladen</li>
+            <li> Projekteinstellungen konfigurieren</li>
+            <li> Nutzungsanalysen einsehen</li>
+        </ul>
+    </div>
+
+    <div className="border rounded-lg p-4">
+        <h4 className="font-semibold">Member</h4>
+        <p>Arbeitet nur an zugewiesenen Projekten. Kann Inhalte erstellen, aber die Organisation nicht verwalten.</p>
+        <ul className="text-sm mt-2 space-y-1">
+            <li> Auf zugewiesene Projekte zugreifen</li>
+            <li> Medien hochladen und verwalten</li>
+            <li> Inhalte innerhalb von Projekten erstellen</li>
+            <li> Projektanalysen einsehen</li>
+        </ul>
+    </div>
+</div>
+
+### Berechtigungen auf Projektebene
+
+Innerhalb jedes [Projekts](/de/home/platform/dashboard/projects/overview) können Sie zusätzliche spezifische Berechtigungen haben:
+- **Medien-Upload**: Neue Inhalte erstellen und hochladen
+- **Medienverwaltung**: Bestehende Inhalte bearbeiten und löschen
+- **Feed-Verwaltung**: Content-Feeds erstellen und konfigurieren
+- **Analysezugriff**: Projektleistungsdaten einsehen
+- **Einstellungszugriff**: Projektkonfiguration ändern
+
+## Ihre Mitgliedschaften verwalten
+
+### Ihre Rolle ändern
+
+<Callout type="info">
+    Nur Owner und Admins einer Organisation können Mitgliederrollen ändern. Wenden Sie sich an Ihren Organisationsadministrator, wenn Sie
+    andere Berechtigungen benötigen.
+</Callout>
+
+### Eine Organisation verlassen
+
+<Steps>
+    <Step>
+        Navigieren Sie zu der Organisation, die Sie verlassen möchten
+    </Step>
+
+    <Step>
+        Klicken Sie in den Mitgliedschaftsaktionen auf **Organisation verlassen**
+    </Step>
+
+    <Step>
+        **Bestätigen Sie Ihre Entscheidung:**
+        - Überprüfen Sie, welchen Zugriff Sie verlieren
+        - Ziehen Sie in Betracht, persönliche Projekte zu übertragen
+        - Stimmen Sie sich bei Bedarf mit den Organisationsadministratoren ab
+    </Step>
+</Steps>
+
+<Callout type="warn" title="Vor dem Verlassen">
+    - **Owner**: Übertragen Sie die Eigentümerschaft, bevor Sie gehen
+    - **Aktive Projekte**: Schließen Sie kritische Arbeiten ab oder übertragen Sie sie
+    - **Abrechnungszugriff**: Sorgen Sie für Kontinuität bei kostenpflichtigen Tarifen
+</Callout>
+
+## Mitgliedschaftsbenachrichtigungen
+
+Steuern Sie, wie Sie Aktualisierungen zu Ihren Mitgliedschaften erhalten:
+
+- **Rollenänderungen**: Benachrichtigungen, wenn Ihre Berechtigungen geändert werden
+- **Neue Projekte**: Hinweise, wenn Sie zu Projekten hinzugefügt werden
+- **Team-Updates**: Hinzufügen und Entfernen von Mitgliedern sowie Rollenänderungen
+- **Organisationsnachrichten**: Wichtige Ankündigungen und Richtlinienänderungen
+
+### Benachrichtigungseinstellungen
+
+<Steps>
+    <Step>
+        Gehen Sie zu **Mitgliedschaft → Benachrichtigungspräferenzen**
+    </Step>
+
+    <Step>
+        Konfigurieren Sie die Benachrichtigungsmethoden:
+        - E-Mail-Benachrichtigungen
+        - In-App-Benachrichtigungen
+        - Projektspezifische Hinweise
+    </Step>
+
+    <Step>
+        Legen Sie die Häufigkeitspräferenzen fest:
+        - Sofortige Hinweise
+        - Tägliche Zusammenfassungen
+        - Wöchentliche Übersichten
+    </Step>
+</Steps>
+
+## Mitgliedschaftsaktivität
+
+### Letzte Aktivität
+
+Verfolgen Sie Ihre jüngsten mitgliedschaftsbezogenen Aktivitäten:
+- Änderungen des Projektzugriffs
+- Neue Organisationseinladungen
+- Rollenänderungen
+- Teamzusammenarbeiten
+
+### Zugriffsverlauf
+
+Sehen Sie Ihre Zugriffsmuster ein:
+- Beigetretene und verlassene Organisationen
+- Rollenänderungen im Zeitverlauf
+- Projektzuweisungen
+- Berechtigungsänderungen
+
+<Callout type="tip">
+    Eine regelmäßige Überprüfung Ihrer Mitgliedschaftsaktivität hilft sicherzustellen, dass Sie angemessene Zugriffsstufen haben, und ermöglicht es, etwaige
+    unbefugte Änderungen zu erkennen.
+</Callout>
+
+## Fehlerbehebung bei Mitgliedschaftsproblemen
+
+### Häufige Probleme
+
+**Kein Zugriff auf ein Projekt:**
+1. Überprüfen Sie Ihren Organisationsmitgliedschaftsstatus
+2. Prüfen Sie die projektspezifischen Berechtigungen
+3. Wenden Sie sich an Ihren Organisationsadministrator
+
+**Fehlende Berechtigungen:**
+1. Überprüfen Sie Ihre aktuelle Rolle
+2. Prüfen Sie, ob Berechtigungen kürzlich geändert wurden
+3. Fordern Sie Zugriff von den Ownern/Admins der Organisation an
+
+**Organisation wird nicht angezeigt:**
+1. Prüfen Sie ausstehende Einladungen
+2. Überprüfen Sie die Übereinstimmung der E-Mail-Adresse
+3. Wenden Sie sich an den Organisationsadministrator
+
+## Verwandte Einstellungen
+
+- **[Einladungen](/de/home/platform/account-teams/invitations)** – Ausstehende Organisationseinladungen verwalten
+- **[Organisationen](/de/home/platform/account-teams/organizations-overview)** – Organisationen erstellen und verwalten
+- **[Allgemeine Einstellungen](/de/home/platform/account-teams/general-settings)** – Profilinformationen aktualisieren

@@ -1,0 +1,80 @@
+---
+title: "Analytics Integration"
+description: "Guide to implementing video and image analytics tracking"
+---
+
+## Overview
+
+RIXL SDK automatically tracks content views when analytics is enabled. This guide covers configuration options and best practices for analytics integration.
+
+## Basic Setup
+
+Analytics are enabled by default on all components:
+
+```tsx
+<Video id="video-id" />
+<Image id="image-id" />
+```
+
+To explicitly control analytics:
+
+```tsx
+<Video id="video-id" analytics={true} />
+<Video id="video-id" analytics={false} />
+```
+
+## Page Context
+
+Specify where content is being viewed to segment your analytics data:
+
+```tsx
+// Video in a scrolling feed
+<Video id="video-id" analyticsPage="feed" />
+
+// Video on a user profile
+<Video id="video-id" analyticsPage="profile" />
+
+// Standalone video page (default)
+<Video id="video-id" analyticsPage="standalone" />
+```
+
+<Callout type="info">
+  Setting the correct page context helps you understand where your content performs best and how users discover it.
+</Callout>
+
+## Engagement Features
+
+### Heatmap
+
+Display viewer engagement patterns on the progress bar. 
+```tsx
+<Video id="video-id" heatmap={true} />
+```
+
+### Resume Progress
+
+Remember where users stopped watching and resume from that point:
+
+```tsx
+<Video id="video-id" resumeProgress={true} />
+```
+
+Progress is stored locally in the browser per video ID.
+
+## What Gets Tracked
+
+When analytics is enabled, the SDK automatically tracks:
+
+| Event | Description |
+|-------|-------------|
+| View Start | When content begins playing/displaying |
+| Watch Duration | How long the user watched |
+| View End | When playback completes or user navigates away |
+| Segments | Which portions of the video were watched |
+
+## Best Practices
+
+1. **Always set analyticsPage** - Helps segment data by content location
+2. **Enable resumeProgress for long content** - Improves user experience for videos over 5 minutes
+3. **Use heatmap on popular content** - Shows viewers what others found interesting
+4. **Test with analytics disabled** - Use `analytics={false}` in development if needed

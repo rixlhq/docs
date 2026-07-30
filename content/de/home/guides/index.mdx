@@ -1,0 +1,359 @@
+---
+title: Anleitungen & Beispiele
+description: Schritt-für-Schritt-Tutorials, praxisnahe Beispiele und praktische Implementierungsanleitungen zum Erstellen beeindruckender Medienerlebnisse mit RIXL.
+---
+
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+Willkommen bei den **RIXL-Anleitungen** – Ihrer umfassenden Ressource zum Erstellen medienreicher Anwendungen. Ob Sie Video-Streaming implementieren, Bilder ausliefern oder dynamische Content-Feeds erstellen: Diese Anleitungen bieten praktische, schrittweise Anweisungen, die Ihnen zum Erfolg verhelfen.
+
+## Schnellaktionen
+
+<Columns cols={3}>
+  <Card
+    title="React-Integration"
+    href="/de/sdk/getting-started/overview"
+    icon="layers"
+  >
+    Sofort einsatzbereite Komponenten für Videoplayer, ausgelieferte Bilder und Content-Feeds.
+  </Card>
+  <Card
+    title="API-Implementierung"
+    href="/de/api"
+    icon="code"
+  >
+    Erstellen Sie individuelle Workflows mit unserer umfassenden REST-API.
+  </Card>
+  <Card
+    title="Dashboard-Workflow"
+    href="/de/home/platform/dashboard/guide"
+    icon="monitor"
+  >
+    Laden Sie Medien über unsere Weboberfläche hoch, verwalten und liefern Sie sie aus.
+  </Card>
+</Columns>
+
+## Implementierungsanleitungen
+
+### Frontend-Integration
+
+<Columns cols={3}>
+  <Card title="React-Komponenten" icon="layers">
+    Video-, Image- und Feed-Komponenten mit automatischer Vorbereitung und globaler Auslieferung.
+  </Card>
+  <Card title="JavaScript SDK" icon="code">
+    Vanilla-JavaScript-Integration für jede Webanwendung oder jedes Framework.
+  </Card>
+  <Card title="Mobile Integration" icon="smartphone">
+    Responsive Komponenten, die auf allen Geräten und Bildschirmgrößen nahtlos funktionieren.
+  </Card>
+</Columns>
+
+### Backend-Integration
+
+<Columns cols={3}>
+  <Card title="Upload-Workflows" icon="upload">
+    Programmatische Medien-Uploads mit Fortschrittsverfolgung und Statusüberwachung.
+  </Card>
+  <Card title="Verarbeitungsautomatisierung" icon="workflow">
+    Automatisierte Pipelines zur Medienverarbeitung mit Qualitätsstufenauswahl.
+  </Card>
+  <Card title="Inhaltsverwaltung" icon="folder-open">
+    Organisieren und verwalten Sie Mediatheken über API-Endpunkte.
+  </Card>
+</Columns>
+
+## Praxisnahe Anwendungsfälle
+
+### Videoanwendungen
+
+<Columns cols={3}>
+  <Card title="Video-Streaming-Plattform" icon="play">
+    Erstellen Sie Streaming im Netflix-Stil mit adaptiver Qualität, HLS- & DASH-Auslieferung und globalem CDN.
+  </Card>
+  <Card title="Social-Media-App" icon="users">
+    Nutzergenerierte Inhalte mit automatischer Vorbereitung und Mobile-First-Auslieferung.
+  </Card>
+  <Card title="E-Learning-Plattform" icon="book-open">
+    Bildungsinhalte mit Fortschrittsverfolgung, Qualitätssteuerung und Barrierefreiheitsfunktionen.
+  </Card>
+</Columns>
+
+### Bildanwendungen
+
+<Columns cols={3}>
+  <Card title="E-Commerce-Shop" icon="shopping-cart">
+    Produktgalerien mit AVIF-Transformation, Lazy Loading und responsiven Bildern.
+  </Card>
+  <Card title="Portfolio-Website" icon="camera">
+    Hochwertige Bildgalerien mit intelligenten Platzhaltern und sofortigem Laden.
+  </Card>
+  <Card title="Inhaltsverwaltung" icon="file-text">
+    Redaktionelle Workflows mit automatischer Vorbereitung und Auslieferung in mehreren Formaten.
+  </Card>
+</Columns>
+
+### Content-Feed-Anwendungen
+
+<Columns cols={3}>
+  <Card title="Social Feed" icon="activity">
+    Feeds im Instagram-Stil mit automatischen Aktualisierungen und Infinite Scroll.
+  </Card>
+  <Card title="Nachrichtenplattform" icon="newspaper">
+    Dynamische Content-Feeds mit Echtzeit-Aktualisierungen und Personalisierung.
+  </Card>
+  <Card title="Creator-Plattform" icon="star">
+    Content-Feeds mehrerer Creator mit Abonnement- und Monetarisierungsfunktionen.
+  </Card>
+</Columns>
+
+## Codebeispiele
+
+### React-Komponenten
+
+<Tabs items={['Video Player', 'Image Gallery', 'Content Feed']}>
+  <Tab value="Video Player">
+    ```jsx
+    import {Video, VideoPlayer, usePlayerProgress} from '@rixl/videosdk-react';
+
+    function VideoWithProgress({videoId}) {
+      return (
+        <VideoPlayer>
+          <Video
+            id={videoId}
+            className="w-full h-auto rounded-lg"
+            progressBar={true}
+            allowFullscreen={true}
+            autoPlay={false}
+            muted={false}
+          />
+          <ProgressInfo />
+        </VideoPlayer>
+      );
+    }
+
+    function ProgressInfo() {
+      const {progress, duration, currentTime} = usePlayerProgress();
+
+      return (
+        <div className="video-info">
+          <p>Progress: {Math.round(progress * 100)}%</p>
+          <p>Time: {Math.round(currentTime)}s / {Math.round(duration)}s</p>
+        </div>
+      );
+    }
+    ```
+  </Tab>
+
+<Tab value="Image Gallery">
+  ```jsx
+  import {Image} from '@rixl/videosdk-react';
+
+  function ImageGallery({images}) {
+  return (
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+{images.map((image) => (
+  <div key={image.id} className="aspect-square">
+  <Image
+    id={image.id}
+    alt={image.description}
+    className="w-full h-full object-cover rounded-lg hover:scale-105 transition-transform"
+    loading="lazy"
+  />
+</div>
+))}
+</div>
+);
+}
+```
+</Tab>
+
+<Tab value="Content Feed">
+  ```jsx
+  import {Feed} from '@rixl/videosdk-react';
+
+  function ContentFeed({feedId, creatorId}) {
+  return (
+  <div className="max-w-2xl mx-auto">
+  <Feed
+  feedId={feedId}
+     creatorId={creatorId}
+     className="w-full space-y-6"
+     showHeader={true}
+     enableInfiniteScroll={true}
+     itemsPerPage={10}
+/>
+</div>
+);
+}
+```
+</Tab>
+</Tabs>
+
+<Callout type="info">
+  Für eine benutzerdefinierte Wiedergabe-Oberfläche platzieren Sie die Steuerelemente innerhalb von `<Video theme="hideUI">`, oder
+  umschließen Sie `<Video>` und die zugehörigen Steuerelemente mit `<VideoPlayer>`. Player-Hooks lesen den Zustand automatisch aus
+  dem umschließenden Bereich.
+</Callout>
+
+### Beispiele zur API-Integration
+
+<Tabs items={['Upload Video', 'Process Image', 'Get Feed Content']}>
+  <Tab value="Upload Video">
+    ```javascript
+    // Initialize video upload
+    const uploadVideo = async (file) => {
+    const initResponse = await fetch('https://api.rixl.com/videos/upload/init', {
+    method: 'POST',
+    headers: {
+    'X-API-Key': 'YOUR_PROJECT_API_KEY',
+    'Content-Type': 'application/json'
+  },
+    body: JSON.stringify({
+    file_name: file.name,
+    video_quality: 'pro',
+    image_format: 'jpg'
+  })
+  });
+
+    const {video_id, video_presigned_url} = await initResponse.json();
+
+    // Upload file to presigned URL
+    await fetch(video_presigned_url, {
+    method: 'PUT',
+    body: file
+  });
+
+    return video_id;
+  };
+    ```
+  </Tab>
+
+  <Tab value="Process Image">
+    ```javascript
+    // Upload and process image
+    const uploadImage = async (imageFile) => {
+    // Initialize upload
+    const initResponse = await fetch('https://api.rixl.com/images/upload/init', {
+    method: 'POST',
+    headers: {
+    'X-API-Key': 'YOUR_PROJECT_API_KEY',
+    'Content-Type': 'application/json'
+  },
+    body: JSON.stringify({
+    name: imageFile.name,
+    format: 'jpg'
+  })
+  });
+
+    const {image_id, presigned_url} = await initResponse.json();
+
+    // Upload file to presigned URL
+    await fetch(presigned_url, {
+    method: 'PUT',
+    body: imageFile
+  });
+
+    // Complete upload
+    const completeResponse = await fetch('https://api.rixl.com/images/upload/complete', {
+    method: 'POST',
+    headers: {
+    'X-API-Key': 'YOUR_PROJECT_API_KEY',
+    'Content-Type': 'application/json'
+  },
+    body: JSON.stringify({
+    image_id: image_id
+  })
+  });
+
+    const result = await completeResponse.json();
+    return result.data;
+  };
+    ```
+  </Tab>
+
+  <Tab value="Get Feed Content">
+    ```javascript
+    // Get feed content
+    const getFeedContent = async (feedId, creatorId = null) => {
+    const params = new URLSearchParams();
+    if (creatorId) params.append('creator_id', creatorId);
+
+    const response = await fetch(`https://api.rixl.com/feeds/${feedId}?${params}`, {
+    headers: {
+    'X-API-Key': 'YOUR_PROJECT_API_KEY'
+  }
+  });
+
+    const result = await response.json();
+    return result.data;
+  };
+    ```
+  </Tab>
+</Tabs>
+
+## Implementierungsmuster
+
+### Progressive Enhancement
+
+<Columns cols={3}>
+  <Card title="Einfach beginnen" icon="play">
+    Beginnen Sie mit einfachen Video- und Image-Komponenten und fügen Sie bei Bedarf erweiterte Funktionen hinzu.
+  </Card>
+  <Card title="Interaktivität hinzufügen" icon="settings">
+    Implementieren Sie Fortschrittsverfolgung, Qualitätssteuerung und Nutzerpräferenzen.
+  </Card>
+  <Card title="Global skalieren" icon="globe">
+    Nutzen Sie CDN-Auslieferung und adaptives Streaming für weltweite Leistung.
+  </Card>
+</Columns>
+
+### Leistungssteigerung
+
+<Columns cols={3}>
+  <Card title="Lazy Loading" icon="zap">
+    Laden Sie Medien nur bei Bedarf, um die anfängliche Seitenleistung zu verbessern.
+  </Card>
+  <Card title="Intelligentes Caching" icon="database">
+    Nutzen Sie Browser-Caching und CDN-Edge-Standorte für sofortige Auslieferung.
+  </Card>
+  <Card title="Adaptive Qualität" icon="wifi">
+    Passen Sie die Qualität automatisch an Verbindung und Gerätefähigkeiten des Nutzers an.
+  </Card>
+</Columns>
+
+## Nächste Schritte
+
+Bereit, mit dem Entwickeln zu beginnen? Wählen Sie Ihren Weg:
+
+<Columns cols={3}>
+  <Card
+    title="React-SDK-Einrichtung"
+    href="/de/sdk/getting-started/overview"
+    icon="layers"
+  >
+    Installieren und konfigurieren Sie RIXL-Komponenten in Ihrer React-Anwendung.
+  </Card>
+  <Card
+    title="API-Integration"
+    href="/de/api"
+    icon="code"
+  >
+    Erstellen Sie individuelle Workflows mit unserer umfassenden REST-API.
+  </Card>
+  <Card
+    title="Dashboard-Upload"
+    href="/de/home/platform/dashboard/guide"
+    icon="upload"
+  >
+    Beginnen Sie, Medien über unsere Weboberfläche hochzuladen und auszuliefern.
+  </Card>
+</Columns>
+
+<Callout type="tip" title="Brauchen Sie Inspiration?">
+  Erkunden Sie unsere [Best Practices](/de/home/getting-started/best-practices) für Leistungstipps, sehen Sie sich die
+  [Plattform-Dokumentation](/de/home/platform) für den vollen Funktionsumfang an oder tauchen Sie in die
+  [API-Referenz](/de/api) für detaillierte technische Dokumentation ein.
+</Callout>

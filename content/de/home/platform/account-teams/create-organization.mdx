@@ -1,0 +1,113 @@
+---
+title: Eine Organisation erstellen
+description: Richten Sie eine neue Organisation für Ihr Team oder Unternehmen ein.
+---
+
+
+import {Callout} from '@/snippets';
+import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+
+Organisationen helfen Ihnen, Projekte zu gruppieren und Ihr Team an einem Ort zu verwalten. So erstellen Sie eine.
+
+### Ihre Organisation erstellen
+
+<Steps>
+  <Step>
+    Gehen Sie in Ihrem Dashboard zu **Organisationseinstellungen**.
+  </Step>
+  <Step>
+    Klicken Sie auf **Neue Organisation erstellen**.
+  </Step>
+  <Step>
+    **Füllen Sie das Formular aus:**
+    - **Organisationsname:** Wählen Sie einen Namen für Ihr Team oder Unternehmen.
+  </Step>
+  <Step>
+    Klicken Sie auf **Organisation erstellen**, um abzuschließen.
+  </Step>
+</Steps>
+
+Nach dem Erstellen Ihrer Organisation sind Sie deren Owner. Anschließend können Sie Personen einladen, Projekte erstellen und die Abrechnung einrichten.
+
+### Planung der Teamgröße
+
+<Tabs defaultValue="small" items={["small", "medium", "large"]}>
+  <Tab value="small">
+    **Kleine Teams (3–10 Personen)**
+
+    - Der Owner erledigt die meisten administrativen Aufgaben
+    - Mitglieder arbeiten an bestimmten Projekten
+    - Eine einfache Rollenstruktur ist ausreichend
+  </Tab>
+  <Tab value="medium">
+    **Mittlere Teams (10–50 Personen)**
+
+    - Bestimmen Sie Admins für verschiedene Abteilungen
+    - Projektbasierte Zugriffssteuerung wird wichtig
+    - Ziehen Sie in Betracht, die Abrechnungsaufsicht zu delegieren
+  </Tab>
+  <Tab value="large">
+    **Große Organisationen (50+ Personen)**
+
+    - Mehrere Admin-Rollen für verschiedene Bereiche
+    - Abteilungsbasierte Projektorganisation
+    - Detaillierte Nutzungs- und Kostenverfolgung
+  </Tab>
+</Tabs>
+
+## Einrichtung nach der Erstellung
+
+### Wesentliche Schritte
+
+<Steps>
+  <Step>
+    **Fügen Sie Ihr Team hinzu**
+    Laden Sie die Personen ein, mit denen Sie arbeiten, und weisen Sie ihnen die richtigen Rollen zu.
+  </Step>
+  <Step>
+    **Erstellen Sie Ihre ersten Projekte**
+    Richten Sie Projekte ein und entscheiden Sie, wer darauf zugreifen kann.
+  </Step>
+  <Step>
+    **Richten Sie die Abrechnung ein**
+    Fügen Sie Ihre Zahlungsmethode hinzu und wählen Sie einen Tarif.
+  </Step>
+  <Step>
+    **Legen Sie Regeln fest**
+    Entscheiden Sie, wie Ihr Team Inhalte erstellt und freigibt.
+  </Step>
+</Steps>
+
+### Aufgaben der Organisationsverwaltung
+
+- **Zugriff steuern:** Entscheiden Sie, wer auf welche Projekte und Funktionen zugreifen kann
+- **Abrechnung handhaben:** Verwalten Sie Abrechnung und Abonnements für Ihre Organisation
+- **Projekte verwalten:** Erstellen Sie Projekte und steuern Sie, wer Zugriff darauf hat
+- **Sicherheit einrichten:** Konfigurieren Sie Sicherheitsregeln und Authentifizierungsanforderungen
+- **Nutzung überwachen:** Behalten Sie im Blick, wie viel Ihre Organisation nutzt
+
+## Best Practices
+
+<Tabs defaultValue="Naming" items={["Naming", "Security"]}>
+  <Tab value="Naming">
+    **Einen Namen wählen**
+
+    - Verwenden Sie einen klaren Namen, der Ihr Unternehmen beschreibt
+    - Vermeiden Sie Sonderzeichen oder übermäßige Abkürzungen
+    - Bedenken Sie, wie er in Webadressen erscheint
+    - Wählen Sie etwas, das mit dem Wachstum mitskaliert
+  </Tab>
+  <Tab value="Security">
+    **Sicherheitseinrichtung**
+
+    - Fordern Sie die Zwei-Faktor-Authentifizierung
+    - Legen Sie angemessene Sitzungs-Timeouts fest
+    - Gehen Sie bei Rollenzuweisungen sorgfältig vor
+    - Überprüfen Sie Berechtigungen regelmäßig
+  </Tab>
+</Tabs>
+
+<Callout type='warning'>
+  Organisationseinstellungen betreffen alle Personen und alle Projekte. Überlegen Sie sorgfältig, bevor Sie Sicherheitseinstellungen anwenden.
+</Callout>
