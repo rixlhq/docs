@@ -1,5 +1,5 @@
 import type {I18nConfig} from "fumadocs-core/i18n";
-import type {HTMLAttributes, ReactNode} from "react";
+import type {ComponentProps, FC, HTMLAttributes, ReactNode} from "react";
 
 export interface NavOptions {
   enabled: boolean;
@@ -62,6 +62,20 @@ export interface BaseLayoutProps {
    * Replace or disable navbar
    */
   nav?: Partial<NavOptions>;
+
+  /**
+   * Slot overrides forwarded to the fumadocs layout. Currently we only use
+   * `searchTrigger` to swap in paraglide-driven components; other slots
+   * remain the fumadocs defaults.
+   */
+  slots?: {
+    searchTrigger?:
+      | {
+          sm?: FC<ComponentProps<"button"> & {hideIfDisabled?: boolean}>;
+          full?: FC<ComponentProps<"button"> & {hideIfDisabled?: boolean}>;
+        }
+      | false;
+  };
 
   children?: ReactNode;
 }

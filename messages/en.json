@@ -11,5 +11,9 @@
   "copiedText": "Copied Text",
   "closeBanner": "Close Banner",
   "toc": "On this page",
-  "tocNoHeadings": "No Headings"
+  "tocNoHeadings": "No Headings",
+  "search": "Search",
+  "openSearch": "Open Search",
+  "closeSearch": "Close Search",
+  "searchNoResult": "No results found"
 }

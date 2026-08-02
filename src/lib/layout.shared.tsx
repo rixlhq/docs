@@ -3,6 +3,7 @@ import {FooterSection} from "@/components/layout/footer/footer-content-section.t
 import {DiscordIcon, GithubIcon, LogoWide, XIcon, YoutubeIcon} from "@/components/icons";
 import {ArrowUpRightIcon} from "lucide-react";
 import {ThemeToggle} from "@/components/theme-toggle";
+import {FullSearchTrigger, SearchTrigger} from "@/components/search-trigger";
 import {m} from "@/paraglide/messages.js";
 
 /**
@@ -80,6 +81,14 @@ export function baseOptionsWithSectionLinks(
     },
     themeSwitch: {
       enabled: false,
+    },
+    // Route the search triggers through our local components so their
+    // labels come from paraglide instead of fumadocs' translation table.
+    slots: {
+      searchTrigger: {
+        sm: SearchTrigger,
+        full: FullSearchTrigger,
+      },
     },
     // see https://fumadocs.dev/docs/ui/navigation/links
     links: buildNavLinks(lang),

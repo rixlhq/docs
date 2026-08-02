@@ -11,5 +11,9 @@
   "copiedText": "Text kopiert",
   "closeBanner": "Banner schließen",
   "toc": "Auf dieser Seite",
-  "tocNoHeadings": "Keine Überschriften"
+  "tocNoHeadings": "Keine Überschriften",
+  "search": "Suche",
+  "openSearch": "Suche öffnen",
+  "closeSearch": "Suche schließen",
+  "searchNoResult": "Keine Ergebnisse gefunden"
 }
