@@ -17,7 +17,7 @@ const {provider} = defineI18nUI(i18n, {
   // as listed in fumadocs-ui/dist/.translations/keys.js.
   // Only keys for fumadocs-owned components we haven't ejected yet.
   // App-owned strings live in `messages/*.json` and are read via `@/paraglide/messages`.
-  // TODO: eject the remaining surfaces (search dialog, TOC, docs footer/pagination,
+  // TODO: eject the remaining surfaces (search dialog, docs footer/pagination,
   // sidebar/mobile menu aria labels, type table) and move each key to paraglide,
   // then delete it from here.
   de: {
@@ -27,9 +27,6 @@ const {provider} = defineI18nUI(i18n, {
     "Open Search(search trigger)(aria-label)": "Suche öffnen",
     "Close Search(search dialog)(aria-label)": "Suche schließen",
     "No results found(search dialog)": "Keine Ergebnisse gefunden",
-    "On this page(table of contents)": "Auf dieser Seite",
-    "No Headings(table of contents)": "Keine Überschriften",
-    "Table of Contents(inline table of contents)": "Inhaltsverzeichnis",
     "Last updated on(page footer)": "Zuletzt aktualisiert am",
     "Edit on GitHub(edit page)": "Auf GitHub bearbeiten",
     "Previous Page(pagination)": "Vorherige Seite",

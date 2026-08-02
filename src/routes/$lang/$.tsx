@@ -10,6 +10,7 @@ import {loader} from "@/lib/server/docs-loader";
 import {Suspense} from "react";
 import {useFumadocsLoader} from "fumadocs-core/source/client";
 import {StaticApiHtml} from "@/components/mdx/static-api-html";
+import {TableOfContents, TableOfContentsPopover} from "@/components/mdx/toc";
 
 export const Route = createFileRoute("/$lang/$")({
   component: Page,
@@ -162,6 +163,8 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
         className="pt-6 md:pt-8 xl:pt-10 md:px-7 xl:px-10"
         full={false}
         toc={toc}
+        tableOfContent={{component: <TableOfContents />}}
+        tableOfContentPopover={{component: <TableOfContentsPopover />}}
         footer={{
           children: <Footer lang={lang} />,
         }}

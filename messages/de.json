@@ -9,5 +9,7 @@
   "copyAnchorLink": "Ankerlink kopieren",
   "copyText": "Text kopieren",
   "copiedText": "Text kopiert",
-  "closeBanner": "Banner schließen"
+  "closeBanner": "Banner schließen",
+  "toc": "Auf dieser Seite",
+  "tocNoHeadings": "Keine Überschriften"
 }
