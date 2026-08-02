@@ -7,7 +7,7 @@
   "scripts": {
     "build": "bun run clean && bun run i18n:compile && bun lint && vite build",
     "clean": "rm -rf dist",
-    "i18n:compile": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide",
+    "i18n:compile": "paraglide-js compile --project ./project.inlang --outdir ./src/paraglide --strategy url cookie globalVariable baseLocale",
     "dev": "vite dev",
     "start": "vite preview",
     "serve": "bunx serve@latest --no-port-switching dist/client -l tcp://127.0.0.1:4173",
