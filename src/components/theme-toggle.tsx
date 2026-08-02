@@ -2,6 +2,7 @@
 import {Laptop, Moon, Sun} from "lucide-react";
 import {useTheme} from "next-themes";
 import {type HTMLAttributes, useSyncExternalStore} from "react";
+import {m} from "@/paraglide/messages";
 import {cn} from "../lib/cn";
 
 const subscribe = () => () => {};
@@ -44,7 +45,7 @@ export function ThemeToggle({
         "inline-flex size-9 cursor-pointer items-center justify-center rounded-lg bg-transparent text-fd-muted-foreground transition-colors hover:text-fd-accent-foreground",
         className
       )}
-      aria-label="Toggle theme"
+      aria-label={m.toggleTheme()}
       onClick={() => setTheme(nextTheme())}
       data-theme-toggle=""
       type="button"

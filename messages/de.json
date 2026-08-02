@@ -17,5 +17,17 @@
   "closeSearch": "Suche schließen",
   "searchNoResult": "Keine Ergebnisse gefunden",
   "prevPage": "Vorherige Seite",
-  "nextPage": "Nächste Seite"
+  "nextPage": "Nächste Seite",
+  "copy": "Kopieren",
+  "copied": "Kopiert",
+  "copyPageTitle": "Seite kopieren",
+  "copyPageDesc": "Seite als Markdown für LLMs kopieren",
+  "openInChatGPT": "In ChatGPT öffnen",
+  "openInClaude": "In Claude öffnen",
+  "askAboutPage": "Fragen zu dieser Seite stellen",
+  "toggleTheme": "Design umschalten",
+  "pageNotFound": "Seite nicht gefunden",
+  "pageNotFoundDesc": "Wir konnten die gesuchte Seite nicht finden.",
+  "returnHome": "Zur Startseite",
+  "goBack": "Zurück"
 }
