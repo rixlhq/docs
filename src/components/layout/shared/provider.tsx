@@ -15,6 +15,11 @@ const {provider} = defineI18nUI(i18n, {
   },
   // Keys are fumadocs' source-text keys ("<English text>(<context note>)"),
   // as listed in fumadocs-ui/dist/.translations/keys.js.
+  // Only keys for fumadocs-owned components we haven't ejected yet.
+  // App-owned strings live in `messages/*.json` and are read via `@/paraglide/messages`.
+  // TODO: eject the remaining surfaces (search dialog, TOC, docs footer/pagination,
+  // sidebar/mobile menu aria labels, code block, heading anchor, accordion, type table)
+  // and move each key to paraglide, then delete it from here.
   de: {
     displayName: "Deutsch",
     "Search(search dialog)": "Suche",
@@ -26,15 +31,9 @@ const {provider} = defineI18nUI(i18n, {
     "No Headings(table of contents)": "Keine Überschriften",
     "Table of Contents(inline table of contents)": "Inhaltsverzeichnis",
     "Last updated on(page footer)": "Zuletzt aktualisiert am",
-    "Choose a language(language switcher)": "Sprache wählen",
-    "Choose a language(language switcher)(aria-label)": "Sprache wählen",
     "Edit on GitHub(edit page)": "Auf GitHub bearbeiten",
     "Previous Page(pagination)": "Vorherige Seite",
     "Next Page(pagination)": "Nächste Seite",
-    "Toggle Theme(theme switcher)(aria-label)": "Thema umschalten",
-    "Light(theme switcher)(aria-label)": "Hell",
-    "Dark(theme switcher)(aria-label)": "Dunkel",
-    "System(theme switcher)(aria-label)": "System",
     "Toggle Menu(mobile menu)(aria-label)": "Menü umschalten",
     "Open Sidebar(sidebar)(aria-label)": "Seitenleiste öffnen",
     "Close Sidebar(sidebar)(aria-label)": "Seitenleiste schließen",
@@ -44,26 +43,12 @@ const {provider} = defineI18nUI(i18n, {
     "Copied Text(code block)(aria-label)": "Text kopiert",
     "Copy Anchor Link(heading anchor)(aria-label)": "Ankerlink kopieren",
     "Copy Link(accordion)(aria-label)": "Link kopieren",
-    "Copy Markdown(page actions)": "Markdown kopieren",
-    "View as Markdown(page actions)": "Als Markdown anzeigen",
-    "Open(page actions)": "Öffnen",
-    "Open in GitHub(page actions)": "In GitHub öffnen",
-    "Open in ChatGPT(page actions)": "In ChatGPT öffnen",
-    "Open in Claude(page actions)": "In Claude öffnen",
-    "Open in Cursor(page actions)": "In Cursor öffnen",
-    "Open in Scira AI(page actions)": "In Scira AI öffnen",
-    "Read {url}, I want to ask questions about it.(page actions)": "Lies {url}, ich möchte Fragen dazu stellen.",
     "Type(type table)": "Typ",
     "Prop(type table)": "Eigenschaft",
     "Parameters(type table)": "Parameter",
     "Returns(type table)": "Rückgabewerte",
     "Default(type table)": "Standard",
-    "Back to Home(404 page)": "Zurück zur Startseite",
-    "Page Not Found(404 page)": "Seite nicht gefunden",
-    "The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.(404 page)":
-      "Die gesuchte Seite wurde möglicherweise entfernt, umbenannt oder ist vorübergehend nicht verfügbar.",
   },
-  // TODO: add `ru` using the same source-text key format to enable Russian.
 });
 
 export function Provider({children, lang}: {children: ReactNode; lang?: string}) {
