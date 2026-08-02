@@ -15,5 +15,7 @@
   "search": "Suche",
   "openSearch": "Suche öffnen",
   "closeSearch": "Suche schließen",
-  "searchNoResult": "Keine Ergebnisse gefunden"
+  "searchNoResult": "Keine Ergebnisse gefunden",
+  "prevPage": "Vorherige Seite",
+  "nextPage": "Nächste Seite"
 }

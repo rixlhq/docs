@@ -11,6 +11,7 @@ import {Suspense} from "react";
 import {useFumadocsLoader} from "fumadocs-core/source/client";
 import {StaticApiHtml} from "@/components/mdx/static-api-html";
 import {TableOfContents, TableOfContentsPopover} from "@/components/mdx/toc";
+import {Pagination} from "@/components/mdx/pagination";
 
 export const Route = createFileRoute("/$lang/$")({
   component: Page,
@@ -166,7 +167,12 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
         tableOfContent={{component: <TableOfContents />}}
         tableOfContentPopover={{component: <TableOfContentsPopover />}}
         footer={{
-          children: <Footer lang={lang} />,
+          component: (
+            <>
+              <Pagination />
+              <Footer lang={lang} />
+            </>
+          ),
         }}
       >
         <header className="relative space-y-2">

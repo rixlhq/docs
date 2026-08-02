@@ -15,5 +15,7 @@
   "search": "Search",
   "openSearch": "Open Search",
   "closeSearch": "Close Search",
-  "searchNoResult": "No results found"
+  "searchNoResult": "No results found",
+  "prevPage": "Previous Page",
+  "nextPage": "Next Page"
 }
