@@ -5,5 +5,9 @@
   "home": "Home",
   "sdk": "SDKs",
   "api": "APIs",
-  "chooseLanguage": "Choose a language"
+  "chooseLanguage": "Choose a language",
+  "copyAnchorLink": "Copy Anchor Link",
+  "copyText": "Copy Text",
+  "copiedText": "Copied Text",
+  "closeBanner": "Close Banner"
 }

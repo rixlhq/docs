@@ -18,8 +18,8 @@ const {provider} = defineI18nUI(i18n, {
   // Only keys for fumadocs-owned components we haven't ejected yet.
   // App-owned strings live in `messages/*.json` and are read via `@/paraglide/messages`.
   // TODO: eject the remaining surfaces (search dialog, TOC, docs footer/pagination,
-  // sidebar/mobile menu aria labels, code block, heading anchor, accordion, type table)
-  // and move each key to paraglide, then delete it from here.
+  // sidebar/mobile menu aria labels, type table) and move each key to paraglide,
+  // then delete it from here.
   de: {
     displayName: "Deutsch",
     "Search(search dialog)": "Suche",
@@ -38,11 +38,6 @@ const {provider} = defineI18nUI(i18n, {
     "Open Sidebar(sidebar)(aria-label)": "Seitenleiste öffnen",
     "Close Sidebar(sidebar)(aria-label)": "Seitenleiste schließen",
     "Collapse Sidebar(sidebar)(aria-label)": "Seitenleiste einklappen",
-    "Close Banner(banner)(aria-label)": "Banner schließen",
-    "Copy Text(code block)(aria-label)": "Text kopieren",
-    "Copied Text(code block)(aria-label)": "Text kopiert",
-    "Copy Anchor Link(heading anchor)(aria-label)": "Ankerlink kopieren",
-    "Copy Link(accordion)(aria-label)": "Link kopieren",
     "Type(type table)": "Typ",
     "Prop(type table)": "Eigenschaft",
     "Parameters(type table)": "Parameter",

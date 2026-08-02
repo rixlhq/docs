@@ -1,4 +1,4 @@
-import {CodeBlockTabsList, CodeBlockTabsTrigger} from "fumadocs-ui/components/codeblock";
+import {CodeBlockTabsList, CodeBlockTabsTrigger} from "@/components/mdx/codeblock";
 import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 // @ts-expect-error -- runtime export exists but not in .d.ts
 import {getExampleRequests} from "../../../../node_modules/fumadocs-openapi/dist/utils/get-example-requests.js";
