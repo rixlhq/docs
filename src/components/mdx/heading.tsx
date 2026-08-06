@@ -23,7 +23,7 @@ export function Heading({as, ...props}: HeadingProps) {
     if (!props.id) return;
     const url = new URL(window.location.href);
     url.hash = props.id;
-    return navigator.clipboard.writeText(url.href);
+    return navigator.clipboard.writeText(url.href).catch(() => {});
   });
 
   if (!props.id) return <As {...props} />;

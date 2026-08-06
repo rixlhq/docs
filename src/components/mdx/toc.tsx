@@ -114,7 +114,7 @@ export function TableOfContentsPopover({container, trigger, content, header, foo
   const value = useMemo(() => ({open, setOpen}), [open]);
 
   return (
-    <TocPopoverContext value={value}>
+    <TocPopoverContext.Provider value={value}>
       <Collapsible
         open={open}
         onOpenChange={setOpen}
@@ -148,8 +148,15 @@ export function TableOfContentsPopover({container, trigger, content, header, foo
           </TOCPopoverContent>
         </header>
       </Collapsible>
-    </TocPopoverContext>
+    </TocPopoverContext.Provider>
   );
+}
+
+function findLastActiveIndex(items: {active: boolean}[]): number {
+  for (let i = items.length - 1; i >= 0; i--) {
+    if (items[i].active) return i;
+  }
+  return -1;
 }
 
 function TOCPopoverTrigger({className, ...props}: ComponentProps<"button">) {
@@ -158,7 +165,7 @@ function TOCPopoverTrigger({className, ...props}: ComponentProps<"button">) {
   const selectedIdx = items.findIndex((item) => item.active);
   const path = useTreePath().at(-1);
   const showItem = selectedIdx !== -1 && !open;
-  const progress = (items.findLastIndex((item) => item.active) + 1) / Math.max(1, items.length);
+  const progress = (findLastActiveIndex(items) + 1) / Math.max(1, items.length);
 
   return (
     <CollapsibleTrigger

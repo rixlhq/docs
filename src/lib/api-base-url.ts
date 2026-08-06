@@ -83,21 +83,21 @@ function trimTrailingSlash(value: string) {
   return value.endsWith("/") ? value.slice(0, -1) : value;
 }
 
-function normalizeServerList(servers: ApiServer[] | undefined) {
+function normalizeServerList(servers: ApiServer[] | undefined): ApiServer[] {
   if (!servers || servers.length === 0) return [];
 
   const seen = new Set<string>();
-  return servers
-    .map((server) => {
-      const resolvedUrl = resolveApiServerTemplate(server);
-      if (!resolvedUrl) return;
-      if (seen.has(resolvedUrl)) return;
-      seen.add(resolvedUrl);
+  const result: ApiServer[] = [];
+  for (const server of servers) {
+    const resolvedUrl = resolveApiServerTemplate(server);
+    if (!resolvedUrl || seen.has(resolvedUrl)) continue;
+    seen.add(resolvedUrl);
 
-      return {
-        ...server,
-        url: resolvedUrl,
-      };
-    })
-    .filter((server): server is ApiServer => Boolean(server?.url));
+    result.push({
+      ...server,
+      url: resolvedUrl,
+    });
+  }
+
+  return result;
 }

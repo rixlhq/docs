@@ -9,52 +9,52 @@
  * Wired into the layout via `slots.searchTrigger` in `layout.shared.tsx`.
  */
 import {Search} from "lucide-react";
-import type {ComponentProps} from "react";
 import {useSearchContext} from "fumadocs-ui/contexts/search";
+import type {SearchTriggerProps, FullSearchTriggerProps} from "fumadocs-ui/layouts/shared/slots/search-trigger";
 import {m} from "@/paraglide/messages";
 import {cn} from "@/lib/cn";
 import {buttonVariants} from "@/components/ui/button";
 
-type SearchTriggerProps = ComponentProps<"button"> & {
-  hideIfDisabled?: boolean;
-};
-
-export function SearchTrigger({hideIfDisabled, ...props}: SearchTriggerProps) {
+export function SearchTrigger({hideIfDisabled, size: _size, color: _color, ...props}: SearchTriggerProps) {
   const size = "icon-sm";
   const color = "ghost";
   const {setOpenSearch, enabled} = useSearchContext();
   if (hideIfDisabled && !enabled) return null;
+  const {className, onClick, ...buttonProps} = props;
   return (
     <button
       type="button"
-      className={cn(buttonVariants({size, color}), props.className)}
       data-search=""
       aria-label={m.openSearch()}
-      onClick={() => setOpenSearch(true)}
-      {...props}
+      className={cn(buttonVariants({size, color}), className)}
+      onClick={(e) => {
+        onClick?.(e);
+        setOpenSearch(true);
+      }}
+      {...buttonProps}
     >
       <Search />
     </button>
   );
 }
 
-type FullSearchTriggerProps = ComponentProps<"button"> & {
-  hideIfDisabled?: boolean;
-};
-
 export function FullSearchTrigger({hideIfDisabled, ...props}: FullSearchTriggerProps) {
   const {enabled, hotKey, setOpenSearch} = useSearchContext();
   if (hideIfDisabled && !enabled) return null;
+  const {className, onClick, ...buttonProps} = props;
   return (
     <button
       type="button"
       data-search-full=""
-      {...props}
+      {...buttonProps}
       className={cn(
         "inline-flex items-center gap-2 rounded-lg border bg-fd-secondary/50 p-1.5 ps-2 text-sm text-fd-muted-foreground transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground",
-        props.className
+        className
       )}
-      onClick={() => setOpenSearch(true)}
+      onClick={(e) => {
+        onClick?.(e);
+        setOpenSearch(true);
+      }}
     >
       <Search className="size-4" />
       {m.search()}

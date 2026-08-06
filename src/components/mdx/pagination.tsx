@@ -50,7 +50,7 @@ export function Pagination({className}: {className?: string}) {
   const pathname = usePathname();
 
   const {previous, next} = useMemo(() => {
-    const idx = footerList.findIndex((item) => isActive(item.url, pathname));
+    const idx = footerList.findIndex((item) => isActive(item.url, pathname, {nested: false}));
     if (idx === -1) return {};
     return {previous: footerList[idx - 1], next: footerList[idx + 1]};
   }, [footerList, pathname]);

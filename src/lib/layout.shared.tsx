@@ -5,6 +5,9 @@ import {ArrowUpRightIcon} from "lucide-react";
 import {ThemeToggle} from "@/components/theme-toggle";
 import {FullSearchTrigger, SearchTrigger} from "@/components/search-trigger";
 import {m} from "@/paraglide/messages.js";
+import {locales} from "@/paraglide/runtime";
+
+type Locale = (typeof locales)[number];
 
 /**
  * Shared layout configurations
@@ -46,9 +49,9 @@ function buildNavLinks(lang: string) {
   const apiUrl = `/${lang}/api`;
 
   return [
-    buildPrimaryLink(m.home({}, {locale: lang}), homeUrl),
-    buildPrimaryLink(m.sdk({}, {locale: lang}), sdkUrl),
-    buildPrimaryLink(m.api({}, {locale: lang}), apiUrl),
+    buildPrimaryLink(m.home({}, {locale: lang as Locale}), homeUrl),
+    buildPrimaryLink(m.sdk({}, {locale: lang as Locale}), sdkUrl),
+    buildPrimaryLink(m.api({}, {locale: lang as Locale}), apiUrl),
     {
       type: "button" as const,
       on: "nav" as const,

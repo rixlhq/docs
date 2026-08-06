@@ -1,4 +1,5 @@
 import {createFileRoute} from "@tanstack/react-router";
+import type {TOCItemType} from "fumadocs-core/toc";
 import {getPageImage} from "@/lib/images";
 import {DocsBody, DocsDescription, DocsPage, DocsTitle} from "fumadocs-ui/page";
 import browserCollections from "fumadocs-mdx:collections/browser";
@@ -49,7 +50,7 @@ export const Route = createFileRoute("/$lang/$")({
 });
 
 interface LoadedDoc {
-  toc: unknown;
+  toc: TOCItemType[];
   frontmatter: {
     title?: string;
     description?: string;
@@ -60,11 +61,10 @@ interface LoadedDoc {
 }
 
 interface StaticOpenApiPage {
-  toc: unknown;
   html: string;
 }
 
-const clientLoader = browserCollections.docs.createClientLoader({
+const clientLoader = browserCollections.docs.createClientLoader<{}>({
   component: DocsContent,
 });
 
@@ -88,7 +88,7 @@ function Page() {
     };
     apiPage?: StaticOpenApiPage;
   };
-  const data = useFumadocsLoader(loaderData);
+  const data = useFumadocsLoader(loaderData) as {tree: object};
   const isApiPage = !!loaderData.apiPage;
   const Content = isApiPage ? undefined : clientLoader.getComponent(loaderData.path);
   const section = _splat?.split("/")[0] ?? "root";
@@ -130,7 +130,7 @@ function ApiContent({
     <DocsPage
       className="api-docs-page max-w-[1880px] pt-3 md:pt-4 xl:pt-5 md:px-6 xl:px-8"
       full={false}
-      toc={(apiPage.toc as never) ?? []}
+      toc={[]}
       tableOfContent={{
         enabled: false,
       }}

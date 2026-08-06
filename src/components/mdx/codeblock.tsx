@@ -182,7 +182,7 @@ function CodeBlockCopyButton({
     clone.querySelectorAll(".nd-copy-ignore").forEach((node) => {
       node.replaceWith("\n");
     });
-    navigator.clipboard.writeText(clone.textContent ?? "");
+    return navigator.clipboard.writeText(clone.textContent ?? "").catch(() => {});
   });
 
   return (
@@ -196,9 +196,9 @@ function CodeBlockCopyButton({
         }),
         className
       )}
+      {...props}
       aria-label={checked ? m.copiedText() : m.copyText()}
       onClick={onClick}
-      {...props}
     >
       {checked ? <Check /> : <Clipboard />}
     </button>
@@ -214,7 +214,7 @@ export function CodeBlockTabs({ref, ...props}: ComponentPropsWithRef<typeof Tabs
       {...props}
       className={cn("bg-fd-card rounded-xl border", !nested && "my-4", props.className)}
     >
-      <TabsContext value={useMemo(() => ({containerRef, nested}), [nested])}>{props.children}</TabsContext>
+      <TabsContext.Provider value={useMemo(() => ({containerRef, nested}), [nested])}>{props.children}</TabsContext.Provider>
     </Tabs>
   );
 }

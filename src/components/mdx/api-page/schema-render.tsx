@@ -1,4 +1,4 @@
-import type {ReactNode} from "react";
+import type {ReactElement, ReactNode} from "react";
 import type {OpenApiRenderContext, RenderedSchemaProperty, SchemaLite} from "./types";
 
 const MAX_SCHEMA_DEPTH = 3;
@@ -41,7 +41,7 @@ export async function buildRenderedSchemaProperties(
   );
 }
 
-export function renderSchemaProperties(properties: RenderedSchemaProperty[], keyPrefix: string, depth = 0): JSX.Element[] {
+export function renderSchemaProperties(properties: RenderedSchemaProperty[], keyPrefix: string, depth = 0): ReactElement[] {
   return properties.map((property, index) => (
     <div
       key={`${keyPrefix}:${depth}:${property.name}:${index}`}

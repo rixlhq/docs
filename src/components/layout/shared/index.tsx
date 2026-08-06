@@ -1,5 +1,6 @@
 import type {I18nConfig} from "fumadocs-core/i18n";
-import type {ComponentProps, FC, HTMLAttributes, ReactNode} from "react";
+import type {FullSearchTriggerProps, SearchTriggerProps} from "fumadocs-ui/layouts/shared/slots/search-trigger";
+import type {FC, HTMLAttributes, ReactNode} from "react";
 
 export interface NavOptions {
   enabled: boolean;
@@ -71,8 +72,8 @@ export interface BaseLayoutProps {
   slots?: {
     searchTrigger?:
       | {
-          sm?: FC<ComponentProps<"button"> & {hideIfDisabled?: boolean}>;
-          full?: FC<ComponentProps<"button"> & {hideIfDisabled?: boolean}>;
+          sm: FC<SearchTriggerProps>;
+          full: FC<FullSearchTriggerProps>;
         }
       | false;
   };
