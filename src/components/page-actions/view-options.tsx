@@ -7,6 +7,7 @@ import {OptionButtonItem} from "./option-button-item";
 import {OptionLinkItem} from "./option-link-item";
 import {OpenAIIcon} from "@/components/page-actions/icons/openai-icon.tsx";
 import {AnthropicIcon} from "@/components/page-actions/icons/anthropic-icon.tsx";
+import {m} from "@/paraglide/messages";
 
 interface ViewOptionsProps {
   /**
@@ -52,9 +53,9 @@ export function ViewOptions({markdownUrl, onClick}: ViewOptionsProps) {
 
   return (
     <ViewOptionsPopover open={open} onOpenChange={setOpen}>
-      <OptionButtonItem icon={<Copy />} title="Copy page" desc="Copy page as Markdown for LLMs" onClick={handleCopyClick} />
-      <OptionLinkItem href={chatGptUrl} icon={<OpenAIIcon />} title="Open in ChatGPT" desc="Ask questions about this page" />
-      <OptionLinkItem href={claudeUrl} icon={<AnthropicIcon />} title="Open in Claude" desc="Ask questions about this page" />
+      <OptionButtonItem icon={<Copy />} title={m.copyPageTitle()} desc={m.copyPageDesc()} onClick={handleCopyClick} />
+      <OptionLinkItem href={chatGptUrl} icon={<OpenAIIcon />} title={m.openInChatGPT()} desc={m.askAboutPage()} />
+      <OptionLinkItem href={claudeUrl} icon={<AnthropicIcon />} title={m.openInClaude()} desc={m.askAboutPage()} />
     </ViewOptionsPopover>
   );
 }

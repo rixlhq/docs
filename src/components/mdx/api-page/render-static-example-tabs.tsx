@@ -1,4 +1,4 @@
-import {CodeBlockTabsList, CodeBlockTabsTrigger} from "fumadocs-ui/components/codeblock";
+import {CodeBlockTabsList, CodeBlockTabsTrigger} from "@/components/mdx/codeblock";
 import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 // @ts-expect-error -- runtime export exists but not in .d.ts
 import {getExampleRequests} from "../../../../node_modules/fumadocs-openapi/dist/utils/get-example-requests.js";
@@ -58,7 +58,7 @@ function buildRequestItems(requestUrl: string, encoded: EncodedRequestData, ctx:
     id: resolveGeneratorId(generator),
     label: generator.label ?? generator.lang,
     lang: generator.lang,
-    code: generator.generate({...encoded, url: requestUrl} as Parameters<CodeUsageGenerator["generate"]>[0], {mediaAdapters: ctx.mediaAdapters}),
+    code: generator.generate({...encoded, url: requestUrl} as Parameters<CodeUsageGenerator["generate"]>[0], {mediaAdapters: ctx.mediaAdapters, custom: undefined}),
   }));
 }
 

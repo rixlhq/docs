@@ -1,4 +1,5 @@
 import {createFileRoute} from "@tanstack/react-router";
+import type {TOCItemType} from "fumadocs-core/toc";
 import {getPageImage} from "@/lib/images";
 import {DocsBody, DocsDescription, DocsPage, DocsTitle} from "fumadocs-ui/page";
 import browserCollections from "fumadocs-mdx:collections/browser";
@@ -10,6 +11,8 @@ import {loader} from "@/lib/server/docs-loader";
 import {Suspense} from "react";
 import {useFumadocsLoader} from "fumadocs-core/source/client";
 import {StaticApiHtml} from "@/components/mdx/static-api-html";
+import {TableOfContents, TableOfContentsPopover} from "@/components/mdx/toc";
+import {Pagination} from "@/components/mdx/pagination";
 
 export const Route = createFileRoute("/$lang/$")({
   component: Page,
@@ -47,7 +50,7 @@ export const Route = createFileRoute("/$lang/$")({
 });
 
 interface LoadedDoc {
-  toc: unknown;
+  toc: TOCItemType[];
   frontmatter: {
     title?: string;
     description?: string;
@@ -58,11 +61,10 @@ interface LoadedDoc {
 }
 
 interface StaticOpenApiPage {
-  toc: unknown;
   html: string;
 }
 
-const clientLoader = browserCollections.docs.createClientLoader({
+const clientLoader = browserCollections.docs.createClientLoader<{}>({
   component: DocsContent,
 });
 
@@ -86,7 +88,7 @@ function Page() {
     };
     apiPage?: StaticOpenApiPage;
   };
-  const data = useFumadocsLoader(loaderData);
+  const data = useFumadocsLoader(loaderData) as {tree: object};
   const isApiPage = !!loaderData.apiPage;
   const Content = isApiPage ? undefined : clientLoader.getComponent(loaderData.path);
   const section = _splat?.split("/")[0] ?? "root";
@@ -128,7 +130,7 @@ function ApiContent({
     <DocsPage
       className="api-docs-page max-w-[1880px] pt-3 md:pt-4 xl:pt-5 md:px-6 xl:px-8"
       full={false}
-      toc={(apiPage.toc as never) ?? []}
+      toc={[]}
       tableOfContent={{
         enabled: false,
       }}
@@ -162,8 +164,15 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
         className="pt-6 md:pt-8 xl:pt-10 md:px-7 xl:px-10"
         full={false}
         toc={toc}
+        tableOfContent={{component: <TableOfContents />}}
+        tableOfContentPopover={{component: <TableOfContentsPopover />}}
         footer={{
-          children: <Footer lang={lang} />,
+          component: (
+            <>
+              <Pagination />
+              <Footer lang={lang} />
+            </>
+          ),
         }}
       >
         <header className="relative space-y-2">

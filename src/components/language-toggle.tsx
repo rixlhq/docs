@@ -1,7 +1,7 @@
 "use client";
-import {useTranslations} from "@fuma-translate/react";
 import {useI18n} from "fumadocs-ui/contexts/i18n";
 import type {ButtonHTMLAttributes, HTMLAttributes} from "react";
+import {m} from "@/paraglide/messages";
 import {cn} from "../lib/cn";
 import {buttonVariants} from "./ui/button";
 import {Popover, PopoverContent, PopoverTrigger} from "./ui/popover";
@@ -10,10 +10,9 @@ type LanguageSelectProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function LanguageToggle(props: LanguageSelectProps): React.ReactElement {
   const context = useI18n();
-  const t = useTranslations({note: "language switcher"});
   if (!context.locales) throw new Error("Missing `<I18nProvider />`");
 
-  const label = t("Choose a language");
+  const label = m.chooseLanguage();
 
   return (
     <Popover>

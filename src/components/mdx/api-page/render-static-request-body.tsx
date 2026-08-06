@@ -1,9 +1,10 @@
 import type {OpenApiRenderContext, MethodWithPath, RequestMediaTypeLite} from "./types";
 import {buildRenderedSchemaProperties, getRequestExample, renderSchemaProperties} from "./schema-utils";
+import type {ReactNode} from "react";
 
 type RenderedRequestSection = {
   mediaType: string;
-  renderedExample: unknown;
+  renderedExample: ReactNode | null;
   properties: Awaited<ReturnType<typeof buildRenderedSchemaProperties>>;
 };
 

@@ -1,4 +1,4 @@
-import {CodeBlockTabsList, CodeBlockTabsTrigger} from "fumadocs-ui/components/codeblock";
+import {CodeBlockTabsList, CodeBlockTabsTrigger} from "@/components/mdx/codeblock";
 import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 import type {ReactNode} from "react";
 import type {OpenApiRenderContext, ResponseTab} from "./types";

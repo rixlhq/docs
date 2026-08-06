@@ -9,7 +9,7 @@ export function Body({children}: {children: ReactNode}): ReactElement {
 }
 
 export function useMode(): string | undefined {
-  const params = useParams({strict: false});
+  const params = useParams({strict: false}) as Record<string, string | undefined>;
   const slug = params?.slug;
   return typeof slug === "string" && slug.includes("/") ? slug.split("/")[0] : slug;
 }
