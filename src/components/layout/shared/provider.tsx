@@ -4,6 +4,7 @@ import {RootProvider} from "fumadocs-ui/provider/base";
 import type {ReactNode} from "react";
 import {lazy} from "react";
 import {i18n} from "@/lib/i18n.ts";
+import {m} from "@/paraglide/messages";
 
 const SearchDialog = lazy(() => import("@/components/search"));
 
@@ -13,8 +14,17 @@ const {provider} = defineI18nUI(i18n, {
   en: {
     displayName: "English",
   },
+  // Keys are fumadocs' source-text keys ("<English text>(<context note>)"),
+  // as listed in fumadocs-ui/dist/.translations/keys.js. Only surfaces that
+  // fumadocs still owns belong here — everything we've ejected reads paraglide
+  // directly. The language switcher has no slot to override (fumadocs only
+  // exposes `slots.searchTrigger`), so it stays on this table; values come from
+  // `messages/*.json` so translations keep a single source of truth.
   de: {
     displayName: "Deutsch",
+    "Choose a language(language switcher)": m.chooseLanguage({}, {locale: "de"}),
+    "Choose a language(language switcher)(aria-label)": m.chooseLanguage({}, {locale: "de"}),
+    "Open Search(search trigger)(aria-label)": m.openSearch({}, {locale: "de"}),
     "Toggle Menu(mobile menu)(aria-label)": "Menü umschalten",
     "Open Sidebar(sidebar)(aria-label)": "Seitenleiste öffnen",
     "Close Sidebar(sidebar)(aria-label)": "Seitenleiste schließen",
