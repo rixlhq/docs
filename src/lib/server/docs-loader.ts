@@ -18,7 +18,7 @@ export const loader = createServerFn({
     if (!page) throw notFound();
 
     const tree = source.getPageTree(lang) as Root;
-    const sectionLinks = getSectionLinks(tree, page.locale);
+    const sectionLinks = getSectionLinks(tree, page.locale ?? "");
     const normalizedTree = slugs[0] === "api" && lang ? extractApiTree(tree, lang) : tree;
     const apiPage = getApiPage(page.data);
     const apiPageHtml = apiPage ? await renderApiPageHtml(apiPage) : undefined;
@@ -37,7 +37,6 @@ export const loader = createServerFn({
       },
       apiPage: apiPage
         ? {
-            toc: apiPage.toc,
             html: apiPageHtml ?? "",
           }
         : undefined,
@@ -63,7 +62,6 @@ export const getApiEntrySlug = createServerFn({
 
 interface StaticOpenApiPage {
   props: OpenAPIPageProps_Spec;
-  toc: unknown;
 }
 
 async function renderApiPageHtml(apiPage: StaticOpenApiPage): Promise<string> {
@@ -77,13 +75,11 @@ function getApiPage(data: unknown): StaticOpenApiPage | undefined {
 
   return {
     props: data.getOpenAPIPageProps(),
-    toc: data.toc,
   };
 }
 
 function isOpenApiData(data: unknown): data is {
   getOpenAPIPageProps: () => OpenAPIPageProps_Spec;
-  toc: unknown;
 } {
   return typeof data === "object" && data !== null && "getOpenAPIPageProps" in data && typeof data.getOpenAPIPageProps === "function";
 }

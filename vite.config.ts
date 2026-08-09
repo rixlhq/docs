@@ -31,7 +31,14 @@ const sectionRootRedirectPages = i18n.languages.flatMap((lang) => [
 
 export default defineConfig({
   plugins: [
-    paraglideVitePlugin({project: "./project.inlang", outdir: "./src/paraglide"}),
+    paraglideVitePlugin({
+      project: "./project.inlang",
+      outdir: "./src/paraglide",
+      // `url` first: the `$lang` route segment is the source of truth for a docs
+      // page. The rest are fallbacks for non-localized entry points, cheapest
+      // lookup first (memory, then cookie).
+      strategy: ["url", "globalVariable", "cookie", "baseLocale"],
+    }),
     extractIconsPlugin(),
     mdx(await import("./source.config")),
     tailwindcss(),

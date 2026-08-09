@@ -137,7 +137,7 @@ export const Card = ({
   children,
   ...props
 }: Props) => {
-  const isExternal = Boolean(href) && isExternalLink(href);
+  const isExternal = href !== undefined && isExternalLink(href);
   const cardClassName = buildCardClassName(href, className);
 
   return (

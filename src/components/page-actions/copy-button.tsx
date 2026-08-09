@@ -1,6 +1,7 @@
 "use client";
 
 import {Check, Copy} from "lucide-react";
+import {m} from "@/paraglide/messages";
 import {cn} from "@/lib/cn";
 
 interface CopyButtonProps {
@@ -20,7 +21,7 @@ export function CopyButton({isLoading, checked, onClick}: CopyButtonProps) {
       )}
     >
       {checked ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-      <span className="text-xs font-medium">{checked ? "Copied" : "Copy"}</span>
+      <span className="text-xs font-medium">{checked ? m.copied() : m.copy()}</span>
     </button>
   );
 }
