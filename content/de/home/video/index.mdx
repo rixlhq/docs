@@ -148,7 +148,7 @@ Wählen Sie die passende Verarbeitungsstufe für Ihre Inhalte und Ihre Zielgrupp
 <Tabs items={['Basic Player', 'Advanced Player', 'Custom Controls']}>
   <Tab value="Basic Player">
     ```jsx
-    import {Video} from '@rixl/videosdk-react';
+    import {Video} from '@rixl/media-react';
 
     function VideoPlayer({videoId}) {
       return (
@@ -167,7 +167,7 @@ Wählen Sie die passende Verarbeitungsstufe für Ihre Inhalte und Ihre Zielgrupp
 
 <Tab value="Advanced Player">
   ```jsx
-  import {Video, VideoPlayer, usePlayback, usePlayerProgress} from '@rixl/videosdk-react';
+  import {Video, VideoPlayer, usePlayback, usePlayerProgress} from '@rixl/media-react';
 
   function AdvancedVideoPlayer({videoId}) {
     return (
@@ -206,7 +206,7 @@ Wählen Sie die passende Verarbeitungsstufe für Ihre Inhalte und Ihre Zielgrupp
 
 <Tab value="Custom Controls">
   ```jsx
-  import {Video, VideoPlayer, useMediaSettings, usePlayback, usePlayerProgress} from '@rixl/videosdk-react';
+  import {Video, VideoPlayer, useMediaSettings, usePlayback, usePlayerProgress} from '@rixl/media-react';
   import {useState} from 'react';
 
   function CustomVideoPlayer({videoId}) {

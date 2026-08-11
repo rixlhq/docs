@@ -65,6 +65,8 @@ interface FeedProps extends HTMLProps<HTMLDivElement> {
   feedId: string;
   lang?: SupportedLanguage;
   feedFont?: FontFamilyKey;
+  loop?: boolean;
+  autoscroll?: boolean;
 }
 
 type FontFamilyKey =
@@ -215,6 +217,7 @@ interface VideoData {
   framerate: string;
   hdr: boolean;
   chapters?: Chapter[];
+  plan_type?: "free" | "pro" | "pay-as-you-go" | "custom";
 }
 
 interface Chapter {
@@ -247,7 +250,6 @@ Represents a post within a feed.
 ```typescript
 interface FeedPost {
   id: string;
-  projectId: string;
   creatorId: string;
   type: "image" | "video";
   feedId: string;
@@ -255,7 +257,6 @@ interface FeedPost {
   image?: ImageData;
   video?: VideoData;
   createdAt: string;
-  updatedAt: string;
 }
 
 interface FeedPostsResponse {
@@ -305,8 +306,15 @@ interface ContentViewEvent {
   post_id?: string;
   video_position_ms?: number;
   video_total_duration_ms?: number;
+  segments?: Segment[];
   device_id?: string;
   country?: string;
+}
+
+interface Segment {
+  start_ms: number;
+  end_ms: number;
+  speed: number;
 }
 ```
 

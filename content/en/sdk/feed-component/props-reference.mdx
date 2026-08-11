@@ -22,6 +22,28 @@ The unique feed identifier from your RIXL dashboard. Create a feed at [dash.rixl
 </Callout>
 
 
+## Behavior Props
+
+### `loop` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+When `true`, the feed restarts from the first post after the last post finishes playing.
+
+```tsx
+<Feed feedId="your-feed-id" loop={true} />
+```
+
+### `autoscroll` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+When `true`, the feed automatically advances to the next post when the current video ends or after a dwell timeout.
+
+```tsx
+<Feed feedId="your-feed-id" autoscroll={true} />
+```
+
 ## Localization & Styling
 
 ### `lang` **(Optional)**
@@ -79,6 +101,8 @@ interface FeedProps extends HTMLProps<HTMLDivElement> {
   feedId: string;
   lang?: SupportedLanguage;
   feedFont?: FontFamilyKey;
+  loop?: boolean;
+  autoscroll?: boolean;
 }
 
 type SupportedLanguage = "en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" | "uk";

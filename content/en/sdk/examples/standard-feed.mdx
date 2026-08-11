@@ -19,7 +19,7 @@ The standard feed provides a TikTok-style vertical scrolling experience with aut
 ## Complete Implementation
 
 ```tsx
-import { Feed } from '@rixl/videosdk-react';
+import { Feed } from '@rixl/media-react';
 
 export default function FeedPage() {
   return (
@@ -57,7 +57,7 @@ Add simple tab navigation between different feeds:
 
 ```tsx
 import { useState } from 'react';
-import { Feed } from '@rixl/videosdk-react';
+import { Feed } from '@rixl/media-react';
 
 export default function FeedWithTabs() {
   const [activeTab, setActiveTab] = useState('following');
@@ -102,7 +102,7 @@ export default function FeedWithTabs() {
 Set the `lang` prop to localize feed UI elements like the "More"/"Less" description toggle:
 
 ```tsx
-import { Feed } from '@rixl/videosdk-react';
+import { Feed } from '@rixl/media-react';
 
 export default function LocalizedFeed() {
   return (

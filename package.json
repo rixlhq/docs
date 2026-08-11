@@ -21,7 +21,9 @@
   "dependencies": {
     "@orama/orama": "^3.1.18",
     "@radix-ui/react-presence": "^1.1.10",
-    "@rixl/videosdk-react": "^0.27.0",
+    "@nanostores/react": "^1.1.0",
+    "@rixl/media-react": "^0.5.0",
+    "nanostores": "^1.2.0",
     "@takumi-rs/image-response": "^2.5.9",
     "@tanstack/react-router": "^1.170.19",
     "@tanstack/react-router-devtools": "^1.167.1",

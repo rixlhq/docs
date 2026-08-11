@@ -1,6 +1,6 @@
 ---
 title: "Installation"
-description: "Install and configure RIXL Video SDK for React in your project"
+description: "Install and configure RIXL Media SDK for React in your project"
 ---
 
 import {Callout} from "@/snippets";
@@ -9,7 +9,7 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from 'fumadocs-ui/components/t
 
 ## Requirements
 
-Before installing the RIXL Video SDK for React, ensure your project meets these requirements:
+Before installing the RIXL Media SDK for React, ensure your project meets these requirements:
 
 - **React**: 18.0 or higher
 - **Node.js**: 24.0 or higher
@@ -17,7 +17,7 @@ Before installing the RIXL Video SDK for React, ensure your project meets these 
 
 ## NPM Installation
 
-Install the RIXL Video SDK for React using your preferred package manager:
+Install the RIXL Media SDK for React using your preferred package manager:
 
 <Tabs defaultValue="npm">
   <TabsList>
@@ -29,25 +29,25 @@ Install the RIXL Video SDK for React using your preferred package manager:
 
   <TabsContent value="npm">
     ```bash
-    npm install @rixl/videosdk-react
+    npm install @rixl/media-react
     ```
   </TabsContent>
 
   <TabsContent value="yarn">
     ```bash
-    yarn add @rixl/videosdk-react
+    yarn add @rixl/media-react
     ```
   </TabsContent>
 
   <TabsContent value="pnpm">
     ```bash
-    pnpm add @rixl/videosdk-react
+    pnpm add @rixl/media-react
     ```
   </TabsContent>
 
   <TabsContent value="bun">
     ```bash
-    bun add @rixl/videosdk-react
+    bun add @rixl/media-react
     ```
   </TabsContent>
 </Tabs>
@@ -70,24 +70,43 @@ Before using the SDK, you need to upload your media content:
     Copy the generated media ID (e.g., `"FU9aVtA88m"`)
   </Step>
   <Step>
-    **Use in Your App**
+    **Authenticate and Render**
 
-    Reference the media ID in your React components
+    Call `connect()` if your app is standalone, then reference the media ID in your React components
   </Step>
 </Steps>
 
 ### 2. Import the Styles and Components
 
 ```tsx
-import "@rixl/videosdk-react/style.css";
-import { Video, Image, Feed } from '@rixl/videosdk-react';
+import "@rixl/media-react/style.css";
+import { Video, Image, Feed } from '@rixl/media-react';
 ```
 
-### 3. Use in Your Component
+### 3. Authenticate the SDK
+
+All media fetches go through the shared `@rixl/sdk` HTTP client. Choose the mode that matches your app:
+
+**Embedded mode** — your host app already calls `@rixl/sdk`'s `connect()` for its own API calls. The media SDK will automatically use the same authenticated client, so you do not need to do anything extra.
+
+**Standalone mode** — call `connect()` once, before rendering any media component, to exchange your API key for a Bearer token:
 
 ```tsx
-import "@rixl/videosdk-react/style.css";
-import { Video } from '@rixl/videosdk-react';
+import { connect } from "@rixl/media-react";
+
+await connect({
+  baseUrl: "https://api.rixl.com",
+  apiKey: "your-rixl-api-key",
+});
+```
+
+`connect` is re-exported from `@rixl/media-react` for convenience. You can also import it directly from `@rixl/media`.
+
+### 4. Use in Your Component
+
+```tsx
+import "@rixl/media-react/style.css";
+import { Video } from '@rixl/media-react';
 
 function App() {
   return (
@@ -114,8 +133,8 @@ Here's a complete example showing how to integrate RIXL components into a React 
 
 ```tsx
 import React from 'react';
-import "@rixl/videosdk-react/style.css";
-import { Video, Image } from '@rixl/videosdk-react';
+import "@rixl/media-react/style.css";
+import { Video, Image } from '@rixl/media-react';
 
 function MediaShowcase() {
   return (
