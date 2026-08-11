@@ -5,17 +5,19 @@ description: "Use RIXL Media SDK web components without a framework"
 
 import {Callout} from "@/snippets";
 
-The `@rixl/media-lit` package provides framework-free web components built with [Lit](https://lit.dev/). Each component is available as a tree-shakable subpath import, so you only pay for the component you use.
+The `@rixl/media-lit` package provides framework-free web components built with [Lit](https://lit.dev/). Each component is available as a tree-shakable subpath import, so you only load the component you use.
+
+<Callout type="warning">
+  The Lit components are currently a lightweight foundation. For production-ready players and feeds, the React package (`@rixl/media-react`) currently provides the complete feature set.
+</Callout>
 
 ## Installation
-
-Install the Lit package with your preferred package manager:
 
 ```bash
 npm install @rixl/media-lit
 ```
 
-You will also need `@rixl/sdk` peer dependencies (`nanostores`, `hls.js`, and `lit`) if your package manager does not install them automatically.
+You will also need the `@rixl/sdk` peer dependencies (`nanostores`, `hls.js`, and `lit`) if your package manager does not install them automatically.
 
 ## Authenticate
 
@@ -34,7 +36,7 @@ If your host app already uses `@rixl/sdk` and calls `connect()` for its own API 
 
 ## Using the Components
 
-Import a single component from its subpath. This loads only that component and its shared dependencies (such as `hls.js` for video), keeping bundles small.
+Import a single component from its subpath. This loads only that component and its shared dependencies.
 
 ### Image
 
@@ -43,7 +45,7 @@ Import a single component from its subpath. This loads only that component and i
   import "@rixl/media-lit/image";
 </script>
 
-<rixl-image id="your-image-id" alt="A sunset over the mountains"></rixl-image>
+<rixl-image image-id="your-image-id"></rixl-image>
 ```
 
 ### Video
@@ -53,7 +55,11 @@ Import a single component from its subpath. This loads only that component and i
   import "@rixl/media-lit/video";
 </script>
 
-<rixl-video id="your-video-id" theme="default"></rixl-video>
+<!-- Fetch by RIXL video ID -->
+<rixl-video video-id="your-video-id"></rixl-video>
+
+<!-- Or pass a direct HLS URL -->
+<rixl-video src="https://example.com/stream.m3u8"></rixl-video>
 ```
 
 ### Feed
@@ -63,35 +69,40 @@ Import a single component from its subpath. This loads only that component and i
   import "@rixl/media-lit/feed";
 </script>
 
-<div style="height: 100vh;">
-  <rixl-feed feed-id="your-feed-id"></rixl-feed>
-</div>
+<rixl-feed></rixl-feed>
 ```
-
-<Callout type="warning">
-  The feed component must be placed inside a container with an explicit height, just like the React `<Feed>` component.
-</Callout>
 
 ## Available Subpaths
 
-| Subpath | Component | Use for |
-|---------|-----------|---------|
-| `@rixl/media-lit/image` | `<rixl-image>` | Static and responsive images |
-| `@rixl/media-lit/video` | `<rixl-video>` | HLS video player with themes |
-| `@rixl/media-lit/feed` | `<rixl-feed>` | Infinite vertical feed |
+| Subpath | Component | What it registers |
+|---------|-----------|-------------------|
+| `@rixl/media-lit/image` | `<rixl-image>` | Image component |
+| `@rixl/media-lit/video` | `<rixl-video>` | Video component with HLS setup |
+| `@rixl/media-lit/feed` | `<rixl-feed>` | Feed component shell |
 
 The default barrel import (`@rixl/media-lit`) also registers all three components if you prefer convenience over bundle splitting.
 
 ## Component Attributes
 
-Lit components mirror the React prop API. Common attributes include:
+### `<rixl-image>`
 
-- `<rixl-image id="..." alt="..." analytics="false">`
-- `<rixl-video id="..." theme="minimal" autoplay loop muted>`
-- `<rixl-feed feed-id="..." lang="de" loop autoscroll>`
+| Attribute | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `image-id` | `string` | Yes | RIXL image ID to load and display |
 
-Boolean attributes follow standard HTML behavior: presence means `true`, absence means `false`.
+### `<rixl-video>`
+
+| Attribute | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `video-id` | `string` | One of `video-id` or `src` | RIXL video ID to load |
+| `src` | `string` | One of `video-id` or `src` | Direct HLS / video URL |
+
+The `<rixl-video>` component renders a standard `<video>` element with browser controls and handles HLS setup via `hls.js` when needed.
+
+### `<rixl-feed>`
+
+The feed component is currently a placeholder shell in the Lit package. For a fully functional feed, use the React `<Feed>` component from `@rixl/media-react`.
 
 ## Framework Wrappers
 
-`@rixl/media-react` is a thin wrapper over these Lit components. If you use React, you typically do not need to import `@rixl/media-lit` directly; import the React components from `@rixl/media-react` instead.
+`@rixl/media-react` is the production-ready React wrapper and currently provides the full player and feed feature set. If you use React, import components from `@rixl/media-react` instead of using `@rixl/media-lit` directly.
