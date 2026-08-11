@@ -15,6 +15,7 @@
         "@tanstack/react-start": "^1.168.36",
         "@tanstack/start-static-server-functions": "^1.167.20",
         "class-variance-authority": "^0.7.1",
+        "cnfast": "^0.1.0",
         "fumadocs-core": "^16.14.0",
         "fumadocs-mdx": "^15.2.2",
         "fumadocs-openapi": "^11.2.3",
@@ -27,7 +28,6 @@
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
         "shiki": "^4.4.2",
-        "tailwind-merge": "^3.6.0",
       },
       "devDependencies": {
         "@inlang/cli": "^3.3.0",
@@ -1317,8 +1317,6 @@
     "style-to-object": ["style-to-object@1.0.14", "", { "dependencies": { "inline-style-parser": "0.2.7" } }, "sha512-LIN7rULI0jBscWQYaSswptyderlarFkjQ+t79nzty8tcIAceVomEVlLzH5VP4Cmsv6MtKhs7qaAiwlcp+Mgaxw=="],
 
     "supports-color": ["supports-color@10.2.2", "", {}, "sha512-SS+jx45GF1QjgEXQx4NJZV9ImqmO2NPz5FNsIHrsDjh2YsHnawpan7SNQ1o8NuhrbHZy9AZhIoCUiCeaW/C80g=="],
-
-    "tailwind-merge": ["tailwind-merge@3.6.0", "", {}, "sha512-uxL7qAVQriqRQPAyK3pj66VqskWqoZ37PW94jwOTwNfq/z9oyu1V+eqrZqtR2+fCiXdYOZe/Modt8GtvqNzu+w=="],
 
     "tailwindcss": ["tailwindcss@4.3.3", "", {}, "sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ=="],
 

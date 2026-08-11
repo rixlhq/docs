@@ -15,7 +15,7 @@ import {useCopyButton} from "fumadocs-ui/utils/use-copy-button";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/ui/tabs";
 import {m} from "@/paraglide/messages";
 import {mergeRefs} from "@/lib/merge-refs";
-import {cn} from "@/lib/cn";
+import {cn} from "cnfast";
 import {buttonVariants} from "@/components/ui/button";
 
 /**

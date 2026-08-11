@@ -1,7 +1,7 @@
 "use client";
 import {Popover as Primitive} from "radix-ui";
 import * as React from "react";
-import {cn} from "../../lib/cn";
+import {cn} from "cnfast";
 
 const Popover = Primitive.Root;
 

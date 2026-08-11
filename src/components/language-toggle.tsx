@@ -2,7 +2,7 @@
 import {useI18n} from "fumadocs-ui/contexts/i18n";
 import type {ButtonHTMLAttributes, HTMLAttributes} from "react";
 import {m} from "@/paraglide/messages";
-import {cn} from "../lib/cn";
+import {cn} from "cnfast";
 import {buttonVariants} from "./ui/button";
 import {Popover, PopoverContent, PopoverTrigger} from "./ui/popover";
 

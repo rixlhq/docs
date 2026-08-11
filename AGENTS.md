@@ -78,3 +78,13 @@ bun format    # Format code with Oxfmt
 - Prefer explicit interfaces and type definitions
 - Use generics when appropriate for reusable components
 - Leverage type inference where it improves readability
+
+## Class Name Utilities
+
+Use `cnfast` for merging Tailwind CSS classes. Do not use `tailwind-merge` or a local `lib/cn` helper.
+
+```tsx
+import {cn} from "cnfast";
+
+<div className={cn("base-class", props.className, condition && "conditional-class")} />
+```

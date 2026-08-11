@@ -1,5 +1,5 @@
 import {useMemo} from "react";
-import {cn} from "@/lib/cn";
+import {cn} from "cnfast";
 import {FooterSections} from "@/lib/layout.shared";
 import {FooterContentSection} from "./footer-content-section";
 

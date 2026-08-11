@@ -4,7 +4,7 @@ import {ChevronLeftIcon, HomeIcon} from "lucide-react";
 import {Link, useRouter} from "@tanstack/react-router";
 import {m} from "@/paraglide/messages";
 import {buttonVariants} from "@/components/ui/button";
-import {cn} from "@/lib/cn";
+import {cn} from "cnfast";
 
 export function NotFound() {
   const router = useRouter();

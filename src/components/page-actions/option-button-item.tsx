@@ -1,6 +1,6 @@
 "use client";
 
-import {cn} from "@/lib/cn";
+import {cn} from "cnfast";
 import {optionItemVariants} from "./option-item-variants";
 import {OptionItemContent} from "./option-item-content";
 

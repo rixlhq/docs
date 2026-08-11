@@ -4,7 +4,7 @@ import {CopyCheckIcon, LinkIcon} from "lucide-react";
 import type {ComponentPropsWithoutRef} from "react";
 import {useCopyButton} from "fumadocs-ui/utils/use-copy-button";
 import {m} from "@/paraglide/messages";
-import {cn} from "@/lib/cn";
+import {cn} from "cnfast";
 import {buttonVariants} from "@/components/ui/button";
 
 type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
