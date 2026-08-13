@@ -1,10 +1,11 @@
 {
   "title": "Erste Schritte",
-  "description": "Erste Schritte mit dem RIXL Video SDK – optimierte Medienkomponenten für moderne Webanwendungen",
+  "description": "Erste Schritte mit dem RIXL Media SDK – optimierte Medienkomponenten für moderne Webanwendungen",
   "pages": [
     "index",
     "overview",
     "installation",
+    "lit",
     "types",
     "..."
   ]

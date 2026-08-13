@@ -1,6 +1,6 @@
 "use client";
 
-import {Image} from "@rixl/videosdk-react";
+import {Image} from "@rixl/media-react";
 
 interface Props {
   id: string;

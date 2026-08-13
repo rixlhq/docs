@@ -25,7 +25,7 @@ import {TOCItem, TOCItems} from "fumadocs-ui/components/toc/default";
 import {TOCScrollArea, useItems, useTOCItems} from "fumadocs-ui/components/toc";
 import {useTreePath} from "fumadocs-ui/contexts/tree";
 import {m} from "@/paraglide/messages";
-import {cn} from "@/lib/cn";
+import {cn} from "cnfast";
 
 type TOCProps = {
   container?: ComponentProps<"div">;

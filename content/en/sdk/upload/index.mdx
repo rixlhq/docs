@@ -1,0 +1,212 @@
+---
+title: "Upload SDK"
+description: "Upload videos, images, audio tracks, subtitles, and feed posts with the RIXL Media SDK"
+---
+
+import {Callout} from "@/snippets";
+
+The `@rixl/media` package exports helpers that wrap the RIXL upload endpoints. They create presigned upload URLs, then `PUT` the file bytes directly to cloud storage.
+
+## Authentication
+
+Upload helpers use the same authenticated `@rixl/sdk` client as the rest of the media SDK. Call `connect()` once before uploading:
+
+```ts
+import { connect } from "@rixl/media";
+
+await connect({
+  baseUrl: "https://api.rixl.com",
+  apiKey: "your-rixl-api-key",
+});
+```
+
+<Callout type="warning">
+  Never expose your API key in client-side code unless the upload is initiated by a backend you control. For end-user uploads, call `createImageUpload` / `createVideoUpload` from your backend and pass the `uploadUrl` to the client.
+</Callout>
+
+## Image Upload
+
+```ts
+import { createImageUpload, uploadImage } from "@rixl/media";
+
+const { imageId, uploadUrl } = await createImageUpload({
+  projectId: "your-project-id",
+  name: "photo.jpg",
+});
+
+await uploadImage(file, { projectId: "your-project-id", name: "photo.jpg" });
+// or PUT directly to uploadUrl
+```
+
+## Video Upload
+
+```ts
+import { createVideoUpload, uploadVideo } from "@rixl/media";
+
+const { videoId, videoUploadUrl, posterUploadUrl } = await createVideoUpload({
+  projectId: "your-project-id",
+  name: "clip.mp4",
+  videoQuality: "pro",
+});
+
+await uploadVideo(videoFile, posterFile, {
+  projectId: "your-project-id",
+  name: "clip.mp4",
+  videoQuality: "pro",
+});
+```
+
+## Audio Track Upload
+
+```ts
+import { createAudioTrackUpload } from "@rixl/media";
+
+const result = await createAudioTrackUpload(
+  "project-id",
+  "video-id",
+  [
+    {
+      languageCode: "de",
+      label: "Deutsch",
+      fileName: "audio_de.m4a",
+      format: "m4a",
+    },
+  ]
+);
+
+for (const target of result.targets) {
+  console.log(target.id, target.uploadUrl);
+}
+```
+
+## Subtitle Upload
+
+```ts
+import { createSubtitleUpload } from "@rixl/media";
+
+const result = await createSubtitleUpload(
+  "project-id",
+  "video-id",
+  [
+    {
+      languageCode: "de",
+      label: "Deutsch",
+      fileName: "subtitles_de.vtt",
+      format: "vtt",
+    },
+  ]
+);
+
+for (const target of result.targets) {
+  console.log(target.id, target.uploadUrl);
+}
+```
+
+## Feed Post Upload
+
+```ts
+import { createPostUpload, uploadPost } from "@rixl/media";
+
+const options = {
+  projectId: "your-project-id",
+  feedId: "your-feed-id",
+  creatorId: "user-123",
+  contentType: "video",
+  fileName: "post.mp4",
+  description: "My feed post",
+  videoQuality: "pro",
+};
+
+const { postId, contentUploadUrl, posterUploadUrl } = await createPostUpload(options);
+
+await uploadPost(videoFile, posterFile, options);
+```
+
+<Callout type="info">
+  `uploadImage`, `uploadVideo`, and `uploadPost` are convenience helpers that call `create*` and then `PUT` the files in parallel. Use `create*` alone when you want the client to upload directly to the presigned URL.
+</Callout>
+
+## TypeScript Interfaces
+
+```typescript
+interface CreateImageUploadOptions {
+  projectId: string;
+  orgId?: string;
+  name: string;
+}
+
+interface ImageUploadResult {
+  imageId: string;
+  uploadUrl: string;
+}
+
+declare function createImageUpload(options: CreateImageUploadOptions): Promise<ImageUploadResult>;
+declare function uploadImage(file: Blob | Uint8Array, options: CreateImageUploadOptions): Promise<ImageUploadResult>;
+
+interface CreateVideoUploadOptions {
+  projectId: string;
+  orgId?: string;
+  name: string;
+  videoQuality?: string;
+}
+
+interface VideoUploadResult {
+  videoId: string;
+  posterId: string;
+  videoUploadUrl: string;
+  posterUploadUrl: string;
+}
+
+declare function createVideoUpload(options: CreateVideoUploadOptions): Promise<VideoUploadResult>;
+declare function uploadVideo(videoFile: Blob | Uint8Array, posterFile: Blob | Uint8Array, options: CreateVideoUploadOptions): Promise<VideoUploadResult>;
+
+interface AudioTrackUploadItem {
+  languageCode: string;
+  label?: string;
+  fileName: string;
+  format: string;
+  size?: number;
+}
+
+interface AudioTrackUploadResult {
+  targets: { id: string; languageCode?: string; uploadUrl?: string }[];
+}
+
+declare function createAudioTrackUpload(projectId: string, videoId: string, items: AudioTrackUploadItem[]): Promise<AudioTrackUploadResult>;
+
+interface SubtitleUploadItem {
+  languageCode: string;
+  label?: string;
+  fileName: string;
+  format: string;
+  size?: number;
+}
+
+interface SubtitleUploadResult {
+  targets: { id: string; languageCode?: string; uploadUrl?: string }[];
+}
+
+declare function createSubtitleUpload(projectId: string, videoId: string, items: SubtitleUploadItem[]): Promise<SubtitleUploadResult>;
+
+interface CreatePostUploadOptions {
+  projectId: string;
+  feedId: string;
+  orgId?: string;
+  creatorId: string;
+  description?: string;
+  contentType: string;
+  fileName: string;
+  videoQuality?: string;
+}
+
+interface PostUploadResult {
+  postId: string;
+  contentId: string;
+  posterId: string;
+  contentUploadUrl: string;
+  posterUploadUrl: string;
+}
+
+declare function createPostUpload(options: CreatePostUploadOptions): Promise<PostUploadResult>;
+declare function uploadPost(contentFile: Blob | Uint8Array, posterFile: Blob | Uint8Array, options: CreatePostUploadOptions): Promise<PostUploadResult>;
+```

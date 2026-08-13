@@ -2,4 +2,4 @@
 
 // This line exports ALL components from the library,
 // including Video, Image, Feed, etc.
-export * from "@rixl/videosdk-react";
+export * from "@rixl/media-react";

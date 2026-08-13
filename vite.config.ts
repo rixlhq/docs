@@ -91,6 +91,6 @@ export default defineConfig({
     include: ["xml-js/lib/js2xml"],
   },
   ssr: {
-    noExternal: ["@rixl/videosdk-react"],
+    noExternal: ["@rixl/media-react"],
   },
 });

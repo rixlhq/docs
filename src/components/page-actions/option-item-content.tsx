@@ -1,7 +1,7 @@
 "use client";
 
 import {ExternalLinkIcon} from "lucide-react";
-import {cn} from "@/lib/cn";
+import {cn} from "cnfast";
 
 interface OptionContentProps {
   icon: React.ReactNode;

@@ -3,9 +3,9 @@
 import {lazy, Suspense} from "react";
 import type {HTMLProps} from "react";
 
-const RixlVideo = lazy(() => import("@rixl/videosdk-react").then((mod) => ({default: mod.Video})));
+const RixlVideo = lazy(() => import("@rixl/media-react").then((mod) => ({default: mod.Video})));
 
-declare type VideoTheme = "default" | "minimal" | "hideUI";
+declare type VideoTheme = "default" | "minimal" | "hover" | "feed" | "hideUI";
 
 declare interface VideoProps extends HTMLProps<HTMLVideoElement> {
   id?: string;

@@ -15,7 +15,7 @@ import {ChevronLeft, ChevronRight} from "lucide-react";
 import {useMemo} from "react";
 import {useFooterItems} from "fumadocs-ui/utils/use-footer-items";
 import {m} from "@/paraglide/messages";
-import {cn} from "@/lib/cn";
+import {cn} from "cnfast";
 import {isActive} from "@/lib/is-active";
 
 type PageItem = {

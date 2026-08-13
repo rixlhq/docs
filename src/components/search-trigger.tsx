@@ -12,7 +12,7 @@ import {Search} from "lucide-react";
 import {useSearchContext} from "fumadocs-ui/contexts/search";
 import type {SearchTriggerProps, FullSearchTriggerProps} from "fumadocs-ui/layouts/shared/slots/search-trigger";
 import {m} from "@/paraglide/messages";
-import {cn} from "@/lib/cn";
+import {cn} from "cnfast";
 import {buttonVariants} from "@/components/ui/button";
 
 export function SearchTrigger({hideIfDisabled, size: _size, color: _color, ...props}: SearchTriggerProps) {

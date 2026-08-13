@@ -2,7 +2,7 @@
 
 import {Check, Copy} from "lucide-react";
 import {m} from "@/paraglide/messages";
-import {cn} from "@/lib/cn";
+import {cn} from "cnfast";
 
 interface CopyButtonProps {
   isLoading: boolean;

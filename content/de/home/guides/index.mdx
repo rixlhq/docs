@@ -116,7 +116,7 @@ Willkommen bei den **RIXL-Anleitungen** – Ihrer umfassenden Ressource zum Erst
 <Tabs items={['Video Player', 'Image Gallery', 'Content Feed']}>
   <Tab value="Video Player">
     ```jsx
-    import {Video, VideoPlayer, usePlayerProgress} from '@rixl/videosdk-react';
+    import {Video, VideoPlayer, usePlayerProgress} from '@rixl/media-react';
 
     function VideoWithProgress({videoId}) {
       return (
@@ -149,7 +149,7 @@ Willkommen bei den **RIXL-Anleitungen** – Ihrer umfassenden Ressource zum Erst
 
 <Tab value="Image Gallery">
   ```jsx
-  import {Image} from '@rixl/videosdk-react';
+  import {Image} from '@rixl/media-react';
 
   function ImageGallery({images}) {
   return (
@@ -172,7 +172,7 @@ Willkommen bei den **RIXL-Anleitungen** – Ihrer umfassenden Ressource zum Erst
 
 <Tab value="Content Feed">
   ```jsx
-  import {Feed} from '@rixl/videosdk-react';
+  import {Feed} from '@rixl/media-react';
 
   function ContentFeed({feedId, creatorId}) {
   return (
