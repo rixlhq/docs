@@ -1,5 +1,4 @@
 {
-  "root": true,
   "title": "Abrechnung & Zahlungen",
   "description": "Verwalten Sie Abonnements, Zahlungsmethoden und Abrechnungsverlauf",
   "pages": ["overview", "subscription-plans", "payment_invoice"]

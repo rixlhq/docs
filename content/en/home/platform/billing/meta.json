@@ -1,5 +1,4 @@
 {
-  "root": true,
   "title": "Billing & Payments",
   "description": "Manage subscription plans, payment methods, and billing history",
   "pages": ["overview", "subscription-plans", "payment_invoice"]

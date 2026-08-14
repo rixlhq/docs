@@ -1,5 +1,4 @@
 {
-  "root": true,
   "title": "Dashboard",
   "description": "Manage projects, media, and feeds in the dashboard",
   "pages": ["overview", "guide", "---Projects---", "projects", "---Media---", "media", "---Feeds---", "feeds"]

@@ -1,5 +1,4 @@
 {
-  "root": true,
   "title": "Dokumentation – Startseite",
   "description": "Vollständige Anleitung zur RIXL-Medienverarbeitungsplattform",
   "pages": ["getting-started", "video", "images", "platform", "guides", "legal"]
