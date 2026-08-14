@@ -1,6 +1,8 @@
 {
+  "root": true,
   "title": "Account & Teams",
   "description": "Manage your personal account, team settings, and organization preferences",
+  "pagesIndex": "index",
   "pages": [
     "overview",
     "---Personal Account---",

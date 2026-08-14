@@ -1,8 +1,7 @@
 {
-  "pages": [
-    "index",
-    "basic-usage",
-    "props-reference",
-    "..."
-  ]
+  "root": true,
+  "title": "Feed Component",
+  "description": "Infinite-scrolling TikTok-style feed for displaying RIXL content with automatic video playback",
+  "pagesIndex": "index",
+  "pages": ["basic-usage", "props-reference", "..."]
 }

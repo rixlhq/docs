@@ -1,10 +1,7 @@
 {
-  "pages": [
-    "index",
-    "basic-usage",
-    "props-reference",
-    "player-controls",
-    "analytics-integration",
-    "..."
-  ]
+  "root": true,
+  "title": "Video Component",
+  "description": "Feature-rich video player for RIXL content with HLS streaming, quality selection, and advanced controls",
+  "pagesIndex": "index",
+  "pages": ["basic-usage", "props-reference", "player-controls", "analytics-integration", "..."]
 }

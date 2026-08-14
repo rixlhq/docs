@@ -2,19 +2,5 @@
   "root": true,
   "title": "Documentation Home",
   "description": "Complete guide to the RIXL media processing platform",
-  "pages": [
-    "---Getting Started---",
-    "...getting-started",
-    "index",
-    "---Video Processing---",
-    "...video",
-    "---Image Processing---",
-    "...images",
-    "---Platform---",
-    "...platform",
-    "---Guides & Examples---",
-    "...guides",
-    "---Legal---",
-    "...legal"
-  ]
+  "pages": ["getting-started", "video", "images", "platform", "guides", "legal"]
 }

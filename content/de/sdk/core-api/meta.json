@@ -1,0 +1,6 @@
+{
+  "root": true,
+  "title": "Core API",
+  "description": "Framework-agnostic API for fetching media, analytics, and managing authentication",
+  "collapsible": false
+}

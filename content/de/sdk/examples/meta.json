@@ -1,12 +1,7 @@
 {
-  "pages": [
-    "index",
-    "standard-player",
-    "autoplay-background",
-    "minimal-player",
-    "!hero-image",
-    "!profile-avatar",
-    "!standard-feed",
-    "..."
-  ]
+  "root": true,
+  "title": "Beispiele",
+  "description": "Real-world examples and use cases for RIXL Media SDK components with live demos and complete code",
+  "pagesIndex": "index",
+  "pages": ["standard-player", "autoplay-background", "minimal-player", "!hero-image", "!profile-avatar", "!standard-feed", "..."]
 }

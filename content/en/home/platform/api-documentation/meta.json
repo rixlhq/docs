@@ -1,4 +1,5 @@
 {
+  "root": true,
   "title": "API Integration",
   "description": "Authentication, limits, and troubleshooting guides for API consumers",
   "pages": ["api-keys", "rate-limits", "error-handling"]

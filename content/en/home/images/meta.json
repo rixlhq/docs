@@ -1,7 +1,6 @@
 {
+  "root": true,
   "title": "Image Processing",
   "description": "Transform and optimize images with automatic AVIF compression and global delivery",
-  "pages": [
-    "index"
-  ]
+  "collapsible": false
 }

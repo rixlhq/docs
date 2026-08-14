@@ -1,17 +1,7 @@
 {
+  "root": true,
   "title": "Plattform",
   "description": "Laden Sie Medien über die RIXL-Plattform hoch, verwalten und optimieren Sie sie",
-  "pages": [
-    "index",
-    "---Konto & Teams---",
-    "...account-teams",
-    "---Dashboard---",
-    "...dashboard",
-    "---Hochladen & Optimieren---",
-    "...uploads",
-    "---API & Integrationen---",
-    "...api-documentation",
-    "---Abrechnung & Zahlungen---",
-    "...billing"
-  ]
+  "pagesIndex": "index",
+  "pages": ["account-teams", "dashboard", "uploads", "api-documentation", "billing"]
 }
