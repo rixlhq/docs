@@ -1,4 +1,5 @@
 {
+  "root": true,
   "title": "SDK",
   "description": "Complete guide to the RIXL SDK Library",
   "pages": [

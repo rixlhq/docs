@@ -1,5 +1,4 @@
 {
-  "root": true,
   "title": "Bildverarbeitung",
   "description": "Transformieren und optimieren Sie Bilder mit automatischer AVIF-Komprimierung und globaler Auslieferung",
   "collapsible": false

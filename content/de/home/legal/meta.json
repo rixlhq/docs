@@ -1,5 +1,4 @@
 {
-  "root": true,
   "title": "Rechtliches",
   "description": "Datenschutzrichtlinie, Nutzungsbedingungen und rechtliche Dokumentation",
   "pages": ["privacy-policy", "terms-of-service", "acceptable-use-policy", "cookie-policy"]

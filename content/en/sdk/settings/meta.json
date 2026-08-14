@@ -1,5 +1,4 @@
 {
-  "root": true,
   "title": "Settings",
   "description": "Customize player settings, captions, and global preferences with the RIXL Media SDK",
   "collapsible": false

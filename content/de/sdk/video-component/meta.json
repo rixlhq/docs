@@ -1,5 +1,4 @@
 {
-  "root": true,
   "title": "Video Component",
   "description": "Feature-rich video player for RIXL content with HLS streaming, quality selection, and advanced controls",
   "pagesIndex": "index",

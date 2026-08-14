@@ -1,5 +1,4 @@
 {
-  "root": true,
   "title": "Hooks",
   "description": "Public React hooks for building custom RIXL video controls and page-level player coordination.",
   "pagesIndex": "index",

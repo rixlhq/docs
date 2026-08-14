@@ -1,5 +1,4 @@
 {
-  "root": true,
   "title": "Hooks",
   "description": "Öffentliche React-Hooks zum Erstellen benutzerdefinierter RIXL-Videosteuerungen und zur Player-Koordination auf Seitenebene.",
   "pagesIndex": "index",
