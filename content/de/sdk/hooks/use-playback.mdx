@@ -3,7 +3,13 @@ title: "usePlayback"
 description: "Control playback, loading state, and playback speed for the current scoped Video instance."
 ---
 
+import {Callout} from "fumadocs-ui/components/callout";
+
 `usePlayback()` exposes player-scoped transport state and actions.
+
+<Callout type="warning">
+  This hook requires a `VideoPlayer` scope and a scope-aware media element. The Lit `<Video>` wrapper does not automatically participate in the scope.
+</Callout>
 
 ## Signature
 
@@ -27,7 +33,7 @@ It returns:
 ## Example
 
 ```tsx
-import {Video, usePlayback} from "@rixl/media-react";
+import {VideoPlayer, usePlayback} from "@rixl/media-react";
 
 function CustomPlaybackControls() {
   const {paused, playbackRate, togglePlay, setPlaybackRate, pauseOthers} = usePlayback();
@@ -57,9 +63,10 @@ function CustomPlaybackControls() {
 
 function CustomPlayer() {
   return (
-    <Video id="your-video-id" theme="hideUI" analytics={false}>
+    <VideoPlayer>
       <CustomPlaybackControls />
-    </Video>
+      {/* scope-aware media element */}
+    </VideoPlayer>
   );
 }
 ```

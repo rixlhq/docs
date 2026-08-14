@@ -3,8 +3,7 @@ title: "Props Reference"
 description: "Complete API reference for all Image component props and TypeScript interfaces"
 ---
 
-
-import {Callout} from "@/snippets"
+import {Callout} from "@/snippets";
 
 ## Core Props
 
@@ -18,20 +17,17 @@ The unique image identifier from your RIXL dashboard. Upload your image to [dash
 <Image id="your-image-id" />
 ```
 
-### `alt` **(Recommended)**
+This is mapped to `imageId` on the underlying `<rixl-image>` web component.
+
+### `alt` **(Accepted for backward compatibility)**
 
 **Type:** `string` | **Default:** `undefined`
 
-Alternative text for accessibility. Describes the image content for screen readers and displays when the image fails to load.
+The React wrapper accepts `alt` for backward compatibility, but does **not** forward it to the Lit element. Alt text is derived from the fetched `imageData` internally. You do not need to pass `alt` manually.
 
 ```tsx
 <Image id="your-image-id" alt="A sunset over the mountains" />
 ```
-
-<Callout type="info">
-  Good alt text is descriptive but concise. Avoid "image of" or "picture of" - screen readers already announce it's an
-  image.
-</Callout>
 
 ### `className` **(Optional)**
 
@@ -40,19 +36,16 @@ Alternative text for accessibility. Describes the image content for screen reade
 CSS classes for styling the image container. Supports all CSS frameworks including TailwindCSS.
 
 ```tsx
-<Image
-  id="your-image-id"
-  className="object-contain w-full h-full rounded-lg shadow-md"
-/>
+<Image id="your-image-id" className="object-contain w-full h-full rounded-lg shadow-md" />
 ```
 
-## Analytics
+## Analytics Props
 
 ### `analytics` **(Optional)**
 
 **Type:** `boolean` | **Default:** `true`
 
-Enables built-in view tracking for images. When enabled, the SDK automatically tracks image impressions.
+Enables built-in view tracking for images. When enabled, the SDK automatically tracks `content_views` `start`/`watch`/`end` events and `image_click` interactions.
 
 ```tsx
 <Image id="your-image-id" analytics={true} />
@@ -62,25 +55,62 @@ Enables built-in view tracking for images. When enabled, the SDK automatically t
 
 **Type:** `"feed" | "standalone" | "profile"` | **Default:** `"standalone"`
 
-Specifies the page context for analytics reporting. This helps segment your analytics data by where the image is being viewed.
+Specifies the page context for analytics reporting.
 
 ```tsx
 <Image id="your-image-id" analyticsPage="profile" />
 ```
 
 **Available Contexts:**
+
 - `'standalone'` - Image on its own dedicated page
 - `'feed'` - Image within a scrolling feed
 - `'profile'` - Image on a user profile page
+
+### `feedId` **(Optional)**
+
+**Type:** `string` | **Default:** `undefined`
+
+Feed identifier when the image is rendered inside a feed. `<Feed>` automatically propagates this value to child images.
+
+```tsx
+<Image id="your-image-id" feedId="my-feed" postId="post-123" />
+```
+
+### `postId` **(Optional)**
+
+**Type:** `string` | **Default:** `undefined`
+
+Post identifier when the image is rendered inside a feed.
+
+### `isCurrent` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+Marks this post as the active viewport item. `<Feed>` sets this automatically on the currently visible post.
+
+### `onRixlAnalytics` **(Optional)**
+
+**Type:** `(event: CustomEvent<{ event: AnalyticsEvent }>) => void`
+
+Called whenever the underlying `<rixl-image>` dispatches a `rixl-analytics` event. Use this to inspect or forward analytics payloads.
+
+```tsx
+<Image id="your-image-id" onRixlAnalytics={(e) => console.log(e.detail.event)} />
+```
 
 ## TypeScript Interface
 
 ```typescript
 interface ImageProps extends HTMLProps<HTMLImageElement> {
   id?: string;
-  alt?: string;
+  alt?: string; // accepted for backward compatibility, not forwarded
   className?: string;
   analytics?: boolean;
-  analyticsPage?: "feed" | "standalone" | "profile";
+  analyticsPage?: Page;
+  feedId?: string;
+  postId?: string;
+  isCurrent?: boolean;
+  onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
 }
 ```

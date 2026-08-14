@@ -3,10 +3,9 @@ title: Best Practices
 description: Grundlegende Richtlinien und Empfehlungen zur Optimierung Ihres RIXL-Workflows – von der Medienvorbereitung bis zum Produktions-Deployment.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Step, Steps} from 'fumadocs-ui/components/steps';
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Step, Steps} from "fumadocs-ui/components/steps";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 Holen Sie mit diesen bewährten Best Practices das Beste aus **RIXL** heraus. Ob Sie gerade erst anfangen oder einen bestehenden Workflow optimieren – diese Richtlinien helfen Ihnen, bessere Leistung, Qualität und Effizienz zu erreichen.
 
@@ -45,6 +44,7 @@ Wählen Sie die passende [Qualitätsstufe](/de/home/platform/uploads/videos/qual
     - Bildraten 24 fps/30 fps
     - Schnellste Verarbeitungszeiten
     - Kleinste Dateigrößen
+
   </Tab>
   <Tab value="Shorts Tier">
     **Am besten geeignet für:**
@@ -58,6 +58,7 @@ Wählen Sie die passende [Qualitätsstufe](/de/home/platform/uploads/videos/qual
     - Bildraten bis zu 60 fps
     - Mobil-optimierte Kodierung
     - Mittlere Verarbeitungszeiten
+
   </Tab>
   <Tab value="Pro Tier">
     **Am besten geeignet für:**
@@ -71,6 +72,7 @@ Wählen Sie die passende [Qualitätsstufe](/de/home/platform/uploads/videos/qual
     - Bis zu 60 fps mit HDR
     - Professionelle Audioverarbeitung
     - Längste Verarbeitungszeiten
+
   </Tab>
 </Tabs>
 
@@ -84,6 +86,7 @@ Wählen Sie die passende [Qualitätsstufe](/de/home/platform/uploads/videos/qual
     - **Video**: Bis zu 2 GB pro Datei
     - **Bilder**: Bis zu 100 MB pro Datei
     - **Auflösung**: Originalauflösung beibehalten, Hochskalieren vermeiden
+
   </Step>
   <Step>
     **Audioverarbeitung**
@@ -92,6 +95,7 @@ Wählen Sie die passende [Qualitätsstufe](/de/home/platform/uploads/videos/qual
     - **Codec**: Opus (bevorzugt) oder MP3
     - **Bitrate**: 128 kbps für die meisten Inhalte
     - **Kanäle**: Stereo für Standardinhalte
+
   </Step>
   <Step>
     **Bildraten-Standards**
@@ -100,6 +104,7 @@ Wählen Sie die passende [Qualitätsstufe](/de/home/platform/uploads/videos/qual
     - **24 fps**: Filmische Inhalte
     - **30 fps**: Standard-Webvideo
     - **60 fps**: Flüssige Bewegung (Shorts-/Pro-Stufen)
+
   </Step>
 </Steps>
 
@@ -111,12 +116,10 @@ Wählen Sie die passende [Qualitätsstufe](/de/home/platform/uploads/videos/qual
 
 <Columns cols={2}>
   <Card title="Projekttrennung" icon="folder-plus">
-    Erstellen Sie separate Projekte für verschiedene Kampagnen, Marken oder Umgebungen
-    (Dev/Staging/Prod).
+    Erstellen Sie separate Projekte für verschiedene Kampagnen, Marken oder Umgebungen (Dev/Staging/Prod).
   </Card>
   <Card title="Serverstandort" icon="globe">
-    Wählen Sie Serverregionen, die Ihrer Hauptzielgruppe am nächsten liegen, für optimale
-    Auslieferungsleistung.
+    Wählen Sie Serverregionen, die Ihrer Hauptzielgruppe am nächsten liegen, für optimale Auslieferungsleistung.
   </Card>
 </Columns>
 
@@ -125,22 +128,26 @@ Wählen Sie die passende [Qualitätsstufe](/de/home/platform/uploads/videos/qual
 Befolgen Sie diese Organisationsstrategien für eine effiziente Inhaltsverwaltung:
 
 **Best Practices für die Ordnerstruktur:**
+
 - Nach Projekt oder Kampagne organisieren
 - Einheitliche Namenskonventionen verwenden
 - Datumsbasierte Ordner für zeitkritische Inhalte anlegen
 - Inhaltstypen trennen (Videos, Bilder, Dokumente)
 
 **Tagging-Strategie:**
+
 - Beschreibende, durchsuchbare Tags verwenden
 - Tag-Hierarchien für komplexe Kategorisierung erstellen
 - Massen-Tagging für mehr Effizienz einsetzen
 - Zweck-Tags einbeziehen (Hero, Vorschaubild, Hintergrund)
 
 **Verwaltung des Content-Lebenszyklus:**
+
 - Mit dem Entwurfsstatus zur Überprüfung beginnen
 - Freigabe-Workflows für Teaminhalte verwenden
 - Ungenutzte oder veraltete Inhalte archivieren
 - Regelmäßige Bereinigung doppelter Inhalte
+
 ### Teamzusammenarbeit
 
 **Richten Sie effektive Team-Workflows ein:**
@@ -154,6 +161,7 @@ Befolgen Sie diese Organisationsstrategien für eine effiziente Inhaltsverwaltun
     - **Admin**: Projekt- und Teamverwaltung
     - **Member**: Hochladen und Verwalten von Inhalten
     - **Viewer**: Nur-Lese-Zugriff
+
   </Step>
   <Step>
     **Freigabe-Workflows**
@@ -163,6 +171,7 @@ Befolgen Sie diese Organisationsstrategien für eine effiziente Inhaltsverwaltun
     - Teamkommentare und Feedback
     - Nachverfolgung des Versionsverlaufs
     - Verwaltung des Inhaltsstatus
+
   </Step>
   <Step>
     **Projektvorlagen**
@@ -172,6 +181,7 @@ Befolgen Sie diese Organisationsstrategien für eine effiziente Inhaltsverwaltun
     - Standard-Tag-Sets
     - Standard-Verarbeitungseinstellungen
     - Vorlagen für Teamberechtigungen
+
   </Step>
 </Steps>
 
@@ -186,6 +196,7 @@ Befolgen Sie diese Organisationsstrategien für eine effiziente Inhaltsverwaltun
 </Callout>
 
 **Paketverwaltung:**
+
 ```bash
 # Use your preferred package manager
 npm install @rixl/media-react
@@ -194,6 +205,7 @@ yarn add @rixl/media-react
 ```
 
 **TypeScript-Konfiguration:**
+
 - Strict-Modus für bessere Typsicherheit aktivieren
 - Die bereitgestellten TypeScript-Definitionen verwenden
 - Komponenten mit korrekter Typisierung importieren
@@ -202,7 +214,7 @@ yarn add @rixl/media-react
 
 **Best Practices für die Video-Komponente:**
 
-<Tabs items={['Basic Usage', 'Advanced Features', 'Performance']}>
+<Tabs items={['Basic Usage', 'Mit Analytics', 'Hintergrund-Video']}>
   <Tab value="Basic Usage">
     ```tsx
     import {Video} from '@rixl/media-react';
@@ -213,54 +225,57 @@ yarn add @rixl/media-react
       className="w-full h-auto rounded-lg"
       autoPlay={false}
       muted={false}
-      progressBar={true}
-      allowFullscreen={true}
+      controls
     />
     ```
+
   </Tab>
-  <Tab value="Advanced Features">
+  <Tab value="Mit Analytics">
     ```tsx
-    // Advanced configuration
+    import {Video} from '@rixl/media-react';
+
     <Video
       id="your-media-id"
-      className="aspect-video"
-      autoPlay={true}
-      muted={true}
-      loop={true}
-      progressBar={false}
-      allowPlayPause={false}
-      // For background videos
+      className="w-full h-auto rounded-lg"
+      controls
+      analytics
+      analyticsPage="feed"
+      onRixlAnalytics={(e) => console.log(e.detail.event)}
     />
     ```
+
   </Tab>
-  <Tab value="Performance">
+  <Tab value="Hintergrund-Video">
     ```tsx
-    // Performance optimized
+    import {Video} from '@rixl/media-react';
+
+    // Background video without built-in controls
     <Video
       id="your-media-id"
       className="w-full h-auto"
-      // Let RIXL handle quality selection
-      // Enable lazy loading for off-screen content
-      loading="lazy"
+      autoPlay
+      muted
+      loop
+      playsInline
     />
     ```
+
   </Tab>
 </Tabs>
 
 **Best Practices für die Image-Komponente:**
 
 ```tsx
-import { Image } from '@rixl/media-react';
+import {Image} from "@rixl/media-react";
 
 // Optimized image usage
 <Image
   id="your-image-id"
-  alt="Descriptive alt text for accessibility"
   className="w-full h-auto object-cover"
-  // Automatic format selection (WebP, AVIF)
-  // Responsive sizing
-  // Thumbhash placeholders
-/>
+  analytics
+  analyticsPage="product"
+  onRixlAnalytics={(e) => console.log(e.detail.event)}
+/>;
 ```
 
 ### Barrierefreiheit umsetzen
@@ -269,8 +284,7 @@ import { Image } from '@rixl/media-react';
 
 <Columns cols={2}>
   <Card title="Alternativtext" icon="eye">
-    Geben Sie stets beschreibenden Alternativtext für Bilder und aussagekräftige Titel für
-    Videos an.
+    Geben Sie stets beschreibenden Alternativtext für Bilder und aussagekräftige Titel für Videos an.
   </Card>
   <Card title="Tastaturnavigation" icon="keyboard">
     RIXL-Komponenten enthalten eine integrierte Unterstützung für die Tastaturnavigation.
@@ -299,11 +313,12 @@ import { Image } from '@rixl/media-react';
 **Schützen Sie Ihre API-Schlüssel und setzen Sie sichere Praktiken um:**
 
 <Callout type="warning">
-  **API-Schlüssel sind wie Passwörter für Ihr Projekt**. Bewahren Sie sie sicher auf und geben Sie sie niemals öffentlich weiter
-  oder committen Sie sie in die Versionsverwaltung.
+  **API-Schlüssel sind wie Passwörter für Ihr Projekt**. Bewahren Sie sie sicher auf und geben Sie sie niemals öffentlich weiter oder
+  committen Sie sie in die Versionsverwaltung.
 </Callout>
 
 **Sicherheitsrichtlinien:**
+
 - API-Schlüssel in Umgebungsvariablen speichern
 - Unterschiedliche Schlüssel für Entwicklung und Produktion verwenden
 - Schlüssel regelmäßig rotieren
@@ -322,6 +337,7 @@ import { Image } from '@rixl/media-react';
     1. Upload initialisieren, um vorsignierte URLs zu erhalten
     2. Datei direkt in den sicheren Cloud-Speicher hochladen
     3. Upload abschließen, um die Verarbeitung auszulösen
+
   </Step>
   <Step>
     **Fehlerbehandlung**
@@ -331,6 +347,7 @@ import { Image } from '@rixl/media-react';
     - Fortschrittsverfolgung und Nutzerrückmeldung
     - Timeout-Behandlung für große Dateien
     - Wiederherstellung bei Netzwerkfehlern
+
   </Step>
   <Step>
     **Leistung**
@@ -340,6 +357,7 @@ import { Image } from '@rixl/media-react';
     - Fortsetzungsfähigkeit für unterbrochene Uploads implementieren
     - Upload-Fortschritt überwachen und Rückmeldung geben
     - Mehrere Uploads effizient bündeln
+
   </Step>
 </Steps>
 
@@ -355,20 +373,21 @@ const monitorProcessing = async (videoId) => {
   while (true) {
     const status = await checkProcessingStatus(videoId);
 
-    if (status.state === 'completed') {
+    if (status.state === "completed") {
       break;
-    } else if (status.state === 'failed') {
+    } else if (status.state === "failed") {
       handleProcessingError(status.error);
       break;
     }
 
     // Adjust polling frequency based on processing stage
-    await new Promise(resolve => setTimeout(resolve, pollInterval));
+    await new Promise((resolve) => setTimeout(resolve, pollInterval));
   }
 };
 ```
 
 **Best Practices für die Überwachung:**
+
 - Intelligente Abfrageintervalle verwenden (anfangs häufig, mit der Zeit reduzieren)
 - Exponentielles Backoff bei Fehlern implementieren
 - Statusantworten kurz zwischenspeichern, um API-Aufrufe zu reduzieren
@@ -383,15 +402,13 @@ const monitorProcessing = async (videoId) => {
 
 <Columns cols={3}>
   <Card title="Zugriffssteuerung" icon="shield">
-    Nutzen Sie Projektberechtigungen und API-Schlüssel, um zu steuern, wer auf Ihre Medien
-    zugreifen kann.
+    Nutzen Sie Projektberechtigungen und API-Schlüssel, um zu steuern, wer auf Ihre Medien zugreifen kann.
   </Card>
   <Card title="Sichere Auslieferung" icon="lock">
     Liefern Sie Inhalte über HTTPS mit sicheren, signierten URLs für private Medien aus.
   </Card>
   <Card title="Regelmäßige Audits" icon="check-square">
-    Überprüfen Sie regelmäßig Zugriffsprotokolle und Berechtigungen, um die Sicherheit
-    zu gewährleisten.
+    Überprüfen Sie regelmäßig Zugriffsprotokolle und Berechtigungen, um die Sicherheit zu gewährleisten.
   </Card>
 </Columns>
 
@@ -404,20 +421,16 @@ const monitorProcessing = async (videoId) => {
     Das globale CDN von RIXL cacht Inhalte automatisch nah bei Ihren Nutzern.
   </Card>
   <Card title="Lazy Loading verwenden" icon="zap">
-    Laden Sie Bilder und Videos erst, wenn sie in den Sichtbereich gelangen, um Bandbreite
-    zu sparen.
+    Laden Sie Bilder und Videos erst, wenn sie in den Sichtbereich gelangen, um Bandbreite zu sparen.
   </Card>
   <Card title="Platzhalter optimieren" icon="image">
-    Nutzen Sie intelligente Platzhalter, um die wahrgenommene Ladezeit zu verbessern und
-    Layout-Verschiebungen zu vermeiden.
+    Nutzen Sie intelligente Platzhalter, um die wahrgenommene Ladezeit zu verbessern und Layout-Verschiebungen zu vermeiden.
   </Card>
 </Columns>
 
 ## Wie geht es weiter?
 
 <Callout type="tip">
-  Bereit, diese Praktiken umzusetzen? Beginnen Sie mit der
-  [5-Minuten-Schnellstartanleitung](/de/home/getting-started/quick-start) oder erkunden Sie die
-  [Dashboard-Anleitung der Plattform](/de/home/platform/dashboard/guide) für vertiefende
-  Workflows.
+  Bereit, diese Praktiken umzusetzen? Beginnen Sie mit der [5-Minuten-Schnellstartanleitung](/de/home/getting-started/quick-start) oder
+  erkunden Sie die [Dashboard-Anleitung der Plattform](/de/home/platform/dashboard/guide) für vertiefende Workflows.
 </Callout>

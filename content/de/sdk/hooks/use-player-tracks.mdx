@@ -3,7 +3,13 @@ title: "usePlayerTracks"
 description: "Read and change player-scoped audio and subtitle track selection."
 ---
 
+import {Callout} from "fumadocs-ui/components/callout";
+
 `usePlayerTracks()` exposes the current audio and subtitle track selection for the current scoped player.
+
+<Callout type="warning">
+  This hook requires a `VideoPlayer` scope and a scope-aware media element. The Lit `<Video>` wrapper does not automatically participate in the scope.
+</Callout>
 
 ## Signature
 
@@ -23,17 +29,10 @@ It returns:
 ## Example
 
 ```tsx
-import {Video, usePlayerTracks} from "@rixl/media-react";
+import {VideoPlayer, usePlayerTracks} from "@rixl/media-react";
 
 function CustomTrackControls() {
-  const {
-    audioTrack,
-    availableAudioTracks,
-    subtitleTrack,
-    availableSubtitleTracks,
-    setAudioTrack,
-    setSubtitleTrack,
-  } = usePlayerTracks();
+  const {audioTrack, availableAudioTracks, subtitleTrack, availableSubtitleTracks, setAudioTrack, setSubtitleTrack} = usePlayerTracks();
 
   return (
     <div className="space-y-2">
@@ -59,9 +58,10 @@ function CustomTrackControls() {
 
 function CustomPlayer() {
   return (
-    <Video id="your-video-id" theme="hideUI" analytics={false}>
+    <VideoPlayer>
       <CustomTrackControls />
-    </Video>
+      {/* scope-aware media element */}
+    </VideoPlayer>
   );
 }
 ```

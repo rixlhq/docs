@@ -1,52 +1,52 @@
 ---
 title: "Video: Minimal Player"
-description: "Muted video with no controls for Feed components and custom UI implementations"
+description: "Muted video with native controls hidden for Feed components and custom UI implementations"
 ---
 
-import { Video } from '@/snippets'
-import { Callout } from 'fumadocs-ui/components/callout'
+import {Video} from "@/snippets";
+import {Callout} from "fumadocs-ui/components/callout";
 
 # Minimal Video Player
 
-A video player with no UI controls, designed for Feed components where you build custom interfaces on top of the video.
+A video player with native controls hidden, designed for Feed components and custom UI overlays.
+
+<Callout type="warning">
+  The React `Video` wrapper currently renders a standard `<video>` element with native controls. To hide the controls, apply CSS `controls={false}` is not a public prop; use a parent wrapper with `overflow-hidden` and an overlay, or use the `<rixl-video>` element directly and call `videoElement.controls = false`.
+</Callout>
 
 ## Live Example
 
-<div className="w-full h-[500px]">
-    <Video
-        id="HhWaDUjU74"
-        className="w-full h-auto rounded-lg"
-        theme="minimal"
-        muted={true}
-    />
+<div className="w-full aspect-video rounded-lg overflow-hidden">
+  <Video id="your-video-id" className="w-full h-full object-cover" muted={true} autoPlay={true} />
 </div>
 
 ## Basic Implementation
 
 ```tsx
-import { Video } from '@rixl/media-react';
+import {Video} from "@rixl/media-react";
 
-<Video
-  id="your-video-id"
-  theme="minimal"
-  muted={true} // Permanently disables audio and hides sound controls
-/>
+function MinimalVideo({videoId}) {
+  return (
+    <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+      <Video id={videoId} className="w-full h-full object-cover" muted={true} autoPlay={true} />
+      {/* Your custom overlay UI */}
+    </div>
+  );
+}
 ```
-
-<Callout type="info">
-    Setting `muted={true}` permanently disables audio and hides the mute button and volume controls. This is ideal for feed components and custom UI implementations where you handle audio separately.
-</Callout>
 
 ## What's Included
 
 **Available:**
+
 - Video playback
 - Autoplay support
+- Analytics events
 
-**NOT Available:**
-- No visible controls
-- No keyboard shortcuts
-- No audio (must be muted)
+**Notes:**
+
+- Native controls are shown by default
+- Audio is muted for autoplay compliance
 
 ## Use Cases
 
@@ -55,17 +55,10 @@ import { Video } from '@rixl/media-react';
 Build TikTok/Instagram-style feeds with custom UI:
 
 ```tsx
-function FeedVideo({ videoId }) {
+function FeedVideo({videoId}) {
   return (
     <div className="relative w-full h-screen">
-      <Video
-        id={videoId}
-        className="w-full h-full object-cover"
-        theme="minimal"
-        muted={true}
-        autoPlay={true}
-        loop={true}
-      />
+      <Video id={videoId} className="w-full h-full object-cover" muted={true} autoPlay={true} />
 
       {/* Your custom overlay UI */}
       <div className="absolute bottom-20 left-6 text-white">
@@ -81,31 +74,19 @@ function FeedVideo({ videoId }) {
 
 ```tsx
 <div className="grid grid-cols-3 gap-4">
-  {videos.map(video => (
-    <Video
-      key={video.id}
-      id={video.id}
-      className="w-full aspect-video object-cover rounded-lg"
-      theme="minimal"
-      muted={true}
-      autoPlay={true}
-      loop={true}
-    />
+  {videos.map((video) => (
+    <Video key={video.id} id={video.id} className="w-full aspect-video object-cover rounded-lg" muted={true} autoPlay={true} />
   ))}
 </div>
 ```
 
 ## When to Use
 
-**Use Minimal Theme For:**
+**Use minimal layout for:**
+
 - Feed components
 - Video previews
 - Background videos
 - Custom player implementations
-
-**Use Standard Theme Instead:**
-- Videos that need audio
-- Content requiring user controls
-- Educational or tutorial content
 
 Need audio or controls? Use the [Standard Video Player](/en/sdk/examples/standard-player) instead.

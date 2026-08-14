@@ -3,7 +3,13 @@ title: "useGlobalPlayerSettings"
 description: "Coordinate shared playback and preference changes across multiple mounted Video instances."
 ---
 
+import {Callout} from "fumadocs-ui/components/callout";
+
 `useGlobalPlayerSettings()` is the advanced page-level hook for shared controls.
+
+<Callout type="warning">
+  This hook fans out to every mounted player scope. The new Lit `<Video>` does not register with the React player scope; use it only when you also have a scope-aware media element.
+</Callout>
 
 ## Signature
 
@@ -30,18 +36,13 @@ It returns shared values and fan-out actions for mounted players, including:
 ## Example
 
 ```tsx
-import {Video, useGlobalPlayerSettings} from "@rixl/media-react";
+import {VideoPlayer, useGlobalPlayerSettings} from "@rixl/media-react";
 
 function PageLevelPlayerControls() {
   const {muted, setMuted, pauseAll} = useGlobalPlayerSettings();
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <Video id="video-a" theme="hideUI" analytics={false} />
-        <Video id="video-b" theme="hideUI" analytics={false} />
-      </div>
-
       <div className="flex items-center gap-3">
         <button type="button" onClick={() => setMuted(!muted)}>
           {muted ? "Unmute all" : "Mute all"}
@@ -52,6 +53,15 @@ function PageLevelPlayerControls() {
         </button>
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <VideoPlayer>
+      <PageLevelPlayerControls />
+      {/* scope-aware media elements */}
+    </VideoPlayer>
   );
 }
 ```

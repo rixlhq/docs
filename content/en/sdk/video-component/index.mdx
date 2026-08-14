@@ -1,59 +1,79 @@
 ---
 title: "Overview"
-description: "Feature-rich video player for RIXL content with HLS streaming, quality selection, and advanced controls"
+description: "Video player for RIXL content with HLS streaming, browser controls, and built-in analytics"
 ---
 
-The Video component is a professional-grade video player optimized for media platforms. It delivers adaptive streaming with automatic quality selection, comprehensive accessibility features, and a customizable interface that works seamlessly across all modern browsers and devices.
+import {Callout} from "@/snippets";
 
-### Custom Controls
+## Overview
 
-Need custom controls instead of the built-in UI? Use the public [Hooks](/en/sdk/hooks) section.
+The `Video` component plays RIXL video content using adaptive HLS streaming. It is implemented as a Lit web component (`<rixl-video>`) and wrapped for React so analytics and playback behavior are consistent across every framework.
 
-The supported pattern is:
+The component renders a standard HTML `<video>` element and uses `hls.js` for HLS support where native support is missing. It tracks `content_views`, engagement, interaction, and error events automatically.
 
-- inline controls inside `<Video theme="hideUI">`
-- detached sibling controls inside `<VideoPlayer>`
+### Quick Example
 
-The public player hooks are zero-argument and resolve the current player from scope.
+```tsx
+import {Video} from "@rixl/media-react";
+
+function Player() {
+  return (
+    <Video
+      id="your-video-id"
+      className="w-full h-auto rounded-lg"
+      analyticsPage="standalone"
+      onRixlAnalytics={(e) => console.log(e.detail.event)}
+    />
+  );
+}
+```
 
 ### Key Capabilities
 
-**Streaming & Quality**
-- Adaptive streaming with automatic quality selection
-- Manual quality control (360p to 4K)
+**Streaming & Playback**
 
-**Accessibility & Localization**
-- Multi-language subtitle support with custom styling
-- Multiple audio track selection
-- Screen reader compatible controls
-- Keyboard navigation support
+- HLS playback with automatic `hls.js` fallback
+- Muted autoplay by default for browser compliance
+- Standard `<video>` element controls
+- `src` override for direct streams
 
-**Player Controls**
-- Picture-in-Picture mode
-- Fullscreen support
-- Custom progress bar and volume controls
-- Play/pause, seeking, and loop functionality
+**Analytics**
+
+- `content_views` `start`/`watch`/`end` events with segments
+- Interaction events: `play`, `pause`, `seek`, `mute`, `volume_change`, `fullscreen`, `picture_in_picture`, `quality_change`, `settings_open`
+- Error events: `video_load_error`, `video_api_error`, and `hls_*` errors
+- `feed_id`, `post_id`, and `page` context support
 
 **Customization**
-- Multiple theme options (default, minimal, hover, feed, hidden)
-- Hover theme for Netflix-style play-on-hover video previews
-- CSS class customization
+
+- CSS class customization through `className`
 - Responsive design with aspect ratio preservation
 
 <Callout type="info">
-  All videos are automatically optimized for your users' devices and connection speeds. No additional configuration
-  required for basic usage.
+  The React wrapper still accepts legacy UI props (`theme`, `progressBar`, `allowFullscreen`, etc.) for backward compatibility, but they are not forwarded to the Lit element. Use `className` and the browser `<video>` controls for current behavior.
 </Callout>
+
+### Custom Controls
+
+Need custom controls instead of the built-in browser UI? Use the public [Hooks](/en/sdk/hooks) section.
+
+The supported pattern is:
+
+- Detached sibling controls inside `<VideoPlayer>`
+- The player-scope hooks (`usePlayback`, `usePlayerProgress`, etc.) bind to the enclosing player scope, not directly to the Lit-backed `<Video>`
+
+The new `<Video>` is a self-contained custom element. Custom controls can also be built by listening to `onRixlAnalytics` and driving a separate `<video>` element if necessary.
 
 ### When to Use
 
 The Video component is perfect for:
+
 - **Content platforms** requiring professional video playback
-- **E-learning applications** with subtitle and quality requirements
+- **E-learning applications** with adaptive streaming
 - **Marketing websites** needing background or promotional videos
 - **Documentation sites** with instructional video content
 - **Mobile-first applications** requiring adaptive streaming
 
 ### Browser Support
 
-Works seamlessly across all modern browsers. Automatic fallbacks ensure compatibility with older browsers while maintaining core functionality.
+Works seamlessly across all modern browsers. `hls.js` provides HLS playback support where native support is absent.

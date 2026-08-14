@@ -3,35 +3,22 @@ title: Image Processing
 description: Transform any image into lightning-fast AVIF files with smart placeholders, responsive delivery, and global CDN distribution.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
-import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+import {Step, Steps} from "fumadocs-ui/components/steps";
 
 Welcome to **RIXL Image Processing** — where every image becomes a performance powerhouse. Upload any format and get back perfectly processed AVIF files with smart placeholders, responsive sizing, and instant global delivery.
 
 ## Quick Actions
 
 <Columns cols={3}>
-  <Card
-    title="Upload Images"
-    href="/en/home/platform/uploads/images"
-    icon="upload"
-  >
+  <Card title="Upload Images" href="/en/home/platform/uploads/images" icon="upload">
     Transform images with automatic AVIF compression and smart placeholders.
   </Card>
-  <Card
-    title="React Component"
-    href="/en/sdk/image-component"
-    icon="layers"
-  >
+  <Card title="React Component" href="/en/sdk/image-component" icon="layers">
     Drop-in Image component with lazy loading and responsive sizing.
   </Card>
-  <Card
-    title="Dashboard Management"
-    href="/en/home/platform/dashboard/media/overview"
-    icon="monitor"
-  >
+  <Card title="Dashboard Management" href="/en/home/platform/dashboard/media/overview" icon="monitor">
     Upload, organize, and manage images through our web interface.
   </Card>
 </Columns>
@@ -43,24 +30,28 @@ Welcome to **RIXL Image Processing** — where every image becomes a performance
     **Upload Any Format**
 
     Drop in JPEG, PNG, WebP, HEIC, or any common image format. RIXL accepts files up to 100MB each.
+
   </Step>
 
   <Step>
     **Automatic AVIF Conversion**
 
     Every image is converted to AVIF format for 50% smaller file sizes with no visible quality loss.
+
   </Step>
 
   <Step>
     **Smart Placeholder Generation**
 
     Instant blur placeholders are created for smooth loading experiences while full images load.
+
   </Step>
 
   <Step>
     **Global CDN Delivery**
 
     Your images are distributed to 200+ edge locations worldwide for instant loading anywhere.
+
   </Step>
 </Steps>
 
@@ -90,6 +81,7 @@ Welcome to **RIXL Image Processing** — where every image becomes a performance
 ## Supported Formats
 
 ### Input Formats
+
 RIXL accepts all common image formats for processing:
 
 <Columns cols={3}>
@@ -105,6 +97,7 @@ RIXL accepts all common image formats for processing:
 </Columns>
 
 ### Output Preparation
+
 Every image is automatically prepared for web delivery:
 
 - **Primary:** AVIF format (50% smaller than JPEG)
@@ -116,82 +109,61 @@ Every image is automatically prepared for web delivery:
 
 ### React Component Usage
 
-<Tabs items={['Basic Usage', 'Responsive Gallery', 'E-commerce Product']}>
+<Tabs items={['Basic Usage', 'With Analytics', 'Lit / HTML']}>
   <Tab value="Basic Usage">
     ```jsx
     import {Image} from '@rixl/media-react';
 
     function ProfilePhoto({imageId}) {
-    return (
-    <Image
-    id={imageId}
-       alt="User profile photo"
-       className="w-32 h-32 rounded-full object-cover"
-       loading="eager"
-       priority={true}
-  />
-  );
-  }
-  ```
-</Tab>
+      return (
+        <Image
+          id={imageId}
+          className="w-32 h-32 rounded-full object-cover"
+        />
+      );
+    }
+    ```
 
-<Tab value="Responsive Gallery">
-  ```jsx
-  import {Image} from '@rixl/media-react';
+  </Tab>
 
-  function ImageGallery({images}) {
-  return (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-{images.map((image, index) => (
-  <div key={image.id} className="aspect-square">
-  <Image
-    id={image.id}
-    alt={image.description}
-    className="w-full h-full object-cover rounded-lg hover:scale-105 transition-transform"
-    loading={index < 6 ? "eager" : "lazy"}
-    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-  />
-</div>
-))}
-</div>
-);
-}
-```
-</Tab>
+  <Tab value="With Analytics">
+    ```jsx
+    import {Image} from '@rixl/media-react';
 
-<Tab value="E-commerce Product">
-  ```jsx
-  import {Image} from '@rixl/media-react';
+    function ProfilePhoto({imageId}) {
+      return (
+        <Image
+          id={imageId}
+          className="w-32 h-32 rounded-full object-cover"
+          analytics
+          analyticsPage="profile"
+          onRixlAnalytics={(e) => console.log(e.detail.event)}
+        />
+      );
+    }
+    ```
 
-  function ProductImage({product}) {
-  return (
-  <div className="product-image-container">
-  <Image
-  id={product.mainImageId}
-     alt={`${product.name} - main product image`}
-     className="w-full h-96 object-cover rounded-lg"
-     priority={true}
-     sizes="(max-width: 768px) 100vw, 50vw"
-     onLoad={() => console.log('Product image loaded')}
-/>
+  </Tab>
 
-<div className="flex gap-2 mt-4">
-  {product.thumbnailIds.map((thumbId, index) => (
-    <Image
-      key={thumbId}
-      id={thumbId}
-      alt={`${product.name} - view ${index + 1}`}
-      className="w-16 h-16 object-cover rounded cursor-pointer hover:opacity-75"
-      loading="lazy"
-    />
-  ))}
-</div>
-</div>
-);
-}
-```
-</Tab>
+  <Tab value="Lit / HTML">
+    ```html
+    <script type="module">
+      import '@rixl/media-lit/image.js';
+    </script>
+
+    <rixl-image
+      image-id="your-image-id"
+      analytics
+      analytics-page="profile"
+    ></rixl-image>
+    ```
+
+  </Tab>
 </Tabs>
+
+<Callout type="info">
+  The React `Image` component is a `@lit/react` wrapper around `<rixl-image>`. It accepts `id`, `className`, and analytics props (`analytics`, `analyticsPage`, `feedId`, `postId`, `onRixlAnalytics`). Legacy props such as `alt`, `loading`, `priority`, and `sizes` are accepted for backward compatibility but are not forwarded to the Lit element.
+</Callout>
 
 ### API Integration
 
@@ -221,6 +193,7 @@ Every image is automatically prepared for web delivery:
       return { image_id, expires_at };
     };
     ```
+
   </Tab>
 
   <Tab value="Get Image Details">
@@ -235,6 +208,7 @@ Every image is automatically prepared for web delivery:
       return data;
     };
     ```
+
   </Tab>
 
   <Tab value="List Images">
@@ -249,6 +223,7 @@ Every image is automatically prepared for web delivery:
       return data.images ?? [];
     };
     ```
+
   </Tab>
 </Tabs>
 
@@ -301,33 +276,21 @@ Every image is automatically prepared for web delivery:
 Ready to deliver your images? Choose your approach:
 
 <Columns cols={3}>
-  <Card
-    title="Upload Your First Image"
-    href="/en/home/platform/uploads/images"
-    icon="upload"
-  >
+  <Card title="Upload Your First Image" href="/en/home/platform/uploads/images" icon="upload">
     See AVIF transformation in action with our dashboard upload.
   </Card>
-  <Card
-    title="React Integration"
-    href="/en/sdk/image-component"
-    icon="layers"
-  >
+  <Card title="React Integration" href="/en/sdk/image-component" icon="layers">
     Add the Image component to your React application.
   </Card>
-  <Card
-    title="API Implementation"
-    href="/en/api"
-    icon="code"
-  >
+  <Card title="API Implementation" href="/en/api" icon="code">
     Build custom image workflows with our REST API.
   </Card>
 </Columns>
 
 <div className="mt-12">
   <Callout type="tip" title="Ready to see the difference?">
-    Start with our [Dashboard Upload](/en/home/platform/uploads/images) to see AVIF transformation in action, or jump into the
-    [React Component Guide](/en/sdk/image-component) to add delivered images to your application. For custom workflows,
-    explore our [API Documentation](/en/api).
+    Start with our [Dashboard Upload](/en/home/platform/uploads/images) to see AVIF transformation in action, or jump into the [React
+    Component Guide](/en/sdk/image-component) to add delivered images to your application. For custom workflows, explore our [API
+    Documentation](/en/api).
   </Callout>
 </div>

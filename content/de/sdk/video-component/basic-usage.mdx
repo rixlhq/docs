@@ -3,13 +3,13 @@ title: "Basic Usage"
 description: "Learn how to implement the Video component with common patterns and use cases"
 ---
 
-
-import {Callout} from "@/snippets";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/tabs";
+import {Callout} from "fumadocs-ui/components/callout";
 
 ## Importing the Video Component
 
 ```tsx
-import { Video } from '@rixl/media-react';
+import {Video} from "@rixl/media-react";
 ```
 
 ## Essential Props
@@ -18,158 +18,137 @@ Every Video component needs at minimum:
 
 ```tsx
 <Video
-  id="D3OCjdLP60" // Required: Your media ID from dash.rixl.com/videos
-  className="w-full h-auto" // Recommended: Basic styling
+  id="your-video-id" // Required: Your video ID from dash.rixl.com/videos
 />
 ```
 
-## Simple Video Player Example
+The `id` prop is mapped to `videoId` on the underlying `<rixl-video>` web component.
 
-Here's a basic implementation with common settings:
+## Simple Video Player
 
 ```tsx
-import { Video } from '@rixl/media-react';
+import {Video} from "@rixl/media-react";
 
-function BasicVideoPlayer() {
+function BasicVideo() {
   return (
     <div className="max-w-4xl mx-auto">
-      <Video
-        id="D3OCjdLP60"
-        className="w-fit h-fit bg-transparent rounded-lg"
-        progressBar={true}
-        allowFullscreen={true}
-        allowPictureInPicture={true}
-        volume={0.8}
-      />
+      <Video id="your-video-id" className="w-full h-auto rounded-lg" analyticsPage="standalone" />
     </div>
   );
 }
+```
+
+## Listening to Analytics Events
+
+```tsx
+import {Video} from "@rixl/media-react";
+
+function AnalyticsVideo() {
+  return (
+    <Video
+      id="your-video-id"
+      analyticsPage="standalone"
+      onRixlAnalytics={(e) => {
+        console.log("Analytics event:", e.detail.event);
+      }}
+    />
+  );
+}
+```
+
+## Lit / Vanilla HTML
+
+```html
+<script type="module">
+  import "@rixl/media-lit/video";
+
+  const video = document.querySelector("rixl-video");
+  video.addEventListener("rixl-analytics", (e) => {
+    console.log(e.detail.event);
+  });
+</script>
+
+<rixl-video video-id="your-video-id" analytics-page="standalone"></rixl-video>
 ```
 
 ## Common Use Cases
 
-### Hero Video (Autoplay Background)
+### Full-Width Video
 
-   ```tsx
-function HeroVideo() {
-    return (
+<Tabs defaultValue="hero">
+  <TabsList>
+    <TabsTrigger value="hero">Hero Background</TabsTrigger>
+    <TabsTrigger value="contained">Contained Player</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="hero">
+    ```tsx
+    function HeroVideo() {
+      return (
         <section className="relative h-screen overflow-hidden">
-            <Video
-                id="D3OCjdLP60"
-                className="absolute inset-0 w-full h-full object-cover"
-                autoPlay={true}
-                muted={true}
-                loop={true}
-                progressBar={false}
-                allowPlayPause={false}
-                allowFullscreen={false}
-                theme={"hideUI"}
-            />
-            <div className="relative z-10 flex items-center justify-center h-full">
-                <h1 className="text-6xl font-bold text-white">Welcome</h1>
-            </div>
+          <Video
+            id="hero-video-id"
+            autoPlay
+            muted
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="relative z-10 flex items-center justify-center h-full">
+            <h1 className="text-4xl font-bold text-white">Welcome</h1>
+          </div>
         </section>
-    );
-}
-```
+      );
+    }
+    ```
+  </TabsContent>
 
-<Callout type="tip">
-    **See it in action:** Check out the [AutoPlay Background video](/de/sdk/examples/autoplay-background) for a complete background video autoplay implementation.
-</Callout>
+  <TabsContent value="contained">
+    ```tsx
+    function ContainedVideo() {
+      return (
+        <section className="max-w-4xl mx-auto py-12">
+          <div className="aspect-video rounded-xl overflow-hidden">
+            <Video
+              id="video-id"
+              className="w-full h-full"
+            />
+          </div>
+        </section>
+      );
+    }
+    ```
+  </TabsContent>
+</Tabs>
 
-### Content Video (Standard Player)
-
-```tsx
-function ContentVideo() {
-  return (
-    <article className="max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Product Demo</h2>
-
-      <Video
-        id="D3OCjdLP60"
-        className="w-full h-auto rounded-lg shadow-lg mb-4"
-        progressBar={true}
-        allowFullscreen={true}
-        allowPictureInPicture={true}
-        theme="default"
-        volume={1.0}
-      />
-
-      <p className="text-gray-600">
-        Watch our comprehensive product demonstration...
-      </p>
-    </article>
-  );
-}
-```
-
-<Callout type="tip">
-    **See it in action:** Check out the [Standard player video example](/de/sdk/examples/standard-player) for a complete standard video player implementation.
-</Callout>
-
-### Video Gallery/Playlist
+### Autoplay Preview
 
 ```tsx
-import { useState } from 'react';
-
-const videoList = [
-  { id: 'D3OCjdLP60', title: 'Introduction', duration: '2:30' },
-  { id: 'ABC123XYZ', title: 'Getting Started', duration: '5:45' },
-  { id: 'DEF456UVW', title: 'Advanced Features', duration: '8:15' }
-];
-
-function VideoGallery() {
-  const [currentVideo, setCurrentVideo] = useState(videoList[0]);
-
+function HoverPreview() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Main Player */}
-      <div className="lg:col-span-2">
-        <Video
-          key={currentVideo.id} // Important: Force re-render on video change
-          id={currentVideo.id}
-          className="w-full h-auto rounded-lg"
-          progressBar={true}
-          allowFullscreen={true}
-          allowPictureInPicture={true}
-        />
-        <h3 className="text-xl font-semibold mt-3">{currentVideo.title}</h3>
-      </div>
-
-      {/* Playlist */}
-      <div className="space-y-3">
-        <h4 className="font-semibold">Playlist</h4>
-        {videoList.map((video) => (
-          <button
-            key={video.id}
-            onClick={() => setCurrentVideo(video)}
-            className={`w-full p-3 text-left rounded-lg border ${
-              currentVideo.id === video.id
-                ? 'border-blue-500 bg-blue-50'
-                : 'border-gray-200 hover:bg-gray-50'
-            }`}
-          >
-            <div className="font-medium">{video.title}</div>
-            <div className="text-sm text-gray-500">{video.duration}</div>
-          </button>
-        ))}
-      </div>
+    <div className="w-64 aspect-video">
+      <Video id="preview-video-id" autoPlay muted className="w-full h-full object-cover" />
     </div>
   );
+}
+```
+
+### Feed Video
+
+```tsx
+import {Feed} from "@rixl/media-react";
+
+function FeedPage() {
+  return <Feed feedId="my-feed" analyticsPage="feed" onRixlAnalytics={(e) => console.log(e.detail.event)} />;
 }
 ```
 
 ## Best Practices
 
-<Callout type="info">
-  **Aspect Ratio**: Use `w-fit h-fit` classes to respect the video's natural aspect ratio, preventing distortion.
-</Callout>
+<Callout type="default">**Aspect Ratios**: Use CSS aspect-ratio classes to prevent layout shifts during video loading.</Callout>
 
 <Callout type="info">
-  **Autoplay**: The SDK handles browser autoplay compliance automatically — just use `autoPlay={true}`. The video starts muted until the user interacts, and sound controls stay visible. Only add `muted={true}` for background videos where audio should be permanently disabled.
+  **Autoplay**: The component mutes video by default to satisfy browser autoplay policies. You can also pass `muted={true}` explicitly.
 </Callout>
 
-<Callout type="info">
-  **Performance**: For video galleries, use the `key` prop to ensure proper component re-initialization when switching
-  videos.
+<Callout type="warning">
+  **Legacy props**: `theme`, `progressBar`, `allowFullscreen`, `heatmap`, `chapters`, and similar UI props are no longer forwarded. Use `className` and the browser `<video>` controls for now.
 </Callout>

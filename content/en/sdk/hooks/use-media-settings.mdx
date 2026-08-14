@@ -3,7 +3,13 @@ title: "useMediaSettings"
 description: "Read and update player-scoped mute and volume state for the current Video instance."
 ---
 
+import {Callout} from "fumadocs-ui/components/callout";
+
 `useMediaSettings()` exposes player-scoped audio state and actions.
+
+<Callout type="warning">
+  This hook requires a `VideoPlayer` scope and a scope-aware media element. The Lit `<Video>` wrapper does not automatically participate in the scope.
+</Callout>
 
 ## Signature
 
@@ -24,7 +30,7 @@ It returns:
 ## Example
 
 ```tsx
-import {Video, useMediaSettings} from "@rixl/media-react";
+import {VideoPlayer, useMediaSettings} from "@rixl/media-react";
 
 function CustomVolumeControls() {
   const {muted, volume, toggleMute, setVolume} = useMediaSettings();
@@ -35,23 +41,17 @@ function CustomVolumeControls() {
         {muted ? "Unmute" : "Mute"}
       </button>
 
-      <input
-        type="range"
-        min={0}
-        max={1}
-        step={0.05}
-        value={volume}
-        onChange={(event) => setVolume(Number(event.target.value))}
-      />
+      <input type="range" min={0} max={1} step={0.05} value={volume} onChange={(event) => setVolume(Number(event.target.value))} />
     </div>
   );
 }
 
 function CustomPlayer() {
   return (
-    <Video id="your-video-id" theme="hideUI" analytics={false}>
+    <VideoPlayer>
       <CustomVolumeControls />
-    </Video>
+      {/* scope-aware media element */}
+    </VideoPlayer>
   );
 }
 ```

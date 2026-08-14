@@ -12,7 +12,7 @@ The `@rixl/media` package exports helpers that wrap the RIXL upload endpoints. T
 Upload helpers use the same authenticated `@rixl/sdk` client as the rest of the media SDK. Call `connect()` once before uploading:
 
 ```ts
-import { connect } from "@rixl/media";
+import {connect} from "@rixl/media";
 
 await connect({
   baseUrl: "https://api.rixl.com",
@@ -21,29 +21,30 @@ await connect({
 ```
 
 <Callout type="warning">
-  Never expose your API key in client-side code unless the upload is initiated by a backend you control. For end-user uploads, call `createImageUpload` / `createVideoUpload` from your backend and pass the `uploadUrl` to the client.
+  Never expose your API key in client-side code unless the upload is initiated by a backend you control. For end-user uploads, call
+  `createImageUpload` / `createVideoUpload` from your backend and pass the `uploadUrl` to the client.
 </Callout>
 
 ## Image Upload
 
 ```ts
-import { createImageUpload, uploadImage } from "@rixl/media";
+import {createImageUpload, uploadImage} from "@rixl/media";
 
-const { imageId, uploadUrl } = await createImageUpload({
+const {imageId, uploadUrl} = await createImageUpload({
   projectId: "your-project-id",
   name: "photo.jpg",
 });
 
-await uploadImage(file, { projectId: "your-project-id", name: "photo.jpg" });
+await uploadImage(file, {projectId: "your-project-id", name: "photo.jpg"});
 // or PUT directly to uploadUrl
 ```
 
 ## Video Upload
 
 ```ts
-import { createVideoUpload, uploadVideo } from "@rixl/media";
+import {createVideoUpload, uploadVideo} from "@rixl/media";
 
-const { videoId, videoUploadUrl, posterUploadUrl } = await createVideoUpload({
+const {videoId, videoUploadUrl, posterUploadUrl} = await createVideoUpload({
   projectId: "your-project-id",
   name: "clip.mp4",
   videoQuality: "pro",
@@ -59,20 +60,16 @@ await uploadVideo(videoFile, posterFile, {
 ## Audio Track Upload
 
 ```ts
-import { createAudioTrackUpload } from "@rixl/media";
+import {createAudioTrackUpload} from "@rixl/media";
 
-const result = await createAudioTrackUpload(
-  "project-id",
-  "video-id",
-  [
-    {
-      languageCode: "de",
-      label: "Deutsch",
-      fileName: "audio_de.m4a",
-      format: "m4a",
-    },
-  ]
-);
+const result = await createAudioTrackUpload("project-id", "video-id", [
+  {
+    languageCode: "de",
+    label: "Deutsch",
+    fileName: "audio_de.m4a",
+    format: "m4a",
+  },
+]);
 
 for (const target of result.targets) {
   console.log(target.id, target.uploadUrl);
@@ -82,20 +79,16 @@ for (const target of result.targets) {
 ## Subtitle Upload
 
 ```ts
-import { createSubtitleUpload } from "@rixl/media";
+import {createSubtitleUpload} from "@rixl/media";
 
-const result = await createSubtitleUpload(
-  "project-id",
-  "video-id",
-  [
-    {
-      languageCode: "de",
-      label: "Deutsch",
-      fileName: "subtitles_de.vtt",
-      format: "vtt",
-    },
-  ]
-);
+const result = await createSubtitleUpload("project-id", "video-id", [
+  {
+    languageCode: "de",
+    label: "Deutsch",
+    fileName: "subtitles_de.vtt",
+    format: "vtt",
+  },
+]);
 
 for (const target of result.targets) {
   console.log(target.id, target.uploadUrl);
@@ -105,7 +98,7 @@ for (const target of result.targets) {
 ## Feed Post Upload
 
 ```ts
-import { createPostUpload, uploadPost } from "@rixl/media";
+import {createPostUpload, uploadPost} from "@rixl/media";
 
 const options = {
   projectId: "your-project-id",
@@ -117,13 +110,14 @@ const options = {
   videoQuality: "pro",
 };
 
-const { postId, contentUploadUrl, posterUploadUrl } = await createPostUpload(options);
+const {postId, contentUploadUrl, posterUploadUrl} = await createPostUpload(options);
 
 await uploadPost(videoFile, posterFile, options);
 ```
 
 <Callout type="info">
-  `uploadImage`, `uploadVideo`, and `uploadPost` are convenience helpers that call `create*` and then `PUT` the files in parallel. Use `create*` alone when you want the client to upload directly to the presigned URL.
+  `uploadImage`, `uploadVideo`, and `uploadPost` are convenience helpers that call `create*` and then `PUT` the files in parallel. Use
+  `create*` alone when you want the client to upload directly to the presigned URL.
 </Callout>
 
 ## TypeScript Interfaces
@@ -158,7 +152,11 @@ interface VideoUploadResult {
 }
 
 declare function createVideoUpload(options: CreateVideoUploadOptions): Promise<VideoUploadResult>;
-declare function uploadVideo(videoFile: Blob | Uint8Array, posterFile: Blob | Uint8Array, options: CreateVideoUploadOptions): Promise<VideoUploadResult>;
+declare function uploadVideo(
+  videoFile: Blob | Uint8Array,
+  posterFile: Blob | Uint8Array,
+  options: CreateVideoUploadOptions
+): Promise<VideoUploadResult>;
 
 interface AudioTrackUploadItem {
   languageCode: string;
@@ -169,7 +167,7 @@ interface AudioTrackUploadItem {
 }
 
 interface AudioTrackUploadResult {
-  targets: { id: string; languageCode?: string; uploadUrl?: string }[];
+  targets: {id: string; languageCode?: string; uploadUrl?: string}[];
 }
 
 declare function createAudioTrackUpload(projectId: string, videoId: string, items: AudioTrackUploadItem[]): Promise<AudioTrackUploadResult>;
@@ -183,7 +181,7 @@ interface SubtitleUploadItem {
 }
 
 interface SubtitleUploadResult {
-  targets: { id: string; languageCode?: string; uploadUrl?: string }[];
+  targets: {id: string; languageCode?: string; uploadUrl?: string}[];
 }
 
 declare function createSubtitleUpload(projectId: string, videoId: string, items: SubtitleUploadItem[]): Promise<SubtitleUploadResult>;
@@ -208,5 +206,9 @@ interface PostUploadResult {
 }
 
 declare function createPostUpload(options: CreatePostUploadOptions): Promise<PostUploadResult>;
-declare function uploadPost(contentFile: Blob | Uint8Array, posterFile: Blob | Uint8Array, options: CreatePostUploadOptions): Promise<PostUploadResult>;
+declare function uploadPost(
+  contentFile: Blob | Uint8Array,
+  posterFile: Blob | Uint8Array,
+  options: CreatePostUploadOptions
+): Promise<PostUploadResult>;
 ```

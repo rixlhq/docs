@@ -10,23 +10,19 @@ description: "Complete TypeScript type definitions for the RIXL SDK"
 ```typescript
 interface VideoProps extends Omit<HTMLProps<HTMLVideoElement>, "onEnded"> {
   id: string;
-  progressBar?: boolean;
-  allowPlayPause?: boolean;
-  allowFullscreen?: boolean;
-  allowPictureInPicture?: boolean;
-  volume?: number;
-  theme?: VideoTheme;
-  lang?: SupportedLanguage;
+  src?: string;
+  autoPlay?: boolean;
+  muted?: boolean;
   analytics?: boolean;
   analyticsPage?: Page;
-  heatmap?: boolean;
-  hotSegments?: boolean;
-  resumeProgress?: boolean;
-  userId?: string;
-  userProperties?: Record<string, string>;
-  chapters?: boolean;
+  feedId?: string;
+  postId?: string;
+  isCurrent?: boolean;
+  onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
 }
 
+// `VideoTheme` wird weiterhin von `@rixl/media` für Settings/Caption-Styling exportiert,
+// aber der React `<Video>`-Wrapper akzeptiert kein `theme`-Prop mehr.
 type VideoTheme = "default" | "minimal" | "hover" | "feed" | "hideUI";
 
 type SupportedLanguage = "en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" | "uk";
@@ -34,7 +30,7 @@ type SupportedLanguage = "en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" |
 type Page = "feed" | "standalone" | "profile";
 ```
 
-`VideoProps` also inherits most standard HTML video props such as `className`, `muted`, `autoPlay`, `loop`, `playsInline`, and most DOM event handlers. `onEnded` is excluded from the public `<Video />` props surface; use `usePlayback().ended` inside the player scope when you need end-of-playback state for custom UI.
+`VideoProps` erbt außerdem die meisten Standard-HTML-Video-Props wie `className`, `muted`, `autoPlay`, `playsInline` und die meisten DOM-Event-Handler. `loop` wird akzeptiert, aber aktuell nicht an das Lit-Element weitergegeben. `onEnded` ist nicht Teil der öffentlichen `<Video />`-Props; für den End-of-Playback-Status kannst du `onRixlAnalytics` verwenden oder die Player-Scope-Hooks mit `<VideoPlayer>` nutzen.
 
 ### VideoPlayerProps
 
@@ -44,17 +40,20 @@ interface VideoPlayerProps {
 }
 ```
 
-`VideoPlayer` establishes a player scope for detached controls — render a `<Video>` and sibling hook consumers as children to share a single player instance without prop wiring.
+`VideoPlayer` erstellt einen Player-Scope für detached Controls. Render Hook-Consumer als Geschwister von `<Video>` innerhalb von `<VideoPlayer>`, um den Zustand zu teilen. Das neue Lit-basierte `<Video>` registriert sich nicht automatisch in den legacy Player-Stores; benutzerdefinierte Controls mit Hooks müssen explizit an einen Player-Scope angebunden werden.
 
 ### ImageProps
 
 ```typescript
 interface ImageProps extends HTMLProps<HTMLImageElement> {
   id?: string;
-  alt?: string;
+  alt?: string; // für Abwärtskompatibilität akzeptiert, aber nicht an das Lit-Element weitergegeben
   analytics?: boolean;
   analyticsPage?: Page;
-  className?: string;
+  feedId?: string;
+  postId?: string;
+  isCurrent?: boolean;
+  onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
 }
 ```
 
@@ -63,27 +62,29 @@ interface ImageProps extends HTMLProps<HTMLImageElement> {
 ```typescript
 interface FeedProps extends HTMLProps<HTMLDivElement> {
   feedId: string;
-  lang?: SupportedLanguage;
-  feedFont?: FontFamilyKey;
+  analytics?: boolean;
+  analyticsPage?: Page;
+  limit?: number;
+  buffer?: number;
   loop?: boolean;
   autoscroll?: boolean;
+  onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
+  // Legacy-Props aus Abwärtskompatibilität, aber nicht weitergegeben:
+  lang?: SupportedLanguage;
+  feedFont?: FontFamilyKey;
+  creatorId?: string;
+  startPostId?: string;
 }
 
 type FontFamilyKey =
-  | "monospace_serif"
-  | "proportional_serif"
-  | "monospace_sans"
-  | "proportional_sans"
-  | "casual"
-  | "cursive"
-  | "small_caps";
+  "monospace_serif" | "proportional_serif" | "monospace_sans" | "proportional_sans" | "casual" | "cursive" | "small_caps";
 ```
 
 ## Hook Types
 
 ### Player-Scoped Hooks
 
-These hooks read state from the enclosing player scope. Call them inside a component rendered within `<Video>` or `<VideoPlayer>` — they take no arguments and automatically bind to the current player.
+Diese Hooks lesen den Zustand aus dem umgebenden Player-Scope. Rufe sie in einer Komponente auf, die als Kind von `<VideoPlayer>` gerendert wird. Sie nehmen keine Argumente und binden an den aktuellen Player-Scope. Beachte, dass das neue Lit-basierte `<Video>` ein selbstständiges Custom Element ist und nicht automatisch am Player-Scope teilnimmt; benutzerdefinierte Controls sollten daher als Geschwister innerhalb von `<VideoPlayer>` gebaut werden oder `onRixlAnalytics` nutzen, um auf Player-Events zu reagieren.
 
 ```typescript
 interface UseMediaSettingsResult {
@@ -334,10 +335,184 @@ interface VideoHeatmap {
 
 Represents a high-engagement segment of a video.
 
-```typescript
+````typescript
 interface HotSegment {
   start_second: number;
   end_second: number;
   multiplier: number;
 }
+
+## Analytics-Typen
+
+### AnalyticsEvent
+
+Union aller Events, die über `postAnalytics` gesendet oder via `rixl-analytics` dispatched werden können.
+
+```typescript
+type AnalyticsEvent =
+  | ContentViewEvent
+  | EngagementEvent
+  | InteractionEvent
+  | ErrorEvent
+  | SessionStartEvent;
+
+type ContentType = "video" | "image";
+
+type ViewType = "start" | "watch" | "end";
+````
+
+### ContentViewEvent
+
+```typescript
+interface ContentViewEvent {
+  _type: "content_views";
+  timestamp?: number;
+  content_id: string;
+  content_type: ContentType;
+  view_type: ViewType;
+  watch_duration_ms: number;
+  page: Page;
+  feed_id?: string;
+  post_id?: string;
+  video_position_ms?: number;
+  video_total_duration_ms?: number;
+  segments?: Segment[];
+  device_id?: string;
+  country?: string;
+}
+```
+
+### EngagementEvent
+
+Gesendet bei Bild-Sichtbarkeit und Video-Watch-Fortschritt.
+
+```typescript
+interface EngagementEvent {
+  _type: "engagement";
+  timestamp?: number;
+  content_id: string;
+  content_type: ContentType;
+  watch_duration_ms: number;
+  page: Page;
+  feed_id?: string;
+  post_id?: string;
+  video_position_ms?: number;
+  video_total_duration_ms?: number;
+  segments?: Segment[];
+  device_id?: string;
+  country?: string;
+}
+```
+
+### InteractionEvent
+
+Erfasst Benutzeraktionen wie `play`, `pause`, `seek`, `image_click` und Feed-Interaktionen.
+
+```typescript
+interface InteractionEvent {
+  _type: "interaction";
+  timestamp?: number;
+  content_id: string;
+  content_type: ContentType;
+  interaction_type: string;
+  page: Page;
+  feed_id?: string;
+  post_id?: string;
+  video_position_ms?: number;
+  click_x?: number;
+  click_y?: number;
+  scroll_depth?: number;
+  device_id?: string;
+  country?: string;
+}
+```
+
+### ErrorEvent
+
+Erfasst Medien- und API-Ladefehler.
+
+```typescript
+interface ErrorEvent {
+  _type: "error";
+  timestamp?: number;
+  content_id: string;
+  content_type?: ContentType;
+  error_type: string;
+  error_message?: string;
+  page?: Page;
+  feed_id?: string;
+  post_id?: string;
+  device_id?: string;
+  country?: string;
+}
+```
+
+### SessionStartEvent
+
+Wird automatisch dem ersten Analytics-Flush der Session vorangestellt.
+
+```typescript
+interface SessionStartEvent {
+  _type: "session_start";
+  timestamp?: number;
+  device_id?: string;
+  country?: string;
+  session_id?: string;
+}
+```
+
+### Helper-Parameter-Typen
+
+```typescript
+interface BuildEngagementParams {
+  contentId: string;
+  contentType: ContentType;
+  watchDurationMs: number;
+  page: Page;
+  feedId?: string;
+  postId?: string;
+  videoPositionMs?: number;
+  videoTotalDurationMs?: number;
+  segments?: Segment[];
+}
+
+interface BuildInteractionParams {
+  contentId: string;
+  contentType: ContentType;
+  interactionType: string;
+  page: Page;
+  feedId?: string;
+  postId?: string;
+  videoPositionMs?: number;
+  clickX?: number;
+  clickY?: number;
+  scrollDepth?: number;
+}
+
+interface BuildErrorParams {
+  contentId: string;
+  errorType: string;
+  errorMessage?: string;
+  contentType?: ContentType;
+  page?: Page;
+  feedId?: string;
+  postId?: string;
+}
+
+interface BuildSessionStartParams {
+  deviceId?: string;
+  sessionId?: string;
+  country?: string;
+}
+```
+
+### Hinweise zum Wire-Format
+
+- `postAnalytics` queued Events und flushed sie in einem Micro-Task.
+- Der erste Flush fügt automatisch ein `session_start`-Event voran.
+- Alle Millisekunden-Dauern werden in `GoogleProtobufDuration`-Strings (`"5s"`, `"1.234s"`) umgewandelt, bevor sie an `/analytics/v1/events` gesendet werden.
+- `content_type` wird als `MEDIA_TYPE_IMAGE` oder `MEDIA_TYPE_VIDEO` übertragen.
+
+```
+
 ```

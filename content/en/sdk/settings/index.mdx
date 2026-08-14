@@ -10,7 +10,7 @@ The `@rixl/media` package exposes a `settingsStore` that powers the player's glo
 ## Reading and Updating Settings
 
 ```ts
-import { settingsStore, defaultSettings } from "@rixl/media";
+import {settingsStore, defaultSettings} from "@rixl/media";
 
 // Current settings
 const current = settingsStore.getSettings();
@@ -29,17 +29,18 @@ settingsStore.resetCaptionSettings();
 ```
 
 <Callout type="info">
-  Each setter updates the nanostore state, persists the new state to `localStorage`, and returns the clamped/normalized value that was actually stored.
+  Each setter updates the nanostore state, persists the new state to `localStorage`, and returns the clamped/normalized value that was
+  actually stored.
 </Callout>
 
 ## Caption Customization
 
 ```ts
 settingsStore.setCaptionFontFamily("proportional_serif");
-settingsStore.setCaptionFontSize(150);       // one of 50, 100, 150, 200
+settingsStore.setCaptionFontSize(150); // one of 50, 100, 150, 200
 settingsStore.setCaptionFontColor("#ffff00"); // one of the supported colors
 settingsStore.setCaptionBGColor("#000000");
-settingsStore.setCaptionBGOpacity(75);       // 0 - 100
+settingsStore.setCaptionBGOpacity(75); // 0 - 100
 settingsStore.setCaptionCharacterEdgeStyle("drop-shadow");
 ```
 
@@ -48,10 +49,10 @@ settingsStore.setCaptionCharacterEdgeStyle("drop-shadow");
 For custom settings panels, you can load and validate raw objects against the SDK schema:
 
 ```ts
-import { loadSettings, saveSettings, validateSettings } from "@rixl/media";
+import {loadSettings, saveSettings, validateSettings} from "@rixl/media";
 
 const restored = loadSettings();
-const validated = validateSettings({ volume: 2.5 }); // clamped to valid range
+const validated = validateSettings({volume: 2.5}); // clamped to valid range
 saveSettings(validated);
 ```
 
@@ -64,7 +65,7 @@ const FONT_FAMILIES: Record<string, string> = {
   monospace_serif: '"Courier New", Courier, ...',
   proportional_serif: '"Times New Roman", Times, ...',
   monospace_sans: '"Deja Vu Sans Mono", "Lucida Console", ...',
-  proportional_sans: 'Roboto, Arial, Helvetica, ...',
+  proportional_sans: "Roboto, Arial, Helvetica, ...",
   casual: '"Comic Sans MS", Impact, ...',
   cursive: '"Monotype Corsiva", "URW Chancery L", ...',
   small_caps: 'Arial, Helvetica, Verdana, "Marcellus SC", ...',
@@ -98,7 +99,7 @@ interface SettingsState {
   playbackSpeed: number;
   customPlayback: number;
   allowCaptions: boolean;
-  captionPosition: { x: number; y: number };
+  captionPosition: {x: number; y: number};
   captionLang: "off" | "eng" | "auto";
 
   captionFontFamily: string;
@@ -129,7 +130,7 @@ const defaultSettings: SettingsState = {
   playbackSpeed: 1.0,
   customPlayback: 1.0,
   allowCaptions: false,
-  captionPosition: { x: 20, y: 90 },
+  captionPosition: {x: 20, y: 90},
   captionLang: "off",
   captionFontFamily: "proportional_sans",
   captionFontSize: 100,

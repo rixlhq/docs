@@ -1,12 +1,5 @@
 {
   "title": "Getting Started",
   "description": "Get started with RIXL Media SDK - optimized media components for modern web applications",
-  "pages": [
-    "index",
-    "overview",
-    "installation",
-    "lit",
-    "types",
-    "..."
-  ]
+  "pages": ["index", "overview", "installation", "lit", "types", "..."]
 }

@@ -3,7 +3,7 @@ title: "Props Reference"
 description: "Complete API reference for all Feed component props and TypeScript interfaces"
 ---
 
-import {Callout} from "@/snippets"
+import {Callout} from "@/snippets";
 
 ## Core Props
 
@@ -11,108 +11,112 @@ import {Callout} from "@/snippets"
 
 **Type:** `string`
 
-The unique feed identifier from your RIXL dashboard. Create a feed at [dash.rixl.com/feeds](https://dash.rixl.com/feeds) to get this ID.
+A unique feed identifier. Pass this to `<Feed />` so the SDK can fetch and display the correct set of posts.
 
 ```tsx
-<Feed feedId="your-feed-id" />
+<Feed feedId="my-feed-id" />
 ```
 
-<Callout type="info">
-  Each feed can contain multiple posts with videos and images. Manage your feed content through the RIXL dashboard.
-</Callout>
+This identifier is propagated to every child image and video post as `feedId`.
 
+## Analytics Props
 
-## Behavior Props
+### `analytics` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Enables feed-level analytics (feed refresh, scroll, load more, post change) and post-level analytics for child components.
+
+```tsx
+<Feed feedId="my-feed-id" analytics={true} />
+```
+
+### `analyticsPage` **(Optional)**
+
+**Type:** `"feed" | "standalone" | "profile"` | **Default:** `"feed"`
+
+Page context propagated to child image and video events.
+
+```tsx
+<Feed feedId="my-feed-id" analyticsPage="profile" />
+```
+
+### `onRixlAnalytics` **(Optional)**
+
+**Type:** `(event: CustomEvent<{ event: AnalyticsEvent }>) => void`
+
+Called for every `rixl-analytics` event dispatched by the feed or any child image/video inside it.
+
+```tsx
+<Feed feedId="my-feed-id" onRixlAnalytics={(e) => console.log(e.detail.event)} />
+```
+
+## Pagination & Scroll Props
+
+### `limit` **(Optional)**
+
+**Type:** `number` | **Default:** `10`
+
+Number of posts to request per page.
+
+```tsx
+<Feed feedId="my-feed-id" limit={20} />
+```
+
+### `buffer` **(Optional)**
+
+**Type:** `number` | **Default:** `3`
+
+How many posts outside the visible viewport to keep in the DOM. Lower values improve memory usage; higher values improve scroll smoothness.
+
+```tsx
+<Feed feedId="my-feed-id" limit={20} buffer={5} />
+```
+
+## Autoscroll Props
 
 ### `loop` **(Optional)**
 
 **Type:** `boolean` | **Default:** `false`
 
-When `true`, the feed restarts from the first post after the last post finishes playing.
+When `autoscroll` is enabled, returns to the first post after reaching the end.
 
 ```tsx
-<Feed feedId="your-feed-id" loop={true} />
+<Feed feedId="my-feed-id" loop={true} />
 ```
 
 ### `autoscroll` **(Optional)**
 
 **Type:** `boolean` | **Default:** `false`
 
-When `true`, the feed automatically advances to the next post when the current video ends or after a dwell timeout.
+Automatically advances through posts when enabled.
 
 ```tsx
-<Feed feedId="your-feed-id" autoscroll={true} />
+<Feed feedId="my-feed-id" autoscroll={true} loop={true} />
 ```
 
-## Localization & Styling
+## Legacy Props
 
-### `lang` **(Optional)**
+### `lang`, `feedFont`, `creatorId`, `startPostId` **(Accepted for backward compatibility)**
 
-**Type:** `"en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" | "uk"` | **Default:** `'en'`
-
-Sets the language of the feed UI elements (e.g., "More"/"Less" toggle on post descriptions).
-
-```tsx
-<Feed feedId="your-feed-id" lang="de" />
-```
-
-### `feedFont` **(Optional)**
-
-**Type:** `FontFamilyKey` | **Default:** `undefined`
-
-Sets the font family for feed content. Available options:
-
-- `'monospace_serif'` - Courier New, Nimbus Mono L
-- `'proportional_serif'` - Times New Roman, Georgia
-- `'monospace_sans'` - Deja Vu Sans Mono, Lucida Console
-- `'proportional_sans'` - Roboto, Arial, Helvetica
-- `'casual'` - Comic Sans MS, Impact, Handlee
-- `'cursive'` - Monotype Corsiva, URW Chancery L
-- `'small_caps'` - Arial with Marcellus SC fallback
-
-```tsx
-<Feed feedId="your-feed-id" feedFont="proportional_sans" />
-```
-
-## Layout Recommendations
-
-The Feed component works best when given explicit height constraints:
-
-```tsx
-// Full viewport height
-<div className="h-screen">
-  <Feed feedId="your-feed-id" />
-</div>
-
-// Fixed height container
-<div className="h-[600px]">
-  <Feed feedId="your-feed-id" />
-</div>
-```
-
-<Callout type="warning">
-  The Feed component requires a parent container with a defined height. Without height constraints, the infinite scroll behavior may not work correctly.
-</Callout>
+These props are still accepted by TypeScript but are no longer forwarded to the Lit element. Use `feedId` and the analytics/page identifiers above for current behavior.
 
 ## TypeScript Interface
 
 ```typescript
 interface FeedProps extends HTMLProps<HTMLDivElement> {
   feedId: string;
-  lang?: SupportedLanguage;
-  feedFont?: FontFamilyKey;
+  analytics?: boolean;
+  analyticsPage?: Page;
+  limit?: number;
+  buffer?: number;
   loop?: boolean;
   autoscroll?: boolean;
+  onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
+  // Legacy props accepted for backward compatibility, but not forwarded:
+  lang?: SupportedLanguage;
+  feedFont?: FontFamilyKey;
+  creatorId?: string;
+  startPostId?: string;
 }
-
-type SupportedLanguage = "en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" | "uk";
-
-type FontFamilyKey =
-  | "monospace_serif"
-  | "proportional_serif"
-  | "monospace_sans"
-  | "proportional_sans"
-  | "casual"
-  | "cursive"
-  | "small_caps";
 ```

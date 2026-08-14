@@ -14,7 +14,7 @@ All core API calls share the `@rixl/sdk` HTTP client. If your host app already c
 For standalone apps, call `connect()` once before making any API calls:
 
 ```ts
-import { connect } from "@rixl/media";
+import {connect} from "@rixl/media";
 
 await connect({
   baseUrl: "https://api.rixl.com",
@@ -22,14 +22,14 @@ await connect({
 });
 ```
 
-`connect` is re-exported from `@rixl/media` for convenience. It accepts a `ConnectConfig` object with `baseUrl` and `apiKey`.
+`connect` is re-exported from `@rixl/media` for convenience. It accepts a `ConnectConfig` object with `baseUrl` and `apiKey`. It also seeds the analytics context (`device`, `session`, `locale`, etc.) so the first analytics flush can prepend a `session_start` event.
 
 ## Fetching Media
 
 ### Images
 
 ```ts
-import { getImage } from "@rixl/media";
+import {getImage} from "@rixl/media";
 
 const image = await getImage("your-image-id");
 console.log(image.file.url);
@@ -38,7 +38,7 @@ console.log(image.file.url);
 ### Videos
 
 ```ts
-import { getVideo } from "@rixl/media";
+import {getVideo} from "@rixl/media";
 
 const video = await getVideo("your-video-id");
 console.log(video.file.url, video.poster.file.url);
@@ -47,7 +47,7 @@ console.log(video.file.url, video.poster.file.url);
 ### Feed Posts
 
 ```ts
-import { getFeedPost, getFeedPosts } from "@rixl/media";
+import {getFeedPost, getFeedPosts} from "@rixl/media";
 
 // Single post
 const post = await getFeedPost("feed-id", "post-id");
@@ -63,39 +63,123 @@ console.log(page.posts, page.total, page.offset, page.limit);
 
 ## Analytics
 
-### Posting Events
+### Context and session setup
+
+Call `initializeAnalyticsContext()` once before emitting events, or rely on `connect()` which calls it for you. The context stores (`analyticsContextStore`, `analyticsDeviceStore`, `analyticsSessionStore`) hold `device_id`, `session_id`, `country`, `language`, `browser`, `os`, `device_type`, and `screen_resolution`.
 
 ```ts
-import { postAnalytics, type ContentViewEvent } from "@rixl/media";
+import {
+  initializeAnalyticsContext,
+  analyticsContextStore,
+  analyticsDeviceStore,
+  analyticsSessionStore,
+  getOrCreateDeviceId,
+  getOrCreateSessionId,
+} from "@rixl/media";
+
+initializeAnalyticsContext();
+
+const deviceId = getOrCreateDeviceId();
+const sessionId = getOrCreateSessionId();
+
+// Optional: override context for a specific page or test
+analyticsContextStore.setContext({
+  page: "feed",
+  feed_id: "my-feed",
+});
+```
+
+### Posting events
+
+The simplest way to send analytics events is through the typed helpers. Each helper returns the constructed event and enqueues it for the next flush.
+
+```ts
+import {postContentEvent, postEngagement, postInteraction, postError} from "@rixl/media";
+
+postContentEvent({
+  contentId: "video-id",
+  contentType: "video",
+  viewType: "watch",
+  page: "standalone",
+  watchDurationMs: 5000,
+  videoPositionMs: 1000,
+  videoTotalDurationMs: 120000,
+  segments: [{start_ms: 1000, end_ms: 6000, speed: 1}],
+});
+
+postInteraction({
+  contentId: "video-id",
+  contentType: "video",
+  interactionType: "play",
+  page: "standalone",
+  videoPositionMs: 1000,
+});
+```
+
+You can also build a low-level array and pass it to `postAnalytics`:
+
+```ts
+import {postAnalytics, type ContentViewEvent} from "@rixl/media";
 
 const event: ContentViewEvent = {
   _type: "content_views",
   content_id: "video-id",
   content_type: "video",
   view_type: "watch",
-  watch_duration_ms: 15_000,
+  watch_duration_ms: 15000,
   page: "standalone",
-  video_position_ms: 5_000,
-  video_total_duration_ms: 120_000,
-  segments: [{ start_ms: 5_000, end_ms: 20_000, speed: 1 }],
+  video_position_ms: 5000,
+  video_total_duration_ms: 120000,
+  segments: [{start_ms: 5000, end_ms: 20000, speed: 1}],
 };
 
 await postAnalytics([event]);
 ```
 
+<Callout type="info">
+  `postAnalytics` queues events and flushes them in a micro-task. The first flush automatically prepends a `session_start` event. Failed
+  flushes retry up to three times.
+</Callout>
+
+### Video payload builder
+
+For consumers who manage their own player state, `buildVideoAnalyticsPayload` creates a `ContentViewEvent` from a series of snapshots:
+
+```ts
+import {buildVideoAnalyticsPayload} from "@rixl/media";
+
+const event = buildVideoAnalyticsPayload({
+  contentId: "video-id",
+  page: "standalone",
+  totalDurationMs: 120000,
+  startTimeMs: 1000,
+  endTimeMs: 6000,
+  playbackRate: 1,
+  segments: [{start_ms: 1000, end_ms: 6000, speed: 1}],
+});
+```
+
+### Flush on demand
+
+```ts
+import {flushAnalytics} from "@rixl/media";
+
+await flushAnalytics();
+```
+
 ### Heatmap
 
 ```ts
-import { getVideoHeatmap } from "@rixl/media";
+import {getVideoHeatmap} from "@rixl/media";
 
-const heatmap = await getVideoHeatmap({ videoId: "your-video-id", buckets: 101 });
+const heatmap = await getVideoHeatmap({videoId: "your-video-id", buckets: 101});
 console.log(heatmap?.data);
 ```
 
 ### Hot Segments
 
 ```ts
-import { getHotSegments } from "@rixl/media";
+import {getHotSegments} from "@rixl/media";
 
 const segments = await getHotSegments({
   videoId: "your-video-id",
@@ -123,6 +207,15 @@ declare function getVideo(videoId: string): Promise<VideoData>;
 declare function getFeedPost(feedId: string, postId: string): Promise<FeedPost>;
 declare function getFeedPosts(feedId: string, offset?: number, limit?: number): Promise<FeedPostsResponse>;
 
+declare function initializeAnalyticsContext(): void;
+declare function postContentEvent(params: BuildContentViewEventParams): ContentViewEvent;
+declare function buildVideoAnalyticsPayload(params: BuildVideoAnalyticsPayloadParams): ContentViewEvent;
+declare function postEngagement(params: BuildEngagementParams): EngagementEvent;
+declare function postInteraction(params: BuildInteractionParams): InteractionEvent;
+declare function postError(params: BuildErrorParams): ErrorEvent;
+declare function postAnalytics(events: AnalyticsEvent[]): Promise<void>;
+declare function flushAnalytics(): Promise<void>;
+
 interface GetVideoHeatmapOptions {
   videoId: string;
   buckets?: number;
@@ -137,6 +230,9 @@ interface GetHotSegmentsOptions {
 }
 
 declare function getHotSegments(options: GetHotSegmentsOptions): Promise<HotSegment[]>;
-
-declare function postAnalytics(events: AnalyticsEvent[]): Promise<void>;
 ```
+
+<Callout type="info">
+  Millisecond durations are converted to `GoogleProtobufDuration` strings (e.g. `"5s"`, `"1.234s"`) and `content_type` is sent as
+  `MEDIA_TYPE_IMAGE` or `MEDIA_TYPE_VIDEO` on the wire to `/analytics/v1/events`.
+</Callout>

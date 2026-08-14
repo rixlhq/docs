@@ -8,7 +8,7 @@ import {Callout} from "@/snippets";
 ## Importing the Feed Component
 
 ```tsx
-import { Feed } from '@rixl/media-react';
+import {Feed} from "@rixl/media-react";
 ```
 
 ## Essential Props
@@ -23,71 +23,77 @@ Every Feed component needs at minimum:
 
 ## Simple Feed Example
 
-Here's a basic implementation with common settings:
+```tsx
+import {Feed} from "@rixl/media-react";
+
+function FeedExample() {
+  return <Feed feedId="your-feed-id" limit={10} buffer={3} analyticsPage="feed" />;
+}
+```
+
+## Analytics Events
+
+Listen to all feed and child post analytics events with one handler:
 
 ```tsx
-import { Feed } from '@rixl/media-react';
+import {Feed} from "@rixl/media-react";
 
-function BasicFeed() {
+function FeedWithAnalytics() {
   return (
-        <div className={`md:w-2/5 w-[90%] mx-auto h-screen`}>
-            <Feed feedId={`id-from-dashboard`} />
-        </div>
+    <Feed
+      feedId="your-feed-id"
+      analyticsPage="feed"
+      onRixlAnalytics={(e) => {
+        const {event} = e.detail;
+        console.log(event._type, event);
+      }}
+    />
   );
 }
 ```
 
-## Common Use Cases
+## Lit / Vanilla HTML
 
-### Social Media Feed (Standard Implementation)
+```html
+<script type="module">
+  import "@rixl/media-lit/feed";
 
-```tsx
-function SocialFeed() {
-  return (
-    <main className="w-full h-screen bg-black">
-      <Feed
-        feedId="following-feed"
-      />
-    </main>
-  );
-}
+  const feed = document.querySelector("rixl-feed");
+  feed.addEventListener("rixl-analytics", (e) => {
+    console.log(e.detail.event);
+  });
+</script>
+
+<rixl-feed feed-id="your-feed-id" analytics-page="feed"></rixl-feed>
 ```
 
-<Callout type="tip">
-    **See it in action:** Check out the [Standard Feed example](/en/sdk/examples/standard-feed) for a complete feed implementation.
-</Callout>
-
-
-### Localized Feed
+## Autoscroll and Loop
 
 ```tsx
-function LocalizedFeed() {
-  return (
-    <div className="h-screen">
-      <Feed feedId="your-feed-id" lang="de" />
-    </div>
-  );
-}
+<Feed feedId="your-feed-id" autoscroll={true} loop={true} />
 ```
 
-### Feed with Custom Font
+## Pagination Tuning
 
 ```tsx
-function StyledFeed() {
-  return (
-    <div className="h-screen">
-      <Feed feedId="your-feed-id" feedFont="proportional_sans" />
-    </div>
-  );
-}
+<Feed feedId="your-feed-id" limit={20} buffer={5} />
 ```
+
+- `limit` — number of posts fetched per page
+- `buffer` — how many posts outside the viewport are kept in the DOM
 
 ## Best Practices
 
-<Callout type="info">
-    **Mobile-First**: Design your feed layout with mobile devices in mind, as most feed interactions happen on mobile platforms.
+<Callout type="default">
+  **Feed ID**: The `feedId` is automatically passed to every child image and video post so analytics can be attributed correctly.
 </Callout>
 
 <Callout type="info">
-    **Container Height**: Always provide a defined height on the feed's parent container (`h-screen`, `h-full`, or a fixed height). Without it, scroll snapping won't work correctly.
+  **Buffer size**: A higher `buffer` improves scroll smoothness but uses more memory. A lower `buffer` is better for long feeds on low-end
+  devices.
+</Callout>
+
+<Callout type="warning">
+  **Legacy props**: `lang`, `feedFont`, `creatorId`, and `startPostId` are accepted for backward compatibility but are not forwarded to the
+  Lit element.
 </Callout>

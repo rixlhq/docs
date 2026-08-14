@@ -5,17 +5,20 @@ import type {HTMLProps} from "react";
 
 const RixlVideo = lazy(() => import("@rixl/media-react").then((mod) => ({default: mod.Video})));
 
-declare type VideoTheme = "default" | "minimal" | "hover" | "feed" | "hideUI";
+type Page = "feed" | "standalone" | "profile";
 
-declare interface VideoProps extends HTMLProps<HTMLVideoElement> {
+interface VideoProps extends Omit<HTMLProps<HTMLVideoElement>, "onEnded"> {
   id?: string;
-  progressBar?: boolean;
-  allowPlayPause?: boolean;
-  allowFullscreen?: boolean;
-  allowPictureInPicture?: boolean;
-  volume?: number;
-  theme?: VideoTheme;
-  lang?: "en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" | "uk";
+  src?: string;
+  autoPlay?: boolean;
+  muted?: boolean;
+  loop?: boolean;
+  analytics?: boolean;
+  analyticsPage?: Page;
+  feedId?: string;
+  postId?: string;
+  isCurrent?: boolean;
+  onRixlAnalytics?: (event: CustomEvent<{event: unknown}>) => void;
 }
 
 export const Video = (props: VideoProps) => {

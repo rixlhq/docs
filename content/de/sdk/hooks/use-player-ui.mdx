@@ -3,7 +3,13 @@ title: "usePlayerUI"
 description: "Control fullscreen, Picture-in-Picture, and stable player chrome state."
 ---
 
+import {Callout} from "fumadocs-ui/components/callout";
+
 `usePlayerUI()` exposes stable player chrome state and UI actions.
+
+<Callout type="warning">
+  This hook requires a `VideoPlayer` scope and a scope-aware media element. The Lit `<Video>` wrapper does not automatically participate in the scope.
+</Callout>
 
 ## Signature
 
@@ -24,7 +30,7 @@ It returns:
 ## Example
 
 ```tsx
-import {Video, usePlayerUI} from "@rixl/media-react";
+import {VideoPlayer, usePlayerUI} from "@rixl/media-react";
 
 function CustomDisplayControls() {
   const {isFullscreen, isPictureInPicture, toggleFullscreen, togglePictureInPicture} = usePlayerUI();
@@ -44,9 +50,10 @@ function CustomDisplayControls() {
 
 function CustomPlayer() {
   return (
-    <Video id="your-video-id" theme="hideUI" analytics={false}>
+    <VideoPlayer>
       <CustomDisplayControls />
-    </Video>
+      {/* scope-aware media element */}
+    </VideoPlayer>
   );
 }
 ```

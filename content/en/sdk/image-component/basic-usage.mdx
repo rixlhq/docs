@@ -3,15 +3,15 @@ title: "Basic Usage"
 description: "Learn how to implement the Image component with common patterns and examples"
 ---
 
-import {Tabs, TabsContent, TabsList, TabsTrigger} from 'fumadocs-ui/components/tabs'
-import {Callout} from 'fumadocs-ui/components/callout'
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/tabs";
+import {Callout} from "fumadocs-ui/components/callout";
 
 # Basic Usage
 
 ## Importing the Image Component
 
 ```tsx
-import { Image } from '@rixl/media-react';
+import {Image} from "@rixl/media-react";
 ```
 
 ## Essential Props
@@ -19,28 +19,58 @@ import { Image } from '@rixl/media-react';
 Every Image component needs at minimum:
 
 ```tsx
-    <Image
-      id="your-image-id" // Required: Your image ID from dash.rixl.com/images
-    />
+<Image
+  id="your-image-id" // Required: Your image ID from dash.rixl.com/images
+/>
 ```
+
+The `id` prop is mapped to `imageId` on the underlying `<rixl-image>` web component. `className` is forwarded as expected and `alt` is accepted for backward compatibility but is not manually forwarded.
 
 ## Simple Image Display Example
 
-Here's a basic implementation:
-
 ```tsx
-import { Image } from '@rixl/media-react';
+import {Image} from "@rixl/media-react";
 
 function BasicImage() {
   return (
     <div className="max-w-2xl mx-auto">
-      <Image
-        id="your-image-id"
-        className="object-contain w-full h-full rounded-lg"
-      />
+      <Image id="your-image-id" className="object-contain w-full h-full rounded-lg" analyticsPage="standalone" />
     </div>
   );
 }
+```
+
+## Listening to Analytics Events
+
+```tsx
+import {Image} from "@rixl/media-react";
+
+function AnalyticsImage() {
+  return (
+    <Image
+      id="your-image-id"
+      analyticsPage="profile"
+      onRixlAnalytics={(e) => {
+        console.log("Analytics event:", e.detail.event);
+      }}
+    />
+  );
+}
+```
+
+## Lit / Vanilla HTML
+
+```html
+<script type="module">
+  import "@rixl/media-lit/image";
+
+  const image = document.querySelector("rixl-image");
+  image.addEventListener("rixl-analytics", (e) => {
+    console.log(e.detail.event);
+  });
+</script>
+
+<rixl-image image-id="your-image-id" analytics-page="standalone"></rixl-image>
 ```
 
 ## Common Use Cases
@@ -70,6 +100,7 @@ function BasicImage() {
         );
     }
     ```
+
   </TabsContent>
 
   <TabsContent value="contained">
@@ -86,36 +117,31 @@ function BasicImage() {
             </div>
         </section>
     );
-  }
-    ```
+
+}
+
+````
+
   </TabsContent>
 </Tabs>
 
 ### Image Gallery
 
 ```tsx
-const galleryImages = [
-  { id: 'image-1', alt: 'Gallery image 1' },
-  { id: 'image-2', alt: 'Gallery image 2' },
-  { id: 'image-3', alt: 'Gallery image 3' },
-  { id: 'image-4', alt: 'Gallery image 4' }
-];
+const galleryImages = [{id: "image-1"}, {id: "image-2"}, {id: "image-3"}, {id: "image-4"}];
 
 function ImageGallery() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {galleryImages.map((image) => (
         <div key={image.id} className="aspect-square rounded-lg overflow-hidden">
-          <Image
-            id={image.id}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-          />
+          <Image id={image.id} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
         </div>
       ))}
     </div>
   );
 }
-```
+````
 
 ### Profile/Avatar Images
 
@@ -124,10 +150,7 @@ function UserProfile() {
   return (
     <div className="flex items-center space-x-4">
       <div className="w-16 h-16 rounded-full overflow-hidden">
-        <Image
-          id="user-avatar-id"
-          className="w-full h-full object-cover"
-        />
+        <Image id="user-avatar-id" className="w-full h-full object-cover" />
       </div>
       <div>
         <h3 className="font-semibold">John Doe</h3>
@@ -138,14 +161,14 @@ function UserProfile() {
 }
 ```
 
-
 ## Best Practices
 
-<Callout type="default">
-  **Aspect Ratios**: Use CSS aspect ratio classes to prevent layout shifts during image loading.
-</Callout>
+<Callout type="default">**Aspect Ratios**: Use CSS aspect ratio classes to prevent layout shifts during image loading.</Callout>
 
 <Callout type="warning">
-  **Object Fit**: Use `object-contain` to preserve aspect ratio or `object-cover` to fill the container while cropping
-  if necessary.
+  **Object Fit**: Use `object-contain` to preserve aspect ratio or `object-cover` to fill the container while cropping if necessary.
+</Callout>
+
+<Callout type="info">
+  **Analytics**: Analytics are enabled by default. Provide `analyticsPage` (or let a parent `<Feed>` set it) so view events are correctly attributed.
 </Callout>
