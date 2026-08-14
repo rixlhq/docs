@@ -198,76 +198,56 @@ Jedes Bild wird automatisch für die Web-Auslieferung vorbereitet:
 <Tabs items={['Upload Image', 'Get Image Details', 'List Images']}>
   <Tab value="Upload Image">
     ```javascript
-    // Upload image via API
-    const uploadImage = async (imageFile) => {
-    // Initialize upload
-    const initResponse = await fetch('https://api.rixl.com/images/upload/init', {
-    method: 'POST',
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY',
-    'Content-Type': 'application/json'
-  },
-    body: JSON.stringify({
-    name: imageFile.name,
-    format: 'jpg'
-  })
-  });
+    const uploadImage = async (projectId, imageFile) => {
+      const initResponse = await fetch(
+        `https://api.rixl.com/media/v1/projects/${projectId}/images/upload`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer YOUR_API_TOKEN',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name: imageFile.name, format: 'jpg' })
+        }
+      );
 
-    const {image_id, presigned_url} = await initResponse.json();
+      const { image_id, upload_url, expires_at } = await initResponse.json();
 
-    // Upload file to presigned URL
-    await fetch(presigned_url, {
-    method: 'PUT',
-    body: imageFile
-  });
+      await fetch(upload_url, {
+        method: 'PUT',
+        body: imageFile
+      });
 
-    // Complete upload
-    const completeResponse = await fetch('https://api.rixl.com/images/upload/complete', {
-    method: 'POST',
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY',
-    'Content-Type': 'application/json'
-  },
-    body: JSON.stringify({
-    image_id: image_id
-  })
-  });
-
-    const result = await completeResponse.json();
-    return result.data.image_id;
-  };
+      return { image_id, expires_at };
+    };
     ```
   </Tab>
 
   <Tab value="Get Image Details">
     ```javascript
-    // Get image details and delivery status
     const getImageDetails = async (imageId) => {
-    const response = await fetch(`https://api.rixl.com/images/${imageId}`, {
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY'
-  }
-  });
+      const response = await fetch(
+        `https://api.rixl.com/media/v1/images/${imageId}`,
+        { headers: { 'Authorization': 'Bearer YOUR_API_TOKEN' } }
+      );
 
-    const result = await response.json();
-    return result.data;
-  };
+      const { data } = await response.json();
+      return data;
+    };
     ```
   </Tab>
 
   <Tab value="List Images">
     ```javascript
-    // List images with pagination
-    const listImages = async (page = 0, limit = 25) => {
-    const response = await fetch(`https://api.rixl.com/images?offset=${page * limit}&limit=${limit}`, {
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY'
-  }
-  });
+    const listImages = async (projectId) => {
+      const response = await fetch(
+        `https://api.rixl.com/media/v1/projects/${projectId}/images`,
+        { headers: { 'Authorization': 'Bearer YOUR_API_TOKEN' } }
+      );
 
-    const result = await response.json();
-    return result.data;
-  };
+      const { data } = await response.json();
+      return data.images ?? [];
+    };
     ```
   </Tab>
 </Tabs>

@@ -289,99 +289,79 @@ Wählen Sie die passende Verarbeitungsstufe für Ihre Inhalte und Ihre Zielgrupp
 
 ### API-Integration
 
-<Tabs items={['Upload Video', 'Monitor Processing', 'Get Video Details']}>
+<Tabs items={['Upload Video', 'Get Video Details', 'List Videos']}>
   <Tab value="Upload Video">
     ```javascript
-    // Initialize video upload with quality tier
-    const uploadVideo = async (videoFile, qualityTier = 'pro') => {
-    const initResponse = await fetch('https://api.rixl.com/videos/upload/init', {
-    method: 'POST',
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY',
-    'Content-Type': 'application/json'
-  },
-    body: JSON.stringify({
-    file_name: videoFile.name,
-    video_quality: qualityTier,
-    image_format: 'jpg'
-  })
-  });
+    const uploadVideo = async (projectId, videoFile, qualityTier = 'pro') => {
+      const initResponse = await fetch(
+        `https://api.rixl.com/media/v1/projects/${projectId}/videos/upload`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer YOUR_API_TOKEN',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: videoFile.name,
+            video_quality: qualityTier,
+            image_format: 'jpg'
+          })
+        }
+      );
 
-    const {video_id, video_presigned_url, upload_expires} = await initResponse.json();
+      const {
+        video_id,
+        video_upload_url,
+        poster_id,
+        poster_upload_url,
+        expires_at
+      } = await initResponse.json();
 
-    // Upload file to presigned URL
-    await fetch(video_presigned_url, {
-    method: 'PUT',
-    body: videoFile,
-    headers: {
-    'Content-Type': videoFile.type
-  }
-  });
+      await fetch(video_upload_url, {
+        method: 'PUT',
+        body: videoFile,
+        headers: { 'Content-Type': videoFile.type }
+      });
 
-    return video_id;
-  };
-    ```
-  </Tab>
-
-  <Tab value="Monitor Processing">
-    ```javascript
-    // Monitor video processing status
-    const monitorProcessing = async (videoId) => {
-    const checkStatus = async () => {
-    const response = await fetch(`https://api.rixl.com/videos/${videoId}`, {
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY'
-  }
-  });
-
-    const result = await response.json();
-    return result.data;
-  };
-
-    // Poll every 5 seconds until processing is complete
-    return new Promise((resolve) => {
-    const interval = setInterval(async () => {
-    const video = await checkStatus();
-
-    console.log(`Processing status: ${video.file.status}`);
-
-    if (video.file.status === 'ready') {
-    clearInterval(interval);
-    resolve(video);
-  } else if (video.file.status === 'error') {
-    clearInterval(interval);
-    throw new Error('Video processing failed');
-  }
-  }, 5000);
-  });
-  };
+      return { video_id, poster_id, expires_at };
+    };
     ```
   </Tab>
 
   <Tab value="Get Video Details">
     ```javascript
-    // Get video details and streaming URLs
     const getVideoDetails = async (videoId) => {
-    const response = await fetch(`https://api.rixl.com/videos/${videoId}`, {
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY'
-  }
-  });
+      const response = await fetch(
+        `https://api.rixl.com/media/v1/videos/${videoId}`,
+        { headers: { 'Authorization': 'Bearer YOUR_API_TOKEN' } }
+      );
 
-    const result = await response.json();
-    const video = result.data;
+      const { data } = await response.json();
+      return {
+        id: data.id,
+        duration: data.duration,
+        width: data.width,
+        height: data.height,
+        streamingUrl: data.file.url,
+        posterUrl: data.poster?.file?.url,
+        status: data.file.status,
+        createdAt: data.created_at
+      };
+    };
+    ```
+  </Tab>
 
-    return {
-    id: video.id,
-    duration: video.duration,
-    width: video.width,
-    height: video.height,
-    streamingUrl: video.file.url,
-    thumbnailUrl: `https://cdn.rixl.com/${video.id}/thumbnail.jpg`,
-    status: video.file.status,
-    createdAt: video.created_at
-  };
-  };
+  <Tab value="List Videos">
+    ```javascript
+    const listVideos = async (projectId) => {
+      const response = await fetch(
+        `https://api.rixl.com/media/v1/projects/${projectId}/videos`,
+        { headers: { 'Authorization': 'Bearer YOUR_API_TOKEN' } }
+      );
+
+      const { data } = await response.json();
+      return data.videos ?? [];
+    };
     ```
   </Tab>
 </Tabs>
