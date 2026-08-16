@@ -15,17 +15,18 @@ The `Feed` component provides a vertical, scrollable feed of RIXL image and vide
 import {Feed} from "@rixl/media-react";
 
 function FeedPage() {
-  return <Feed feedId="my-feed-id" analyticsPage="feed" limit={10} buffer={3} onRixlAnalytics={(e) => console.log(e.detail.event)} />;
+  return <Feed feedId="my-feed-id" analyticsPage="feed" onRixlAnalytics={(e) => console.log(e.detail.event)} />;
 }
 ```
 
 ### Key Features
 
 - Vertical feed of image and video posts
-- Support for `limit` and `buffer` pagination
 - Automatic play/pause of visible video posts
 - `autoscroll` and `loop` modes
-- `feedId` propagation to all child posts
+- `feedId`, `lang`, and `feedFont` propagation to all child posts
+- `initialIndex` and `safeAreaTabBar` layout control
+- Direct-data mode with `posts` and `onFetchMore`
 - Built-in analytics: `feed_refresh`, `scroll`, `load_more`, `post_change`
 - Child `Image` and `Video` events bubble up through `onRixlAnalytics`
 

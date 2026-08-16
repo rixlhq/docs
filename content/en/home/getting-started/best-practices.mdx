@@ -237,7 +237,7 @@ yarn add @rixl/media-react
       className="w-full h-auto rounded-lg"
       controls
       analytics
-      analyticsPage="feed"
+      analyticsPage="standalone"
       onRixlAnalytics={(e) => console.log(e.detail.event)}
     />
     ```
@@ -271,7 +271,7 @@ import {Image} from "@rixl/media-react";
   id="your-image-id"
   className="w-full h-auto object-cover"
   analytics
-  analyticsPage="product"
+  analyticsPage="standalone"
   onRixlAnalytics={(e) => console.log(e.detail.event)}
 />;
 ```

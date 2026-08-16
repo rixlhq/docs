@@ -134,7 +134,7 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
                 id={image.id}
                 className="w-full h-full object-cover rounded-lg"
                 analytics
-                analyticsPage="gallery"
+                analyticsPage="standalone"
               />
             </div>
           ))}
@@ -170,7 +170,7 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
 </Tabs>
 
 <Callout type="info">
-  The React SDK now wraps the Lit web components (`<rixl-video>`, `<rixl-image>`, `<rixl-feed>`) with `@lit/react`. Use `onRixlAnalytics` to receive analytics events and standard media attributes (`controls`, `autoPlay`, `muted`, `loop`) on `Video`. Legacy UI props such as `progressBar`, `theme`, `showHeader`, and `enableInfiniteScroll` are no longer forwarded.
+  The React SDK wraps the Lit web components (`<rixl-video>`, `<rixl-image>`, `<rixl-feed>`) with `@lit/react`. Use `onRixlAnalytics` to receive analytics events. `Video` forwards standard media attributes (`autoPlay`, `muted`, `loop`, `playsInline`, `poster`, `volume`) and player UI props (`controls`, `theme`, `progressBar`, `showChapters`, `chapters`, `heatmap`, `hotSegments`, `allowFullscreen`, `allowPictureInPicture`, `autoHideMs`, `resumeProgress`, `soundDisabled`).
 </Callout>
 
 ### API Integration Examples

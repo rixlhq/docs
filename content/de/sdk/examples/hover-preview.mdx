@@ -1,45 +1,47 @@
 ---
 title: "Video: Hover Preview"
-description: "Building hover-to-preview behavior with the new Lit-backed video component"
+description: "Play-on-hover video preview for thumbnails and content cards"
 ---
 
 import {Video} from "@/snippets";
 import {Callout} from "fumadocs-ui/components/callout";
 
-Hover previews are a common UX pattern where a muted video starts playing when the user hovers over it. With the Lit-backed `Video` wrapper, you build this behavior with the standard React `onMouseEnter`/`onMouseLeave` events plus `autoPlay` and `muted`.
+# Hover Preview Player
 
-<Callout type="warning">
-  The `theme="hover"` prop is no longer supported. The `Video` wrapper does not expose imperative `play()`/`pause()` methods, so hover
-  preview is implemented by toggling `autoPlay` and `muted`.
-</Callout>
+A video preview that plays automatically and reveals its controls on hover. Ideal for video thumbnails and content cards (Netflix/YouTube style).
 
 ## Live Example
 
-<div className="w-full aspect-video rounded-lg overflow-hidden" onMouseEnter={() => {}} onMouseLeave={() => {}}>
-  <Video id="your-video-id" className="w-full h-full object-cover" autoPlay={true} muted={true} />
+Hover over the video to see the control bar:
+
+<div className="w-full max-w-md">
+  <Video
+    id="your-video-id"
+    className="w-full aspect-video rounded-lg"
+    muted={true}
+    autoPlay={true}
+    theme="hover"
+    loop={true}
+    soundDisabled={true}
+  />
 </div>
 
-## Implementation
+## Basic Implementation
 
 ```tsx
-import {useState} from "react";
 import {Video} from "@rixl/media-react";
 
-function HoverPreview({videoId}) {
-  const [isHovered, setIsHovered] = useState(false);
-
+function HoverPreview({videoId}: {videoId: string}) {
   return (
-    <div
-      className="w-full aspect-video rounded-lg overflow-hidden cursor-pointer"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="w-full aspect-video rounded-lg overflow-hidden">
       <Video
         id={videoId}
         className="w-full h-full object-cover"
-        autoPlay={isHovered}
         muted={true}
-        onRixlAnalytics={(e) => console.log(e.detail.event)}
+        autoPlay={true}
+        theme="hover"
+        loop={true}
+        soundDisabled={true}
       />
     </div>
   );
@@ -48,50 +50,68 @@ function HoverPreview({videoId}) {
 
 ## How It Works
 
-1. Wrap the `Video` component in a `div` with hover handlers.
-2. Track hover state with `useState`.
-3. Pass `autoPlay={isHovered}` and keep `muted={true}` for autoplay compliance.
-4. Listen to `onRixlAnalytics` to capture `content_views` events.
+- `autoPlay={true}` starts playback as soon as the video can play
+- `muted={true}` and `soundDisabled={true}` keep the preview silent by default
+- `theme="hover"` hides the control bar until the user hovers
+- `loop={true}` lets the preview repeat without stopping
 
 ## Use Cases
 
-### Product Cards
+### Video Thumbnail Grid
 
 ```tsx
-function ProductCard({product}) {
-  const [hover, setHover] = useState(false);
+import {Video} from "@rixl/media-react";
 
-  return (
-    <div className="rounded-lg overflow-hidden shadow" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-      <Video id={product.videoId} className="w-full aspect-video object-cover" autoPlay={hover} muted={true} />
-      <div className="p-4">
-        <h3 className="font-bold">{product.name}</h3>
-        <p className="text-gray-600">{product.price}</p>
-      </div>
-    </div>
-  );
-}
-```
-
-### Video Grid
-
-```tsx
 function VideoGrid({videos}) {
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {videos.map((video) => (
         <HoverPreview key={video.id} videoId={video.id} />
       ))}
     </div>
   );
 }
+
+function HoverPreview({videoId}: {videoId: string}) {
+  return (
+    <div className="w-full aspect-video rounded-lg overflow-hidden">
+      <Video
+        id={videoId}
+        className="w-full h-full object-cover"
+        muted={true}
+        autoPlay={true}
+        theme="hover"
+        loop={true}
+        soundDisabled={true}
+      />
+    </div>
+  );
+}
 ```
 
-## Best Practices
+### Content Card with Hover Preview
 
-<Callout type="info">Keep `muted={true}` to satisfy browser autoplay policies.</Callout>
+```tsx
+function ContentCard({videoId, title, description}) {
+  return (
+    <div className="rounded-xl overflow-hidden shadow-lg">
+      <HoverPreview videoId={videoId} />
+      <div className="p-4">
+        <h3 className="font-bold text-lg">{title}</h3>
+        <p className="text-gray-600 text-sm">{description}</p>
+      </div>
+    </div>
+  );
+}
+```
 
-<Callout type="warning">
-  `autoPlay` changes trigger a re-render; the video will restart from the beginning. For a smooth preview that resumes, use `analytics=
-  {false}` on preview tiles and a separate detail view with a dedicated `Video`.
-</Callout>
+## When to Use
+
+**Use hover previews for:**
+
+- Video thumbnail grids and galleries
+- Content cards with video previews
+- Product showcases
+- Portfolio displays
+
+Need full controls? Use the [Standard Player](/de/sdk/examples/standard-player) instead.

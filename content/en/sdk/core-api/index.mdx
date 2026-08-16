@@ -1,6 +1,6 @@
 ---
 title: "Core API"
-description: "Framework-agnostic API for fetching media, analytics, and managing authentication"
+description: "Framework-agnostic API for fetching media, sending analytics, and managing context"
 ---
 
 import {Callout} from "@/snippets";
@@ -73,25 +73,24 @@ import {
   analyticsContextStore,
   analyticsDeviceStore,
   analyticsSessionStore,
-  getOrCreateDeviceId,
-  getOrCreateSessionId,
 } from "@rixl/media";
 
 initializeAnalyticsContext();
 
-const deviceId = getOrCreateDeviceId();
-const sessionId = getOrCreateSessionId();
+const deviceState = analyticsDeviceStore.get();
+const sessionState = analyticsSessionStore.get();
 
-// Optional: override context for a specific page or test
-analyticsContextStore.setContext({
-  page: "feed",
-  feed_id: "my-feed",
-});
+// Optional: merge overrides for a specific page or test
+analyticsContextStore.set({...analyticsContextStore.get(), page: "feed", feed_id: "my-feed"});
 ```
+
+<Callout type="info">
+  `analyticsContextStore` is a `nanostores` writable atom. Use `.set()` to replace its value or `.get()` to read it. `setAnalyticsContext(overrides)` is also exported to merge partial updates.
+</Callout>
 
 ### Posting events
 
-The simplest way to send analytics events is through the typed helpers. Each helper returns the constructed event and enqueues it for the next flush.
+The simplest way to send analytics events is through the typed helpers. Each helper builds the event, enqueues it for the next flush, and returns the constructed event.
 
 ```ts
 import {postContentEvent, postEngagement, postInteraction, postError} from "@rixl/media";
@@ -108,11 +107,24 @@ postContentEvent({
 });
 
 postInteraction({
-  contentId: "video-id",
-  contentType: "video",
   interactionType: "play",
+  resourceId: "video-id",
+  resourceType: "video",
   page: "standalone",
-  videoPositionMs: 1000,
+});
+
+postEngagement({
+  engagementType: "share",
+  resourceId: "video-id",
+  resourceType: "video",
+  sharePlatform: "twitter",
+});
+
+postError({
+  errorType: "video_load_error",
+  errorMessage: "Network request failed",
+  resourceId: "video-id",
+  resourceType: "video",
 });
 ```
 
@@ -140,24 +152,6 @@ await postAnalytics([event]);
   `postAnalytics` queues events and flushes them in a micro-task. The first flush automatically prepends a `session_start` event. Failed
   flushes retry up to three times.
 </Callout>
-
-### Video payload builder
-
-For consumers who manage their own player state, `buildVideoAnalyticsPayload` creates a `ContentViewEvent` from a series of snapshots:
-
-```ts
-import {buildVideoAnalyticsPayload} from "@rixl/media";
-
-const event = buildVideoAnalyticsPayload({
-  contentId: "video-id",
-  page: "standalone",
-  totalDurationMs: 120000,
-  startTimeMs: 1000,
-  endTimeMs: 6000,
-  playbackRate: 1,
-  segments: [{start_ms: 1000, end_ms: 6000, speed: 1}],
-});
-```
 
 ### Flush on demand
 
@@ -208,8 +202,8 @@ declare function getFeedPost(feedId: string, postId: string): Promise<FeedPost>;
 declare function getFeedPosts(feedId: string, offset?: number, limit?: number): Promise<FeedPostsResponse>;
 
 declare function initializeAnalyticsContext(): void;
-declare function postContentEvent(params: BuildContentViewEventParams): ContentViewEvent;
-declare function buildVideoAnalyticsPayload(params: BuildVideoAnalyticsPayloadParams): ContentViewEvent;
+declare function postContentEvent(params: BuildEventParams): ContentViewEvent;
+declare function buildVideoAnalyticsPayload(params: BuildVideoAnalyticsPayloadParams): VideoAnalyticsPayload;
 declare function postEngagement(params: BuildEngagementParams): EngagementEvent;
 declare function postInteraction(params: BuildInteractionParams): InteractionEvent;
 declare function postError(params: BuildErrorParams): ErrorEvent;
@@ -233,6 +227,7 @@ declare function getHotSegments(options: GetHotSegmentsOptions): Promise<HotSegm
 ```
 
 <Callout type="info">
+  `postContentEvent` takes `BuildEventParams` and `buildVideoAnalyticsPayload` takes `BuildVideoAnalyticsPayloadParams`.
   Millisecond durations are converted to `GoogleProtobufDuration` strings (e.g. `"5s"`, `"1.234s"`) and `content_type` is sent as
   `MEDIA_TYPE_IMAGE` or `MEDIA_TYPE_VIDEO` on the wire to `/analytics/v1/events`.
 </Callout>

@@ -8,36 +8,41 @@ import {Callout} from "fumadocs-ui/components/callout";
 
 # Hover Preview Player
 
-A video player that plays on mouse hover and pauses when the mouse leaves. Ideal for video thumbnails and preview cards (Netflix/YouTube style).
-
-<Callout type="warning">
-  The React `Video` wrapper currently uses the browser's native `<video>` controls and does not include a built-in "hover theme". The examples below show how to build hover behavior yourself with `onMouseEnter` / `onMouseLeave`.
-</Callout>
+A video preview that plays automatically and reveals its controls on hover. Ideal for video thumbnails and content cards (Netflix/YouTube style).
 
 ## Live Example
 
-Hover over the video to start playback:
+Hover over the video to see the control bar:
 
 <div className="w-full max-w-md">
-  <Video id="your-video-id" className="w-full aspect-video rounded-lg" muted={true} autoPlay={false} />
+  <Video
+    id="your-video-id"
+    className="w-full aspect-video rounded-lg"
+    muted={true}
+    autoPlay={true}
+    theme="hover"
+    loop={true}
+    soundDisabled={true}
+  />
 </div>
 
 ## Basic Implementation
 
 ```tsx
-import {useRef} from "react";
 import {Video} from "@rixl/media-react";
 
 function HoverPreview({videoId}: {videoId: string}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   return (
-    <div
-      className="w-full aspect-video rounded-lg overflow-hidden"
-      onMouseEnter={() => videoRef.current?.play()}
-      onMouseLeave={() => videoRef.current?.pause()}
-    >
-      <Video id={videoId} className="w-full h-full object-cover" muted={true} autoPlay={false} />
+    <div className="w-full aspect-video rounded-lg overflow-hidden">
+      <Video
+        id={videoId}
+        className="w-full h-full object-cover"
+        muted={true}
+        autoPlay={true}
+        theme="hover"
+        loop={true}
+        soundDisabled={true}
+      />
     </div>
   );
 }
@@ -45,16 +50,16 @@ function HoverPreview({videoId}: {videoId: string}) {
 
 ## How It Works
 
-- Video is **paused by default** with `autoPlay={false}`
-- Playback starts on `onMouseEnter` and pauses on `onMouseLeave`
-- Keep `muted={true}` so autoplay restrictions do not block playback
+- `autoPlay={true}` starts playback as soon as the video can play
+- `muted={true}` and `soundDisabled={true}` keep the preview silent by default
+- `theme="hover"` hides the control bar until the user hovers
+- `loop={true}` lets the preview repeat without stopping
 
 ## Use Cases
 
 ### Video Thumbnail Grid
 
 ```tsx
-import {useRef} from "react";
 import {Video} from "@rixl/media-react";
 
 function VideoGrid({videos}) {
@@ -68,15 +73,17 @@ function VideoGrid({videos}) {
 }
 
 function HoverPreview({videoId}: {videoId: string}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   return (
-    <div
-      className="w-full aspect-video rounded-lg overflow-hidden"
-      onMouseEnter={() => videoRef.current?.play()}
-      onMouseLeave={() => videoRef.current?.pause()}
-    >
-      <Video id={videoId} className="w-full h-full object-cover" muted={true} autoPlay={false} />
+    <div className="w-full aspect-video rounded-lg overflow-hidden">
+      <Video
+        id={videoId}
+        className="w-full h-full object-cover"
+        muted={true}
+        autoPlay={true}
+        theme="hover"
+        loop={true}
+        soundDisabled={true}
+      />
     </div>
   );
 }

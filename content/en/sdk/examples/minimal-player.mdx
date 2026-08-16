@@ -1,6 +1,6 @@
 ---
 title: "Video: Minimal Player"
-description: "Muted video with native controls hidden for Feed components and custom UI implementations"
+description: "Muted video with built-in controls hidden for Feed components and custom UI implementations"
 ---
 
 import {Video} from "@/snippets";
@@ -8,16 +8,12 @@ import {Callout} from "fumadocs-ui/components/callout";
 
 # Minimal Video Player
 
-A video player with native controls hidden, designed for Feed components and custom UI overlays.
-
-<Callout type="warning">
-  The React `Video` wrapper currently renders a standard `<video>` element with native controls. To hide the controls, apply CSS `controls={false}` is not a public prop; use a parent wrapper with `overflow-hidden` and an overlay, or use the `<rixl-video>` element directly and call `videoElement.controls = false`.
-</Callout>
+A video player with the built-in control bar hidden, designed for feed components and custom UI overlays.
 
 ## Live Example
 
 <div className="w-full aspect-video rounded-lg overflow-hidden">
-  <Video id="your-video-id" className="w-full h-full object-cover" muted={true} autoPlay={true} />
+  <Video id="your-video-id" className="w-full h-full object-cover" muted={true} autoPlay={true} theme="hideUI" />
 </div>
 
 ## Basic Implementation
@@ -28,7 +24,7 @@ import {Video} from "@rixl/media-react";
 function MinimalVideo({videoId}) {
   return (
     <div className="relative w-full aspect-video rounded-lg overflow-hidden">
-      <Video id={videoId} className="w-full h-full object-cover" muted={true} autoPlay={true} />
+      <Video id={videoId} className="w-full h-full object-cover" muted={true} autoPlay={true} theme="hideUI" />
       {/* Your custom overlay UI */}
     </div>
   );
@@ -39,14 +35,10 @@ function MinimalVideo({videoId}) {
 
 **Available:**
 
-- Video playback
-- Autoplay support
+- Video playback with HLS support
+- Muted autoplay
 - Analytics events
-
-**Notes:**
-
-- Native controls are shown by default
-- Audio is muted for autoplay compliance
+- Hidden built-in UI via `theme="hideUI"`
 
 ## Use Cases
 
@@ -58,7 +50,13 @@ Build TikTok/Instagram-style feeds with custom UI:
 function FeedVideo({videoId}) {
   return (
     <div className="relative w-full h-screen">
-      <Video id={videoId} className="w-full h-full object-cover" muted={true} autoPlay={true} />
+      <Video
+        id={videoId}
+        className="w-full h-full object-cover"
+        muted={true}
+        autoPlay={true}
+        theme="hideUI"
+      />
 
       {/* Your custom overlay UI */}
       <div className="absolute bottom-20 left-6 text-white">
@@ -75,7 +73,14 @@ function FeedVideo({videoId}) {
 ```tsx
 <div className="grid grid-cols-3 gap-4">
   {videos.map((video) => (
-    <Video key={video.id} id={video.id} className="w-full aspect-video object-cover rounded-lg" muted={true} autoPlay={true} />
+    <Video
+      key={video.id}
+      id={video.id}
+      className="w-full aspect-video object-cover rounded-lg"
+      muted={true}
+      autoPlay={true}
+      theme="feed"
+    />
   ))}
 </div>
 ```

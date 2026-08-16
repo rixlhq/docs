@@ -162,7 +162,7 @@ Every image is automatically prepared for web delivery:
 </Tabs>
 
 <Callout type="info">
-  The React `Image` component is a `@lit/react` wrapper around `<rixl-image>`. It accepts `id`, `className`, and analytics props (`analytics`, `analyticsPage`, `feedId`, `postId`, `onRixlAnalytics`). Legacy props such as `alt`, `loading`, `priority`, and `sizes` are accepted for backward compatibility but are not forwarded to the Lit element.
+  The React `Image` component is a `@lit/react` wrapper around `<rixl-image>`. It accepts `id` (mapped to `imageId`), `imageData`, `alt`, `className`, and analytics props (`analytics`, `analyticsPage`, `feedId`, `postId`, `onRixlAnalytics`). `alt` is forwarded and used as the `alt` attribute on the rendered `<img>`.
 </Callout>
 
 ### API Integration

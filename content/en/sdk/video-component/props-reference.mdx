@@ -7,7 +7,7 @@ import {Callout} from "@/snippets";
 
 ## Core Props
 
-### `id` **(Required)**
+### `id` **(Optional when `src` or `videoData` is provided)**
 
 **Type:** `string`
 
@@ -27,6 +27,20 @@ A direct HLS or video URL. When `src` is provided, the component bypasses the RI
 
 ```tsx
 <Video src="https://example.com/stream.m3u8" />
+```
+
+### `videoData` **(Optional)**
+
+**Type:** `VideoData`
+
+Pre-fetched video metadata returned from `getVideo()`. When `videoData` is provided, the SDK skips the network fetch.
+
+```tsx
+import {getVideo, Video} from "@rixl/media-react";
+
+const videoData = await getVideo("D3OCjdLP60");
+
+<Video videoData={videoData} />;
 ```
 
 ### `className` **(Optional)**
@@ -55,15 +69,256 @@ Automatically starts playback when the component loads and is visible. The SDK h
 
 **Type:** `boolean` | **Default:** `true`
 
-Starts the video muted. The browser controls allow the user to unmute.
+Starts the video muted. Users can unmute through the player controls unless `soundDisabled` is set.
 
 ```tsx
 <Video id="D3OCjdLP60" muted={true} />
 ```
 
-<Callout type="warning">
-  The React `Video` wrapper currently accepts many legacy UI props (`progressBar`, `theme`, `volume`, `allowFullscreen`, `heatmap`, `chapters`, `loop`, etc.) for backward compatibility, but does **not** forward them to the Lit element. They are ignored. The underlying `<rixl-video>` renders a standard `<video>` with browser controls.
-</Callout>
+### `loop` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+Restarts playback when the video ends.
+
+```tsx
+<Video id="D3OCjdLP60" loop={true} />
+```
+
+### `playsInline` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Prefer inline playback on mobile browsers instead of native fullscreen.
+
+```tsx
+<Video id="D3OCjdLP60" playsInline={true} />
+```
+
+### `poster` **(Optional)**
+
+**Type:** `string`
+
+URL of an image to show before the video loads.
+
+```tsx
+<Video id="D3OCjdLP60" poster="https://example.com/poster.jpg" />
+```
+
+### `thumbhash` **(Optional)**
+
+**Type:** `string`
+
+A ThumbHash placeholder string rendered while the poster loads.
+
+### `volume` **(Optional)**
+
+**Type:** `number` | **Default:** `1.0`
+
+Initial volume level from `0` to `1`.
+
+```tsx
+<Video id="D3OCjdLP60" volume={0.5} />
+```
+
+## Player UI Props
+
+The `<rixl-video>` element is a custom Lit player. These props control its built-in UI.
+
+### `controls` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Show the built-in RIXL control bar (play/pause, seek, volume, fullscreen, picture-in-picture, settings).
+
+```tsx
+<Video id="D3OCjdLP60" controls={true} />
+```
+
+### `theme` **(Optional)**
+
+**Type:** `"default" | "minimal" | "feed" | "hover" | "hideUI"` | **Default:** `"default"`
+
+Select the player UI theme.
+
+- `default` — full control bar.
+- `minimal` — reduced controls.
+- `feed` — feed-optimized controls.
+- `hover` — controls shown on hover.
+- `hideUI` — no built-in controls (use custom UI).
+
+```tsx
+<Video id="D3OCjdLP60" theme="hover" />
+```
+
+### `hideUI` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+Shortcut that hides the entire built-in UI. Useful when building fully custom controls as siblings of the component.
+
+```tsx
+<Video id="D3OCjdLP60" hideUI={true} />
+```
+
+### `progressBar` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Show the built-in progress bar.
+
+```tsx
+<Video id="D3OCjdLP60" progressBar={true} />
+```
+
+### `showChapters` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Render chapter markers on the progress bar when chapters are available.
+
+```tsx
+<Video id="D3OCjdLP60" showChapters={true} />
+```
+
+### `chapters` **(Optional)**
+
+**Type:** `Chapter[]`
+
+Override or supply chapter data directly. If omitted and `videoData.chapters` exists, those are used.
+
+```tsx
+<Video
+  id="D3OCjdLP60"
+  chapters={[
+    {title: "Intro", start_time_sec: 0, end_time_sec: 30, duration_label: "0:30"},
+  ]}
+/>
+```
+
+### `heatmap` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Show an engagement heatmap overlay on the progress bar when data is available.
+
+```tsx
+<Video id="D3OCjdLP60" heatmap={false} />
+```
+
+### `heatmapData` **(Optional)**
+
+**Type:** `VideoHeatmap | null`
+
+Direct heatmap data to render. If omitted, the SDK attempts to fetch heatmap data from the RIXL API.
+
+### `hotSegments` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+Highlight hot (high-engagement) segments on the progress bar.
+
+```tsx
+<Video id="D3OCjdLP60" hotSegments={true} />
+```
+
+### `resumeProgress` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Resume playback from the last persisted position when the video loads.
+
+```tsx
+<Video id="D3OCjdLP60" resumeProgress={true} />
+```
+
+### `soundDisabled` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+When `true`, the player never plays audio (useful for preview thumbnails).
+
+```tsx
+<Video id="D3OCjdLP60" soundDisabled={true} />
+```
+
+### `autoHideMs` **(Optional)**
+
+**Type:** `number` | **Default:** `3000`
+
+Duration in milliseconds before the control bar hides after inactivity.
+
+```tsx
+<Video id="D3OCjdLP60" autoHideMs={5000} />
+```
+
+### `allowPlayPause` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Allow users to toggle play/pause.
+
+### `allowFullscreen` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Allow users to enter fullscreen.
+
+### `allowPictureInPicture` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Allow users to enter picture-in-picture mode.
+
+## Context Props
+
+### `feedId` **(Optional)**
+
+**Type:** `string`
+
+Feed identifier when the video is rendered inside a feed. `<Feed>` automatically propagates this value to child videos.
+
+### `postId` **(Optional)**
+
+**Type:** `string`
+
+Post identifier when the video is rendered inside a feed.
+
+### `isCurrent` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+Marks this post as the active viewport item. `<Feed>` sets this automatically on the currently visible post.
+
+### `feedFont` **(Optional)**
+
+**Type:** `FontFamilyKey`
+
+Caption/subtitle font family to use in feed or standalone mode.
+
+### `lang` **(Optional)**
+
+**Type:** `string` | **Default:** `""`
+
+Player UI language. Defaults to the user's browser language or the feed language.
+
+### `userId` **(Optional)**
+
+**Type:** `string`
+
+User identifier to attach to analytics events. Usually populated automatically from the `@rixl/sdk` user store.
+
+### `userProperties` **(Optional)**
+
+**Type:** `Record<string, string>` | **Default:** `{}`
+
+Custom user properties to attach to analytics events.
+
+### `planType` **(Optional)**
+
+**Type:** `"free" | "pro" | "pay-as-you-go" | "custom"`
+
+Plan type context for analytics. Populated from `videoData.plan_type` by default.
 
 ## Analytics Props
 
@@ -87,30 +342,6 @@ Specifies the page context for analytics reporting.
 <Video id="D3OCjdLP60" analyticsPage="feed" />
 ```
 
-**Available Contexts:**
-
-- `'standalone'` - Video on its own dedicated page
-- `'feed'` - Video within a scrolling feed
-- `'profile'` - Video on a user profile page
-
-### `feedId` **(Optional)**
-
-**Type:** `string`
-
-Feed identifier when the video is rendered inside a feed. `<Feed>` automatically propagates this value to child videos.
-
-### `postId` **(Optional)**
-
-**Type:** `string`
-
-Post identifier when the video is rendered inside a feed.
-
-### `isCurrent` **(Optional)**
-
-**Type:** `boolean` | **Default:** `false`
-
-Marks this post as the active viewport item. `<Feed>` sets this automatically on the currently visible post.
-
 ### `onRixlAnalytics` **(Optional)**
 
 **Type:** `(event: CustomEvent<{ event: AnalyticsEvent }>) => void`
@@ -124,18 +355,55 @@ Called whenever the underlying `<rixl-video>` dispatches a `rixl-analytics` even
 ## TypeScript Interface
 
 ```typescript
-interface VideoProps extends Omit<HTMLProps<HTMLVideoElement>, "onEnded"> {
-  id: string;
+interface VideoProps {
+  id?: string;
   src?: string;
+  videoData?: VideoData;
+  className?: string;
+
   autoPlay?: boolean;
   muted?: boolean;
-  analytics?: boolean;
-  analyticsPage?: Page;
+  loop?: boolean;
+  playsInline?: boolean;
+  poster?: string;
+  thumbhash?: string;
+  volume?: number;
+
+  controls?: boolean;
+  theme?: RixlVideoTheme;
+  hideUI?: boolean;
+  progressBar?: boolean;
+  showChapters?: boolean;
+  chapters?: Chapter[];
+  heatmap?: boolean;
+  heatmapData?: VideoHeatmap | null;
+  hotSegments?: boolean;
+  resumeProgress?: boolean;
+  soundDisabled?: boolean;
+  autoHideMs?: number;
+  allowPlayPause?: boolean;
+  allowFullscreen?: boolean;
+  allowPictureInPicture?: boolean;
+
   feedId?: string;
   postId?: string;
   isCurrent?: boolean;
+  feedFont?: FontFamilyKey;
+  lang?: string;
+  userId?: string;
+  userProperties?: Record<string, string>;
+  planType?: "free" | "pro" | "pay-as-you-go" | "custom";
+
+  analytics?: boolean;
+  analyticsPage?: "feed" | "standalone" | "profile";
   onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
 }
+
+type RixlVideoTheme = "default" | "minimal" | "feed" | "hover" | "hideUI";
 ```
 
-`VideoProps` also inherits most standard HTML video props such as `className`, `playsInline`, and most DOM event handlers. `loop` is accepted but not currently forwarded to the Lit element. `onEnded` is excluded from the public `<Video />` props surface; for end-of-playback state, listen to `onRixlAnalytics` or use the player-scope hooks with `<VideoPlayer>`.
+<Callout type="info">
+  The React `Video` component is a `@lit/react` wrapper around `<rixl-video>`. It forwards all props listed above except mapping `id` to
+  `videoId`. Standard HTML attributes such as `className`, `autoPlay`, `muted`, `loop`, `playsInline`, `poster`, and `volume` are also
+  forwarded as expected.
+</Callout>

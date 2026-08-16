@@ -1,6 +1,6 @@
 ---
 title: "Video: Autoplay Background"
-description: "Background videos with autoplay and analytics"
+description: "Perfect for hero sections, landing pages, and marketing content where you want an engaging video background without audio interruption."
 ---
 
 import {Video} from "@/snippets";
@@ -14,6 +14,9 @@ import {Callout} from "@/snippets";
     className="absolute inset-0 w-full h-full object-cover"
     autoPlay={true}
     muted={true}
+    loop={true}
+    theme="hideUI"
+    soundDisabled={true}
   />
 
   <div
@@ -39,7 +42,18 @@ import {Video} from "@rixl/media-react";
 function HeroSection() {
   return (
     <section className="relative h-96 overflow-hidden rounded-xl">
-      <Video id="hero-background-video" className="absolute inset-0 w-full h-full object-cover" autoPlay={true} muted={true} />
+      {/* Background Video */}
+      <Video
+        id="hero-background-video"
+        className="absolute inset-0 w-full h-full object-cover"
+        autoPlay={true}
+        muted={true}
+        loop={true}
+        theme="hideUI"
+        soundDisabled={true}
+      />
+
+      {/* Content Overlay */}
 
       <div
         className={`absolute inset-0 w-full flex
@@ -59,23 +73,20 @@ function HeroSection() {
 ## Key Features
 
 - **Muted Autoplay**: Complies with browser autoplay policies
-- **Seamless Loop**: Video restarts automatically without interruption (use `loop` where supported)
-- **No Controls**: Clean background experience without UI elements
+- **Seamless Loop**: `loop={true}` restarts the video when it ends
+- **No Controls**: `theme="hideUI"` removes the built-in UI for a clean background
 - **Overlay Support**: Content can be placed over the video
 - **Responsive**: Automatically adapts to container size
 
 ## Configuration Options
 
-| Prop        | Value  | Purpose                     |
-| ----------- | ------ | --------------------------- |
-| `autoPlay`  | `true` | Start video immediately     |
-| `muted`     | `true` | Permanently disable audio   |
-| `loop`      | `true` | Restart video when it ends  |
-| `className` | CSS    | Fill and position the video |
-
-<Callout type="warning">
-  `loop` is accepted by the React wrapper but is not currently forwarded to the Lit element. Native `<video loop>` behavior may differ by build.
-</Callout>
+| Prop        | Value   | Purpose                         |
+| ----------- | ------- | ------------------------------- |
+| `autoPlay`  | `true`  | Start video immediately         |
+| `muted`     | `true`  | Mute audio by default           |
+| `loop`      | `true`  | Restart video when it ends      |
+| `theme`     | `hideUI`| Hide the built-in control bar     |
+| `className` | CSS     | Fill and position the video     |
 
 ## Best Practices
 

@@ -8,29 +8,55 @@ description: "Complete TypeScript type definitions for the RIXL SDK"
 ### VideoProps
 
 ```typescript
-interface VideoProps extends Omit<HTMLProps<HTMLVideoElement>, "onEnded"> {
-  id: string;
+interface VideoProps {
+  id?: string;
   src?: string;
+  videoData?: VideoData;
+  className?: string;
+
   autoPlay?: boolean;
   muted?: boolean;
-  analytics?: boolean;
-  analyticsPage?: Page;
+  loop?: boolean;
+  playsInline?: boolean;
+  poster?: string;
+  thumbhash?: string;
+  volume?: number;
+
+  controls?: boolean;
+  theme?: RixlVideoTheme;
+  hideUI?: boolean;
+  progressBar?: boolean;
+  showChapters?: boolean;
+  chapters?: Chapter[];
+  heatmap?: boolean;
+  heatmapData?: VideoHeatmap | null;
+  hotSegments?: boolean;
+  resumeProgress?: boolean;
+  soundDisabled?: boolean;
+  autoHideMs?: number;
+  allowPlayPause?: boolean;
+  allowFullscreen?: boolean;
+  allowPictureInPicture?: boolean;
+
   feedId?: string;
   postId?: string;
   isCurrent?: boolean;
+  feedFont?: FontFamilyKey;
+  lang?: string;
+  userId?: string;
+  userProperties?: Record<string, string>;
+  planType?: "free" | "pro" | "pay-as-you-go" | "custom";
+
+  analytics?: boolean;
+  analyticsPage?: Page;
   onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
 }
 
-// `VideoTheme` is still exported by `@rixl/media` for settings/caption styling,
-// but the React `<Video>` wrapper no longer accepts a `theme` prop.
-type VideoTheme = "default" | "minimal" | "hover" | "feed" | "hideUI";
-
-type SupportedLanguage = "en" | "de" | "es" | "fr" | "it" | "pl" | "ru" | "tr" | "uk";
-
+type RixlVideoTheme = "default" | "minimal" | "feed" | "hover" | "hideUI";
 type Page = "feed" | "standalone" | "profile";
 ```
 
-`VideoProps` also inherits most standard HTML video props such as `className`, `muted`, `autoPlay`, `playsInline`, and most DOM event handlers. `loop` is accepted but not currently forwarded to the Lit element. `onEnded` is excluded from the public `<Video />` props surface; for end-of-playback state, listen to `onRixlAnalytics` or use the player-scope hooks with `<VideoPlayer>`.
+`VideoProps` is a `@lit/react` wrapper around `<rixl-video>`. The React component maps the `id` prop to `videoId` and forwards all other props to the Lit element.
 
 ### VideoPlayerProps
 
@@ -40,14 +66,16 @@ interface VideoPlayerProps {
 }
 ```
 
-`VideoPlayer` establishes a player scope for detached controls. Render hook consumers as siblings of `<Video>` inside `<VideoPlayer>` to share state. The new Lit-backed `<Video>` does not automatically register itself in the legacy player stores; custom controls built with hooks must be wired to a player scope explicitly.
+`VideoPlayer` establishes a legacy player scope for detached controls. Render hook consumers as siblings of `<Video>` inside `<VideoPlayer>` to share state. The new Lit-backed `<Video>` does not automatically register itself in the legacy player stores; custom controls built with hooks must be wired to a player scope explicitly.
 
 ### ImageProps
 
 ```typescript
-interface ImageProps extends HTMLProps<HTMLImageElement> {
+interface ImageProps {
   id?: string;
-  alt?: string; // accepted for backward compatibility, but not forwarded to the Lit element
+  imageData?: ImageData;
+  alt?: string;
+  className?: string;
   analytics?: boolean;
   analyticsPage?: Page;
   feedId?: string;
@@ -55,30 +83,39 @@ interface ImageProps extends HTMLProps<HTMLImageElement> {
   isCurrent?: boolean;
   onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
 }
+
+type Page = "feed" | "standalone" | "profile";
 ```
+
+The React `Image` wrapper maps `id` to `imageId` and forwards `alt`, `imageData`, `className`, and the analytics props to `<rixl-image>`.
 
 ### FeedProps
 
 ```typescript
-interface FeedProps extends HTMLProps<HTMLDivElement> {
+interface FeedProps {
   feedId: string;
   analytics?: boolean;
   analyticsPage?: Page;
-  limit?: number;
-  buffer?: number;
+  onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
   loop?: boolean;
   autoscroll?: boolean;
-  onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
-  // Legacy props accepted for backward compatibility, but not forwarded:
-  lang?: SupportedLanguage;
+  muted?: boolean;
+  lang?: string;
   feedFont?: FontFamilyKey;
-  creatorId?: string;
-  startPostId?: string;
+  initialIndex?: number;
+  safeAreaTabBar?: number;
+  posts?: FeedPost[];
+  onFetchMore?: () => void | Promise<void>;
 }
 
+type Page = "feed" | "standalone" | "profile";
+
 type FontFamilyKey =
-  "monospace_serif" | "proportional_serif" | "monospace_sans" | "proportional_sans" | "casual" | "cursive" | "small_caps";
+  | "monospace_serif" | "proportional_serif" | "monospace_sans"
+  | "proportional_sans" | "casual" | "cursive" | "small_caps";
 ```
+
+`Feed` is a `@lit/react` wrapper around `<rixl-feed>`. `creatorId` and `startPostId` are accepted for backward compatibility but are not used.
 
 ## Hook Types
 
@@ -290,60 +327,6 @@ type FileStatus = "uploading" | "uploaded" | "processing" | "ready" | "error";
 
 ## Analytics Types
 
-### ContentViewEvent
-
-Event structure for content view tracking.
-
-```typescript
-interface ContentViewEvent {
-  _type: "content_views";
-  timestamp?: number;
-  content_id: string;
-  content_type: "video" | "image";
-  view_type: "start" | "watch" | "end";
-  watch_duration_ms: number;
-  page: Page;
-  feed_id?: string;
-  post_id?: string;
-  video_position_ms?: number;
-  video_total_duration_ms?: number;
-  segments?: Segment[];
-  device_id?: string;
-  country?: string;
-}
-
-interface Segment {
-  start_ms: number;
-  end_ms: number;
-  speed: number;
-}
-```
-
-### VideoHeatmap
-
-Viewer engagement heatmap data.
-
-```typescript
-interface VideoHeatmap {
-  video_id: string;
-  total_duration_ms: number;
-  data: number[];
-}
-```
-
-### HotSegment
-
-Represents a high-engagement segment of a video.
-
-````typescript
-interface HotSegment {
-  start_second: number;
-  end_second: number;
-  multiplier: number;
-}
-
-## Analytics Types
-
 ### AnalyticsEvent
 
 Union of all events that can be sent through `postAnalytics` or dispatched via `rixl-analytics`.
@@ -357,9 +340,9 @@ type AnalyticsEvent =
   | SessionStartEvent;
 
 type ContentType = "video" | "image";
-
 type ViewType = "start" | "watch" | "end";
-````
+type Page = "feed" | "standalone" | "profile";
+```
 
 ### ContentViewEvent
 
@@ -380,27 +363,74 @@ interface ContentViewEvent {
   device_id?: string;
   country?: string;
 }
+
+interface Segment {
+  start_ms: number;
+  end_ms: number;
+  speed: number;
+}
+```
+
+### VideoAnalyticsPayload
+
+Returned from `buildVideoAnalyticsPayload` and used to populate the video-specific fields of a `ContentViewEvent`.
+
+```typescript
+interface VideoAnalyticsPayload {
+  videoPositionMs?: number;
+  videoTotalDurationMs?: number;
+  segments?: Segment[];
+}
+
+interface BuildVideoAnalyticsPayloadParams {
+  contentType: ContentType;
+  viewType: ViewType;
+  video?: {currentTime: number; duration: number} | null;
+  playerId?: string;
+}
+```
+
+### VideoHeatmap
+
+Viewer engagement heatmap data.
+
+```typescript
+interface VideoHeatmap {
+  video_id: string;
+  total_duration_ms: number;
+  data: number[];
+}
+```
+
+### HotSegment
+
+Represents a high-engagement segment of a video.
+
+```typescript
+interface HotSegment {
+  start_second: number;
+  end_second: number;
+  multiplier: number;
+}
 ```
 
 ### EngagementEvent
 
-Sent for image visibility and video watch progress.
+Sent for user engagement actions such as comments, likes, shares, saves, and subscriptions.
 
 ```typescript
 interface EngagementEvent {
   _type: "engagement";
   timestamp?: number;
-  content_id: string;
-  content_type: ContentType;
-  watch_duration_ms: number;
-  page: Page;
-  feed_id?: string;
-  post_id?: string;
-  video_position_ms?: number;
-  video_total_duration_ms?: number;
-  segments?: Segment[];
-  device_id?: string;
+  engagement_type: string;
+  resource_type?: string;
+  resource_id?: string;
+  page?: string;
+  comment_text?: string;
+  share_platform?: string;
   country?: string;
+  device_type?: string;
+  session_id?: string;
 }
 ```
 
@@ -412,18 +442,23 @@ Tracks user actions such as `play`, `pause`, `seek`, `image_click`, and feed-lev
 interface InteractionEvent {
   _type: "interaction";
   timestamp?: number;
-  content_id: string;
-  content_type: ContentType;
   interaction_type: string;
-  page: Page;
-  feed_id?: string;
-  post_id?: string;
-  video_position_ms?: number;
+  element_type?: string;
+  element_id?: string;
+  session_id?: string;
+  page?: string;
+  page_url?: string;
+  scroll_depth?: number;
+  search_query?: string;
   click_x?: number;
   click_y?: number;
-  scroll_depth?: number;
-  device_id?: string;
-  country?: string;
+  device_type?: string;
+  browser?: string;
+  resource_id?: string;
+  resource_type?: string;
+  feed_id?: string;
+  post_id?: string;
+  content_id?: string;
 }
 ```
 
@@ -435,15 +470,17 @@ Tracks media and API load failures.
 interface ErrorEvent {
   _type: "error";
   timestamp?: number;
-  content_id: string;
-  content_type?: ContentType;
   error_type: string;
+  error_code?: string;
   error_message?: string;
-  page?: Page;
-  feed_id?: string;
-  post_id?: string;
-  device_id?: string;
-  country?: string;
+  stack_trace?: string;
+  resource_type?: string;
+  resource_id?: string;
+  endpoint?: string;
+  session_id?: string;
+  device_type?: string;
+  browser?: string;
+  os?: string;
 }
 ```
 
@@ -455,18 +492,58 @@ Automatically prepended to the first analytics flush for the session.
 interface SessionStartEvent {
   _type: "session_start";
   timestamp?: number;
-  device_id?: string;
+  utm_source?: string;
+  utm_campaign?: string;
+  browser?: string;
+  language?: string;
+  screen_resolution?: string;
+  platform?: string;
+  tg_platform?: string;
+  tg_version?: string;
+  timezone?: string;
+  timezone_offset?: number;
+  color_depth?: number;
+  touch_support?: boolean;
   country?: string;
-  session_id?: string;
+  user_id?: string;
+}
+```
+
+### AnalyticsContext
+
+Merged into the analytics `session_start` event and used by builders to fill contextual fields.
+
+```typescript
+interface AnalyticsContext {
+  user_id?: string;
+  country?: string;
+  city?: string;
+  region?: string;
+  device?: string;
+  os?: string;
+  os_version?: string;
+  language?: string;
+  browser?: string;
+  screen_resolution?: string;
+  platform?: string;
+  tg_platform?: string;
+  tg_version?: string;
+  timezone?: string;
+  timezone_offset?: number;
+  color_depth?: number;
+  touch_support?: boolean;
+  utm_source?: string;
+  utm_campaign?: string;
 }
 ```
 
 ### Helper Parameter Types
 
 ```typescript
-interface BuildEngagementParams {
+interface BuildEventParams {
   contentId: string;
   contentType: ContentType;
+  viewType: ViewType;
   watchDurationMs: number;
   page: Page;
   feedId?: string;
@@ -476,33 +553,67 @@ interface BuildEngagementParams {
   segments?: Segment[];
 }
 
+interface BuildEngagementParams {
+  engagementType: string;
+  resourceType?: string;
+  resourceId?: string;
+  page?: string;
+  commentText?: string;
+  sharePlatform?: string;
+  country?: string;
+  deviceType?: string;
+  sessionId?: string;
+}
+
 interface BuildInteractionParams {
-  contentId: string;
-  contentType: ContentType;
   interactionType: string;
-  page: Page;
-  feedId?: string;
-  postId?: string;
-  videoPositionMs?: number;
+  elementType?: string;
+  elementId?: string;
+  sessionId?: string;
+  page?: string;
+  pageUrl?: string;
+  scrollDepth?: number;
+  searchQuery?: string;
   clickX?: number;
   clickY?: number;
-  scrollDepth?: number;
+  deviceType?: string;
+  browser?: string;
+  resourceId?: string;
+  resourceType?: string;
+  feedId?: string;
+  postId?: string;
+  contentId?: string;
 }
 
 interface BuildErrorParams {
-  contentId: string;
   errorType: string;
+  errorCode?: string;
   errorMessage?: string;
-  contentType?: ContentType;
-  page?: Page;
-  feedId?: string;
-  postId?: string;
+  stackTrace?: string;
+  resourceType?: string;
+  resourceId?: string;
+  endpoint?: string;
+  sessionId?: string;
+  deviceType?: string;
+  browser?: string;
+  os?: string;
 }
 
 interface BuildSessionStartParams {
-  deviceId?: string;
-  sessionId?: string;
+  browser?: string;
+  language?: string;
+  screenResolution?: string;
+  platform?: string;
+  tgPlatform?: string;
+  tgVersion?: string;
+  timezone?: string;
+  timezoneOffset?: number;
+  colorDepth?: number;
+  touchSupport?: boolean;
   country?: string;
+  userId?: string;
+  utmSource?: string;
+  utmCampaign?: string;
 }
 ```
 
@@ -512,7 +623,3 @@ interface BuildSessionStartParams {
 - The first flush automatically prepends one `session_start` event.
 - All millisecond durations are converted to `GoogleProtobufDuration` strings (`"5s"`, `"1.234s"`) before sending to `/analytics/v1/events`.
 - `content_type` is sent as `MEDIA_TYPE_IMAGE` or `MEDIA_TYPE_VIDEO` on the wire.
-
-```
-
-```

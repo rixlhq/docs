@@ -168,7 +168,7 @@ Choose the right processing tier for your content and audience:
           className="w-full h-auto rounded-lg"
           controls
           analytics
-          analyticsPage="video"
+          analyticsPage="standalone"
           onRixlAnalytics={(e) => console.log(e.detail.event)}
         />
       );
@@ -186,7 +186,7 @@ Choose the right processing tier for your content and audience:
     <rixl-video
       video-id="your-video-id"
       analytics
-      analytics-page="video"
+      analytics-page="standalone"
       controls
     ></rixl-video>
     ```
@@ -195,7 +195,7 @@ Choose the right processing tier for your content and audience:
 </Tabs>
 
 <Callout type="info">
-  The React `Video` component is a `@lit/react` wrapper around `<rixl-video>`. It forwards standard `<video>` attributes (`autoPlay`, `muted`, `loop`, `controls`, `className`) plus analytics props and the `onRixlAnalytics` event. Legacy UI props such as `progressBar`, `allowFullscreen`, `heatmap`, and `chapters` are no longer forwarded.
+  The React `Video` component is a `@lit/react` wrapper around `<rixl-video>`. It forwards `id` (mapped to `videoId`), `src`, `videoData`, standard media attributes (`autoPlay`, `muted`, `loop`, `playsInline`, `poster`, `volume`), player UI props (`controls`, `theme`, `progressBar`, `showChapters`, `chapters`, `heatmap`, `hotSegments`, `allowFullscreen`, `allowPictureInPicture`, `autoHideMs`, `resumeProgress`, `soundDisabled`), analytics props, and the `onRixlAnalytics` event.
 </Callout>
 
 ### API Integration

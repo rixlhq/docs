@@ -1,6 +1,6 @@
 ---
 title: "Feed: Standard Feed"
-description: "Infinite scrolling feed with automatic media playback"
+description: "Simple implementation of an infinite-scrolling feed with automatic video playback"
 ---
 
 import {Feed} from "@/snippets";
@@ -62,6 +62,7 @@ export default function FeedWithTabs() {
 
   return (
     <div className="flex flex-col h-screen bg-black">
+      {/* Tabs */}
       <nav className="flex border-b border-gray-800">
         <button
           onClick={() => setActiveTab("following")}
@@ -74,6 +75,7 @@ export default function FeedWithTabs() {
         </button>
       </nav>
 
+      {/* Feed */}
       <div className="flex-1">
         <Feed key={activeTab} feedId={activeTab} analyticsPage="feed" />
       </div>

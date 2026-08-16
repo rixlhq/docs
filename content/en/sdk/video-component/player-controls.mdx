@@ -1,49 +1,103 @@
 ---
 title: "Player Controls"
-description: "Guide to the video player controls, standard HTML video behavior, and analytics emitted by the Rixl video component"
+description: "Guide to the Rixl video player controls, UI themes, and analytics events"
 ---
 
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/tabs";
 import {Callout} from "fumadocs-ui/components/callout";
 
 <Callout type="info">
-  The React `Video` component is a `@lit/react` wrapper around the Lit `<rixl-video>` element. It renders a standard HTML `<video>` element and therefore uses the browser's native controls when `controls` is set. Custom control bars can be built around the scope-based `VideoPlayer` and hooks API documented in [Hooks](/en/sdk/hooks), or by listening to `onRixlAnalytics`.
+  The React `Video` component is a `@lit/react` wrapper around the Lit `<rixl-video>` element. It is a custom player, not a raw HTML `<video>`. You configure the built-in UI with props such as `theme`, `controls`, `progressBar`, `allowFullscreen`, and `allowPictureInPicture`, or build your own controls with `theme="hideUI"` and `onRixlAnalytics`.
 </Callout>
 
-## Standard Video Attributes
+## Built-in UI
 
-Because `<rixl-video>` and the React `Video` wrapper expose the underlying HTML `<video>` element, you can use all standard media attributes:
+The `<rixl-video>` player ships with a built-in control bar and several themes.
 
-| Attribute     | Type                             | Description                                                                           |
-| ------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
-| `controls`    | `boolean`                        | Show the browser's default control bar (play, pause, seek, volume, fullscreen, etc.). |
-| `autoPlay`    | `boolean`                        | Start playback as soon as the video can play.                                         |
-| `muted`       | `boolean`                        | Mute audio by default.                                                                |
-| `loop`        | `boolean`                        | Loop playback when the video ends.                                                    |
-| `playsInline` | `boolean`                        | Prefer inline playback on mobile browsers.                                            |
-| `poster`      | `string`                         | URL of an image to show before the video loads.                                       |
-| `preload`     | `"none" \| "metadata" \| "auto"` | Hints how much of the video to preload.                                               |
+| Prop                     | Type      | Default | Description                                                |
+| ------------------------ | --------- | ------- | ---------------------------------------------------------- |
+| `controls`               | `boolean` | `true`  | Show the built-in control bar.                             |
+| `theme`                  | `string`  | `default` | `default`, `minimal`, `feed`, `hover`, `hideUI`.          |
+| `progressBar`            | `boolean` | `true`  | Show the progress/seek bar.                                |
+| `showChapters`           | `boolean` | `true`  | Render chapter markers on the progress bar.                |
+| `heatmap`                | `boolean` | `true`  | Show an engagement heatmap overlay when data is available. |
+| `hotSegments`            | `boolean` | `false` | Highlight hot (high-engagement) segments.                  |
+| `allowPlayPause`         | `boolean` | `true`  | Allow play/pause toggles.                                  |
+| `allowFullscreen`        | `boolean` | `true`  | Allow fullscreen toggles.                                  |
+| `allowPictureInPicture`  | `boolean` | `true`  | Allow picture-in-picture toggles.                          |
+| `autoHideMs`             | `number`  | `3000`  | Time before the UI hides after inactivity.               |
+| `hideUI`                 | `boolean` | `false` | Hide the entire built-in UI.                               |
 
 ```tsx
 import {Video} from "@rixl/media-react";
 
-<Video id="your-video-id" className="w-full h-auto rounded-lg" controls autoPlay={false} muted loop />;
+<Video id="your-video-id" controls theme="default" progressBar allowFullscreen />
 ```
 
-## Native Control Bar
+## Standard Media Attributes
 
-When `controls` is enabled, the browser renders its own control bar. The exact appearance and capabilities depend on the browser, but typically include:
+The player also accepts standard media attributes, which it forwards to the underlying media element:
 
-- **Play / Pause**
-- **Seek bar**
-- **Volume control**
-- **Mute / Unmute**
-- **Fullscreen**
-- **Picture-in-Picture** (in supported browsers)
+| Attribute     | Type                             | Description                                           |
+| ------------- | -------------------------------- | ----------------------------------------------------- |
+| `autoPlay`    | `boolean`                        | Start playback as soon as the video can play.         |
+| `muted`       | `boolean`                        | Mute audio by default.                                |
+| `loop`        | `boolean`                        | Loop playback when the video ends.                    |
+| `playsInline` | `boolean`                        | Prefer inline playback on mobile browsers.            |
+| `poster`      | `string`                         | URL of an image to show before the video loads.       |
+| `volume`      | `number`                         | Initial volume level from `0` to `1`.                 |
 
-<Callout type="info">
-  Features such as playback speed presets, subtitle styling, multiple audio tracks, and chapter markers are handled by the browser if the underlying `<video>` element supports them. The Rixl `Video` component does not currently add a custom settings menu on top of the native controls.
-</Callout>
+## Themes
+
+<Tabs defaultValue="default">
+  <TabsList>
+    <TabsTrigger value="default">Default</TabsTrigger>
+    <TabsTrigger value="minimal">Minimal</TabsTrigger>
+    <TabsTrigger value="feed">Feed</TabsTrigger>
+    <TabsTrigger value="hover">Hover</TabsTrigger>
+    <TabsTrigger value="hideui">HideUI</TabsTrigger>
+  </TabsList>
+
+  <TabsContent value="default">
+    Full control bar with progress, volume, fullscreen, PiP, settings, and chapters.
+
+    ```tsx
+    <Video id="video-id" theme="default" />
+    ```
+  </TabsContent>
+
+  <TabsContent value="minimal">
+    Reduced controls for compact players.
+
+    ```tsx
+    <Video id="video-id" theme="minimal" />
+    ```
+  </TabsContent>
+
+  <TabsContent value="feed">
+    Optimized for vertical feed posts: muted autoplay, minimal controls, and feed analytics context.
+
+    ```tsx
+    <Video id="video-id" theme="feed" />
+    ```
+  </TabsContent>
+
+  <TabsContent value="hover">
+    Controls are hidden until the user hovers the player.
+
+    ```tsx
+    <Video id="video-id" theme="hover" />
+    ```
+  </TabsContent>
+
+  <TabsContent value="hideui">
+    No built-in controls. Use this when rendering your own control layer as a sibling.
+
+    ```tsx
+    <Video id="video-id" theme="hideUI" />
+    ```
+  </TabsContent>
+</Tabs>
 
 ## Analytics Events
 
@@ -62,38 +116,33 @@ The video component emits `rixl-analytics` events through `onRixlAnalytics`. The
 | `fullscreen`           | `interaction`   | Fullscreen mode was entered or exited.                    |
 | `picture_in_picture`   | `interaction`   | Picture-in-Picture mode was entered or exited.            |
 | `quality_change`       | `interaction`   | The HLS quality level changed.                            |
-| `settings_open`        | `interaction`   | The native settings menu was opened.                      |
-| `error`                | `error`         | A media load or playback error occurred.                  |
+| `settings_open`        | `interaction`   | The player settings menu was opened.                      |
+| `error`                | `error`         | A media load or playback error occurred.                |
 
 ```tsx
-import {Video} from "@rixl/media-react";
-
 <Video
   id="your-video-id"
   controls
   analytics
-  analyticsPage="video"
+  analyticsPage="standalone"
   onRixlAnalytics={(e) => {
     console.log("Rixl analytics event:", e.detail.event);
   }}
-/>;
+/>
 ```
 
 ## Custom Control Bars
 
-If you need a fully custom control bar, you have two recommended paths:
-
-1. **Scope-based hooks** — Use `<VideoPlayer>` with `usePlayback`, `usePlayerProgress`, and `useMediaSettings`. This is the legacy React player API and is documented in [Hooks](/en/sdk/hooks).
-2. **Siblings + `onRixlAnalytics`** — Place your own controls as siblings of `<Video>` and drive them from the analytics events, your own React state, or a wrapped native `<video>` element.
+If you need a fully custom control bar, use `theme="hideUI"` and place your own controls as siblings of `<Video>`. You can drive them from `onRixlAnalytics` or from your own React state.
 
 <Callout type="warning">
   Do not render custom controls as children of the `Video` component. The `Video` wrapper is a self-contained Lit web component and does not
-  provide an internal player scope for child controls.
+  provide an internal slot for child controls.
 </Callout>
 
 ## Keyboard Shortcuts
 
-When the video element has focus, browsers generally support the following shortcuts on the native `<video>` control bar:
+When the player has focus, the following shortcuts are supported:
 
 | Action                    | Shortcut                |
 | ------------------------- | ----------------------- |
@@ -108,25 +157,9 @@ When the video element has focus, browsers generally support the following short
 
 ## Picture-in-Picture and Fullscreen
 
-Picture-in-Picture and fullscreen are triggered from the browser's native control bar or by calling the standard `<video>` element APIs on a ref:
-
-```tsx
-import {useRef} from "react";
-import {Video} from "@rixl/media-react";
-
-function Player({videoId}) {
-  const ref = useRef(null);
-
-  return (
-    <>
-      <Video ref={ref} id={videoId} controls className="w-full h-auto" />
-      <button onClick={() => ref.current?.requestFullscreen?.()}>Fullscreen</button>
-    </>
-  );
-}
-```
+Picture-in-Picture and fullscreen can be triggered from the built-in control bar or through the `allowPictureInPicture` and `allowFullscreen` props.
 
 <Callout type="info">
-  Not all browsers support Picture-in-Picture. The `Video` component will emit a `picture_in_picture` analytics interaction event when the
+  Not all browsers support Picture-in-Picture. The `Video` component emits a `picture_in_picture` analytics interaction event when the
   browser fires the corresponding `enterpictureinpicture` / `leavepictureinpicture` events.
 </Callout>

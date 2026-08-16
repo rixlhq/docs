@@ -1,6 +1,6 @@
 ---
 title: "Overview"
-description: "Video player for RIXL content with HLS streaming, browser controls, and built-in analytics"
+description: "Video player for RIXL content with HLS streaming, custom controls, and built-in analytics"
 ---
 
 import {Callout} from "@/snippets";
@@ -9,7 +9,7 @@ import {Callout} from "@/snippets";
 
 The `Video` component plays RIXL video content using adaptive HLS streaming. It is implemented as a Lit web component (`<rixl-video>`) and wrapped for React so analytics and playback behavior are consistent across every framework.
 
-The component renders a standard HTML `<video>` element and uses `hls.js` for HLS support where native support is missing. It tracks `content_views`, engagement, interaction, and error events automatically.
+The player ships with a built-in control bar and multiple themes (`default`, `minimal`, `feed`, `hover`, `hideUI`). You can also hide the built-in UI and build your own controls as siblings of the component.
 
 ### Quick Example
 
@@ -34,8 +34,9 @@ function Player() {
 
 - HLS playback with automatic `hls.js` fallback
 - Muted autoplay by default for browser compliance
-- Standard `<video>` element controls
+- Custom Lit player with configurable control bar
 - `src` override for direct streams
+- `videoData` for pre-fetched metadata
 
 **Analytics**
 
@@ -46,23 +47,23 @@ function Player() {
 
 **Customization**
 
+- `theme`, `controls`, `progressBar`, `allowFullscreen`, `allowPictureInPicture`, `heatmap`, `chapters`, `hotSegments`, and more
 - CSS class customization through `className`
 - Responsive design with aspect ratio preservation
 
 <Callout type="info">
-  The React wrapper still accepts legacy UI props (`theme`, `progressBar`, `allowFullscreen`, etc.) for backward compatibility, but they are not forwarded to the Lit element. Use `className` and the browser `<video>` controls for current  behavior.
+  The React `Video` wrapper is a `@lit/react` wrapper around `<rixl-video>`. It forwards all documented props (mapping `id` to `videoId`) and
+  emits analytics through `onRixlAnalytics`.
 </Callout>
 
 ### Custom Controls
 
-Need custom controls instead of the built-in browser UI? Use the public [Hooks](/en/sdk/hooks) section.
+Need custom controls? Use `theme="hideUI"` and render your own controls as siblings, or use the legacy player-scope hooks documented in [Hooks](/de/sdk/hooks).
 
-The supported pattern is:
+The recommended patterns are:
 
-- Detached sibling controls inside `<VideoPlayer>`
-- The player-scope hooks (`usePlayback`, `usePlayerProgress`, etc.) bind to the enclosing player scope, not directly to the Lit-backed `<Video>`
-
-The new `<Video>` is a self-contained custom element. Custom controls can also be built by listening to `onRixlAnalytics` and driving a separate `<video>` element if necessary.
+1. **Built-in UI** — pass `theme`, `controls`, `progressBar`, `allowFullscreen`, etc.
+2. **Custom sibling controls + `onRixlAnalytics`** — hide the UI and build your own control bar.
 
 ### When to Use
 

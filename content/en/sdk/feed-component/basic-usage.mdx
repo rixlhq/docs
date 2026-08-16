@@ -27,7 +27,7 @@ Every Feed component needs at minimum:
 import {Feed} from "@rixl/media-react";
 
 function FeedExample() {
-  return <Feed feedId="your-feed-id" limit={10} buffer={3} analyticsPage="feed" />;
+  return <Feed feedId="your-feed-id" analyticsPage="feed" />;
 }
 ```
 
@@ -73,14 +73,15 @@ function FeedWithAnalytics() {
 <Feed feedId="your-feed-id" autoscroll={true} loop={true} />
 ```
 
-## Pagination Tuning
+## Direct Data Mode
+
+If you already have posts, pass them directly and handle pagination with `onFetchMore`:
 
 ```tsx
-<Feed feedId="your-feed-id" limit={20} buffer={5} />
+function FeedFromData({posts, loadMore}) {
+  return <Feed feedId="your-feed-id" posts={posts} onFetchMore={loadMore} analyticsPage="feed" />;
+}
 ```
-
-- `limit` — number of posts fetched per page
-- `buffer` — how many posts outside the viewport are kept in the DOM
 
 ## Best Practices
 
@@ -89,11 +90,10 @@ function FeedWithAnalytics() {
 </Callout>
 
 <Callout type="info">
-  **Buffer size**: A higher `buffer` improves scroll smoothness but uses more memory. A lower `buffer` is better for long feeds on low-end
-  devices.
+  **Container Height**: Always use `h-screen` or `h-full` on the container for proper scrolling.
 </Callout>
 
 <Callout type="warning">
-  **Legacy props**: `lang`, `feedFont`, `creatorId`, and `startPostId` are accepted for backward compatibility but are not forwarded to the
-  Lit element.
+  **Legacy props**: `creatorId` and `startPostId` are accepted for backward compatibility but are not used. Use `feedId`, `initialIndex`, and
+  `posts` / `onFetchMore` for current behavior.
 </Callout>

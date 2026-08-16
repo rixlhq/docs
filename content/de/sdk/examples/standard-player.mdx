@@ -1,38 +1,33 @@
 ---
-title: "Video: Standard Player"
-description: "Standard video player configuration with analytics"
+title: "Video: Standard Video Player"
+description: "Complete guide to the standard video player with built-in RIXL controls and analytics"
 ---
 
 import {Video} from "@/snippets";
 import {Callout} from "fumadocs-ui/components/callout";
 
-A clean, standard video player configuration. This example shows the recommended setup with native controls and analytics enabled.
+The standard video player provides a complete, professional media experience using the RIXL Lit player with adaptive HLS streaming. This is the most common implementation for content platforms, educational sites, and any application requiring full video playback capabilities.
 
 ## Live Example
 
 <div className="w-full aspect-video rounded-lg overflow-hidden">
-  <Video
-    id="your-video-id"
-    className="w-full h-full"
-    analytics={true}
-    analyticsPage="standalone"
-    onRixlAnalytics={(e) => console.log(e.detail.event)}
-  />
+  <Video id="your-video-id" className="w-full h-full" analyticsPage="standalone" controls theme="default" />
 </div>
 
-## Basic Implementation
+## Complete Implementation
 
 ```tsx
 import {Video} from "@rixl/media-react";
 
-export default function VideoPage() {
+function StandardVideoPlayer() {
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="w-full aspect-video rounded-lg overflow-hidden">
       <Video
         id="your-video-id"
-        className="w-full rounded-lg"
-        analytics={true}
+        className="w-full h-full"
         analyticsPage="standalone"
+        controls
+        theme="default"
         onRixlAnalytics={(e) => console.log(e.detail.event)}
       />
     </div>
@@ -40,40 +35,74 @@ export default function VideoPage() {
 }
 ```
 
-## What's Included
+## Core Features
 
-**Available:**
+### Playback
 
-- Native browser video controls
-- Responsive sizing
-- Analytics events (`content_views`, `interaction`, `error`)
+The `Video` component renders the custom `<rixl-video>` element. It loads the HLS manifest returned by the RIXL API and falls back to `hls.js` where native HLS support is missing. Use `controls`, `theme`, `progressBar`, `allowFullscreen`, `allowPictureInPicture`, `chapters`, `heatmap`, and other UI props to configure the built-in player.
 
-**No longer supported as props:**
+### Analytics
 
-- `theme`
-- `progressBar`
-- `allowFullscreen`
-- `allowPlayPause`
-- `heatmap`
-- `chapters`
-- `resumeProgress`
+With analytics enabled by default, the component tracks:
 
-These legacy props are accepted for backward compatibility but are not forwarded to the Lit element.
+- `content_views` `start`, `watch`, and `end` events
+- Interaction events: `play`, `pause`, `seek`, `mute`, `volume_change`, `fullscreen`, `picture_in_picture`, `quality_change`, `settings_open`
+- Error events for load and API failures
 
-## Analytics Events
+Provide `analyticsPage`, `feedId`, and `postId` to attribute events correctly:
 
-The player emits these analytics events through `onRixlAnalytics`:
+```tsx
+<Video id="your-video-id" analyticsPage="feed" feedId="my-feed" postId="post-123" onRixlAnalytics={(e) => console.log(e.detail.event)} />
+```
 
-- `content_views` - `start`, `watch`, `end`
-- `interaction` - `play`, `pause`, `seek`, `mute`, `volume_change`, `fullscreen`, `picture_in_picture`, `quality_change`, `settings_open`
-- `error` - `video_element_error`, `hls_error`, `video_api_error`
+## Common Configurations
+
+### Content Platform
+
+```tsx
+<Video id="content-video" className="w-full max-w-4xl mx-auto rounded-lg shadow-lg" analyticsPage="standalone" controls />
+```
+
+### Educational Platform
+
+```tsx
+<Video id="tutorial-video" className="w-full h-auto" analyticsPage="standalone" autoPlay={false} controls />
+```
+
+### Marketing/Landing Page
+
+```tsx
+<Video id="promo-video" className="w-full max-w-5xl mx-auto rounded-2xl shadow-2xl" analyticsPage="standalone" controls />
+```
+
+## Responsive Design
+
+Make your video player adapt to different screen sizes:
+
+```tsx
+function ResponsivePlayer() {
+  return (
+    <div className="w-full max-w-6xl mx-auto px-4">
+      <div className="aspect-video w-full rounded-lg overflow-hidden">
+        <Video id="your-video-id" className="w-full h-full" controls />
+      </div>
+    </div>
+  );
+}
+```
 
 ## Best Practices
 
-<Callout type="info">Use `analyticsPage` to set the page context (`"feed"`, `"standalone"`, `"profile"`).</Callout>
+<Callout type="info">
+  **Default Settings**: Start with `analyticsPage="standalone"` for dedicated player pages and `analyticsPage="feed"` for posts inside `<Feed>`.
+</Callout>
 
-<Callout type="info">Subscribe to `onRixlAnalytics` to process or forward analytics events to your own pipeline.</Callout>
+<Callout type="info">
+  **Autoplay Policy**: The SDK mutes autoplay by default to satisfy browser policies. Use `autoPlay={true}` and `muted={true}` for
+  background videos.
+</Callout>
 
-<Callout type="warning">
-  Avoid passing legacy UI props; the `Video` wrapper is a thin Lit wrapper and does not implement custom controls.
+<Callout type="info">
+  **Player UI**: `theme`, `controls`, `progressBar`, `allowFullscreen`, `heatmap`, `chapters`, `resumeProgress`, and `volume` are all forwarded
+  to the Lit element. See the [Props Reference](/de/sdk/video-component/props-reference) for the full list.
 </Callout>

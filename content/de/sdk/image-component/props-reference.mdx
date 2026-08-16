@@ -7,7 +7,7 @@ import {Callout} from "@/snippets";
 
 ## Core Props
 
-### `id` **(Required)**
+### `id` **(Optional when `imageData` is provided)**
 
 **Type:** `string`
 
@@ -19,11 +19,25 @@ The unique image identifier from your RIXL dashboard. Upload your image to [dash
 
 This is mapped to `imageId` on the underlying `<rixl-image>` web component.
 
-### `alt` **(Accepted for backward compatibility)**
+### `imageData` **(Optional)**
 
-**Type:** `string` | **Default:** `undefined`
+**Type:** `ImageData`
 
-The React wrapper accepts `alt` for backward compatibility, but does **not** forward it to the Lit element. Alt text is derived from the fetched `imageData` internally. You do not need to pass `alt` manually.
+Pre-fetched image metadata returned from `getImage()`. When `imageData` is provided, the SDK skips the network fetch.
+
+```tsx
+import {getImage, Image} from "@rixl/media-react";
+
+const imageData = await getImage("your-image-id");
+
+<Image imageData={imageData} />;
+```
+
+### `alt` **(Optional)**
+
+**Type:** `string`
+
+Alt text for the rendered `<img>`. If omitted, the component falls back to `imageData.file.name`.
 
 ```tsx
 <Image id="your-image-id" alt="A sunset over the mountains" />
@@ -102,15 +116,21 @@ Called whenever the underlying `<rixl-image>` dispatches a `rixl-analytics` even
 ## TypeScript Interface
 
 ```typescript
-interface ImageProps extends HTMLProps<HTMLImageElement> {
+interface ImageProps {
   id?: string;
-  alt?: string; // accepted for backward compatibility, not forwarded
+  imageData?: ImageData;
+  alt?: string;
   className?: string;
   analytics?: boolean;
-  analyticsPage?: Page;
+  analyticsPage?: "feed" | "standalone" | "profile";
   feedId?: string;
   postId?: string;
   isCurrent?: boolean;
   onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
 }
 ```
+
+<Callout type="info">
+  The React `Image` component is a `@lit/react` wrapper around `<rixl-image>`. It forwards all props listed above except mapping `id` to
+  `imageId`. `alt` is forwarded to the Lit element and used as the `alt` attribute on the rendered `<img>`.
+</Callout>

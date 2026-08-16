@@ -117,6 +117,7 @@ Tracks when content becomes visible, while it is being consumed, and when it lea
 ```ts
 interface ContentViewEvent {
   _type: "content_views";
+  timestamp?: number;
   content_id: string;
   content_type: "video" | "image";
   view_type: "start" | "watch" | "end";
@@ -127,6 +128,14 @@ interface ContentViewEvent {
   video_position_ms?: number;
   video_total_duration_ms?: number;
   segments?: Segment[];
+  device_id?: string;
+  country?: string;
+}
+
+interface Segment {
+  start_ms: number;
+  end_ms: number;
+  speed: number;
 }
 ```
 
@@ -136,11 +145,53 @@ interface ContentViewEvent {
 
 ### `engagement`
 
-Captures watch duration and visibility for reporting. Video engagement events include `watch_duration_ms`, `video_position_ms`, `video_total_duration_ms`, and `segments`.
+Tracks user engagement actions such as comments, shares, and reactions.
+
+```ts
+interface EngagementEvent {
+  _type: "engagement";
+  timestamp?: number;
+  engagement_type: string;
+  resource_type?: string;
+  resource_id?: string;
+  page?: string;
+  comment_text?: string;
+  share_platform?: string;
+  country?: string;
+  device_type?: string;
+  session_id?: string;
+}
+```
+
+Common `engagement_type` values include `comment`, `like`, `share`, `save`, and `subscribe`.
 
 ### `interaction`
 
 Tracks user actions.
+
+```ts
+interface InteractionEvent {
+  _type: "interaction";
+  timestamp?: number;
+  interaction_type: string;
+  element_type?: string;
+  element_id?: string;
+  session_id?: string;
+  page?: string;
+  page_url?: string;
+  scroll_depth?: number;
+  search_query?: string;
+  click_x?: number;
+  click_y?: number;
+  device_type?: string;
+  browser?: string;
+  resource_id?: string;
+  resource_type?: string;
+  feed_id?: string;
+  post_id?: string;
+  content_id?: string;
+}
+```
 
 **Image interactions:**
 
@@ -172,13 +223,18 @@ Tracks media and API load failures.
 ```ts
 interface ErrorEvent {
   _type: "error";
-  content_id: string;
-  content_type?: "video" | "image";
+  timestamp?: number;
   error_type: string;
+  error_code?: string;
   error_message?: string;
-  page?: "feed" | "standalone" | "profile";
-  feed_id?: string;
-  post_id?: string;
+  stack_trace?: string;
+  resource_type?: string;
+  resource_id?: string;
+  endpoint?: string;
+  session_id?: string;
+  device_type?: string;
+  browser?: string;
+  os?: string;
 }
 ```
 
@@ -187,6 +243,27 @@ Common `error_type` values include `image_load_error`, `video_load_error`, `vide
 ### `session_start`
 
 Automatically prepended to the first analytics flush for a session. Contains device and session metadata.
+
+```ts
+interface SessionStartEvent {
+  _type: "session_start";
+  timestamp?: number;
+  utm_source?: string;
+  utm_campaign?: string;
+  browser?: string;
+  language?: string;
+  screen_resolution?: string;
+  platform?: string;
+  tg_platform?: string;
+  tg_version?: string;
+  timezone?: string;
+  timezone_offset?: number;
+  color_depth?: number;
+  touch_support?: boolean;
+  country?: string;
+  user_id?: string;
+}
+```
 
 ## Video segments
 
@@ -204,10 +281,16 @@ The video analytics controller collects segments as the user plays, pauses, seek
 
 ## Using core analytics helpers
 
-For custom players or server-side logic, use the core analytics builders:
+For custom players or server-side logic, use the core analytics helpers:
 
 ```ts
-import {postContentEvent, postEngagement, postInteraction, postError, initializeAnalyticsContext} from "@rixl/media";
+import {
+  postContentEvent,
+  postEngagement,
+  postInteraction,
+  postError,
+  initializeAnalyticsContext,
+} from "@rixl/media";
 
 initializeAnalyticsContext();
 
@@ -223,13 +306,53 @@ postContentEvent({
 });
 
 postInteraction({
-  contentId: "video-id",
-  contentType: "video",
   interactionType: "play",
+  resourceId: "video-id",
+  resourceType: "video",
   page: "standalone",
-  videoPositionMs: 1000,
+  feedId: "my-feed",
+  postId: "post-123",
+});
+
+postEngagement({
+  engagementType: "share",
+  resourceType: "video",
+  resourceId: "video-id",
+  sharePlatform: "twitter",
+});
+
+postError({
+  errorType: "video_load_error",
+  errorMessage: "Network request failed",
+  resourceType: "video",
+  resourceId: "video-id",
 });
 ```
+
+You can also build a low-level array and pass it to `postAnalytics`:
+
+```ts
+import {postAnalytics, type ContentViewEvent} from "@rixl/media";
+
+const event: ContentViewEvent = {
+  _type: "content_views",
+  content_id: "video-id",
+  content_type: "video",
+  view_type: "watch",
+  watch_duration_ms: 15000,
+  page: "standalone",
+  video_position_ms: 5000,
+  video_total_duration_ms: 120000,
+  segments: [{start_ms: 5000, end_ms: 20000, speed: 1}],
+};
+
+await postAnalytics([event]);
+```
+
+<Callout type="info">
+  `postAnalytics` queues events and flushes them in a micro-task. The first flush automatically prepends a `session_start` event. Failed
+  flushes retry up to three times.
+</Callout>
 
 ## Wire format
 
@@ -251,7 +374,7 @@ Events are sent as `POST /analytics/v1/events` with a top-level `AnalyticsV1Trac
 
 <Callout type="info">
   `watch_duration_ms`, `video_position_ms`, `video_total_duration_ms`, `start_ms`, and `end_ms` are converted to `GoogleProtobufDuration`
-  strings (e.g. `"5s"`, `"1.234s"`) on the wire. `content_type` becomes `MEDIA_TYPE_IMAGE` or `MEDIA_TYPE_VIDEO`.
+  strings (e.g. `"5s"`, `"1.234s"`) on the wire. `content_type` is sent as `MEDIA_TYPE_IMAGE` or `MEDIA_TYPE_VIDEO`.
 </Callout>
 
 ## Best practices
