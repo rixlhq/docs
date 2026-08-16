@@ -1,10 +1,5 @@
 {
   "title": "Legal",
   "description": "Privacy policy, terms of service, and legal documentation",
-  "pages": [
-    "privacy-policy",
-    "terms-of-service",
-    "acceptable-use-policy",
-    "cookie-policy"
-  ]
+  "pages": ["privacy-policy", "terms-of-service", "acceptable-use-policy", "cookie-policy"]
 }

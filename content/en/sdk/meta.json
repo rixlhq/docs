@@ -3,23 +3,14 @@
   "title": "SDK",
   "description": "Complete guide to the RIXL SDK Library",
   "pages": [
-    "---Getting Started---",
-    "...getting-started",
-    "---Video---",
-    "...video-component",
-    "---Image---",
-    "...image-component",
-    "---Feed---",
-    "...feed-component",
-    "---Hooks---",
-    "...hooks",
-    "---Core API---",
-    "...core-api",
-    "---Upload---",
-    "...upload",
-    "---Settings---",
-    "...settings",
-    "---Examples---",
-    "...examples"
+    "getting-started",
+    "video-component",
+    "image-component",
+    "feed-component",
+    "hooks",
+    "core-api",
+    "upload",
+    "settings",
+    "examples"
   ]
 }

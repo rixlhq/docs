@@ -1,6 +1,7 @@
 {
   "title": "Konto & Teams",
   "description": "Verwalten Sie Ihr persönliches Konto, Teameinstellungen und Organisationseinstellungen",
+  "pagesIndex": "index",
   "pages": [
     "overview",
     "---Persönliches Konto---",
