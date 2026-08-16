@@ -154,7 +154,6 @@ function ApiContent({
 function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
   const {lang, _splat} = Route.useParams();
   const pageSlug = _splat ?? "";
-  const category = getCategoryFromSlug(pageSlug);
   const markdownPath = pageSlug ? `/${lang}/${pageSlug}.md` : `/${lang}.md`;
   const githubPath = pageSlug ? `content/${lang}/${pageSlug}` : `content/${lang}`;
 
@@ -176,13 +175,9 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
         }}
       >
         <header className="relative space-y-2">
-          <div className="space-y-2.5">
-            <p className="text-sm font-medium text-fd-primary">{category}</p>
-
-            <div className="flex items-center justify-between gap-2">
-              <DocsTitle>{frontmatter.title}</DocsTitle>
-              <LLMCopyButton markdownUrl={markdownPath} githubUrl={`https://github.com/qeeqez/docs/tree/main/${githubPath}`} />
-            </div>
+          <div className="flex items-center justify-between gap-2">
+            <DocsTitle>{frontmatter.title}</DocsTitle>
+            <LLMCopyButton markdownUrl={markdownPath} githubUrl={`https://github.com/qeeqez/docs/tree/main/${githubPath}`} />
           </div>
           <DocsDescription>{frontmatter.description}</DocsDescription>
         </header>
@@ -198,15 +193,4 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
       </DocsPage>
     </>
   );
-}
-
-function getCategoryFromSlug(pageSlug: string): string {
-  const segments = pageSlug.split("/").filter(Boolean);
-  const category = segments[1] ?? segments[0] ?? "Documentation";
-
-  return category
-    .split("-")
-    .filter(Boolean)
-    .map((segment) => segment[0]?.toUpperCase() + segment.slice(1))
-    .join(" ");
 }
