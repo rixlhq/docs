@@ -9,7 +9,6 @@
     "use-player-ui",
     "use-player-tracks",
     "use-global-player-settings",
-    "use-progress-bar",
-    "..."
+    "use-progress-bar"
   ]
 }

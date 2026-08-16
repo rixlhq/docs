@@ -19,7 +19,7 @@ export const loader = createServerFn({
 
     const tree = source.getPageTree(lang) as Root;
     const sectionLinks = getSectionLinks(tree, page.locale ?? "");
-    const normalizedTree = slugs[0] === "api" && lang ? extractApiTree(tree, lang) : tree;
+    const normalizedTree = lang ? extractSectionTree(tree, lang, slugs[0]) : tree;
     const apiPage = getApiPage(page.data);
     const apiPageHtml = apiPage ? await renderApiPageHtml(apiPage) : undefined;
 
@@ -115,15 +115,18 @@ function findFirstNodePageUrlByPrefix(node: Node, prefix: string): string | unde
   }
 }
 
-function extractApiTree(root: Root, lang: string): Root {
-  const apiPrefix = `/${lang}/api`;
-  const apiFolder = root.children.find((item): item is Folder => item.type === "folder" && hasPrefixInNode(item, apiPrefix));
-  if (!apiFolder) return root;
+function extractSectionTree(root: Root, lang: string, section: string | undefined): Root {
+  if (!section) return root;
 
-  // On API pages, show categories directly (Feeds/Images/Videos) without the extra API wrapper.
+  const prefix = `/${lang}/${section}`;
+  const sectionFolder = root.children.find((item): item is Folder => item.type === "folder" && hasPrefixInNode(item, prefix));
+  if (!sectionFolder) return root;
+
+  // Show the active product's sections directly (e.g. Getting Started, Video Component,
+  // Feeds/Images/Videos) without the extra Home / SDK / API wrapper.
   return {
     ...root,
-    children: apiFolder.children,
+    children: sectionFolder.children,
   };
 }
 
