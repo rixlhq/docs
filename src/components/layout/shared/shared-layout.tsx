@@ -2,6 +2,7 @@ import {DocsLayout} from "fumadocs-ui/layouts/docs";
 import {HomeLayout} from "fumadocs-ui/layouts/home";
 import {ReactNode} from "react";
 import {baseOptions} from "@/lib/layout.shared";
+import {SidebarBanner} from "@/components/layout/shared/sidebar-banner";
 import type {Root} from "fumadocs-core/page-tree";
 import {Background} from "@/components/layout/home/background";
 
@@ -59,9 +60,10 @@ function buildDocsLayoutProps({tree, options, docsLayoutWidthClass, searchToggle
     themeSwitch: {
       enabled: false,
     },
+    tabs: false as const,
     sidebar: {
       enabled: sidebar,
-      tabs: false as const,
+      banner: <SidebarBanner />,
       footer: null,
       collapsible: false,
     },
@@ -99,10 +101,7 @@ export default function SharedLayout({
         }}
         className={`flex-1 ${layoutWidthClass}`}
       >
-        <DocsLayout
-          key={treeKey}
-          {...docsLayoutProps}
-        >
+        <DocsLayout key={treeKey} {...docsLayoutProps}>
           {children}
         </DocsLayout>
       </HomeLayout>

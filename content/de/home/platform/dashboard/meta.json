@@ -1,5 +1,5 @@
 {
   "title": "Dashboard",
   "description": "Verwalten Sie Projekte, Medien und Feeds im Dashboard",
-  "pages": ["overview", "guide", "---Projekte---", "...projects", "---Medien---", "...media", "---Feeds---", "...feeds"]
+  "pages": ["overview", "guide", "---Projekte---", "projects", "---Medien---", "media", "---Feeds---", "feeds"]
 }

@@ -1,7 +1,5 @@
 {
   "title": "Anleitungen & Beispiele",
   "description": "Schritt-für-Schritt-Anleitungen und praxisnahe Implementierungsbeispiele",
-  "pages": [
-    "index"
-  ]
+  "collapsible": false
 }

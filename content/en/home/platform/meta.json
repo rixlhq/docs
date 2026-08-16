@@ -1,17 +1,6 @@
 {
   "title": "Platform",
   "description": "Upload, manage, and optimize media through the RIXL platform",
-  "pages": [
-    "index",
-    "---Account & Teams---",
-    "...account-teams",
-    "---Dashboard---",
-    "...dashboard",
-    "---Upload & Optimize---",
-    "...uploads",
-    "---API & Integrations---",
-    "...api-documentation",
-    "---Billing & Payments---",
-    "...billing"
-  ]
+  "pagesIndex": "index",
+  "pages": ["account-teams", "dashboard", "uploads", "api-documentation", "billing"]
 }

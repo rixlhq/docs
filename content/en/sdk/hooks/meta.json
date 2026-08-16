@@ -1,8 +1,8 @@
 {
   "title": "Hooks",
   "description": "Public React hooks for building custom RIXL video controls and page-level player coordination.",
+  "pagesIndex": "index",
   "pages": [
-    "index",
     "use-media-settings",
     "use-playback",
     "use-player-progress",
