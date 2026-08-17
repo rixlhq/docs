@@ -20,7 +20,6 @@ import { Route as ApiSearchRouteImport } from "./routes/api/search"
 import { Route as LangApiIndexRouteImport } from "./routes/$lang/api/index"
 import { Route as LangHomeIndexRouteImport } from "./routes/$lang/home/index"
 import { Route as LangOgSplatRouteImport } from "./routes/$lang/og/$"
-import { Route as LangSdkIndexRouteImport } from "./routes/$lang/sdk/index"
 
 const IndexRoute = IndexRouteImport.update({
   id: "/",
@@ -77,11 +76,6 @@ const LangOgSplatRoute = LangOgSplatRouteImport.update({
   path: "/$lang/og/$",
   getParentRoute: () => rootRouteImport,
 } as any)
-const LangSdkIndexRoute = LangSdkIndexRouteImport.update({
-  id: "/$lang/sdk/",
-  path: "/$lang/sdk/",
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
@@ -95,7 +89,6 @@ export interface FileRoutesByFullPath {
   "/$lang/og/$": typeof LangOgSplatRoute
   "/$lang/api/": typeof LangApiIndexRoute
   "/$lang/home/": typeof LangHomeIndexRoute
-  "/$lang/sdk/": typeof LangSdkIndexRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
@@ -109,7 +102,6 @@ export interface FileRoutesByTo {
   "/$lang/og/$": typeof LangOgSplatRoute
   "/$lang/api": typeof LangApiIndexRoute
   "/$lang/home": typeof LangHomeIndexRoute
-  "/$lang/sdk": typeof LangSdkIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -124,7 +116,6 @@ export interface FileRoutesById {
   "/$lang/og/$": typeof LangOgSplatRoute
   "/$lang/api/": typeof LangApiIndexRoute
   "/$lang/home/": typeof LangHomeIndexRoute
-  "/$lang/sdk/": typeof LangSdkIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -140,7 +131,6 @@ export interface FileRouteTypes {
     | "/$lang/og/$"
     | "/$lang/api/"
     | "/$lang/home/"
-    | "/$lang/sdk/"
   fileRoutesByTo: FileRoutesByTo
   to:
     | "/"
@@ -154,7 +144,6 @@ export interface FileRouteTypes {
     | "/$lang/og/$"
     | "/$lang/api"
     | "/$lang/home"
-    | "/$lang/sdk"
   id:
     | "__root__"
     | "/"
@@ -168,7 +157,6 @@ export interface FileRouteTypes {
     | "/$lang/og/$"
     | "/$lang/api/"
     | "/$lang/home/"
-    | "/$lang/sdk/"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -183,7 +171,6 @@ export interface RootRouteChildren {
   LangOgSplatRoute: typeof LangOgSplatRoute
   LangApiIndexRoute: typeof LangApiIndexRoute
   LangHomeIndexRoute: typeof LangHomeIndexRoute
-  LangSdkIndexRoute: typeof LangSdkIndexRoute
 }
 
 declare module "@tanstack/react-router" {
@@ -265,13 +252,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LangOgSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    "/$lang/sdk/": {
-      id: "/$lang/sdk/"
-      path: "/$lang/sdk"
-      fullPath: "/$lang/sdk/"
-      preLoaderRoute: typeof LangSdkIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -287,7 +267,6 @@ const rootRouteChildren: RootRouteChildren = {
   LangOgSplatRoute: LangOgSplatRoute,
   LangApiIndexRoute: LangApiIndexRoute,
   LangHomeIndexRoute: LangHomeIndexRoute,
-  LangSdkIndexRoute: LangSdkIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

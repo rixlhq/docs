@@ -59,7 +59,7 @@ function buildDocsLayoutProps({tree, options, docsLayoutWidthClass, searchToggle
     themeSwitch: {
       enabled: false,
     },
-    tabs: false as const,
+    tabs: true as const,
     sidebar: {
       enabled: sidebar,
       footer: null,

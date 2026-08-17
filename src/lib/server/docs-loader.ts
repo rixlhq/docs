@@ -87,7 +87,7 @@ function isOpenApiData(data: unknown): data is {
 function getSectionLinks(tree: Root, lang: string) {
   const fallback = {
     home: `/${lang}/home/getting-started/overview`,
-    sdk: `/${lang}/sdk/getting-started/overview`,
+    sdk: `/${lang}/sdk`,
     api: `/${lang}/api`,
   };
 
@@ -122,11 +122,19 @@ function extractSectionTree(root: Root, lang: string, section: string | undefine
   const sectionFolder = root.children.find((item): item is Folder => item.type === "folder" && hasPrefixInNode(item, prefix));
   if (!sectionFolder) return root;
 
-  // Show the active product's sections directly (e.g. Getting Started, Video Component,
-  // Feeds/Images/Videos) without the extra Home / SDK / API wrapper.
+  // API pages are generated from the OpenAPI spec and should stay flat.
+  if (section === "api") {
+    return {
+      ...root,
+      children: sectionFolder.children,
+    };
+  }
+
+  // Keep the section folder itself in the tree so it can act as a product root.
+  // Nested roots (e.g. media-react under sdk) are then picked by TreeContextProvider.
   return {
     ...root,
-    children: sectionFolder.children,
+    children: [sectionFolder],
   };
 }
 
