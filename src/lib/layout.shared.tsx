@@ -107,7 +107,7 @@ export function FooterSections(lang: string): FooterSection[] {
         {text: "API", url: `/${lang}/api`},
         {text: "Documentation", url: `/${lang}/home/getting-started/overview`},
         {text: "Guides", url: `/${lang}/home/guides`},
-        {text: "Examples", url: `/${lang}/sdk/examples`},
+        {text: "Examples", url: `/${lang}/sdk/media-react/examples`},
       ],
     },
     {
@@ -135,7 +135,7 @@ export function FooterSections(lang: string): FooterSection[] {
         {text: "CLI", url: `/${lang}/home/platform/api-documentation/overview`},
         {text: "SDK", url: `/${lang}/sdk`},
         {text: "Integrations", url: `/${lang}/home/guides`},
-        {text: "Extensions", url: `/${lang}/sdk/examples`},
+        {text: "Extensions", url: `/${lang}/sdk/media-react/examples`},
       ],
     },
     {
