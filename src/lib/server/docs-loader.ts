@@ -19,13 +19,15 @@ export const loader = createServerFn({
 
     const tree = source.getPageTree(lang) as Root;
     const sectionLinks = getSectionLinks(tree, page.locale ?? "");
-    const normalizedTree = lang ? extractSectionTree(tree, lang, slugs[0]) : tree;
+    const {tree: normalizedTree, backUrl, treeKey} = lang ? extractProductTree(tree, lang, slugs) : {tree, backUrl: undefined, treeKey: lang};
     const apiPage = getApiPage(page.data);
     const apiPageHtml = apiPage ? await renderApiPageHtml(apiPage) : undefined;
 
     return {
       tree: await source.serializePageTree(normalizedTree),
       sectionLinks,
+      backUrl,
+      treeKey,
       path: page.path,
       page: {
         slugs: page.slugs,
@@ -144,4 +146,63 @@ function hasPrefixInNode(node: Node, prefix: string): boolean {
 
   if (node.index?.url.startsWith(prefix)) return true;
   return node.children.some((item) => hasPrefixInNode(item, prefix));
+}
+
+interface ProductTreeResult {
+  tree: Root;
+  backUrl?: string;
+  treeKey: string;
+}
+
+function extractProductTree(root: Root, lang: string, slugs: string[]): ProductTreeResult {
+  const section = slugs[0];
+  if (!section) return {tree: root, treeKey: lang};
+
+  if (section === "api") {
+    return {tree: extractSectionTree(root, lang, section), treeKey: `${lang}:api`};
+  }
+
+  const product = slugs[1];
+  const sectionPrefix = `/${lang}/${section}`;
+  const sectionFolder = root.children.find((item): item is Folder =>
+    item.type === "folder" ? hasPrefixInNode(item, sectionPrefix) : false
+  );
+
+  if (!sectionFolder) return {tree: extractSectionTree(root, lang, section), treeKey: `${lang}:${section}`};
+
+  if (!product) {
+    return {tree: extractSectionTree(root, lang, section), treeKey: `${lang}:${section}`};
+  }
+
+  const productPrefix = `/${lang}/${section}/${product}`;
+  const productFolder = findFolderByPrefix(sectionFolder, productPrefix);
+
+  if (!productFolder) {
+    return {tree: extractSectionTree(root, lang, section), backUrl: `${sectionPrefix}/`, treeKey: `${lang}:${section}`};
+  }
+
+  const productRoot: Root = {
+    ...root,
+    name: productFolder.name,
+    description: productFolder.description,
+    children: productFolder.children,
+    type: "root",
+  };
+
+  return {
+    tree: productRoot,
+    backUrl: `${sectionPrefix}/`,
+    treeKey: `${lang}:${section}:${product}`,
+  };
+}
+
+function findFolderByPrefix(node: Node, prefix: string): Folder | undefined {
+  if (node.type === "folder") {
+    if (node.index?.url.startsWith(prefix)) return node;
+    for (const child of node.children) {
+      const match = findFolderByPrefix(child, prefix);
+      if (match) return match;
+    }
+  }
+  return undefined;
 }

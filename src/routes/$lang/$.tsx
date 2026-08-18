@@ -77,6 +77,8 @@ function Page() {
       sdk: string;
       api: string;
     };
+    backUrl?: string;
+    treeKey: string;
     path: string;
     page: {
       slugs: string[];
@@ -91,14 +93,14 @@ function Page() {
   const data = useFumadocsLoader(loaderData) as {tree: object};
   const isApiPage = !!loaderData.apiPage;
   const Content = isApiPage ? undefined : clientLoader.getComponent(loaderData.path);
-  const section = _splat?.split("/")[0] ?? "root";
 
   return (
     <SharedLayout
       lang={lang}
       dataTree={data.tree}
       sectionLinks={loaderData.sectionLinks}
-      treeKey={`${lang}:${section}`}
+      backUrl={loaderData.backUrl}
+      treeKey={loaderData.treeKey}
       isApiPage={isApiPage}
     >
       {isApiPage ? <ApiContent apiPage={loaderData.apiPage} page={loaderData.page} /> : Content ? <Content /> : null}
