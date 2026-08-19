@@ -1,0 +1,104 @@
+---
+title: "Video: Autoplay Background"
+description: "Perfect for hero sections, landing pages, and marketing content where you want an engaging video background without audio interruption."
+---
+
+import {Video} from "@/snippets";
+import {Callout} from "@/snippets";
+
+## Live Example
+
+<div className="relative w-full h-96 overflow-hidden rounded-xl mb-8">
+  <Video
+    id="hero-background-video"
+    className="absolute inset-0 w-full h-full object-cover"
+    autoPlay={true}
+    muted={true}
+    loop={true}
+    theme="hideUI"
+    soundDisabled={true}
+  />
+
+  <div
+      className={`absolute inset-0 w-full flex
+   items-center justify-center bg-black/50`}
+  >
+    <div className="text-center text-white">
+      <h1 className="text-4xl font-bold mb-4 text-white">
+          Welcome to Our Platform
+      </h1>
+      <p className="text-xl">
+          Experience the future of media delivery
+      </p>
+    </div>
+  </div>
+</div>
+
+## Code Implementation
+
+```tsx
+import {Video} from "@rixl/media-react";
+
+function HeroSection() {
+  return (
+    <section className="relative h-96 overflow-hidden rounded-xl">
+      {/* Background Video */}
+      <Video
+        id="hero-background-video"
+        className="absolute inset-0 w-full h-full object-cover"
+        autoPlay={true}
+        muted={true}
+        loop={true}
+        theme="hideUI"
+        soundDisabled={true}
+      />
+
+      {/* Content Overlay */}
+
+      <div
+        className={`absolute inset-0 w-full flex
+            items-center justify-center bg-black/50`}
+      >
+        <div className="text-center text-white">
+          <h1 className="text-4xl font-bold mb-4 text-white">Welcome to Our Platform</h1>
+
+          <p className="text-xl">Experience the future of media delivery</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+```
+
+## Key Features
+
+- **Muted Autoplay**: Complies with browser autoplay policies
+- **Seamless Loop**: `loop={true}` restarts the video when it ends
+- **No Controls**: `theme="hideUI"` removes the built-in UI for a clean background
+- **Overlay Support**: Content can be placed over the video
+- **Responsive**: Automatically adapts to container size
+
+## Configuration Options
+
+| Prop        | Value   | Purpose                         |
+| ----------- | ------- | ------------------------------- |
+| `autoPlay`  | `true`  | Start video immediately         |
+| `muted`     | `true`  | Mute audio by default           |
+| `loop`      | `true`  | Restart video when it ends      |
+| `theme`     | `hideUI`| Hide the built-in control bar     |
+| `className` | CSS     | Fill and position the video     |
+
+## Best Practices
+
+<Callout type="info">
+  <strong>Browser Autoplay:</strong> The SDK handles autoplay compliance by muting the video. For background videos, keep{" "}
+  <code>muted=&#123;true&#125;</code>.
+</Callout>
+
+<Callout type="warning">
+  <strong>Performance:</strong> Use shorter video loops (10-30 seconds) for better performance and faster loading.
+</Callout>
+
+<Callout type="info">
+  <strong>Accessibility:</strong> Provide a way for users to pause background videos if they find them distracting.
+</Callout>

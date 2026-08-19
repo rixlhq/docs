@@ -1,7 +1,7 @@
 import "@tanstack/react-start/server-only";
 import {createOpenAPI} from "fumadocs-openapi/server";
-import apiDocument from "../../api.json";
-import {API_BASE_URL} from "./api-base-url";
+import apiDocument from "../../api.json" with {type: "json"};
+import {API_BASE_URL} from "./api-base-url.ts";
 
 const OPENAPI_DOCUMENT_ID = "./api.json";
 

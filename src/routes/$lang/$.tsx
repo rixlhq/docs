@@ -7,6 +7,7 @@ import SharedLayout from "@/components/layout/shared/shared-layout";
 import {getMDXComponents} from "@/components/mdx-components";
 import {Footer} from "@/components/layout/footer/footer";
 import {LLMCopyButton} from "@/components/page-actions/llm-copy-button";
+import {DocsBreadcrumb} from "@/components/layout/shared/docs-breadcrumb";
 import {loader} from "@/lib/server/docs-loader";
 import {Suspense} from "react";
 import {useFumadocsLoader} from "fumadocs-core/source/client";
@@ -77,6 +78,8 @@ function Page() {
       sdk: string;
       api: string;
     };
+    backUrl?: string;
+    treeKey: string;
     path: string;
     page: {
       slugs: string[];
@@ -91,14 +94,14 @@ function Page() {
   const data = useFumadocsLoader(loaderData) as {tree: object};
   const isApiPage = !!loaderData.apiPage;
   const Content = isApiPage ? undefined : clientLoader.getComponent(loaderData.path);
-  const section = _splat?.split("/")[0] ?? "root";
 
   return (
     <SharedLayout
       lang={lang}
       dataTree={data.tree}
       sectionLinks={loaderData.sectionLinks}
-      treeKey={`${lang}:${section}`}
+      backUrl={loaderData.backUrl}
+      treeKey={loaderData.treeKey}
       isApiPage={isApiPage}
     >
       {isApiPage ? <ApiContent apiPage={loaderData.apiPage} page={loaderData.page} /> : Content ? <Content /> : null}
@@ -134,6 +137,7 @@ function ApiContent({
       tableOfContent={{
         enabled: false,
       }}
+      breadcrumb={{enabled: false}}
       footer={{
         children: <Footer lang={lang} />,
       }}
@@ -154,7 +158,6 @@ function ApiContent({
 function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
   const {lang, _splat} = Route.useParams();
   const pageSlug = _splat ?? "";
-  const category = getCategoryFromSlug(pageSlug);
   const markdownPath = pageSlug ? `/${lang}/${pageSlug}.md` : `/${lang}.md`;
   const githubPath = pageSlug ? `content/${lang}/${pageSlug}` : `content/${lang}`;
 
@@ -166,6 +169,8 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
         toc={toc}
         tableOfContent={{component: <TableOfContents />}}
         tableOfContentPopover={{component: <TableOfContentsPopover />}}
+        breadcrumb={{includeRoot: true, includePage: false}}
+        slots={{breadcrumb: DocsBreadcrumb}}
         footer={{
           component: (
             <>
@@ -176,13 +181,9 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
         }}
       >
         <header className="relative space-y-2">
-          <div className="space-y-2.5">
-            <p className="text-sm font-medium text-fd-primary">{category}</p>
-
-            <div className="flex items-center justify-between gap-2">
-              <DocsTitle>{frontmatter.title}</DocsTitle>
-              <LLMCopyButton markdownUrl={markdownPath} githubUrl={`https://github.com/qeeqez/docs/tree/main/${githubPath}`} />
-            </div>
+          <div className="flex items-center justify-between gap-2">
+            <DocsTitle>{frontmatter.title}</DocsTitle>
+            <LLMCopyButton markdownUrl={markdownPath} githubUrl={`https://github.com/qeeqez/docs/tree/main/${githubPath}`} />
           </div>
           <DocsDescription>{frontmatter.description}</DocsDescription>
         </header>
@@ -198,15 +199,4 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
       </DocsPage>
     </>
   );
-}
-
-function getCategoryFromSlug(pageSlug: string): string {
-  const segments = pageSlug.split("/").filter(Boolean);
-  const category = segments[1] ?? segments[0] ?? "Documentation";
-
-  return category
-    .split("-")
-    .filter(Boolean)
-    .map((segment) => segment[0]?.toUpperCase() + segment.slice(1))
-    .join(" ");
 }

@@ -1,0 +1,63 @@
+---
+title: "useMediaSettings"
+description: "Read and update player-scoped mute and volume state for the current Video instance."
+---
+
+import {Callout} from "fumadocs-ui/components/callout";
+
+`useMediaSettings()` exposes player-scoped audio state and actions.
+
+<Callout type="warning">
+  This hook requires a `VideoPlayer` scope and a scope-aware media element. The Lit `<Video>` wrapper does not automatically participate in the scope.
+</Callout>
+
+## Signature
+
+```tsx
+const media = useMediaSettings();
+```
+
+It returns:
+
+- `muted`
+- `volume`
+- `previousVolume`
+- `mute()`
+- `unmute()`
+- `toggleMute()`
+- `setVolume(volume)`
+
+## Example
+
+```tsx
+import {VideoPlayer, useMediaSettings} from "@rixl/media-react";
+
+function CustomVolumeControls() {
+  const {muted, volume, toggleMute, setVolume} = useMediaSettings();
+
+  return (
+    <div className="flex items-center gap-3">
+      <button type="button" onClick={() => toggleMute()}>
+        {muted ? "Unmute" : "Mute"}
+      </button>
+
+      <input type="range" min={0} max={1} step={0.05} value={volume} onChange={(event) => setVolume(Number(event.target.value))} />
+    </div>
+  );
+}
+
+function CustomPlayer() {
+  return (
+    <VideoPlayer>
+      <CustomVolumeControls />
+      {/* scope-aware media element */}
+    </VideoPlayer>
+  );
+}
+```
+
+## Notes
+
+- This hook only affects the current scoped player.
+- `muted` reflects the effective audible state, including volume `0` and the interaction gate.
+- Use [`useGlobalPlayerSettings()`](/de/sdk/media-react/hooks/use-global-player-settings) only when one control should intentionally fan out to every mounted player on the page.

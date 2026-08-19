@@ -1,0 +1,165 @@
+---
+title: "Props Reference"
+description: "Complete API reference for all Feed component props and TypeScript interfaces"
+---
+
+import {Callout} from "@/snippets";
+
+## Core Props
+
+### `feedId` **(Required)**
+
+**Type:** `string`
+
+A unique feed identifier. Pass this to `<Feed />` so the SDK can fetch and display the correct set of posts.
+
+```tsx
+<Feed feedId="my-feed-id" />
+```
+
+This identifier is propagated to every child image and video post as `feedId`.
+
+## Analytics Props
+
+### `analytics` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Enables feed-level analytics (feed refresh, scroll, load more, post change) and post-level analytics for child components.
+
+```tsx
+<Feed feedId="my-feed-id" analytics={true} />
+```
+
+### `analyticsPage` **(Optional)**
+
+**Type:** `"feed" | "standalone" | "profile"` | **Default:** `"feed"`
+
+Page context propagated to child image and video events.
+
+```tsx
+<Feed feedId="my-feed-id" analyticsPage="profile" />
+```
+
+### `onRixlAnalytics` **(Optional)**
+
+**Type:** `(event: CustomEvent<{ event: AnalyticsEvent }>) => void`
+
+Called for every `rixl-analytics` event dispatched by the feed or any child image/video inside it.
+
+```tsx
+<Feed feedId="my-feed-id" onRixlAnalytics={(e) => console.log(e.detail.event)} />
+```
+
+## Feed Behavior Props
+
+### `loop` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+When `autoscroll` is enabled, returns to the first post after reaching the end.
+
+```tsx
+<Feed feedId="my-feed-id" loop={true} />
+```
+
+### `autoscroll` **(Optional)**
+
+**Type:** `boolean` | **Default:** `false`
+
+Automatically advances through posts when enabled.
+
+```tsx
+<Feed feedId="my-feed-id" autoscroll={true} loop={true} />
+```
+
+### `muted` **(Optional)**
+
+**Type:** `boolean` | **Default:** `true`
+
+Start feed videos muted by default.
+
+```tsx
+<Feed feedId="my-feed-id" muted={false} />
+```
+
+### `lang` **(Optional)**
+
+**Type:** `string` | **Default:** `"en"`
+
+Feed UI language, propagated to child posts.
+
+### `feedFont` **(Optional)**
+
+**Type:** `FontFamilyKey`
+
+Caption/subtitle font family, propagated to child posts.
+
+## Layout Props
+
+### `initialIndex` **(Optional)**
+
+**Type:** `number` | **Default:** `0`
+
+Index of the post to display first.
+
+```tsx
+<Feed feedId="my-feed-id" initialIndex={2} />
+```
+
+### `safeAreaTabBar` **(Optional)**
+
+**Type:** `number` | **Default:** `12`
+
+Bottom safe-area inset in pixels for fixed tab bars.
+
+```tsx
+<Feed feedId="my-feed-id" safeAreaTabBar={56} />
+```
+
+## Direct Data Mode (Advanced)
+
+### `posts` **(Optional)**
+
+**Type:** `FeedPost[]`
+
+Render a pre-fetched or static post array instead of fetching from the RIXL API. When `posts` is provided, `feedId` is still used for analytics context and child post IDs.
+
+```tsx
+<Feed feedId="my-feed-id" posts={posts} onFetchMore={loadMore} />
+```
+
+### `onFetchMore` **(Optional)**
+
+**Type:** `() => void | Promise<void>`
+
+Callback invoked when the user scrolls near the end of `posts`. Use it to append more posts in direct-data mode.
+
+## TypeScript Interface
+
+```typescript
+interface FeedProps {
+  feedId: string;
+  analytics?: boolean;
+  analyticsPage?: "feed" | "standalone" | "profile";
+  onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
+  loop?: boolean;
+  autoscroll?: boolean;
+  muted?: boolean;
+  lang?: string;
+  feedFont?: FontFamilyKey;
+  initialIndex?: number;
+  safeAreaTabBar?: number;
+  posts?: FeedPost[];
+  onFetchMore?: () => void | Promise<void>;
+}
+
+type FontFamilyKey =
+  | "monospace_serif" | "proportional_serif" | "monospace_sans"
+  | "proportional_sans" | "casual" | "cursive" | "small_caps";
+```
+
+<Callout type="info">
+  The React `Feed` component is a `@lit/react` wrapper around `<rixl-feed>`. It forwards all props listed above. `creatorId` and
+  `startPostId` are accepted for backward compatibility but are not used.
+</Callout>

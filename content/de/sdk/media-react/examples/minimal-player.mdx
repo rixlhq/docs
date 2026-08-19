@@ -1,0 +1,97 @@
+---
+title: "Video: Minimal Player"
+description: "Muted video with built-in controls hidden for Feed components and custom UI implementations"
+---
+
+import {Video} from "@/snippets";
+import {Callout} from "fumadocs-ui/components/callout";
+
+# Minimal Video Player
+
+A video player with the built-in control bar hidden, designed for feed components and custom UI overlays.
+
+## Live Example
+
+<div className="w-full aspect-video rounded-lg overflow-hidden">
+  <Video id="your-video-id" className="w-full h-full object-cover" muted={true} autoPlay={true} theme="hideUI" />
+</div>
+
+## Basic Implementation
+
+```tsx
+import {Video} from "@rixl/media-react";
+
+function MinimalVideo({videoId}) {
+  return (
+    <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+      <Video id={videoId} className="w-full h-full object-cover" muted={true} autoPlay={true} theme="hideUI" />
+      {/* Your custom overlay UI */}
+    </div>
+  );
+}
+```
+
+## What's Included
+
+**Available:**
+
+- Video playback with HLS support
+- Muted autoplay
+- Analytics events
+- Hidden built-in UI via `theme="hideUI"`
+
+## Use Cases
+
+### Feed Component
+
+Build TikTok/Instagram-style feeds with custom UI:
+
+```tsx
+function FeedVideo({videoId}) {
+  return (
+    <div className="relative w-full h-screen">
+      <Video
+        id={videoId}
+        className="w-full h-full object-cover"
+        muted={true}
+        autoPlay={true}
+        theme="hideUI"
+      />
+
+      {/* Your custom overlay UI */}
+      <div className="absolute bottom-20 left-6 text-white">
+        <h3 className="text-xl font-bold">Video Title</h3>
+        <p className="text-sm">Creator Name</p>
+      </div>
+    </div>
+  );
+}
+```
+
+### Video Preview Grid
+
+```tsx
+<div className="grid grid-cols-3 gap-4">
+  {videos.map((video) => (
+    <Video
+      key={video.id}
+      id={video.id}
+      className="w-full aspect-video object-cover rounded-lg"
+      muted={true}
+      autoPlay={true}
+      theme="feed"
+    />
+  ))}
+</div>
+```
+
+## When to Use
+
+**Use minimal layout for:**
+
+- Feed components
+- Video previews
+- Background videos
+- Custom player implementations
+
+Need audio or controls? Use the [Standard Video Player](/de/sdk/media-react/examples/standard-player) instead.

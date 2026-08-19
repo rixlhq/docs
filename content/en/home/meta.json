@@ -2,5 +2,6 @@
   "root": true,
   "title": "Documentation Home",
   "description": "Complete guide to the RIXL media processing platform",
+  "pagesIndex": "index",
   "pages": ["getting-started", "video", "images", "platform", "guides", "legal"]
 }

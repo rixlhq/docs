@@ -1,0 +1,45 @@
+---
+title: "Overview"
+description: "Infinite-scrolling feed for RIXL content with automatic playback, lazy loading, and built-in analytics"
+---
+
+import {Callout} from "@/snippets";
+
+## Overview
+
+The `Feed` component provides a vertical, scrollable feed of RIXL image and video posts. It is implemented as a Lit web component (`<rixl-feed>`) and wrapped for React, so analytics, pagination, and scroll behavior are consistent across every framework.
+
+### Quick Example
+
+```tsx
+import {Feed} from "@rixl/media-react";
+
+function FeedPage() {
+  return <Feed feedId="my-feed-id" analyticsPage="feed" onRixlAnalytics={(e) => console.log(e.detail.event)} />;
+}
+```
+
+### Key Features
+
+- Vertical feed of image and video posts
+- Automatic play/pause of visible video posts
+- `autoscroll` and `loop` modes
+- `feedId`, `lang`, and `feedFont` propagation to all child posts
+- `initialIndex` and `safeAreaTabBar` layout control
+- Direct-data mode with `posts` and `onFetchMore`
+- Built-in analytics: `feed_refresh`, `scroll`, `load_more`, `post_change`
+- Child `Image` and `Video` events bubble up through `onRixlAnalytics`
+
+### When to Use
+
+The Feed component is perfect for:
+
+- **Social media platforms** requiring vertical scrolling feeds
+- **Content discovery applications** with video and image posts
+- **Creator platforms** with user-generated content
+- **Mobile-first apps** with TikTok-style experiences
+- **Community platforms** with feed-based content distribution
+
+<Callout type="info">
+  Feed child posts are rendered as `<rixl-image>` and `<rixl-video>` web components. Their `feedId` and `postId` are set automatically by the feed.
+</Callout>

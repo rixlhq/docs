@@ -1,8 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import {openapiSource} from "fumadocs-openapi/server";
-import {openapi} from "../../src/lib/openapi.server";
-import {openApiPagesOptions} from "../../src/lib/openapi-pages";
+import {openapi} from "../../src/lib/openapi.server.ts";
+import {openApiPagesOptions} from "../../src/lib/openapi-pages.ts";
 
 export interface DocsPrerenderPages {
   docs: string[];

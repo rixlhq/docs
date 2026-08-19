@@ -1,6 +1,0 @@
-{
-  "title": "Image Component",
-  "description": "Optimized image display with lazy loading, thumbhash placeholders, and automatic CDN delivery",
-  "pagesIndex": "index",
-  "pages": ["basic-usage", "props-reference", "..."]
-}

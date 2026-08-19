@@ -4,6 +4,7 @@ import {useMemo} from "react";
 import Link from "fumadocs-core/link";
 import {useTreeContext} from "fumadocs-ui/contexts/tree";
 import {cn} from "cnfast";
+import {LayoutGrid} from "lucide-react";
 import type * as PageTree from "fumadocs-core/page-tree";
 
 function getFirstPageUrl(node: PageTree.Root | PageTree.Folder): string | undefined {
@@ -25,13 +26,28 @@ function getFirstPageUrl(node: PageTree.Root | PageTree.Folder): string | undefi
   return undefined;
 }
 
-export function SidebarBanner() {
+interface SidebarBannerProps {
+  backUrl?: string;
+}
+
+export function SidebarBanner({backUrl}: SidebarBannerProps) {
   const {root} = useTreeContext();
   const url = useMemo(() => getFirstPageUrl(root), [root]);
 
   return (
-    <div className="mb-1 px-2">
-      {url ? (
+    <div className="md:order-first mb-0 px-2">
+      {backUrl ? (
+        <Link
+          href={backUrl}
+          className={cn(
+            "flex items-center gap-2 text-base font-semibold text-fd-foreground",
+            "hover:text-fd-accent-foreground hover:underline"
+          )}
+        >
+          <LayoutGrid className="size-4" />
+          <span>{root.name}</span>
+        </Link>
+      ) : url ? (
         <Link
           href={url}
           className={cn("block text-base font-semibold text-fd-foreground", "hover:text-fd-accent-foreground hover:underline")}

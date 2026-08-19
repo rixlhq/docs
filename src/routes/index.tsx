@@ -4,7 +4,7 @@ export const Route = createFileRoute("/")({
   beforeLoad: () => {
     throw redirect({
       to: "/$lang/$",
-      params: {lang: "en", _splat: "home/getting-started/overview"},
+      params: {lang: "en", _splat: "home"},
     });
   },
 });

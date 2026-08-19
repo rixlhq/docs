@@ -1,16 +1,15 @@
 {
   "root": true,
   "title": "SDK",
-  "description": "Vollständige Anleitung zur RIXL SDK-Bibliothek",
+  "description": "Wähle ein RIXL SDK für dein Framework oder deine Sprache.",
+  "pagesIndex": "index",
   "pages": [
-    "getting-started",
-    "video-component",
-    "image-component",
-    "feed-component",
-    "hooks",
-    "core-api",
-    "upload",
-    "settings",
-    "examples"
+    "media-react",
+    "media-core",
+    "media-lit",
+    "media-vue",
+    "media-svelte",
+    "media-angular",
+    "ui"
   ]
 }

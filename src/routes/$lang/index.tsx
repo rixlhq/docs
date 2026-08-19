@@ -6,7 +6,7 @@ export const Route = createFileRoute("/$lang/")({
       to: "/$lang/$",
       params: {
         lang: params.lang,
-        _splat: "home/getting-started/overview",
+        _splat: "home",
       },
     });
   },

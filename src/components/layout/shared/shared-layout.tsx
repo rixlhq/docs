@@ -2,15 +2,16 @@ import {DocsLayout} from "fumadocs-ui/layouts/docs";
 import {HomeLayout} from "fumadocs-ui/layouts/home";
 import {ReactNode} from "react";
 import {baseOptions} from "@/lib/layout.shared";
-import {SidebarBanner} from "@/components/layout/shared/sidebar-banner";
 import type {Root} from "fumadocs-core/page-tree";
 import {Background} from "@/components/layout/home/background";
+import {SidebarBanner} from "./sidebar-banner";
 
 interface LayoutProps {
   lang: string;
   searchToggle?: boolean;
   sidebar?: boolean;
   isApiPage?: boolean;
+  backUrl?: string;
   children: ReactNode;
   dataTree: object;
   sectionLinks?: {
@@ -28,6 +29,7 @@ type LayoutWidthClasses = {
 
 type DocsLayoutPropsConfig = {
   tree: Root;
+  backUrl?: string;
   options: ReturnType<typeof baseOptions>;
   docsLayoutWidthClass: string;
   searchToggle: boolean;
@@ -41,7 +43,7 @@ function getLayoutWidthClasses(isApiPage: boolean): LayoutWidthClasses {
   };
 }
 
-function buildDocsLayoutProps({tree, options, docsLayoutWidthClass, searchToggle, sidebar}: DocsLayoutPropsConfig) {
+function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, searchToggle, sidebar}: DocsLayoutPropsConfig) {
   return {
     tree,
     ...options,
@@ -63,9 +65,10 @@ function buildDocsLayoutProps({tree, options, docsLayoutWidthClass, searchToggle
     tabs: false as const,
     sidebar: {
       enabled: sidebar,
-      banner: <SidebarBanner />,
+      banner: <SidebarBanner backUrl={backUrl} />,
       footer: null,
       collapsible: false,
+      className: "[&_div:empty]:hidden [&>div:first-child]:p-6 [&>div:first-child]:!gap-3 [&_[data-radix-scroll-area-viewport]]:pt-2",
     },
   };
 }
@@ -75,6 +78,7 @@ export default function SharedLayout({
   searchToggle = true,
   sidebar = true,
   isApiPage = false,
+  backUrl,
   dataTree,
   sectionLinks,
   treeKey,
@@ -85,6 +89,7 @@ export default function SharedLayout({
   const {layoutWidthClass, docsLayoutWidthClass} = getLayoutWidthClasses(isApiPage);
   const docsLayoutProps = buildDocsLayoutProps({
     tree,
+    backUrl,
     options,
     docsLayoutWidthClass,
     searchToggle,

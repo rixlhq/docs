@@ -3,34 +3,21 @@ title: Guides & Examples
 description: Step-by-step tutorials, real-world examples, and practical implementation guides for building amazing media experiences with RIXL.
 ---
 
-
 import {Callout, Card, Columns} from "@/snippets";
-import {Tab, Tabs} from 'fumadocs-ui/components/tabs';
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
 Welcome to the **RIXL Guides** — your comprehensive resource for building media-rich applications. Whether you're implementing video streaming, delivering images, or creating dynamic content feeds, these guides provide practical, step-by-step instructions to help you succeed.
 
 ## Quick Actions
 
 <Columns cols={3}>
-  <Card
-    title="React Integration"
-    href="/en/sdk/getting-started/overview"
-    icon="layers"
-  >
+  <Card title="React Integration" href="/en/sdk/media-react/getting-started/overview" icon="layers">
     Drop-in components for video players, delivered images, and content feeds.
   </Card>
-  <Card
-    title="API Implementation"
-    href="/en/api"
-    icon="code"
-  >
+  <Card title="API Implementation" href="/en/api" icon="code">
     Build custom workflows with our comprehensive REST API.
   </Card>
-  <Card
-    title="Dashboard Workflow"
-    href="/en/home/platform/dashboard/guide"
-    icon="monitor"
-  >
+  <Card title="Dashboard Workflow" href="/en/home/platform/dashboard/guide" icon="monitor">
     Upload, manage, and deliver media through our web interface.
   </Card>
 </Columns>
@@ -116,85 +103,74 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
 <Tabs items={['Video Player', 'Image Gallery', 'Content Feed']}>
   <Tab value="Video Player">
     ```jsx
-    import {Video, VideoPlayer, usePlayerProgress} from '@rixl/media-react';
+    import {Video} from '@rixl/media-react';
 
     function VideoWithProgress({videoId}) {
       return (
-        <VideoPlayer>
-          <Video
-            id={videoId}
-            className="w-full h-auto rounded-lg"
-            progressBar={true}
-            allowFullscreen={true}
-            autoPlay={false}
-            muted={false}
-          />
-          <ProgressInfo />
-        </VideoPlayer>
+        <Video
+          id={videoId}
+          className="w-full h-auto rounded-lg"
+          controls
+          analytics
+          analyticsPage="feed"
+          onRixlAnalytics={(e) => console.log(e.detail.event)}
+        />
       );
     }
+    ```
 
-    function ProgressInfo() {
-      const {progress, duration, currentTime} = usePlayerProgress();
+  </Tab>
 
+  <Tab value="Image Gallery">
+    ```jsx
+    import {Image} from '@rixl/media-react';
+
+    function ImageGallery({images}) {
       return (
-        <div className="video-info">
-          <p>Progress: {Math.round(progress * 100)}%</p>
-          <p>Time: {Math.round(currentTime)}s / {Math.round(duration)}s</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {images.map((image) => (
+            <div key={image.id} className="aspect-square">
+              <Image
+                id={image.id}
+                className="w-full h-full object-cover rounded-lg"
+                analytics
+                analyticsPage="standalone"
+              />
+            </div>
+          ))}
         </div>
       );
     }
     ```
+
   </Tab>
 
-<Tab value="Image Gallery">
-  ```jsx
-  import {Image} from '@rixl/media-react';
+  <Tab value="Content Feed">
+    ```jsx
+    import {Feed} from '@rixl/media-react';
 
-  function ImageGallery({images}) {
-  return (
-  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-{images.map((image) => (
-  <div key={image.id} className="aspect-square">
-  <Image
-    id={image.id}
-    alt={image.description}
-    className="w-full h-full object-cover rounded-lg hover:scale-105 transition-transform"
-    loading="lazy"
-  />
-</div>
-))}
-</div>
-);
-}
-```
-</Tab>
+    function ContentFeed({feedId}) {
+      return (
+        <div className="max-w-2xl mx-auto">
+          <Feed
+            feedId={feedId}
+            className="w-full space-y-6"
+            loop
+            autoscroll
+            analytics
+            analyticsPage="feed"
+            onRixlAnalytics={(e) => console.log(e.detail.event)}
+          />
+        </div>
+      );
+    }
+    ```
 
-<Tab value="Content Feed">
-  ```jsx
-  import {Feed} from '@rixl/media-react';
-
-  function ContentFeed({feedId, creatorId}) {
-  return (
-  <div className="max-w-2xl mx-auto">
-  <Feed
-  feedId={feedId}
-     creatorId={creatorId}
-     className="w-full space-y-6"
-     showHeader={true}
-     enableInfiniteScroll={true}
-     itemsPerPage={10}
-/>
-</div>
-);
-}
-```
-</Tab>
+  </Tab>
 </Tabs>
 
 <Callout type="info">
-  For custom playback UI, put controls inside `<Video theme="hideUI">`, or wrap `<Video>` and sibling controls in
-  `<VideoPlayer>`. Player hooks read state from the enclosing scope automatically.
+  The React SDK wraps the Lit web components (`<rixl-video>`, `<rixl-image>`, `<rixl-feed>`) with `@lit/react`. Use `onRixlAnalytics` to receive analytics events. `Video` forwards standard media attributes (`autoPlay`, `muted`, `loop`, `playsInline`, `poster`, `volume`) and player UI props (`controls`, `theme`, `progressBar`, `showChapters`, `chapters`, `heatmap`, `hotSegments`, `allowFullscreen`, `allowPictureInPicture`, `autoHideMs`, `resumeProgress`, `soundDisabled`).
 </Callout>
 
 ### API Integration Examples
@@ -223,11 +199,15 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
     await fetch(video_presigned_url, {
     method: 'PUT',
     body: file
-  });
+
+});
 
     return video_id;
-  };
-    ```
+
+};
+
+````
+
   </Tab>
 
   <Tab value="Process Image">
@@ -253,7 +233,8 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
     await fetch(presigned_url, {
     method: 'PUT',
     body: imageFile
-  });
+
+});
 
     // Complete upload
     const completeResponse = await fetch('https://api.rixl.com/images/upload/complete', {
@@ -261,16 +242,19 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
     headers: {
     'X-API-Key': 'YOUR_PROJECT_API_KEY',
     'Content-Type': 'application/json'
-  },
-    body: JSON.stringify({
-    image_id: image_id
-  })
-  });
+
+},
+body: JSON.stringify({
+image_id: image_id
+})
+});
 
     const result = await completeResponse.json();
     return result.data;
-  };
-    ```
+
+};
+````
+
   </Tab>
 
   <Tab value="Get Feed Content">
@@ -283,13 +267,17 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
     const response = await fetch(`https://api.rixl.com/feeds/${feedId}?${params}`, {
     headers: {
     'X-API-Key': 'YOUR_PROJECT_API_KEY'
-  }
-  });
+
+}
+});
 
     const result = await response.json();
     return result.data;
-  };
-    ```
+
+};
+
+```
+
   </Tab>
 </Tabs>
 
@@ -328,31 +316,20 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
 Ready to start building? Choose your path:
 
 <Columns cols={3}>
-  <Card
-    title="React SDK Setup"
-    href="/en/sdk/getting-started/overview"
-    icon="layers"
-  >
+  <Card title="React SDK Setup" href="/en/sdk/media-react/getting-started/overview" icon="layers">
     Install and configure RIXL components in your React application.
   </Card>
-  <Card
-    title="API Integration"
-    href="/en/api"
-    icon="code"
-  >
+  <Card title="API Integration" href="/en/api" icon="code">
     Build custom workflows with our comprehensive REST API.
   </Card>
-  <Card
-    title="Dashboard Upload"
-    href="/en/home/platform/dashboard/guide"
-    icon="upload"
-  >
+  <Card title="Dashboard Upload" href="/en/home/platform/dashboard/guide" icon="upload">
     Start uploading and delivering media through our web interface.
   </Card>
 </Columns>
 
 <Callout type="tip" title="Need inspiration?">
   Explore our [Best Practices](/en/home/getting-started/best-practices) for performance tips, check out the [Platform
-  Documentation](/en/home/platform) for comprehensive features, or dive into the [API
-  Reference](/en/api) for detailed technical documentation.
+  Documentation](/en/home/platform) for comprehensive features, or dive into the [API Reference](/en/api) for detailed technical
+  documentation.
 </Callout>
+```

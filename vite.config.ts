@@ -5,17 +5,17 @@ import {tanstackStart} from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "fumadocs-mdx/vite";
-import {extractIconsPlugin} from "./plugins/vite-plugin-extract-icons";
-import {i18n} from "./src/lib/i18n";
-import {collectDocsPrerenderPages, createOgPrerenderPages, toStaticPages} from "./scripts/lib/prerender-pages";
+import {extractIconsPlugin} from "./plugins/vite-plugin-extract-icons.ts";
+import {i18n} from "./src/lib/i18n.ts";
+import {collectDocsPrerenderPages, createOgPrerenderPages, toStaticPages} from "./scripts/lib/prerender-pages.ts";
 
 // import { nitro } from 'nitro/vite'
 
 const docsPrerenderPages = await collectDocsPrerenderPages({
-  contentDir: path.resolve(__dirname, "content"),
+  contentDir: path.resolve(import.meta.dirname, "content"),
   supportedLanguages: i18n.languages,
 });
-const ogOutputDir = path.resolve(__dirname, "dist/client");
+const ogOutputDir = path.resolve(import.meta.dirname, "dist/client");
 const ogPrerenderPages = createOgPrerenderPages({
   ogPaths: docsPrerenderPages.og,
   outputDir: ogOutputDir,
@@ -40,7 +40,7 @@ export default defineConfig({
       strategy: ["url", "globalVariable", "cookie", "baseLocale"],
     }),
     extractIconsPlugin(),
-    mdx(await import("./source.config")),
+    mdx(await import("./source.config.ts")),
     tailwindcss(),
     tanstackStart({
       spa: {
@@ -83,7 +83,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@/snippets": `${__dirname}/src/components/mdx`,
+      "@/snippets": `${import.meta.dirname}/src/components/mdx`,
     },
     tsconfigPaths: true,
   },

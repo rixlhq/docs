@@ -1,0 +1,54 @@
+---
+title: "useProgressBar"
+description: "Low-level drag state for a raw HTMLVideoElement progress bar."
+---
+
+import {Callout} from "fumadocs-ui/components/callout";
+
+`useProgressBar({video})` is a low-level helper for custom scrubber drag handling around a raw `HTMLVideoElement`.
+
+## Important
+
+If you are building on top of a `VideoPlayer` scope, prefer [`usePlayerProgress()`](/de/sdk/media-react/hooks/use-player-progress) — it binds to the enclosing player scope and needs no arguments.
+
+## Signature
+
+```tsx
+const progressBar = useProgressBar({video});
+```
+
+It returns:
+
+- `progress`
+- `isDragging`
+- `handleDragStart(event)`
+
+## Example
+
+```tsx
+import {useRef} from "react";
+import {useProgressBar} from "@rixl/media-react";
+
+function NativeVideoProgress() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const {progress, isDragging, handleDragStart} = useProgressBar({video: videoRef.current});
+
+  return (
+    <div className="space-y-3">
+      <video ref={videoRef} src="/example.mp4" className="w-full" />
+
+      <div role="presentation" className="h-2 rounded bg-gray-200" onMouseDown={handleDragStart} onTouchStart={handleDragStart}>
+        <div className="h-2 rounded bg-black" style={{width: `${progress * 100}%`}} />
+      </div>
+
+      <div>{isDragging ? "Dragging" : "Idle"}</div>
+    </div>
+  );
+}
+```
+
+## Notes
+
+- This hook does not return `duration`, `isPlaying`, or other playback state.
+- Use it when you need the SDK's drag handling but you already control the raw media element yourself.
+- The new Lit `Video` wrapper does not expose a DOM ref; for a progress bar with it, use `onRixlAnalytics` to observe `watch` events, or use a `VideoPlayer` scope with a raw `<video>` element.

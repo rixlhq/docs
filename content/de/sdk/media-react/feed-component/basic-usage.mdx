@@ -1,0 +1,99 @@
+---
+title: "Basic Usage"
+description: "Learn how to implement the Feed component with common patterns and use cases"
+---
+
+import {Callout} from "@/snippets";
+
+## Importing the Feed Component
+
+```tsx
+import {Feed} from "@rixl/media-react";
+```
+
+## Essential Props
+
+Every Feed component needs at minimum:
+
+```tsx
+<Feed
+  feedId="your-feed-id" // Required: Your feed ID from dash.rixl.com/feeds
+/>
+```
+
+## Simple Feed Example
+
+```tsx
+import {Feed} from "@rixl/media-react";
+
+function FeedExample() {
+  return <Feed feedId="your-feed-id" analyticsPage="feed" />;
+}
+```
+
+## Analytics Events
+
+Listen to all feed and child post analytics events with one handler:
+
+```tsx
+import {Feed} from "@rixl/media-react";
+
+function FeedWithAnalytics() {
+  return (
+    <Feed
+      feedId="your-feed-id"
+      analyticsPage="feed"
+      onRixlAnalytics={(e) => {
+        const {event} = e.detail;
+        console.log(event._type, event);
+      }}
+    />
+  );
+}
+```
+
+## Lit / Vanilla HTML
+
+```html
+<script type="module">
+  import "@rixl/media-lit/feed";
+
+  const feed = document.querySelector("rixl-feed");
+  feed.addEventListener("rixl-analytics", (e) => {
+    console.log(e.detail.event);
+  });
+</script>
+
+<rixl-feed feed-id="your-feed-id" analytics-page="feed"></rixl-feed>
+```
+
+## Autoscroll and Loop
+
+```tsx
+<Feed feedId="your-feed-id" autoscroll={true} loop={true} />
+```
+
+## Direct Data Mode
+
+If you already have posts, pass them directly and handle pagination with `onFetchMore`:
+
+```tsx
+function FeedFromData({posts, loadMore}) {
+  return <Feed feedId="your-feed-id" posts={posts} onFetchMore={loadMore} analyticsPage="feed" />;
+}
+```
+
+## Best Practices
+
+<Callout type="default">
+  **Feed ID**: The `feedId` is automatically passed to every child image and video post so analytics can be attributed correctly.
+</Callout>
+
+<Callout type="info">
+  **Container Height**: Always use `h-screen` or `h-full` on the container for proper scrolling.
+</Callout>
+
+<Callout type="warning">
+  **Legacy props**: `creatorId` and `startPostId` are accepted for backward compatibility but are not used. Use `feedId`, `initialIndex`, and
+  `posts` / `onFetchMore` for current behavior.
+</Callout>

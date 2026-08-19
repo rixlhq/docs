@@ -1,0 +1,103 @@
+---
+title: "Feed: Standard Feed"
+description: "Simple implementation of an infinite-scrolling feed with automatic video playback"
+---
+
+import {Feed} from "@/snippets";
+import {Callout} from "fumadocs-ui/components/callout";
+
+The standard feed provides a vertical scrolling experience of image and video posts. This is the most common implementation for social media platforms and content discovery apps.
+
+## Live Example
+
+<div className="w-full h-[600px]">
+  <Feed feedId="your-feed-id" className="w-full h-full" analyticsPage="feed" />
+</div>
+
+## Complete Implementation
+
+```tsx
+import {Feed} from "@rixl/media-react";
+
+export default function FeedPage() {
+  return (
+    <div className="h-screen">
+      <Feed feedId="your-feed-id" analyticsPage="feed" onRixlAnalytics={(e) => console.log(e.detail.event)} />
+    </div>
+  );
+}
+```
+
+<Callout type="info">
+  The feed automatically handles pagination, scroll-based video playback, and child image/video analytics. No additional configuration
+  needed for basic usage.
+</Callout>
+
+## Centered Layout
+
+Center the feed with a max width for better mobile and desktop experience:
+
+```tsx
+export default function FeedPage() {
+  return (
+    <div className="h-[500px] bg-black">
+      <div className="w-1/2 mx-auto h-full">
+        <Feed feedId="your-feed-id" analyticsPage="feed" />
+      </div>
+    </div>
+  );
+}
+```
+
+## With Navigation
+
+Add simple tab navigation between different feeds:
+
+```tsx
+import {useState} from "react";
+import {Feed} from "@rixl/media-react";
+
+export default function FeedWithTabs() {
+  const [activeTab, setActiveTab] = useState("following");
+
+  return (
+    <div className="flex flex-col h-screen bg-black">
+      {/* Tabs */}
+      <nav className="flex border-b border-gray-800">
+        <button
+          onClick={() => setActiveTab("following")}
+          className={`flex-1 py-4 ${activeTab === "following" ? "text-white" : "text-gray-500"}`}
+        >
+          Following
+        </button>
+        <button onClick={() => setActiveTab("foryou")} className={`flex-1 py-4 ${activeTab === "foryou" ? "text-white" : "text-gray-500"}`}>
+          For You
+        </button>
+      </nav>
+
+      {/* Feed */}
+      <div className="flex-1">
+        <Feed key={activeTab} feedId={activeTab} analyticsPage="feed" />
+      </div>
+    </div>
+  );
+}
+```
+
+## Autoscroll
+
+Enable automatic post advancement:
+
+```tsx
+<Feed feedId="your-feed-id" analyticsPage="feed" autoscroll={true} loop={true} />
+```
+
+## Best Practices
+
+<Callout type="info">**Container Height**: Always use `h-screen` or `h-full` on the container for proper scrolling.</Callout>
+
+<Callout type="info">
+    **Analytics**: Use `onRixlAnalytics` on the `<Feed>` to capture feed-level interactions and child image/video events in a single handler.
+</Callout>
+
+<Callout type="info">**Centered Layout**: Use `mx-auto` with `md:w-2/5 w-[90%]` for a mobile-friendly centered feed.</Callout>

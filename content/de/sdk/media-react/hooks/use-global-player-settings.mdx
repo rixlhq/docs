@@ -1,0 +1,73 @@
+---
+title: "useGlobalPlayerSettings"
+description: "Coordinate shared playback and preference changes across multiple mounted Video instances."
+---
+
+import {Callout} from "fumadocs-ui/components/callout";
+
+`useGlobalPlayerSettings()` is the advanced page-level hook for shared controls.
+
+<Callout type="warning">
+  This hook fans out to every mounted player scope. The new Lit `<Video>` does not register with the React player scope; use it only when you also have a scope-aware media element.
+</Callout>
+
+## Signature
+
+```tsx
+const settings = useGlobalPlayerSettings();
+```
+
+It returns shared values and fan-out actions for mounted players, including:
+
+- `muted`
+- `volume`
+- `playbackRate`
+- `preferredQuality`
+- `preferredAudioLanguage`
+- `preferredSubtitleLanguage`
+- `setMuted(muted)`
+- `setVolume(volume)`
+- `setPlaybackRate(rate)`
+- `setPreferredQuality(quality)`
+- `setPreferredAudioLanguage(language)`
+- `setPreferredSubtitleLanguage(language)`
+- `pauseAll()`
+
+## Example
+
+```tsx
+import {VideoPlayer, useGlobalPlayerSettings} from "@rixl/media-react";
+
+function PageLevelPlayerControls() {
+  const {muted, setMuted, pauseAll} = useGlobalPlayerSettings();
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3">
+        <button type="button" onClick={() => setMuted(!muted)}>
+          {muted ? "Unmute all" : "Mute all"}
+        </button>
+
+        <button type="button" onClick={() => pauseAll()}>
+          Pause all
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <VideoPlayer>
+      <PageLevelPlayerControls />
+      {/* scope-aware media elements */}
+    </VideoPlayer>
+  );
+}
+```
+
+## Notes
+
+- This hook is for page-level coordination, not a replacement for player-scoped hooks.
+- Shared language preferences only apply when a mounted player exposes matching tracks.
+- For single-player custom UI, prefer the player-scoped hooks in this section.

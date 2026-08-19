@@ -1,0 +1,64 @@
+---
+title: "usePlayerProgress"
+description: "Read timeline state and perform seeking without reaching for a DOM video ref."
+---
+
+import {Callout} from "fumadocs-ui/components/callout";
+
+`usePlayerProgress()` is the preferred public hook for custom timeline UI within a `VideoPlayer` scope.
+
+<Callout type="warning">
+  This hook requires a `VideoPlayer` scope and a scope-aware media element. The Lit `<Video>` wrapper does not automatically participate in the scope.
+</Callout>
+
+## Signature
+
+```tsx
+const progress = usePlayerProgress();
+```
+
+It returns:
+
+- `currentTime`
+- `duration`
+- `progress`
+- `buffered`
+- `seekTo(seconds)`
+- `seekBy(deltaSeconds)`
+
+`progress` and `buffered` are ratios from `0` to `1`.
+
+## Example
+
+```tsx
+import {VideoPlayer, usePlayerProgress} from "@rixl/media-react";
+
+function CustomProgressControls() {
+  const {currentTime, duration, progress, buffered, seekBy} = usePlayerProgress();
+
+  return (
+    <div className="space-y-2">
+      <div>{`${Math.round(currentTime)}s / ${Math.round(duration)}s`}</div>
+      <div>{`Played: ${Math.round(progress * 100)}% | Buffered: ${Math.round(buffered * 100)}%`}</div>
+      <button type="button" onClick={() => seekBy(10)}>
+        Seek +10s
+      </button>
+    </div>
+  );
+}
+
+function CustomPlayer() {
+  return (
+    <VideoPlayer>
+      <CustomProgressControls />
+      {/* scope-aware media element */}
+    </VideoPlayer>
+  );
+}
+```
+
+## Notes
+
+- This hook resolves the current player from scope.
+- Before metadata is ready, timeline values can be `0`.
+- Prefer this hook over `useProgressBar` when you are building on top of a scope-aware player.

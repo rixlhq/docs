@@ -1,0 +1,386 @@
+---
+title: "Analytics Integration"
+description: "Guide to implementing video, image, and feed analytics tracking"
+---
+
+import {Callout} from "@/snippets";
+
+RIXL SDK analytics are implemented once in the Lit web components and exposed uniformly through every framework wrapper. Each `<rixl-image>`, `<rixl-video>`, and `<rixl-feed>` component dispatches a bubbling, composed `rixl-analytics` custom event with a typed `AnalyticsEvent` payload. In React you receive the same payload through `onRixlAnalytics`.
+
+<Callout type="info">
+  All analytics instrumentation lives in `@rixl/media-lit`. React, Svelte, Vue, and Angular wrappers are thin adapters that forward the
+  `rixl-analytics` event and map legacy prop names.
+</Callout>
+
+## Enabling and disabling analytics
+
+Analytics are enabled by default on all components.
+
+```tsx
+<Video id="video-id" />
+<Image id="image-id" />
+<Feed feedId="feed-id" />
+```
+
+To disable analytics for a single component:
+
+```tsx
+<Video id="video-id" analytics={false} />
+<Image id="image-id" analytics={false} />
+```
+
+To disable analytics for an entire feed (and its child image/video posts):
+
+```tsx
+<Feed feedId="feed-id" analytics={false} />
+```
+
+## React usage
+
+Use the `onRixlAnalytics` prop on `Image`, `Video`, and `Feed`:
+
+```tsx
+import {Video} from "@rixl/media-react";
+
+function Player() {
+  return <Video id="video-id" analyticsPage="standalone" onRixlAnalytics={(e) => console.log(e.detail.event)} />;
+}
+```
+
+For feeds, child `Image` and `Video` events bubble up through `Feed`:
+
+```tsx
+import {Feed} from "@rixl/media-react";
+
+function FeedPage() {
+  return <Feed feedId="feed-id" onRixlAnalytics={(e) => console.log(e.detail.event)} />;
+}
+```
+
+## Lit / Vanilla JS usage
+
+Listen for the `rixl-analytics` custom event on the document or on a specific element:
+
+```html
+<script type="module">
+  import "@rixl/media-lit/video";
+
+  const video = document.querySelector("rixl-video");
+  video.addEventListener("rixl-analytics", (e) => {
+    console.log(e.detail.event);
+  });
+</script>
+
+<rixl-video video-id="video-id" analytics-page="standalone"></rixl-video>
+```
+
+```js
+document.addEventListener("rixl-analytics", (e) => {
+  console.log(e.detail.event);
+});
+```
+
+## Page context and feed/post identifiers
+
+Set `analyticsPage`, `feedId`, and `postId` so events are correctly attributed. When a component is rendered inside `<rixl-feed>`, the feed automatically propagates `feed-id` and `post-id` to the child image and video elements.
+
+```tsx
+<Feed feedId="my-feed">{/* children receive feedId="my-feed" and postId automatically */}</Feed>
+```
+
+For standalone content:
+
+```tsx
+<Video id="video-id" analyticsPage="standalone" />
+<Image id="image-id" analyticsPage="profile" />
+```
+
+Valid values for `analyticsPage` are `"feed"`, `"standalone"`, and `"profile"`.
+
+## Event taxonomy
+
+`AnalyticsEvent` is a discriminated union of five event families:
+
+```ts
+type AnalyticsEvent =
+  | ContentViewEvent // _type: "content_views"
+  | EngagementEvent // _type: "engagement"
+  | InteractionEvent // _type: "interaction"
+  | ErrorEvent // _type: "error"
+  | SessionStartEvent; // _type: "session_start"
+```
+
+### `content_views`
+
+Tracks when content becomes visible, while it is being consumed, and when it leaves the viewport.
+
+```ts
+interface ContentViewEvent {
+  _type: "content_views";
+  timestamp?: number;
+  content_id: string;
+  content_type: "video" | "image";
+  view_type: "start" | "watch" | "end";
+  watch_duration_ms: number;
+  page: "feed" | "standalone" | "profile";
+  feed_id?: string;
+  post_id?: string;
+  video_position_ms?: number;
+  video_total_duration_ms?: number;
+  segments?: Segment[];
+  device_id?: string;
+  country?: string;
+}
+
+interface Segment {
+  start_ms: number;
+  end_ms: number;
+  speed: number;
+}
+```
+
+- `start` — emitted when the content enters the viewport.
+- `watch` — emitted periodically while the content is visible (video) or after a dwell interval (image).
+- `end` — emitted when the content leaves the viewport, unmounts, or playback finishes.
+
+### `engagement`
+
+Tracks user engagement actions such as comments, shares, and reactions.
+
+```ts
+interface EngagementEvent {
+  _type: "engagement";
+  timestamp?: number;
+  engagement_type: string;
+  resource_type?: string;
+  resource_id?: string;
+  page?: string;
+  comment_text?: string;
+  share_platform?: string;
+  country?: string;
+  device_type?: string;
+  session_id?: string;
+}
+```
+
+Common `engagement_type` values include `comment`, `like`, `share`, `save`, and `subscribe`.
+
+### `interaction`
+
+Tracks user actions.
+
+```ts
+interface InteractionEvent {
+  _type: "interaction";
+  timestamp?: number;
+  interaction_type: string;
+  element_type?: string;
+  element_id?: string;
+  session_id?: string;
+  page?: string;
+  page_url?: string;
+  scroll_depth?: number;
+  search_query?: string;
+  click_x?: number;
+  click_y?: number;
+  device_type?: string;
+  browser?: string;
+  resource_id?: string;
+  resource_type?: string;
+  feed_id?: string;
+  post_id?: string;
+  content_id?: string;
+}
+```
+
+**Image interactions:**
+
+- `image_click` — emitted on click; includes `click_x` and `click_y`.
+
+**Video interactions:**
+
+- `play`
+- `pause`
+- `seek`
+- `mute`
+- `volume_change`
+- `fullscreen`
+- `picture_in_picture`
+- `quality_change`
+- `settings_open`
+
+**Feed interactions:**
+
+- `feed_refresh`
+- `load_more`
+- `scroll` — includes `scroll_depth`
+- `post_change`
+
+### `error`
+
+Tracks media and API load failures.
+
+```ts
+interface ErrorEvent {
+  _type: "error";
+  timestamp?: number;
+  error_type: string;
+  error_code?: string;
+  error_message?: string;
+  stack_trace?: string;
+  resource_type?: string;
+  resource_id?: string;
+  endpoint?: string;
+  session_id?: string;
+  device_type?: string;
+  browser?: string;
+  os?: string;
+}
+```
+
+Common `error_type` values include `image_load_error`, `video_load_error`, `video_api_error`, and `hls_*` events from `hls.js`.
+
+### `session_start`
+
+Automatically prepended to the first analytics flush for a session. Contains device and session metadata.
+
+```ts
+interface SessionStartEvent {
+  _type: "session_start";
+  timestamp?: number;
+  utm_source?: string;
+  utm_campaign?: string;
+  browser?: string;
+  language?: string;
+  screen_resolution?: string;
+  platform?: string;
+  tg_platform?: string;
+  tg_version?: string;
+  timezone?: string;
+  timezone_offset?: number;
+  color_depth?: number;
+  touch_support?: boolean;
+  country?: string;
+  user_id?: string;
+}
+```
+
+## Video segments
+
+A `Segment` represents a continuous watched range and includes the playback speed:
+
+```ts
+interface Segment {
+  start_ms: number;
+  end_ms: number;
+  speed: number;
+}
+```
+
+The video analytics controller collects segments as the user plays, pauses, seeks, and changes playback speed. `watch_duration_ms` is the sum of segment durations multiplied by speed.
+
+## Using core analytics helpers
+
+For custom players or server-side logic, use the core analytics helpers:
+
+```ts
+import {
+  postContentEvent,
+  postEngagement,
+  postInteraction,
+  postError,
+  initializeAnalyticsContext,
+} from "@rixl/media";
+
+initializeAnalyticsContext();
+
+postContentEvent({
+  contentId: "video-id",
+  contentType: "video",
+  viewType: "watch",
+  page: "standalone",
+  watchDurationMs: 5000,
+  videoPositionMs: 1000,
+  videoTotalDurationMs: 120000,
+  segments: [{start_ms: 1000, end_ms: 6000, speed: 1}],
+});
+
+postInteraction({
+  interactionType: "play",
+  resourceId: "video-id",
+  resourceType: "video",
+  page: "standalone",
+  feedId: "my-feed",
+  postId: "post-123",
+});
+
+postEngagement({
+  engagementType: "share",
+  resourceType: "video",
+  resourceId: "video-id",
+  sharePlatform: "twitter",
+});
+
+postError({
+  errorType: "video_load_error",
+  errorMessage: "Network request failed",
+  resourceType: "video",
+  resourceId: "video-id",
+});
+```
+
+You can also build a low-level array and pass it to `postAnalytics`:
+
+```ts
+import {postAnalytics, type ContentViewEvent} from "@rixl/media";
+
+const event: ContentViewEvent = {
+  _type: "content_views",
+  content_id: "video-id",
+  content_type: "video",
+  view_type: "watch",
+  watch_duration_ms: 15000,
+  page: "standalone",
+  video_position_ms: 5000,
+  video_total_duration_ms: 120000,
+  segments: [{start_ms: 5000, end_ms: 20000, speed: 1}],
+};
+
+await postAnalytics([event]);
+```
+
+<Callout type="info">
+  `postAnalytics` queues events and flushes them in a micro-task. The first flush automatically prepends a `session_start` event. Failed
+  flushes retry up to three times.
+</Callout>
+
+## Wire format
+
+Events are sent as `POST /analytics/v1/events` with a top-level `AnalyticsV1TrackEventsRequest`:
+
+```json
+{
+  "user_id": "...",
+  "device": "desktop",
+  "os": "...",
+  "language": "...",
+  "browser": "...",
+  "events": [
+    {"session_start": {"browser": "...", "screen_resolution": "1920x1080"}},
+    {"content_view": {"content_id": "video-id", "content_type": "MEDIA_TYPE_VIDEO", "view_type": "watch", "watch_duration_ms": "5s"}}
+  ]
+}
+```
+
+<Callout type="info">
+  `watch_duration_ms`, `video_position_ms`, `video_total_duration_ms`, `start_ms`, and `end_ms` are converted to `GoogleProtobufDuration`
+  strings (e.g. `"5s"`, `"1.234s"`) on the wire. `content_type` is sent as `MEDIA_TYPE_IMAGE` or `MEDIA_TYPE_VIDEO`.
+</Callout>
+
+## Best practices
+
+1. **Set `analyticsPage`** to segment data by location (`feed`, `standalone`, `profile`).
+2. **Use `feedId` and `postId`** inside feeds so child events are correctly attributed.
+3. **Disable analytics in development** with `analytics={false}` if you do not want test events.
+4. **Listen at the feed level** for `onRixlAnalytics` to capture all child image/video events with a single handler.
+5. **Initialize context early** with `connect()` or `initializeAnalyticsContext()` so `session_start` metadata is present on the first flush.
