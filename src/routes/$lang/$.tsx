@@ -7,6 +7,7 @@ import SharedLayout from "@/components/layout/shared/shared-layout";
 import {getMDXComponents} from "@/components/mdx-components";
 import {Footer} from "@/components/layout/footer/footer";
 import {LLMCopyButton} from "@/components/page-actions/llm-copy-button";
+import {DocsBreadcrumb} from "@/components/layout/shared/docs-breadcrumb";
 import {loader} from "@/lib/server/docs-loader";
 import {Suspense} from "react";
 import {useFumadocsLoader} from "fumadocs-core/source/client";
@@ -136,6 +137,7 @@ function ApiContent({
       tableOfContent={{
         enabled: false,
       }}
+      breadcrumb={{enabled: false}}
       footer={{
         children: <Footer lang={lang} />,
       }}
@@ -167,6 +169,8 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
         toc={toc}
         tableOfContent={{component: <TableOfContents />}}
         tableOfContentPopover={{component: <TableOfContentsPopover />}}
+        breadcrumb={{includeRoot: true, includePage: false}}
+        slots={{breadcrumb: DocsBreadcrumb}}
         footer={{
           component: (
             <>
