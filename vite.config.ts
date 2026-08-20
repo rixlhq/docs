@@ -79,7 +79,7 @@ export default defineConfig({
         ...staticLLMSPages,
       ],
     }),
-    react(),
+    react({compiler: true}),
   ],
   resolve: {
     alias: {
