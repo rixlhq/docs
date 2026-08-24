@@ -1,20 +1,22 @@
 "use client";
 import {Collapsible as Primitive} from "radix-ui";
-import {type ComponentPropsWithoutRef, forwardRef, useRef, useSyncExternalStore} from "react";
+import {type ComponentPropsWithoutRef, forwardRef, useEffect, useState} from "react";
 import {cn} from "cnfast";
 
 const Collapsible = Primitive.Root;
 
 const CollapsibleTrigger = Primitive.CollapsibleTrigger;
 
-const subscribe = () => () => {};
-
 const CollapsibleContent = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<typeof Primitive.CollapsibleContent>>(
   ({children, ...props}, ref) => {
-    const mounted = useSyncExternalStore(subscribe, () => true, () => false);
-    const hasRenderedRef = useRef(false);
-    const animationsEnabled = hasRenderedRef.current;
-    if (mounted) hasRenderedRef.current = true;
+    // Animations stay off for the first painted frame so content that starts
+    // open doesn't animate in on mount/hydration.
+    const [animationsEnabled, setAnimationsEnabled] = useState(false);
+
+    useEffect(() => {
+      const frame = requestAnimationFrame(() => setAnimationsEnabled(true));
+      return () => cancelAnimationFrame(frame);
+    }, []);
 
     return (
       <Primitive.CollapsibleContent

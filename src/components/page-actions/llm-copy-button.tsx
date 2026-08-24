@@ -27,8 +27,10 @@ export function LLMCopyButton({markdownUrl, githubUrl}: LLMCopyButtonProps) {
 
     setLoading(true);
 
-    try {
-      await navigator.clipboard.write([
+    // `Promise.finally` instead of `try`/`finally`: the latter is unsupported
+    // by React Compiler and opts this component out of optimization.
+    await navigator.clipboard
+      .write([
         new ClipboardItem({
           "text/plain": fetch(markdownUrl).then(async (res) => {
             if (!res.ok) {
@@ -44,10 +46,8 @@ export function LLMCopyButton({markdownUrl, githubUrl}: LLMCopyButtonProps) {
             return content;
           }),
         }),
-      ]);
-    } finally {
-      setLoading(false);
-    }
+      ])
+      .finally(() => setLoading(false));
   });
 
   return (

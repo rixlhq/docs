@@ -1,7 +1,7 @@
 "use client";
 
 import {X} from "lucide-react";
-import {type HTMLAttributes, Fragment, useEffect, useState} from "react";
+import {type HTMLAttributes, Fragment, useCallback, useState, useSyncExternalStore} from "react";
 import {m} from "@/paraglide/messages";
 import {cn} from "cnfast";
 import {buttonVariants} from "@/components/ui/button";
@@ -75,20 +75,29 @@ function BannerHeadStyles({
   );
 }
 
+const subscribeToStorage = (onChange: () => void) => {
+  window.addEventListener("storage", onChange);
+  return () => window.removeEventListener("storage", onChange);
+};
+
 function useBannerState(id?: string) {
-  const [open, setOpen] = useState(true);
+  const [closed, setClosed] = useState(false);
   const globalKey = id ? `nd-banner-${encodeBase32(id)}` : null;
 
-  useEffect(() => {
-    if (globalKey && localStorage.getItem(globalKey) === "true") setOpen(false);
-  }, [globalKey]);
+  // Read on the client only: the server render always shows the banner, and the
+  // inline script in `BannerHeadStyles` hides it before paint when dismissed.
+  const dismissed = useSyncExternalStore(
+    subscribeToStorage,
+    useCallback(() => (globalKey ? localStorage.getItem(globalKey) === "true" : false), [globalKey]),
+    () => false
+  );
 
   const onClose = () => {
-    setOpen(false);
+    setClosed(true);
     if (globalKey) localStorage.setItem(globalKey, "true");
   };
 
-  return {open, globalKey, onClose};
+  return {open: !closed && !dismissed, globalKey, onClose};
 }
 
 /**

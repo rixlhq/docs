@@ -93,7 +93,6 @@ function Page() {
   };
   const data = useFumadocsLoader(loaderData) as {tree: object};
   const isApiPage = !!loaderData.apiPage;
-  const Content = isApiPage ? undefined : clientLoader.getComponent(loaderData.path);
 
   return (
     <SharedLayout
@@ -104,9 +103,17 @@ function Page() {
       treeKey={loaderData.treeKey}
       isApiPage={isApiPage}
     >
-      {isApiPage ? <ApiContent apiPage={loaderData.apiPage} page={loaderData.page} /> : Content ? <Content /> : null}
+      {isApiPage ? (
+        <ApiContent apiPage={loaderData.apiPage} page={loaderData.page} />
+      ) : (
+        <MdxContent path={loaderData.path} />
+      )}
     </SharedLayout>
   );
+}
+
+function MdxContent({path}: {path: string}) {
+  return clientLoader.useContent(path, {});
 }
 
 function ApiContent({
