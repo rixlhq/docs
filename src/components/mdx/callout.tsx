@@ -1,7 +1,7 @@
 import type {LucideIcon} from "lucide-react";
 import {AlertCircle, AlertTriangle, CheckCircle, Info} from "lucide-react";
 import type {ReactNode} from "react";
-import {cn} from "cnfast";
+import {cn} from "cn";
 
 /**
  * Callout types supported by the component

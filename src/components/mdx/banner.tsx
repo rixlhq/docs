@@ -3,7 +3,7 @@
 import {X} from "lucide-react";
 import {type HTMLAttributes, Fragment, useCallback, useState, useSyncExternalStore} from "react";
 import {m} from "@/paraglide/messages";
-import {cn} from "cnfast";
+import {cn} from "cn";
 import {buttonVariants} from "@/components/ui/button";
 
 type BannerVariant = "rainbow" | "normal";

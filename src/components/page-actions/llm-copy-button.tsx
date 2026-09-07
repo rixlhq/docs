@@ -2,7 +2,7 @@
 
 import {useState} from "react";
 import {useCopyButton} from "fumadocs-ui/utils/use-copy-button";
-import {cn} from "cnfast";
+import {cn} from "cn";
 import {CopyButton} from "./copy-button";
 import {ViewOptions} from "./view-options";
 

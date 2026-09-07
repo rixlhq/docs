@@ -1,7 +1,7 @@
 import type {LucideProps} from "lucide-react";
 import {cloneElement, type ComponentProps, type ReactElement} from "react";
 import {iconMap, type IconName} from "@/generated/icons";
-import {cn} from "cnfast";
+import {cn} from "cn";
 
 type IconProps = Omit<LucideProps, "name"> &
   (

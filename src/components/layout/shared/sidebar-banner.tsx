@@ -3,7 +3,7 @@
 import {useMemo} from "react";
 import Link from "fumadocs-core/link";
 import {useTreeContext} from "fumadocs-ui/contexts/tree";
-import {cn} from "cnfast";
+import {cn} from "cn";
 import {LayoutGrid} from "lucide-react";
 import type * as PageTree from "fumadocs-core/page-tree";
 

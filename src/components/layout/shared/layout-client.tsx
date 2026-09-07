@@ -1,6 +1,6 @@
 import {useParams} from "@tanstack/react-router";
 import type {ReactElement, ReactNode} from "react";
-import {cn} from "cnfast";
+import {cn} from "cn";
 
 export function Body({children}: {children: ReactNode}): ReactElement {
   const mode = useMode();

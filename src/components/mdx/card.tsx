@@ -3,7 +3,7 @@ import {ArrowUpRight} from "lucide-react";
 import type {IconName} from "lucide-react/dynamic";
 import type {HTMLAttributes, ReactNode} from "react";
 import {Icon} from "@/components/mdx/icon";
-import {cn} from "cnfast";
+import {cn} from "cn";
 
 type ArrowType = boolean | "true" | "false";
 

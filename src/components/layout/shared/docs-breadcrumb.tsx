@@ -5,7 +5,7 @@ import Link from "fumadocs-core/link";
 import {usePathname} from "fumadocs-core/framework";
 import {useTreeContext} from "fumadocs-ui/contexts/tree";
 import {useBreadcrumb, type BreadcrumbOptions} from "fumadocs-core/breadcrumb";
-import {cn} from "cnfast";
+import {cn} from "cn";
 
 export type DocsBreadcrumbProps = BreadcrumbOptions & {
   className?: string;

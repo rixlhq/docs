@@ -1,7 +1,7 @@
 "use client";
 
 import type {HTMLAttributes} from "react";
-import {cn} from "cnfast";
+import {cn} from "cn";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   cols?: number;

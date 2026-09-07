@@ -1,6 +1,6 @@
 "use client";
 
-import {cn} from "cnfast";
+import {cn} from "cn";
 import {optionItemVariants} from "./option-item-variants";
 import {OptionItemContent} from "./option-item-content";
 

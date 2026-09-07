@@ -3,7 +3,7 @@ import {Laptop, Moon, Sun} from "lucide-react";
 import {useTheme} from "next-themes";
 import {type HTMLAttributes, useSyncExternalStore} from "react";
 import {m} from "@/paraglide/messages";
-import {cn} from "cnfast";
+import {cn} from "cn";
 
 const subscribe = () => () => {};
 

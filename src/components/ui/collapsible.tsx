@@ -1,7 +1,7 @@
 "use client";
 import {Collapsible as Primitive} from "radix-ui";
 import {type ComponentPropsWithoutRef, forwardRef, useEffect, useState} from "react";
-import {cn} from "cnfast";
+import {cn} from "cn";
 
 const Collapsible = Primitive.Root;
 

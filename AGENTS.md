@@ -81,10 +81,10 @@ bun format    # Format code with Oxfmt
 
 ## Class Name Utilities
 
-Use `cnfast` for merging Tailwind CSS classes. Do not use `tailwind-merge` or a local `lib/cn` helper.
+Use `cn` for merging Tailwind CSS classes. Do not use `tailwind-merge` or a local `lib/cn` helper.
 
 ```tsx
-import {cn} from "cnfast";
+import {cn} from "cn";
 
 <div className={cn("base-class", props.className, condition && "conditional-class")} />
 ```

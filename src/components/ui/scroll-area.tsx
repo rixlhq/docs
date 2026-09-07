@@ -1,6 +1,6 @@
 import {ScrollArea as Primitive} from "radix-ui";
 import * as React from "react";
-import {cn} from "cnfast";
+import {cn} from "cn";
 
 const ScrollArea = React.forwardRef<React.ComponentRef<typeof Primitive.Root>, React.ComponentPropsWithoutRef<typeof Primitive.Root>>(
   ({className, children, ...props}, ref) => (
