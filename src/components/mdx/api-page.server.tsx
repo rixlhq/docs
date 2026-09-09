@@ -1,6 +1,8 @@
 import "@tanstack/react-start/server-only";
+import type {HTMLAttributes} from "react";
 import {createOpenAPIPage} from "fumadocs-openapi/ui";
 import {highlight} from "fumadocs-core/highlight";
+import {CodeBlock, Pre} from "@/components/mdx/codeblock";
 import {renderStaticExampleTabs} from "@/components/mdx/api-page/render-static-example-tabs";
 import {renderStaticRequestBodySection} from "@/components/mdx/api-page/render-static-request-body";
 import {renderStaticResponseSection} from "@/components/mdx/api-page/render-static-response-section";
@@ -10,6 +12,27 @@ import type {MethodWithPath, OpenApiRenderContext, PathItemLite} from "@/compone
 // v11 exposes a single render context to content hooks. Adapt it to the project's
 // static-render context: markdown via the built-in processor, code via fumadocs' Shiki
 // highlighter, and the dereferenced schema directly (no longer nested under `.dereferenced`).
+/**
+ * Renders highlighted code through the same CodeBlock the MDX `pre` mapping
+ * uses.
+ *
+ * Shiki writes the light theme as real declarations and the dark one as
+ * `--shiki-dark*` custom properties. Fumadocs' stylesheet only reads those back
+ * for `color` and `font-style`; the dark *background* is applied by CodeBlock
+ * itself. Handing back a bare `<pre>` therefore left Shiki's inline light
+ * background painted white behind dark-theme text.
+ *
+ * The tabs renderer already assumed this, styling `[&>figure:only-child]` —
+ * the figure CodeBlock renders.
+ */
+const codeBlockComponents = {
+  pre: (props: HTMLAttributes<HTMLPreElement>) => (
+    <CodeBlock {...props}>
+      <Pre>{props.children}</Pre>
+    </CodeBlock>
+  ),
+};
+
 export const APIPage = createOpenAPIPage({
   playground: {
     enabled: false,
@@ -21,7 +44,12 @@ export const APIPage = createOpenAPIPage({
         schema: ctx.schema.dereferenced,
         mediaAdapters: ctx.mediaAdapters,
         renderMarkdown: (md) => ctx._default_processMarkdown(md),
-        renderCodeBlock: (lang, code) => highlight(code, {lang, ...ctx.shikiOptions}),
+        // defaultColor is forced off rather than left to fumadocs' defaults:
+        // applyDefaultThemes returns the options untouched once `themes` is
+        // present, and fumadocs-openapi always sets it. Without this Shiki
+        // writes the light theme as inline styles, which outrank the
+        // `.dark .shiki code span` rule and leave a white block in dark mode.
+        renderCodeBlock: (lang, code) => highlight(code, {lang, ...ctx.shikiOptions, defaultColor: false, components: codeBlockComponents}),
       };
       const typedOperation = operation as MethodWithPath;
       const typedPathItem = pathItem as PathItemLite;
