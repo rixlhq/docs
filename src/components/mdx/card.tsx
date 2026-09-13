@@ -52,7 +52,7 @@ function buildCardClassName(href: string | undefined, className: string | undefi
 }
 
 function CardWrapper({href, isExternal, title, className, children, ...props}: CardWrapperProps) {
-  const ariaLabel = href ? `Navigate to ${title}` : undefined;
+  const ariaLabel = href && typeof title === "string" ? `Navigate to ${title}` : undefined;
 
   if (!href) {
     return (
@@ -119,24 +119,12 @@ function CardContent({
       >
         {title}
       </h2>
-      <div className="mt-1 font-normal text-sm leading-6 text-gray-600 dark:text-gray-400 [&>p]:mb-2 [&>p:last-child]:mb-0">
-        {children}
-      </div>
+      <div className="mt-1 font-normal text-sm leading-6 text-gray-600 dark:text-gray-400 [&>p]:mb-2 [&>p:last-child]:mb-0">{children}</div>
     </>
   );
 }
 
-export const Card = ({
-  icon,
-  title,
-  description: _description,
-  href,
-  arrow,
-  cta: _cta,
-  className,
-  children,
-  ...props
-}: Props) => {
+export const Card = ({icon, title, description: _description, href, arrow, cta: _cta, className, children, ...props}: Props) => {
   const isExternal = href !== undefined && isExternalLink(href);
   const cardClassName = buildCardClassName(href, className);
 

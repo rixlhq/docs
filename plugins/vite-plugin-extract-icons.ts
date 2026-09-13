@@ -202,3 +202,9 @@ export function extractIconsPlugin(): Plugin {
     },
   };
 }
+
+// Run standalone (e.g. in postinstall/CI) to generate src/generated/icons.ts
+// before type-aware lint, which imports from "@/generated/icons".
+if (import.meta.main) {
+  regenerateIcons(process.cwd());
+}
