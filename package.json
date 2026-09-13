@@ -15,7 +15,8 @@
     "lint:links": "bun ./scripts/lint.ts",
     "lint:fix": "vp lint --fix",
     "format": "vp fmt",
-    "postinstall": "fumadocs-mdx && paraglide-js compile --project project.inlang --outdir ./src/paraglide",
+    "generate:icons": "bun plugins/vite-plugin-extract-icons.ts",
+    "postinstall": "fumadocs-mdx && bun run generate:icons && paraglide-js compile --project project.inlang --outdir ./src/paraglide",
     "prepare": "vp config",
     "machine-translate": "inlang machine translate --project project.inlang"
   },
