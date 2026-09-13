@@ -16,6 +16,10 @@ function toFlatFileName(value: string) {
 export const openApiPagesOptions: OpenAPISourceOptions = {
   per: "operation",
   groupBy: "tag",
+  // Titles groups from each tag's x-displayName, keeping the spec the source of
+  // truth for naming. Auto-titling the folder would mangle initialisms — `totp`
+  // reads as "Totp", where the spec says "TOTP".
+  meta: true,
   name(entry) {
     if (entry.type === "operation") {
       return `${entry.item.method.toLowerCase()}-${toFlatFileName(entry.item.path)}`;

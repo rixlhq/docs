@@ -1,14 +1,140 @@
 import "@tanstack/react-start/server-only";
 import {createOpenAPI} from "fumadocs-openapi/server";
-import apiDocument from "../../api.json" with {type: "json"};
+import {mkdir, readFile, writeFile} from "node:fs/promises";
+import {dirname, join, resolve} from "node:path";
+import {fileURLToPath} from "node:url";
+import {parse} from "yaml";
 import {API_BASE_URL} from "./api-base-url.ts";
 
-const OPENAPI_DOCUMENT_ID = "./api.json";
+/**
+ * The API contract, read from the spec repo at build time.
+ *
+ * There is deliberately no copy of it in this repo. The one that used to live
+ * here was maintained by hand and had drifted: a Swagger 2.0 snapshot missing 61
+ * endpoints, still describing routes that had been renamed. Every other consumer
+ * already reads the spec over HTTP — rixl-js generates its SDK from the YAML the
+ * same way — so docs does too, and there is nothing local to fall behind.
+ *
+ * YAML rather than JSON because `openapi.yaml` is the single source of truth in
+ * the spec repo; `openapi.json` is a generated convenience copy. The spec can
+ * also be read from a local file by setting `RIXL_OPENAPI_SPEC_URL`.
+ */
+const SPEC_URL =
+  process.env.RIXL_OPENAPI_SPEC_URL ?? "https://raw.githubusercontent.com/rixlhq/openapi/main/openapi.yaml";
 
-let preparedDocument: Record<string, unknown> | undefined;
+const OPENAPI_DOCUMENT_ID = "rixl-api";
 
+/** Service-to-service routes; not part of the published API. */
+const EXCLUDED_PATH_PREFIXES = new Set(["internal"]);
+
+const FETCH_ATTEMPTS = 3;
+const FETCH_TIMEOUT_MS = 30_000;
+
+let documentPromise: Promise<Record<string, unknown>> | undefined;
+
+async function resolveProjectRoot(): Promise<string> {
+  let dir = dirname(fileURLToPath(import.meta.url));
+  for (let depth = 0; depth < 20; depth++) {
+    const packagePath = resolve(dir, "package.json");
+    try {
+      const contents = await readFile(packagePath, "utf8");
+      const pkg = JSON.parse(contents) as {name?: string};
+      if (pkg.name === "rixl-docs") return dir;
+    } catch {
+      // keep walking
+    }
+    const parent = dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
+  throw new Error("Could not resolve rixl-docs project root");
+}
+
+async function readLocalSpec(specPath: string): Promise<Record<string, unknown>> {
+  const path = specPath.startsWith("file://") ? fileURLToPath(specPath) : specPath;
+  const text = await readFile(path, "utf8");
+  return parse(text) as Record<string, unknown>;
+}
+
+async function fetchRemoteSpec(): Promise<Record<string, unknown>> {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= FETCH_ATTEMPTS; attempt++) {
+    try {
+      const response = await fetch(SPEC_URL, {signal: AbortSignal.timeout(FETCH_TIMEOUT_MS)});
+      if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+      return parse(await response.text()) as Record<string, unknown>;
+    } catch (error) {
+      lastError = error;
+      console.warn(`[openapi] attempt ${attempt}/${FETCH_ATTEMPTS} to read the spec failed:`, error);
+    }
+  }
+
+  throw new Error(`Could not read the API spec from ${SPEC_URL}: ${String(lastError)}`);
+}
+
+async function fetchSpec(projectRoot: string): Promise<Record<string, unknown>> {
+  if (SPEC_URL.startsWith("file://")) return readLocalSpec(SPEC_URL);
+  if (!SPEC_URL.includes("://")) return readLocalSpec(resolve(projectRoot, SPEC_URL));
+  return fetchRemoteSpec();
+}
+
+function assertValidSpec(document: Record<string, unknown>): void {
+  if (!document || typeof document !== "object") {
+    throw new TypeError("API spec must be an object");
+  }
+  const isOpenApi = typeof document.openapi === "string";
+  const isSwagger = typeof document.swagger === "string";
+  if (!isOpenApi && !isSwagger) {
+    throw new TypeError("API spec must declare a valid openapi or swagger version");
+  }
+  if (!document.paths || typeof document.paths !== "object" || Array.isArray(document.paths)) {
+    throw new TypeError("API spec is missing a valid paths object");
+  }
+  if (Object.keys(document.paths).length === 0) {
+    throw new TypeError("API spec has no paths");
+  }
+}
+
+async function loadDocument(): Promise<Record<string, unknown>> {
+  const projectRoot = await resolveProjectRoot();
+  const cachePath = join(projectRoot, "node_modules", ".cache", "rixl-openapi.json");
+  let document: Record<string, unknown>;
+
+  try {
+    document = await fetchSpec(projectRoot);
+    assertValidSpec(document);
+    await mkdir(dirname(cachePath), {recursive: true});
+    await writeFile(cachePath, JSON.stringify(document));
+  } catch (error) {
+    // Serving the last good copy beats failing the build outright; it is only
+    // ever as stale as the previous successful build.
+    const cached = await readFile(cachePath, "utf8").catch(() => undefined);
+    if (cached === undefined) throw error;
+
+    console.warn("[openapi] using the cached spec from the last successful build:", error);
+    document = JSON.parse(cached) as Record<string, unknown>;
+  }
+
+  return normalizeApiTags(withDefaultApiHost(withoutInternalPaths(document)));
+}
+
+/** Memoised on the promise, so a build fetches the spec once rather than per page. */
 function prepareDocument() {
-  return (preparedDocument ??= normalizeApiTags(withDefaultApiHost(apiDocument as Record<string, unknown>)));
+  return (documentPromise ??= loadDocument());
+}
+
+function withoutInternalPaths(document: Record<string, unknown>) {
+  const paths = document.paths;
+  if (!paths || typeof paths !== "object") return document;
+
+  const published = Object.entries(paths as Record<string, unknown>).filter(
+    ([path]) => !EXCLUDED_PATH_PREFIXES.has(path.replace(/^\//, "").split("/")[0] ?? "")
+  );
+
+  return {...document, paths: Object.fromEntries(published)};
 }
 
 export const openapi = createOpenAPI({
@@ -86,7 +212,8 @@ interface TagRewriteContext {
 }
 
 function rewriteOperationTags(op: Record<string, unknown>, ctx: TagRewriteContext) {
-  const tags = Array.isArray(op.tags) ? (op.tags as string[]) : [];
+  let tags = Array.isArray(op.tags) ? (op.tags as string[]) : [];
+  if (tags.length === 0) tags = ["General"];
   op.tags = tags.map((tag) => {
     const leaf = leafNameFor(tag, ctx.meta);
     const group = ctx.groups.get(tag);
