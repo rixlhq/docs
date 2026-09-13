@@ -70,7 +70,7 @@ const clientLoader = browserCollections.docs.createClientLoader<{}>({
 });
 
 function Page() {
-  const {lang, _splat} = Route.useParams();
+  const {lang} = Route.useParams();
   const loaderData = Route.useLoaderData() as {
     tree: unknown;
     sectionLinks: {
@@ -103,11 +103,7 @@ function Page() {
       treeKey={loaderData.treeKey}
       isApiPage={isApiPage}
     >
-      {isApiPage ? (
-        <ApiContent apiPage={loaderData.apiPage} page={loaderData.page} />
-      ) : (
-        <MdxContent path={loaderData.path} />
-      )}
+      {isApiPage ? <ApiContent apiPage={loaderData.apiPage} page={loaderData.page} /> : <MdxContent path={loaderData.path} />}
     </SharedLayout>
   );
 }

@@ -5,17 +5,18 @@
   "type": "module",
   "sideEffects": false,
   "scripts": {
-    "build": "bun run clean && bun lint && vite build",
+    "build": "bun run clean && bun lint && vp build",
     "clean": "rm -rf dist",
-    "dev": "vite dev",
-    "start": "vite preview",
+    "dev": "vp dev",
+    "start": "vp preview",
     "serve": "bunx serve@latest --no-port-switching dist/client -l tcp://127.0.0.1:4173",
     "serve:spa": "bunx serve@latest --no-port-switching -s dist/client -l tcp://127.0.0.1:4173",
-    "lint": "oxlint --max-warnings=0 && fumadocs-mdx",
+    "lint": "vp lint --max-warnings=0 && fumadocs-mdx",
     "lint:links": "bun ./scripts/lint.ts",
-    "lint:fix": "oxlint --fix",
-    "format": "oxfmt",
-    "postinstall": "fumadocs-mdx",
+    "lint:fix": "vp lint --fix",
+    "format": "vp fmt",
+    "postinstall": "fumadocs-mdx && paraglide-js compile --project project.inlang --outdir ./src/paraglide",
+    "prepare": "vp config",
     "machine-translate": "inlang machine translate --project project.inlang"
   },
   "dependencies": {
@@ -55,18 +56,18 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "@vitejs/plugin-react": "^6.1.0",
-    "oxc-transform-react": "^0.147.0",
     "next-validate-link": "^1.6.7",
-    "oxfmt": "^0.65.0",
-    "oxlint": "^1.80.0",
+    "oxc-transform-react": "^0.147.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
-    "vite": "^8.2.2",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.1",
+    "vite-plus": "0.3.1",
     "wrangler": "^4.126.0"
   },
   "overrides": {
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.1"
   },
   "devEngines": {
     "packageManager": {
