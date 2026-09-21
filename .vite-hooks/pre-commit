@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Run Vite+ staged-file checks (format + lint + typecheck) per the `staged`
+# config in vite.config.ts.
+vp staged

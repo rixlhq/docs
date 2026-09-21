@@ -44,3 +44,6 @@ next-env.d.ts
 out/
 # Claude Code (personal)
 .claude
+
+# Vite+ hook dispatcher (generated); committed project hooks stay tracked
+/.vite-hooks/_/
