@@ -49,11 +49,17 @@ function SearchEmpty() {
 
 export default function DefaultSearchDialog(props: SharedProps) {
   const {locale} = useI18n(); // (optional) for i18n
-  const {search, setSearch, query} = useDocsSearch({
-    type: "static",
-    initOrama,
-    locale,
-  });
+  const {search, setSearch, query} = useDocsSearch(
+    // TODO(fumadocs): initOrama returns @orama/orama's Orama, but fumadocs >=16
+    // types the static preset against zbsearch's AnyZBSearch. Runtime is fine;
+    // migrate the static search init to the zbsearch API to drop this suppression.
+    // @ts-expect-error pre-existing fumadocs/zbsearch type drift (see TODO above)
+    {
+      type: "static",
+      initOrama,
+      locale,
+    }
+  );
 
   return (
     <SearchDialog search={search} onSearchChange={setSearch} isLoading={query.isLoading} {...props}>
