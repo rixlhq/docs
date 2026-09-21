@@ -17,7 +17,7 @@
     "format": "vp fmt",
     "generate:icons": "bun plugins/vite-plugin-extract-icons.ts",
     "postinstall": "fumadocs-mdx && bun run generate:icons && paraglide-js compile --project project.inlang --outdir ./src/paraglide",
-    "prepare": "vp config",
+    "prepare": "bun x vp config || true",
     "machine-translate": "inlang machine translate --project project.inlang"
   },
   "dependencies": {
@@ -58,8 +58,8 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
-    "oxc-transform-react": "^0.150.0",
     "next-validate-link": "^1.6.7",
+    "oxc-transform-react": "^0.150.0",
     "oxfmt": "^0.68.0",
     "oxlint": "^1.83.0",
     "tailwindcss": "^4.3.3",
