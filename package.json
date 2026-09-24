@@ -6,6 +6,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "bun run clean && bun lint && vp build",
+    "ci:build": "bun run build",
     "clean": "rm -rf dist",
     "dev": "vp dev",
     "start": "vp preview",
@@ -62,14 +63,14 @@
     "oxc-transform-react": "^0.150.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.1",
-    "vite-plus": "0.3.1",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.3",
+    "vite-plus": "0.3.3",
     "wrangler": "^4.134.0"
   },
   "overrides": {
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.1"
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.3"
   },
   "devEngines": {
     "packageManager": {
