@@ -36,7 +36,7 @@
     "cn": "0.4.0",
     "fumadocs-core": "^16.15.14",
     "fumadocs-mdx": "^15.4.4",
-    "fumadocs-openapi": "^12.0.2",
+    "fumadocs-openapi": "^11.4.3",
     "fumadocs-ui": "^16.15.14",
     "lucide-react": "^1.48.0",
     "lucide-static": "^1.48.0",
