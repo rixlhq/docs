@@ -1,10 +1,26 @@
 name: Rollout
 
+# Vendored copy of rixlhq/github-actions' cloudflare-rollout.yml: docs is a
+# public repo, and public repos cannot call reusable workflows in a private
+# repo. Keep this file in sync with that one — fixes there must be ported
+# here by hand. Rollout parameters (worker, ramp, smoke urls, waits) are the
+# env block on the job below.
+#
 # Merges to main deploy to production through Cloudflare gradual
 # deployments: the Workers Builds run uploads a version tagged with the
 # commit (cf:upload is the deploy command), and this workflow waits for it,
 # smoke-tests it at 0% traffic, then ramps. Trigger manually with
 # dry_run=true to print the plan without touching traffic.
+#
+# Flow per rollout:
+#   1. wait until a version tagged with this commit exists (a red build
+#      uploads nothing, so a broken merge can never roll out)
+#   2. add it to the deployment at 0% — Cloudflare only serves two versions
+#      at once, and a version override only works on a version that is IN
+#      the current deployment
+#   3. smoke-test the new version with the version-override header
+#   4. ramp through RAMP percentages, WATCH_MINUTES of soak between
+#   5. any failure rolls back to the previous version at 100% and fails
 on:
   push:
     branches: [main]
@@ -29,13 +45,183 @@ concurrency:
 
 jobs:
   rollout:
-    uses: rixlhq/github-actions/.github/workflows/cloudflare-rollout.yml@main
-    secrets: inherit
-    with:
-      worker: rixl-docs
-      ramp: "100"
-      smoke-urls: "https://docs.rixl.com/"
-      wait-minutes: 45
-      timeout-minutes: 120
-      dry_run: ${{ inputs.dry_run || false }}
-      version-tag: ${{ inputs.version-tag || '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      WORKER: rixl-docs
+      RAMP: "100"
+      WATCH_MINUTES: 0
+      SMOKE_URLS: "https://docs.rixl.com/"
+      WAIT_MINUTES: 45
+      DRY_RUN: ${{ inputs.dry_run || false }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      # CLI-only operations, so a global install beats checking out the repo
+      # and installing its devDependencies. Floor matches the repos' pin.
+      - name: Install Wrangler
+        run: npm install -g wrangler@^4.135.0
+
+      - name: Resolve version tag
+        run: |
+          TAG="${{ inputs.version-tag }}"
+          [ -z "${TAG}" ] && TAG="$(echo "${{ github.sha }}" | cut -c1-12)"
+          echo "TAG=${TAG}" >> "${GITHUB_ENV}"
+          echo "Rolling out ${WORKER} version tagged ${TAG}"
+
+      - name: Wait for the tagged version
+        run: |
+          set -euo pipefail
+          deadline=$(( $(date +%s) + WAIT_MINUTES * 60 ))
+          NEW_VERSION_ID=""
+          while [ "$(date +%s)" -lt "${deadline}" ]; do
+            NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
+              | jq -r --arg t "${TAG}" '[.[] | select(.annotations["workers/tag"] == $t)] | last | .id // empty')
+            [ -n "${NEW_VERSION_ID}" ] && break
+            if [ "${DRY_RUN}" = "true" ]; then
+              # A dry run should be runnable before cf:upload exists — plan
+              # against the newest uploaded version instead of waiting.
+              NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
+                | jq -r 'last | .id // empty')
+              if [ -n "${NEW_VERSION_ID}" ]; then
+                echo "No version tagged ${TAG}; dry run will plan against the latest version (${NEW_VERSION_ID})."
+              fi
+              break
+            fi
+            echo "No version tagged ${TAG} yet; retrying in 30s"
+            sleep 30
+          done
+          if [ -z "${NEW_VERSION_ID}" ]; then
+            echo "::error::No ${WORKER} version tagged ${TAG} after ${WAIT_MINUTES}m — the Cloudflare build probably failed (a red ci:build uploads nothing)."
+            exit 1
+          fi
+          echo "NEW_VERSION_ID=${NEW_VERSION_ID}" >> "${GITHUB_ENV}"
+
+      - name: Read current deployment
+        run: |
+          set -euo pipefail
+          # A brand-new Worker has no deployment yet; then the rollout is just
+          # putting the new version at 100% (safe — no users to split away from).
+          CURRENT=$(wrangler deployments status --name "${WORKER}" --json 2>/dev/null || true)
+          OLD_VERSION_ID=$(jq -r '.versions | max_by(.percentage) | .version_id // empty' <<<"${CURRENT:-{}}" 2>/dev/null || true)
+          echo "OLD_VERSION_ID=${OLD_VERSION_ID}" >> "${GITHUB_ENV}"
+          if [ -n "${OLD_VERSION_ID}" ]; then
+            echo "Current serving version: ${OLD_VERSION_ID}"
+          else
+            echo "No current deployment — this will be the first deploy."
+          fi
+
+      - name: Plan
+        run: |
+          echo "::group::Rollout plan for ${WORKER}"
+          echo "new version : ${NEW_VERSION_ID} (tag ${TAG})"
+          echo "old version : ${OLD_VERSION_ID:-none}"
+          if [ -n "${OLD_VERSION_ID}" ]; then
+            echo "steps       : ${OLD_VERSION_ID}@100 + ${NEW_VERSION_ID}@0 → smoke"
+            for p in ${RAMP//,/ }; do
+              if [ "${p}" = "100" ]; then
+                echo "            → ${NEW_VERSION_ID}@100"
+              else
+                echo "            → ${NEW_VERSION_ID}@${p} + ${OLD_VERSION_ID}@$((100 - p)), watch ${WATCH_MINUTES}m"
+              fi
+            done
+          else
+            echo "steps       : ${NEW_VERSION_ID}@100 (first deploy)"
+          fi
+          echo "smoke urls  : ${SMOKE_URLS:-none}"
+          echo "dry run     : ${DRY_RUN}"
+          echo "::endgroup::"
+          if [ "${DRY_RUN}" = "true" ]; then
+            echo "Dry run — no traffic changes."
+          fi
+
+      # Everything below is one script so a single rollback path covers every
+      # failure: on smoke failure at any stage, the old version goes back to
+      # 100% and the run turns red.
+      - name: Roll out
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          set -euo pipefail
+
+          rollback() {
+            echo "::error::${1} — rolling ${WORKER} back to ${OLD_VERSION_ID} at 100%"
+            wrangler versions deploy "${OLD_VERSION_ID}@100" \
+              --name "${WORKER}" -y --message "rollback ${TAG}: ${1}" || true
+            exit 1
+          }
+
+          smoke() {
+            local label="$1"
+            [ -n "${SMOKE_URLS}" ] || { echo "no smoke urls configured, skipping"; return 0; }
+            local failed=""
+            for url in ${SMOKE_URLS//,/ }; do
+              echo "smoke ${label}: ${url}"
+              body=$(curl -s -o /dev/null -w '%{http_code}' \
+                -H "Cloudflare-Workers-Version-Overrides: ${WORKER}=\"${NEW_VERSION_ID}\"" "${url}") || failed=1
+              if [ "${body}" != "200" ]; then
+                echo "::error::${url} returned ${body}, not 200"
+                failed=1
+                continue
+              fi
+              # The page loads; now prove its main JS bundle does too — the
+              # classic split-version breakage is new HTML referencing chunks
+              # that don't exist on this version.
+              host=$(echo "${url}" | sed -E 's|https?://([^/]+).*|\1|')
+              scheme=$(echo "${url}" | sed -E 's|(https?)://.*|\1|')
+              html=$(curl -sf -H "Cloudflare-Workers-Version-Overrides: ${WORKER}=\"${NEW_VERSION_ID}\"" "${url}") || failed=1
+              js=$(grep -oE 'src="[^"]+\.js[^"]*"' <<<"${html:-}" | head -1 | cut -d'"' -f2 || true)
+              if [ -z "${js}" ]; then
+                echo "::error::no <script src> found on ${url} — page looks broken"
+                failed=1
+                continue
+              fi
+              case "${js}" in
+                http*) js_url="${js}" ;;
+                *)     js_url="${scheme}://${host}${js}" ;;
+              esac
+              js_code=$(curl -s -o /dev/null -w '%{http_code}' \
+                -H "Cloudflare-Workers-Version-Overrides: ${WORKER}=\"${NEW_VERSION_ID}\"" "${js_url}") || failed=1
+              if [ "${js_code}" != "200" ]; then
+                echo "::error::${js_url} returned ${js_code}, not 200"
+                failed=1
+              fi
+            done
+            [ -z "${failed}" ]
+          }
+
+          if [ -z "${OLD_VERSION_ID}" ]; then
+            echo "First deploy — straight to 100%."
+            wrangler versions deploy "${NEW_VERSION_ID}@100" \
+              --name "${WORKER}" -y --message "first deploy ${TAG}"
+            exit 0
+          fi
+
+          # Add the new version to the deployment at 0% so the override header
+          # can reach it without routing real users to it.
+          echo "Adding ${NEW_VERSION_ID} at 0%"
+          wrangler versions deploy "${OLD_VERSION_ID}@100" "${NEW_VERSION_ID}@0" \
+            --name "${WORKER}" -y --message "rollout ${TAG}: add at 0%" \
+            || rollback "deploy to 0% failed"
+
+          smoke "0%" || rollback "smoke failed at 0%"
+
+          for p in ${RAMP//,/ }; do
+            if [ "${p}" = "100" ]; then
+              echo "Moving to 100%"
+              wrangler versions deploy "${NEW_VERSION_ID}@100" \
+                --name "${WORKER}" -y --message "rollout ${TAG}: 100%" \
+                || rollback "deploy to 100% failed"
+            else
+              echo "Moving to ${p}%"
+              wrangler versions deploy "${OLD_VERSION_ID}@$((100 - p))" "${NEW_VERSION_ID}@${p}" \
+                --name "${WORKER}" -y --message "rollout ${TAG}: ${p}%" \
+                || rollback "deploy to ${p}% failed"
+              if [ "${WATCH_MINUTES}" -gt 0 ]; then
+                echo "Watching for ${WATCH_MINUTES}m"
+                sleep "$((WATCH_MINUTES * 60))"
+              fi
+            fi
+            smoke "${p}%" || rollback "smoke failed at ${p}%"
+          done
+
+          echo "Rollout of ${TAG} complete on ${WORKER}."
