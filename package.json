@@ -7,6 +7,7 @@
   "scripts": {
     "build": "bun run clean && bun lint && vp build",
     "ci:build": "bun run build",
+    "cf:upload": "wrangler versions upload --tag \"$(git rev-parse --short=12 HEAD)\" --message \"main $(git rev-parse --short=12 HEAD)\"",
     "clean": "rm -rf dist",
     "dev": "vp dev",
     "start": "vp preview",

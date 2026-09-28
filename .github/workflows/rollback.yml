@@ -1,0 +1,28 @@
+name: Rollback
+
+# Manual escape hatch for a green-but-bad release: restores the previous
+# deployment (or an explicit version) at 100%. Automatic smoke-failure
+# rollback lives inside the rollout itself.
+on:
+  workflow_dispatch:
+    inputs:
+      version-id:
+        description: "Version ID to restore at 100% (empty = previous deployment)"
+        required: false
+        type: string
+      dry_run:
+        description: "Show the current deployment and what would change; change nothing"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  rollback:
+    uses: rixlhq/github-actions/.github/workflows/cloudflare-rollback.yml@main
+    secrets: inherit
+    with:
+      worker: docs
+      version-id: ${{ inputs.version-id || '' }}
+      dry_run: ${{ inputs.dry_run }}

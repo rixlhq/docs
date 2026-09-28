@@ -1,0 +1,41 @@
+name: Rollout
+
+# Merges to main deploy to production through Cloudflare gradual
+# deployments: the Workers Builds run uploads a version tagged with the
+# commit (cf:upload is the deploy command), and this workflow waits for it,
+# smoke-tests it at 0% traffic, then ramps. Trigger manually with
+# dry_run=true to print the plan without touching traffic.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Resolve versions and print the plan; change nothing"
+        type: boolean
+        default: true
+      version-tag:
+        description: "Version tag to roll out (default: the pushed commit's 12-char sha)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  # Cloudflare serves at most two versions at once, so rollouts queue.
+  group: rollout
+  cancel-in-progress: false
+
+jobs:
+  rollout:
+    uses: rixlhq/github-actions/.github/workflows/cloudflare-rollout.yml@main
+    secrets: inherit
+    with:
+      worker: docs
+      ramp: "100"
+      smoke-urls: "https://docs.rixl.com/"
+      wait-minutes: 45
+      timeout-minutes: 120
+      dry_run: ${{ inputs.dry_run || false }}
+      version-tag: ${{ inputs.version-tag || '' }}
