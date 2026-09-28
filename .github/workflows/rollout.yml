@@ -32,7 +32,7 @@ jobs:
     uses: rixlhq/github-actions/.github/workflows/cloudflare-rollout.yml@main
     secrets: inherit
     with:
-      worker: docs
+      worker: rixl-docs
       ramp: "100"
       smoke-urls: "https://docs.rixl.com/"
       wait-minutes: 45

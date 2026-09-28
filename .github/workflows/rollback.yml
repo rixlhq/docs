@@ -23,6 +23,6 @@ jobs:
     uses: rixlhq/github-actions/.github/workflows/cloudflare-rollback.yml@main
     secrets: inherit
     with:
-      worker: docs
+      worker: rixl-docs
       version-id: ${{ inputs.version-id || '' }}
       dry_run: ${{ inputs.dry_run }}

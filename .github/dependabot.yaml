@@ -4,6 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # v12 breaks api-page.server.tsx and get-llm-text; remove once migrated
+      - dependency-name: "fumadocs-openapi"
+        update-types: ["version-update:semver-major"]
     groups:
       dependencies:
         patterns:
