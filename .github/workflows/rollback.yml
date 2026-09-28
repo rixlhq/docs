@@ -1,5 +1,10 @@
 name: Rollback
 
+# Vendored copy of rixlhq/github-actions' cloudflare-rollback.yml: docs is a
+# public repo, and public repos cannot call reusable workflows in a private
+# repo. Keep this file in sync with that one — fixes there must be ported
+# here by hand.
+#
 # Manual escape hatch for a green-but-bad release: restores the previous
 # deployment (or an explicit version) at 100%. Automatic smoke-failure
 # rollback lives inside the rollout itself.
@@ -20,9 +25,36 @@ permissions:
 
 jobs:
   rollback:
-    uses: rixlhq/github-actions/.github/workflows/cloudflare-rollback.yml@main
-    secrets: inherit
-    with:
-      worker: rixl-docs
-      version-id: ${{ inputs.version-id || '' }}
-      dry_run: ${{ inputs.dry_run }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      WORKER: rixl-docs
+      VERSION_ID: ${{ inputs.version-id || '' }}
+      DRY_RUN: ${{ inputs.dry_run }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - name: Install Wrangler
+        run: npm install -g wrangler@^4.135.0
+
+      - name: Show current deployment
+        run: |
+          wrangler deployments status --name "${WORKER}" --json \
+            | jq '{id, created_on, source, versions}'
+          echo "---"
+          wrangler deployments list --name "${WORKER}" --json \
+            | jq -r '.[] | "\(.created_on)  \(.id)  \(.versions | map("\(.version_id) @ \(.percentage)%") | join(", "))"'
+
+      - name: Roll back
+        if: ${{ inputs.dry_run == false }}
+        run: |
+          set -euo pipefail
+          if [ -n "${VERSION_ID}" ]; then
+            # Explicit target: put that version at 100%, dropping the rollout.
+            wrangler versions deploy "${VERSION_ID}@100" \
+              --name "${WORKER}" -y --message "manual rollback to ${VERSION_ID}"
+          else
+            # No target: wrangler rollback restores the previous deployment.
+            wrangler rollback --name "${WORKER}" -y \
+              -m "manual rollback via workflow_dispatch"
+          fi
