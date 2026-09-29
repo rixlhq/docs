@@ -20,18 +20,58 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # The spec is fetched over HTTP at build time, so there is nothing in
+      # this repo to regenerate — the PR only exists to gate the rebuild. The
+      # pin file gives that PR a real diff: it records exactly which spec
+      # revision a merged deploy was built from, and makes superseded PRs
+      # (see below) unambiguous.
+      - name: Resolve spec revision
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          owner="${{ github.repository_owner }}"
+          spec_sha="$(gh api "repos/${owner}/openapi/commits?path=openapi.yaml&sha=main&per_page=1" --jq '.[0].sha' 2>/dev/null || true)"
+          if [ -z "${spec_sha}" ]; then
+            spec_sha="sha256:$(curl -fsSL "https://raw.githubusercontent.com/${owner}/openapi/main/openapi.yaml" | shasum -a 256 | cut -d' ' -f1)"
+            spec_link="https://github.com/${owner}/openapi/blob/main/openapi.yaml"
+          else
+            spec_link="https://github.com/${owner}/openapi/commit/${spec_sha}"
+          fi
+          echo "SPEC_SHA=${spec_sha}" >> "${GITHUB_ENV}"
+          echo "SPEC_LINK=${spec_link}" >> "${GITHUB_ENV}"
+          printf '%s\n' "${spec_sha}" > .openapi-spec-sha
+
       - name: Create bump PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           branch="openapi-regenerate-${{ github.run_id }}"
           git checkout -b "$branch"
-          git commit --allow-empty -m "chore: trigger docs rebuild for openapi update"
-          git push origin "$branch"
+          git add .openapi-spec-sha
+          git commit --allow-empty -m "chore: rebuild docs for openapi@${SPEC_SHA:0:12}"
+
+          gh pr list --state open --json number,headRefName \
+            --jq '.[] | select(.headRefName | startswith("openapi-regenerate-")) | .number' \
+            | while read -r pr; do
+                gh pr close "${pr}" --delete-branch \
+                  --comment "Superseded by a newer OpenAPI update." || true
+              done
+
+          git push origin "${branch}"
+          body="$(cat <<EOF
+          The OpenAPI spec was updated on the main branch.
+
+          Spec revision: [\`${SPEC_SHA:0:12}\`](${SPEC_LINK})
+
+          Merge this PR to rebuild and redeploy the docs.
+          EOF
+          )"
           gh api "repos/${{ github.repository }}/pulls" \
-            -f title="chore: trigger docs rebuild for openapi update" \
-            -f body="The OpenAPI spec was updated on the main branch. Merge this PR to rebuild and redeploy the docs." \
-            -f head="$branch" \
+            -f title="chore: rebuild docs for openapi@${SPEC_SHA:0:12}" \
+            -f body="${body}" \
+            -f head="${branch}" \
             -f base="main"
