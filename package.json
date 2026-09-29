@@ -5,20 +5,20 @@
   "type": "module",
   "sideEffects": false,
   "scripts": {
-    "build": "bun run clean && bun lint && vp build",
-    "ci:build": "bun run build",
+    "build": "vp run clean && vp run lint && vp build",
+    "ci:build": "vp run build",
     "cf:upload": "wrangler versions upload --tag \"$(git rev-parse --short=12 HEAD)\" --message \"main $(git rev-parse --short=12 HEAD)\"",
     "clean": "rm -rf dist",
     "dev": "vp dev",
     "start": "vp preview",
-    "serve": "bunx serve@latest --no-port-switching dist/client -l tcp://127.0.0.1:4173",
-    "serve:spa": "bunx serve@latest --no-port-switching -s dist/client -l tcp://127.0.0.1:4173",
+    "serve": "vp dlx serve@latest --no-port-switching dist/client -l tcp://127.0.0.1:4173",
+    "serve:spa": "vp dlx serve@latest --no-port-switching -s dist/client -l tcp://127.0.0.1:4173",
     "lint": "vp lint --max-warnings=0 && fumadocs-mdx",
-    "lint:links": "bun ./scripts/lint.ts",
+    "lint:links": "node ./scripts/lint.ts",
     "lint:fix": "vp lint --fix",
     "format": "vp fmt",
-    "generate:icons": "bun plugins/vite-plugin-extract-icons.ts",
-    "postinstall": "fumadocs-mdx && bun run generate:icons && paraglide-js compile --project project.inlang --outdir ./src/paraglide",
+    "generate:icons": "node plugins/vite-plugin-extract-icons.ts",
+    "postinstall": "fumadocs-mdx && vp run generate:icons && paraglide-js compile --project project.inlang --outdir ./src/paraglide",
     "prepare": "vp config || true",
     "machine-translate": "inlang machine translate --project project.inlang"
   },
@@ -64,14 +64,14 @@
     "oxc-transform-react": "^0.151.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.3",
-    "vite-plus": "0.3.3",
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.0.0",
+    "vite-plus": "1.0.0",
     "wrangler": "^4.139.0"
   },
   "overrides": {
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.3"
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.0.0"
   },
   "devEngines": {
     "packageManager": {
