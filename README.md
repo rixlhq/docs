@@ -1,28 +1,35 @@
 # Rixl Documentation
 
-Documentation site built with **TanStack Start**, **Fumadocs v16.2**, **Bun**, **Tailwind CSS v4**, and **React 19**.
+Documentation site built with **TanStack Start**, **Fumadocs v16**, **Vite+**, **Tailwind CSS v4**, and **React 19**.
 
 ## 🚀 Quick Start
 
+Install [Vite+](https://viteplus.dev) (`vp`) once; it manages Node and the package manager for you.
+
 ### Install Dependencies
+
 ```bash
-bun install
+vp install
 ```
 
 ### Development
+
 ```bash
-bun dev
+vp dev
 ```
+
 Visit: http://localhost:3000
 
 ### Build
+
 ```bash
-bun build
+vp run build
 ```
 
-### Production
+### Preview the production build
+
 ```bash
-bun start
+vp preview
 ```
 
 ## 📁 Project Structure
@@ -57,27 +64,18 @@ docs/
 - **Runtime**: Bun
 - **Language**: TypeScript
 
-> **Note**: TanStack Start now uses **Vite** (migrated from Vinxi). See `VITE_UPDATE.md` for details.
-
 ## 📝 Available Scripts
 
 ```bash
-bun dev          # Start dev server with HMR
-bun build        # Build for production
-bun start        # Start production server
-bun serve        # Serve static build
-bun lint         # Run linter
-bun lint:fix     # Fix linting issues
-bun format       # Format code
+vp dev              # Dev server with HMR
+vp run build        # Clean + lint + production build
+vp preview          # Preview the production build
+vp run serve        # Serve the static build output
+vp run lint         # Oxlint + fumadocs-mdx
+vp run lint:fix     # Fix linting issues
+vp run lint:links   # Check internal links in content
+vp fmt              # Format code
 ```
-
-## 🔥 Recent Migration
-
-This project was recently migrated from Next.js to TanStack Start. See:
-- `MIGRATION_COMPLETE.md` - Migration summary
-- `README.migration.md` - Technical details
-- `QUICKSTART.md` - Getting started guide
-- `FINAL_CHECKLIST.md` - Pre-launch checklist
 
 ## 📚 Documentation
 
@@ -88,14 +86,9 @@ This project was recently migrated from Next.js to TanStack Start. See:
 
 ## 🚀 Deployment
 
-Configured for **Cloudflare Pages** by default. To deploy:
-
-```bash
-bun build
-# Upload .output/public to Cloudflare Pages
-```
-
-For other platforms, configure deployment settings in `vite.config.ts`.
+Deployed to the **Cloudflare Worker `rixl-docs`** (`docs.rixl.com`) by Cloudflare Workers Builds:
+every PR gets a preview URL, and merging to `main` uploads a tagged version that the
+`rollout.yml` workflow smoke-tests and promotes. No manual deploy step.
 
 ## 📄 License
 
