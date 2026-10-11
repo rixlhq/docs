@@ -63,6 +63,12 @@ function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sea
       enabled: false,
     },
     tabs: false as const,
+    slots: {
+      ...options.slots,
+      // The top navbar already renders the language switcher; hide the
+      // duplicate in the docs sidebar (footer + mobile drawer).
+      languageSelect: false as const,
+    },
     sidebar: {
       enabled: sidebar,
       banner: <SidebarBanner backUrl={backUrl} />,
