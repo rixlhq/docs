@@ -29,7 +29,54 @@ const sectionRootRedirectPages = i18n.languages.flatMap((lang) => [
   {path: `/${lang}/api`},
 ]);
 
+// Rolldown code-splitting: stable per-vendor chunks keep the initial entry
+// lean and stop shared deps from duplicating across per-locale route
+// chunks. Sizes are pre-minification bytes.
+function vendorPackageName(id: string): string | null {
+  const match = id.match(/node_modules[\\/](?:@[^\\/]+[\\/])?([^\\/]+)/);
+  if (!match) return null;
+  return `vendor-${match[1]}`;
+}
+
 export default defineConfig({
+  build: {
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            {
+              name: "vendor-react",
+              test: /node_modules[\\/](react|react-dom|scheduler|use-sync-external-store)([\\/]|$)/,
+              priority: 30,
+            },
+            {
+              name: "vendor-tanstack-router",
+              test: /node_modules[\\/]@tanstack[\\/](react-router|router-core|router-devtools|history|jsesc|invariant|store|router-utils)/,
+              priority: 25,
+            },
+            {
+              name: "vendor-tanstack-start",
+              test: /node_modules[\\/]@tanstack[\\/]/,
+              priority: 20,
+            },
+            {
+              name: "vendor-fumadocs",
+              test: /node_modules[\\/]fumadocs-[^\\/]+[\\/]/,
+              priority: 20,
+            },
+            {
+              name: vendorPackageName,
+              debugName: "vendor-package",
+              test: /node_modules/,
+              priority: 10,
+              minSize: 20_000,
+              maxSize: 300_000,
+            },
+          ],
+        },
+      },
+    },
+  },
   fmt: {
     printWidth: 140,
     tabWidth: 2,
