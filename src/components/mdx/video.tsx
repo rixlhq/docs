@@ -3,7 +3,7 @@
 import {lazy, Suspense, type ReactElement} from "react";
 import type {VideoProps} from "@rixl/media-react";
 
-const RixlVideo = lazy(() => import("@rixl/media-react").then((mod) => ({default: mod.Video})));
+const RixlVideo = lazy(() => import("@rixl/media-react/video").then((mod) => ({default: mod.Video})));
 
 export function Video(props: VideoProps): ReactElement {
   return (
