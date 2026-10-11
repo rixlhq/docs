@@ -9,8 +9,6 @@ import {extractIconsPlugin} from "./plugins/vite-plugin-extract-icons.ts";
 import {i18n} from "./src/lib/i18n.ts";
 import {collectDocsPrerenderPages, createOgPrerenderPages, toStaticPages} from "./scripts/lib/prerender-pages.ts";
 
-// import { nitro } from 'nitro/vite'
-
 const docsPrerenderPages = await collectDocsPrerenderPages({
   contentDir: path.resolve(import.meta.dirname, "content"),
   supportedLanguages: i18n.languages,
@@ -193,9 +191,6 @@ export default defineConfig({
       "@/snippets": `${import.meta.dirname}/src/components/mdx`,
     },
     tsconfigPaths: true,
-  },
-  optimizeDeps: {
-    include: ["xml-js/lib/js2xml"],
   },
   ssr: {
     noExternal: ["@rixl/media-react"],
