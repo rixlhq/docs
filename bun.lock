@@ -5,7 +5,6 @@
     "": {
       "name": "rixl-docs",
       "dependencies": {
-        "@nanostores/react": "^2.0.1",
         "@orama/orama": "^3.1.18",
         "@radix-ui/react-presence": "^1.1.11",
         "@rixl/media-react": "^0.9.3",
@@ -22,7 +21,6 @@
         "fumadocs-ui": "^16.17.1",
         "lucide-react": "^1.55.0",
         "lucide-static": "^1.55.0",
-        "nanostores": "^1.5.5",
         "openapi-sampler": "^1.7.6",
         "radix-ui": "^1.7.0",
         "react": "^19.3.0",
@@ -53,8 +51,8 @@
     },
   },
   "overrides": {
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "vite": "npm:@voidzero-dev/vite-plus-core@1.1.0",
   },
   "packages": {
