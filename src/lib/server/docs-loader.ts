@@ -8,6 +8,28 @@ import type {OpenAPIPageProps_Spec} from "fumadocs-openapi/ui";
 import {source} from "../../lib/source.server";
 import {APIPage} from "../../components/mdx/api-page.server";
 
+export const treeLoader = createServerFn({
+  method: "GET",
+})
+  .validator((params: {slugs: string[]; lang?: string; locale?: string}) => params)
+  .middleware([staticFunctionMiddleware]) // used for tanstack static rendering
+  .handler(async ({data: {slugs, lang, locale}}) => {
+    const tree = source.getPageTree(lang) as Root;
+    const sectionLinks = getSectionLinks(tree, locale ?? lang ?? "");
+    const {
+      tree: normalizedTree,
+      backUrl,
+      treeKey,
+    } = lang ? extractProductTree(tree, lang, slugs) : {tree, backUrl: undefined, treeKey: lang};
+
+    return {
+      tree: await source.serializePageTree(normalizedTree),
+      sectionLinks,
+      backUrl,
+      treeKey,
+    };
+  });
+
 export const loader = createServerFn({
   method: "GET",
 })
@@ -17,17 +39,10 @@ export const loader = createServerFn({
     const page = source.getPage(slugs, lang);
     if (!page) throw notFound();
 
-    const tree = source.getPageTree(lang) as Root;
-    const sectionLinks = getSectionLinks(tree, page.locale ?? "");
-    const {tree: normalizedTree, backUrl, treeKey} = lang ? extractProductTree(tree, lang, slugs) : {tree, backUrl: undefined, treeKey: lang};
     const apiPage = getApiPage(page.data);
     const apiPageHtml = apiPage ? await renderApiPageHtml(apiPage) : undefined;
 
     return {
-      tree: await source.serializePageTree(normalizedTree),
-      sectionLinks,
-      backUrl,
-      treeKey,
       path: page.path,
       page: {
         slugs: page.slugs,
