@@ -23,7 +23,6 @@
     "machine-translate": "inlang machine translate --project project.inlang"
   },
   "dependencies": {
-    "@orama/orama": "^3.1.18",
     "@radix-ui/react-presence": "^1.1.11",
     "@rixl/media-react": "^0.9.3",
     "@takumi-rs/image-response": "^2.14.0",
