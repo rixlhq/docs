@@ -72,12 +72,8 @@ function buildNavLinks(lang: string) {
   ];
 }
 
-export function baseOptionsWithSectionLinks(
-  lang: string,
-  _sectionLinks?: SectionLinks
-): BaseLayoutProps {
+export function baseOptionsWithSectionLinks(lang: string, _sectionLinks?: SectionLinks): BaseLayoutProps {
   return {
-    // i18n, TODO: Enable language switcher
     nav: {
       title: <LogoWide className="h-8 fill-black dark:invert" />,
       transparentMode: "top",
@@ -144,7 +140,7 @@ export function FooterSections(lang: string): FooterSection[] {
         {text: "X", url: "https://x.com/rixlcloud", external: true, Icon: XIcon},
         {text: "Discord", url: "https://discord.gg/...", external: true, Icon: DiscordIcon},
         {text: "YouTube", url: "https://youtube.com/@rixlcloud", external: true, Icon: YoutubeIcon},
-        {text: "GitHub", url: "https://github.com/qeeqez", external: true, Icon: GithubIcon}, // TODO replace github when migrated
+        {text: "GitHub", url: "https://github.com/rixlhq", external: true, Icon: GithubIcon},
       ],
     },
   ];

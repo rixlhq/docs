@@ -148,7 +148,7 @@ function ApiContent({
       <header className="relative">
         <div className="flex items-center justify-between gap-2">
           <DocsTitle>{page.data.title}</DocsTitle>
-          <LLMCopyButton markdownUrl={markdownPath} githubUrl={`https://github.com/qeeqez/docs/tree/main/${githubPath}`} />
+          <LLMCopyButton markdownUrl={markdownPath} githubUrl={`https://github.com/rixlhq/docs/tree/main/${githubPath}`} />
         </div>
       </header>
       <DocsBody className="max-w-none">
@@ -186,17 +186,13 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
         <header className="relative space-y-2">
           <div className="flex items-center justify-between gap-2">
             <DocsTitle>{frontmatter.title}</DocsTitle>
-            <LLMCopyButton markdownUrl={markdownPath} githubUrl={`https://github.com/qeeqez/docs/tree/main/${githubPath}`} />
+            <LLMCopyButton markdownUrl={markdownPath} githubUrl={`https://github.com/rixlhq/docs/tree/main/${githubPath}`} />
           </div>
           <DocsDescription>{frontmatter.description}</DocsDescription>
         </header>
         <DocsBody>
           <Suspense fallback={null}>
-            <MDX
-              components={getMDXComponents({
-                // a: createRelativeLink(source, page), TODO keke
-              })}
-            />
+            <MDX components={getMDXComponents({})} />
           </Suspense>
         </DocsBody>
       </DocsPage>
