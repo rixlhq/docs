@@ -94,63 +94,83 @@ export function baseOptionsWithSectionLinks(lang: string, _sectionLinks?: Sectio
   };
 }
 
+function footerResourcesSection(lang: string, locale: Locale): FooterSection {
+  return {
+    title: m.footerResources({}, {locale}),
+    links: [
+      {text: m.footerApi({}, {locale}), url: `/${lang}/api`},
+      {text: m.footerDocumentation({}, {locale}), url: `/${lang}/home/getting-started/overview`},
+      {text: m.footerGuides({}, {locale}), url: `/${lang}/home/guides`},
+      {text: m.footerExamples({}, {locale}), url: `/${lang}/sdk/media-react/examples`},
+    ],
+  };
+}
+
+function footerSupportSection(lang: string, locale: Locale): FooterSection {
+  return {
+    title: m.footerSupport({}, {locale}),
+    links: [
+      {text: m.footerHelpCenter({}, {locale}), url: `/${lang}/help`},
+      {text: m.footerCommunity({}, {locale}), url: `/${lang}/community`},
+      {text: m.footerContact({}, {locale}), url: `/${lang}/contact`},
+      {text: m.footerStatus({}, {locale}), url: `/${lang}/status`},
+    ],
+  };
+}
+
+function footerCompanySection(lang: string, locale: Locale): FooterSection {
+  return {
+    title: m.footerCompany({}, {locale}),
+    links: [
+      {text: "rixl.com", url: "https://www.rixl.com"},
+      {text: m.footerAbout({}, {locale}), url: `/${lang}/home/getting-started/overview`},
+      {text: m.footerBlog({}, {locale}), url: "https://www.rixl.com/blog"},
+      {text: m.footerCareers({}, {locale}), url: "https://www.rixl.com/careers"},
+      {text: m.footerPrivacy({}, {locale}), url: `/${lang}/home/legal/privacy-policy`},
+    ],
+  };
+}
+
+function footerToolsSection(lang: string, locale: Locale): FooterSection {
+  return {
+    title: m.footerTools({}, {locale}),
+    links: [
+      {text: m.footerCli({}, {locale}), url: `/${lang}/home/platform/api-documentation/overview`},
+      {text: m.footerSdk({}, {locale}), url: `/${lang}/sdk`},
+      {text: m.footerIntegrations({}, {locale}), url: `/${lang}/home/guides`},
+      {text: m.footerExtensions({}, {locale}), url: `/${lang}/sdk/media-react/examples`},
+    ],
+  };
+}
+
+function footerCommunitySection(locale: Locale): FooterSection {
+  return {
+    title: m.footerCommunity({}, {locale}),
+    links: [
+      {text: "X", url: "https://x.com/rixlcloud", external: true, Icon: XIcon},
+      {text: "Discord", url: "https://discord.gg/...", external: true, Icon: DiscordIcon},
+      {text: "YouTube", url: "https://youtube.com/@rixlcloud", external: true, Icon: YoutubeIcon},
+      {text: "GitHub", url: "https://github.com/rixlhq", external: true, Icon: GithubIcon},
+    ],
+  };
+}
+
 export function FooterSections(lang: string): FooterSection[] {
-  // TODO translations and proper links
+  const locale = lang as Locale;
   return [
-    {
-      title: "Resources",
-      links: [
-        {text: "API", url: `/${lang}/api`},
-        {text: "Documentation", url: `/${lang}/home/getting-started/overview`},
-        {text: "Guides", url: `/${lang}/home/guides`},
-        {text: "Examples", url: `/${lang}/sdk/media-react/examples`},
-      ],
-    },
-    {
-      title: "Support",
-      links: [
-        {text: "Help Center", url: `/${lang}/help`},
-        {text: "Community", url: `/${lang}/community`},
-        {text: "Contact", url: `/${lang}/contact`},
-        {text: "Status", url: `/${lang}/status`},
-      ],
-    },
-    {
-      title: "Company",
-      links: [
-        {text: "rixl.com", url: "https://www.rixl.com"},
-        {text: "About", url: `/${lang}/home/getting-started/overview`},
-        {text: "Blog", url: "https://www.rixl.com/blog"},
-        {text: "Careers", url: "https://www.rixl.com/careers"},
-        {text: "Privacy", url: `/${lang}/home/legal/privacy-policy`},
-      ],
-    },
-    {
-      title: "Tools",
-      links: [
-        {text: "CLI", url: `/${lang}/home/platform/api-documentation/overview`},
-        {text: "SDK", url: `/${lang}/sdk`},
-        {text: "Integrations", url: `/${lang}/home/guides`},
-        {text: "Extensions", url: `/${lang}/sdk/media-react/examples`},
-      ],
-    },
-    {
-      title: "Community",
-      links: [
-        {text: "X", url: "https://x.com/rixlcloud", external: true, Icon: XIcon},
-        {text: "Discord", url: "https://discord.gg/...", external: true, Icon: DiscordIcon},
-        {text: "YouTube", url: "https://youtube.com/@rixlcloud", external: true, Icon: YoutubeIcon},
-        {text: "GitHub", url: "https://github.com/rixlhq", external: true, Icon: GithubIcon},
-      ],
-    },
+    footerResourcesSection(lang, locale),
+    footerSupportSection(lang, locale),
+    footerCompanySection(lang, locale),
+    footerToolsSection(lang, locale),
+    footerCommunitySection(locale),
   ];
 }
 
 export function FooterBottomLinks(lang: string): {text: string; url: string}[] {
-  // TODO translations
+  const locale = lang as Locale;
   return [
-    {text: "Privacy Policy", url: `/${lang}/home/legal/privacy-policy`},
-    {text: "Terms of Service", url: `/${lang}/home/legal/terms-of-service`},
-    {text: "Cookie Policy", url: `/${lang}/home/legal/cookie-policy`},
+    {text: m.footerPrivacyPolicy({}, {locale}), url: `/${lang}/home/legal/privacy-policy`},
+    {text: m.footerTermsOfService({}, {locale}), url: `/${lang}/home/legal/terms-of-service`},
+    {text: m.footerCookiePolicy({}, {locale}), url: `/${lang}/home/legal/cookie-policy`},
   ];
 }

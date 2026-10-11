@@ -166,7 +166,7 @@ export default defineConfig({
       prerender: {
         autoStaticPathsDiscovery: false,
         crawlLinks: false,
-        failOnError: false,
+        failOnError: true,
       },
       router: {
         quoteStyle: "double",
