@@ -15,11 +15,11 @@ import {
 import {useI18n} from "fumadocs-ui/contexts/i18n";
 import {m} from "@/paraglide/messages";
 
-function initOrama() {
+function initOrama(locale?: string) {
   return create({
     schema: {_: "string"},
     // https://docs.orama.com/docs/orama-js/supported-languages
-    language: "english",
+    language: locale === "de" ? "german" : "english",
   });
 }
 
@@ -57,7 +57,7 @@ export default function DefaultSearchDialog(props: SharedProps) {
     {
       type: "static",
       from: `/api/search/${locale}`,
-      initOrama,
+      initOrama: () => initOrama(locale),
       locale,
     }
   );

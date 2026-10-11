@@ -28,7 +28,7 @@ export const Route = createFileRoute("/api/search/$locale")({
         }
         const loader = await getLocaleLoader(params.locale);
         const server = createFromSource(loader as never, {
-          language: "english",
+          language: params.locale === "de" ? "german" : "english",
         });
         return server.staticGET();
       },
