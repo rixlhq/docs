@@ -27,6 +27,7 @@
         "react-dom": "^19.3.0",
         "shiki": "^4.5.0",
         "yaml": "^2.9.1",
+        "zbsearch": "^4.0.1",
       },
       "devDependencies": {
         "@inlang/cli": "^3.4.0",
