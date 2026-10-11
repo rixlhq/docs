@@ -1,4 +1,5 @@
 import {sample} from "openapi-sampler";
+import {m} from "@/paraglide/messages";
 import type {RequestMediaTypeLite, ResponseMediaTypeLite} from "./types";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -59,7 +60,7 @@ export function normalizeResponseSample(sampleValue: unknown, responseCode: stri
 export function collectResponseExamples(media: ResponseMediaTypeLite): Array<{label: string; description?: string; sample: unknown}> {
   if (media.examples) {
     return Object.entries(media.examples).map(([key, entry]) => ({
-      label: entry.summary || `Example ${key}`,
+      label: entry.summary || m.apiExampleLabelWithKey({key}),
       description: entry.description,
       sample: entry.value,
     }));
@@ -68,7 +69,7 @@ export function collectResponseExamples(media: ResponseMediaTypeLite): Array<{la
   if (media.example !== undefined) {
     return [
       {
-        label: "Example",
+        label: m.apiExampleLabel(),
         sample: media.example,
       },
     ];
@@ -77,7 +78,7 @@ export function collectResponseExamples(media: ResponseMediaTypeLite): Array<{la
   if (media.schema !== undefined) {
     return [
       {
-        label: "Example",
+        label: m.apiExampleLabel(),
         sample: sampleSchema(media.schema),
       },
     ];

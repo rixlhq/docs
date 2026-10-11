@@ -1,4 +1,5 @@
 import type {OpenApiRenderContext, MethodWithPath, RequestMediaTypeLite} from "./types";
+import {m} from "@/paraglide/messages";
 import {buildRenderedSchemaProperties, getRequestExample, renderSchemaProperties} from "./schema-utils";
 import type {ReactNode} from "react";
 
@@ -8,7 +9,11 @@ type RenderedRequestSection = {
   properties: Awaited<ReturnType<typeof buildRenderedSchemaProperties>>;
 };
 
-async function buildRequestSection(mediaType: string, media: RequestMediaTypeLite, ctx: OpenApiRenderContext): Promise<RenderedRequestSection> {
+async function buildRequestSection(
+  mediaType: string,
+  media: RequestMediaTypeLite,
+  ctx: OpenApiRenderContext
+): Promise<RenderedRequestSection> {
   const example = getRequestExample(media);
   const renderedExample = example === undefined ? null : await ctx.renderCodeBlock("json", JSON.stringify(example, null, 2));
   const properties = await buildRenderedSchemaProperties(media.schema, ctx);
@@ -34,8 +39,8 @@ export async function renderStaticRequestBodySection(operation: MethodWithPath, 
   return (
     <section className="mt-10 space-y-4">
       <div className="flex items-center justify-between gap-2">
-        <h2 className="text-2xl font-semibold tracking-tight my-0">Request Body</h2>
-        {requestBody?.required ? <span className="text-xs text-fd-muted-foreground">required</span> : null}
+        <h2 className="text-2xl font-semibold tracking-tight my-0">{m.apiRequestBody()}</h2>
+        {requestBody?.required ? <span className="text-xs text-fd-muted-foreground">{m.apiRequestBodyRequired()}</span> : null}
       </div>
 
       {mediaSections.map((section) => (

@@ -1,4 +1,5 @@
 import {ChevronRight} from "lucide-react";
+import {m} from "@/paraglide/messages";
 import type {OpenApiRenderContext, MethodWithPath, ResponseMediaTypeLite, ResponseObjectLite, SchemaLite} from "./types";
 import type {ReactElement, ReactNode} from "react";
 import {
@@ -75,17 +76,13 @@ function MediaBlockContent({
       ) : mediaBlock.exampleNode ? (
         mediaBlock.exampleNode
       ) : (
-        <p className="text-sm text-fd-muted-foreground">No response body.</p>
+        <p className="text-sm text-fd-muted-foreground">{m.apiNoResponseBody()}</p>
       )}
     </div>
   );
 }
 
-async function renderResponseEntry(
-  status: string,
-  response: ResponseObjectLite,
-  ctx: OpenApiRenderContext
-): Promise<ReactElement> {
+async function renderResponseEntry(status: string, response: ResponseObjectLite, ctx: OpenApiRenderContext): Promise<ReactElement> {
   const descriptionNode = response.description ? await ctx.renderMarkdown(response.description) : null;
   const mediaEntries = Object.entries(response.content ?? {});
   const mediaBlocks = await buildMediaBlocks({status, response, mediaEntries, ctx});
@@ -102,7 +99,12 @@ async function renderResponseEntry(
       <div className="prose-no-margin space-y-4 pt-2 ps-4">
         {descriptionNode}
         {mediaBlocks.map((mediaBlock) => (
-          <MediaBlockContent key={`${status}:${mediaBlock.mediaType}`} status={status} mediaEntries={mediaEntries} mediaBlock={mediaBlock} />
+          <MediaBlockContent
+            key={`${status}:${mediaBlock.mediaType}`}
+            status={status}
+            mediaEntries={mediaEntries}
+            mediaBlock={mediaBlock}
+          />
         ))}
       </div>
     </details>
@@ -117,7 +119,7 @@ export async function renderStaticResponseSection(operation: MethodWithPath, ctx
 
   return (
     <section className="mt-10">
-      <h2 className="text-2xl font-semibold tracking-tight mb-2">Response Body</h2>
+      <h2 className="text-2xl font-semibold tracking-tight mb-2">{m.apiResponseBody()}</h2>
       <div className="divide-y divide-fd-border">{sections}</div>
     </section>
   );

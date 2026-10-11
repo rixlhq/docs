@@ -3,6 +3,7 @@ import {ArrowUpRight} from "lucide-react";
 import type {IconName} from "lucide-react/dynamic";
 import type {HTMLAttributes, ReactNode} from "react";
 import {Icon} from "@/components/mdx/icon";
+import {m} from "@/paraglide/messages";
 import {cn} from "cn";
 
 type ArrowType = boolean | "true" | "false";
@@ -52,7 +53,7 @@ function buildCardClassName(href: string | undefined, className: string | undefi
 }
 
 function CardWrapper({href, isExternal, title, className, children, ...props}: CardWrapperProps) {
-  const ariaLabel = href && typeof title === "string" ? `Navigate to ${title}` : undefined;
+  const ariaLabel = href && typeof title === "string" ? m.navigateTo({title}) : undefined;
 
   if (!href) {
     return (

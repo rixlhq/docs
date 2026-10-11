@@ -40,7 +40,7 @@ export function ViewOptions({markdownUrl, onClick}: ViewOptionsProps) {
   }, [markdownUrl]);
 
   const queryString = useMemo(() => {
-    return `Read ${fullMarkdownUrl}, I want to ask questions about it.`;
+    return m.askAboutPageQuery({url: fullMarkdownUrl});
   }, [fullMarkdownUrl]);
 
   const chatGptUrl = useMemo(() => {

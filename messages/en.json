@@ -52,5 +52,15 @@
   "footerExtensions": "Extensions",
   "footerPrivacyPolicy": "Privacy Policy",
   "footerTermsOfService": "Terms of Service",
-  "footerCookiePolicy": "Cookie Policy"
+  "footerCookiePolicy": "Cookie Policy",
+  "loadingVideo": "Loading video...",
+  "navigateTo": "Navigate to {title}",
+  "apiExampleLabel": "Example",
+  "apiExampleLabelWithKey": "Example {key}",
+  "apiValueIn": "Value in",
+  "apiNoResponseBody": "No response body.",
+  "apiResponseBody": "Response Body",
+  "apiRequestBody": "Request Body",
+  "apiRequestBodyRequired": "required",
+  "askAboutPageQuery": "Read {url}, I want to ask questions about it."
 }
