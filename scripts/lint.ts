@@ -101,9 +101,12 @@ function createScannedPages(docs: DocFile[]): ScanResult {
   urls.set("/", {});
   urls.set("/robots.txt", {});
   urls.set("/sitemap.xml", {});
-  urls.set("/api/search", {});
   for (const lang of languages) {
     urls.set(`/${lang}/llms-full.txt`, {});
+    // Redirect routes with no content page (valid at runtime).
+    urls.set(`/${lang}/`, {});
+    urls.set(`/${lang}/api`, {});
+    urls.set(`/api/search/${lang}`, {});
   }
 
   return {

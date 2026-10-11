@@ -1,5 +1,5 @@
 "use client";
-import {create} from "@orama/orama";
+import {create} from "zbsearch";
 import {useDocsSearch} from "fumadocs-core/search/client";
 import {
   SearchDialog,
@@ -15,10 +15,10 @@ import {
 import {useI18n} from "fumadocs-ui/contexts/i18n";
 import {m} from "@/paraglide/messages";
 
-function initOrama(locale?: string) {
+function initDB(locale?: string) {
   return create({
     schema: {_: "string"},
-    // https://docs.orama.com/docs/orama-js/supported-languages
+    // https://github.com/micheleriva/zbsearch — same language names as Orama
     language: locale === "de" ? "german" : "english",
   });
 }
@@ -49,18 +49,12 @@ function SearchEmpty() {
 
 export default function DefaultSearchDialog(props: SharedProps) {
   const {locale} = useI18n(); // (optional) for i18n
-  const {search, setSearch, query} = useDocsSearch(
-    // TODO(fumadocs): initOrama returns @orama/orama's Orama, but fumadocs >=16
-    // types the static preset against zbsearch's AnyZBSearch. Runtime is fine;
-    // migrate the static search init to the zbsearch API to drop this suppression.
-    // @ts-expect-error pre-existing fumadocs/zbsearch type drift (see TODO above)
-    {
-      type: "static",
-      from: `/api/search/${locale}`,
-      initOrama: () => initOrama(locale),
-      locale,
-    }
-  );
+  const {search, setSearch, query} = useDocsSearch({
+    type: "static",
+    from: `/api/search/${locale}`,
+    initDB: () => initDB(locale),
+    locale,
+  });
 
   return (
     <SearchDialog search={search} onSearchChange={setSearch} isLoading={query.isLoading} {...props}>
