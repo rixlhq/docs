@@ -8,7 +8,7 @@ import {getMDXComponents} from "@/components/mdx-components";
 import {Footer} from "@/components/layout/footer/footer";
 import {LLMCopyButton} from "@/components/page-actions/llm-copy-button";
 import {DocsBreadcrumb} from "@/components/layout/shared/docs-breadcrumb";
-import {loader} from "@/lib/server/docs-loader";
+import {loader, treeLoader} from "@/lib/server/docs-loader";
 import {Suspense} from "react";
 import {useFumadocsLoader} from "fumadocs-core/source/client";
 import {StaticApiHtml} from "@/components/mdx/static-api-html";
@@ -21,10 +21,15 @@ export const Route = createFileRoute("/$lang/$")({
     const splat = params._splat ?? "";
     const slugs = splat ? splat.split("/") : [];
     const data = await loader({data: {slugs, lang: params.lang}});
+    // The tree only depends on lang/section/product: trim page slugs so the
+    // static server-function cache stores it once per distinct tree.
+    const treeSlugs = slugs.slice(0, slugs[0] === "api" ? 1 : 2);
+    const treeData = await treeLoader({data: {slugs: treeSlugs, lang: params.lang, locale: data.page.locale}});
+    const combined = {...treeData, ...data};
     if (slugs[0] !== "api") {
-      void clientLoader.preload(data.path);
+      void clientLoader.preload(combined.path);
     }
-    return data;
+    return combined;
   },
   head: ({loaderData: _loaderData}) => {
     if (!_loaderData) return {};

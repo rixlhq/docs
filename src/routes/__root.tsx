@@ -2,6 +2,7 @@ import {createRootRoute, HeadContent, Outlet, Scripts, useParams} from "@tanstac
 import {TanstackProvider} from "fumadocs-core/framework/tanstack";
 import * as React from "react";
 import appCss from "@/styles/app.css?url";
+import {i18n} from "@/lib/i18n";
 import {Provider} from "@/components/layout/shared/provider.tsx";
 import {Body} from "@/components/layout/shared/layout-client.tsx";
 
@@ -35,10 +36,14 @@ function RootComponent() {
 
 function RootDocument({children}: {children: React.ReactNode}) {
   const {lang} = useParams({strict: false});
+  // Only supported languages are valid (e.g. not the "/_shell" mask path or
+  // an unknown "/xx/" prefix); everything else falls back to the default.
+  const supported = i18n.languages as readonly string[];
+  const validLang = lang && supported.includes(lang) ? lang : i18n.defaultLanguage;
 
   return (
     <html
-      lang={lang ?? "en"}
+      lang={validLang}
       suppressHydrationWarning
       className="scroll-smooth overscroll-y-none"
       style={{fontFamily: "Inter, system-ui, sans-serif"}}
@@ -48,7 +53,7 @@ function RootDocument({children}: {children: React.ReactNode}) {
       </head>
       <Body>
         <TanstackProvider>
-          <Provider lang={lang}>{children}</Provider>
+          <Provider lang={validLang}>{children}</Provider>
         </TanstackProvider>
         <Scripts />
       </Body>

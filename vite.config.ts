@@ -175,9 +175,7 @@ export default defineConfig({
         {
           path: "/",
         },
-        {
-          path: "/api/search",
-        },
+        ...i18n.languages.map((lang) => ({path: `/api/search/${lang}`})),
         {
           path: "/robots.txt",
         },

@@ -56,6 +56,7 @@ export default function DefaultSearchDialog(props: SharedProps) {
     // @ts-expect-error pre-existing fumadocs/zbsearch type drift (see TODO above)
     {
       type: "static",
+      from: `/api/search/${locale}`,
       initOrama,
       locale,
     }
