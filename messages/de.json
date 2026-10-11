@@ -52,5 +52,20 @@
   "footerExtensions": "Erweiterungen",
   "footerPrivacyPolicy": "Datenschutzerklärung",
   "footerTermsOfService": "Nutzungsbedingungen",
-  "footerCookiePolicy": "Cookie-Richtlinie"
+  "footerCookiePolicy": "Cookie-Richtlinie",
+  "loadingVideo": "Video wird geladen...",
+  "navigateTo": "Zu {title} navigieren",
+  "apiExampleLabel": "Beispiel",
+  "apiExampleLabelWithKey": "Beispiel {key}",
+  "apiValueIn": "Wert in",
+  "apiNoResponseBody": "Kein Antwortinhalt.",
+  "apiResponseBody": "Antwortinhalt",
+  "apiRequestBody": "Anfrageinhalt",
+  "apiRequestBodyRequired": "erforderlich",
+  "askAboutPageQuery": "Lies {url}, ich möchte dazu Fragen stellen.",
+  "dashboard": "Dashboard",
+  "toggleMenu": "Menü umschalten",
+  "openSidebar": "Seitenleiste öffnen",
+  "closeSidebar": "Seitenleiste schließen",
+  "footerCopyright": "© {year} RIXL Inc."
 }

@@ -1,4 +1,5 @@
 import type {ReactElement, ReactNode} from "react";
+import {m} from "@/paraglide/messages";
 import type {OpenApiRenderContext, RenderedSchemaProperty, SchemaLite} from "./types";
 
 const MAX_SCHEMA_DEPTH = 3;
@@ -33,9 +34,7 @@ export async function buildRenderedSchemaProperties(
         schema: propertySchema,
         required,
         description: propertySchema.description ? await ctx.renderMarkdown(propertySchema.description) : null,
-        children: canRecurse
-          ? await buildRenderedSchemaProperties(propertySchema, ctx, {depth: depth + 1, seen: nextSeen})
-          : [],
+        children: canRecurse ? await buildRenderedSchemaProperties(propertySchema, ctx, {depth: depth + 1, seen: nextSeen}) : [],
       };
     })
   );
@@ -60,7 +59,7 @@ export function renderSchemaProperties(properties: RenderedSchemaProperty[], key
       {property.schema.enum && property.schema.enum.length > 0 ? (
         <div className="flex flex-row gap-2 flex-wrap my-2 not-prose">
           <div className="flex flex-row items-start gap-2 bg-fd-secondary border rounded-lg text-xs p-1.5 shadow-md max-w-full">
-            <span className="font-medium">Value in</span>
+            <span className="font-medium">{m.apiValueIn()}</span>
             <code className="min-w-0 flex-1 text-fd-muted-foreground truncate">
               {property.schema.enum.map((value) => JSON.stringify(value)).join(" | ")}
             </code>

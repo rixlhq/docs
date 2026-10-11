@@ -2,13 +2,14 @@
 
 import {lazy, Suspense, type ReactElement} from "react";
 import type {VideoProps} from "@rixl/media-react";
+import {m} from "@/paraglide/messages";
 
 const RixlVideo = lazy(() => import("@rixl/media-react/video").then((mod) => ({default: mod.Video})));
 
 export function Video(props: VideoProps): ReactElement {
   return (
     <div className="flex overflow-hidden w-full h-[500px] rounded-0.25 drop-shadow-xl max-w-fd-container">
-      <Suspense fallback={<div className="flex items-center justify-center w-full h-full bg-gray-100">Loading video...</div>}>
+      <Suspense fallback={<div className="flex items-center justify-center w-full h-full bg-gray-100">{m.loadingVideo()}</div>}>
         <RixlVideo {...props} />
       </Suspense>
     </div>

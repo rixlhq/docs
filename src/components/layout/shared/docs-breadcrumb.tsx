@@ -6,16 +6,16 @@ import {usePathname} from "fumadocs-core/framework";
 import {useTreeContext} from "fumadocs-ui/contexts/tree";
 import {useBreadcrumb, type BreadcrumbOptions} from "fumadocs-core/breadcrumb";
 import {cn} from "cn";
+import {m} from "@/paraglide/messages";
+import {locales} from "@/paraglide/runtime";
+
+type Locale = (typeof locales)[number];
 
 export type DocsBreadcrumbProps = BreadcrumbOptions & {
   className?: string;
 };
 
-export function DocsBreadcrumb({
-  includeRoot = true,
-  includePage = false,
-  className,
-}: DocsBreadcrumbProps) {
+export function DocsBreadcrumb({includeRoot = true, includePage = false, className}: DocsBreadcrumbProps) {
   const pathname = usePathname();
   const {root} = useTreeContext();
   const items = useBreadcrumb(pathname, root, {includeRoot, includePage});
@@ -27,7 +27,7 @@ export function DocsBreadcrumb({
   if (items.length === 0 && pathname === `/${lang}/home`) return null;
 
   const crumbs = [
-    {name: "Home", url: `/${lang}/home`},
+    {name: m.home({}, {locale: lang as Locale}), url: `/${lang}/home`},
     ...items.map((item) => ({name: item.name, url: item.url})),
   ];
 
@@ -39,21 +39,11 @@ export function DocsBreadcrumb({
           <div key={i} className="flex items-center gap-1.5">
             {i !== 0 && <ChevronRight className="size-3.5 shrink-0" />}
             {item.url && !isLast ? (
-              <Link
-                href={item.url}
-                className="truncate transition-opacity hover:opacity-80"
-              >
+              <Link href={item.url} className="truncate transition-opacity hover:opacity-80">
                 {item.name}
               </Link>
             ) : (
-              <span
-                className={cn(
-                  "truncate",
-                  isLast && "text-fd-foreground font-medium"
-                )}
-              >
-                {item.name}
-              </span>
+              <span className={cn("truncate", isLast && "text-fd-foreground font-medium")}>{item.name}</span>
             )}
           </div>
         );

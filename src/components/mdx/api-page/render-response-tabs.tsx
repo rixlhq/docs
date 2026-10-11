@@ -1,5 +1,6 @@
 import {CodeBlockTabsList, CodeBlockTabsTrigger} from "@/components/mdx/codeblock";
 import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+import {m} from "@/paraglide/messages";
 import type {ReactNode} from "react";
 import type {OpenApiRenderContext, ResponseTab} from "./types";
 import {normalizeResponseSample} from "./schema-utils";
@@ -62,7 +63,7 @@ function ExampleContent({example, showLabel, ctx}: {example: RenderedExample; sh
 
 function ExamplesBlock({panel, ctx}: {panel: ResponsePanel; ctx: RenderContext}) {
   if (panel.examples.length === 0) {
-    return panel.description ? null : <p className="text-sm text-fd-muted-foreground">No response body.</p>;
+    return panel.description ? null : <p className="text-sm text-fd-muted-foreground">{m.apiNoResponseBody()}</p>;
   }
 
   const showLabel = panel.examples.length > 1;

@@ -25,9 +25,9 @@ const {provider} = defineI18nUI(i18n, {
     "Choose a language(language switcher)": m.chooseLanguage({}, {locale: "de"}),
     "Choose a language(language switcher)(aria-label)": m.chooseLanguage({}, {locale: "de"}),
     "Open Search(search trigger)(aria-label)": m.openSearch({}, {locale: "de"}),
-    "Toggle Menu(mobile menu)(aria-label)": "Menü umschalten",
-    "Open Sidebar(sidebar)(aria-label)": "Seitenleiste öffnen",
-    "Close Sidebar(sidebar)(aria-label)": "Seitenleiste schließen",
+    "Toggle Menu(mobile menu)(aria-label)": m.toggleMenu({}, {locale: "de"}),
+    "Open Sidebar(sidebar)(aria-label)": m.openSidebar({}, {locale: "de"}),
+    "Close Sidebar(sidebar)(aria-label)": m.closeSidebar({}, {locale: "de"}),
   },
 });
 
