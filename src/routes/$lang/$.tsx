@@ -192,11 +192,7 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
         </header>
         <DocsBody>
           <Suspense fallback={null}>
-            <MDX
-              components={getMDXComponents({
-                // a: createRelativeLink(source, page), TODO keke
-              })}
-            />
+            <MDX components={getMDXComponents({})} />
           </Suspense>
         </DocsBody>
       </DocsPage>
