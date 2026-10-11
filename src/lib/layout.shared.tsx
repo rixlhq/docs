@@ -57,7 +57,7 @@ function buildNavLinks(lang: string) {
       on: "nav" as const,
       text: (
         <>
-          Dashboard <ArrowUpRightIcon className="size-4" />
+          {m.dashboard({}, {locale: lang as Locale})} <ArrowUpRightIcon className="size-4" />
         </>
       ),
       url: "https://dash.rixl.com",

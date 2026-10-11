@@ -62,5 +62,10 @@
   "apiResponseBody": "Antwortinhalt",
   "apiRequestBody": "Anfrageinhalt",
   "apiRequestBodyRequired": "erforderlich",
-  "askAboutPageQuery": "Lies {url}, ich möchte dazu Fragen stellen."
+  "askAboutPageQuery": "Lies {url}, ich möchte dazu Fragen stellen.",
+  "dashboard": "Dashboard",
+  "toggleMenu": "Menü umschalten",
+  "openSidebar": "Seitenleiste öffnen",
+  "closeSidebar": "Seitenleiste schließen",
+  "footerCopyright": "© {year} RIXL Inc."
 }

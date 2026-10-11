@@ -62,5 +62,10 @@
   "apiResponseBody": "Response Body",
   "apiRequestBody": "Request Body",
   "apiRequestBodyRequired": "required",
-  "askAboutPageQuery": "Read {url}, I want to ask questions about it."
+  "askAboutPageQuery": "Read {url}, I want to ask questions about it.",
+  "dashboard": "Dashboard",
+  "toggleMenu": "Toggle Menu",
+  "openSidebar": "Open Sidebar",
+  "closeSidebar": "Close Sidebar",
+  "footerCopyright": "© {year} RIXL Inc."
 }
