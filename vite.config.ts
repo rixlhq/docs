@@ -150,8 +150,15 @@ export default defineConfig({
     tanstackStart({
       spa: {
         enabled: true,
+        // Custom mask path: the default "/" collides with our prerendered
+        // "/" page (prerender dedupes by path, so the shell was silently
+        // never emitted).
+        maskPath: "/_shell",
         prerender: {
           enabled: true,
+          // Emit the shell as 404.html so the CDN serves the content-free
+          // shell (correct 404 status, no hydration mismatch) for unknown URLs.
+          outputPath: "/404",
           crawlLinks: false,
           autoSubfolderIndex: false,
         },
