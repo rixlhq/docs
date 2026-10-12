@@ -27,6 +27,24 @@ const sectionRootRedirectPages = i18n.languages.flatMap((lang) => [
   {path: `/${lang}/api`},
 ]);
 
+function buildPrerenderPages() {
+  return [
+    {path: "/"},
+    // The en index builds first so the two multi-megabyte index builds never
+    // run concurrently (that killed the preview server on small CI
+    // containers: loopback ECONNREFUSED); the de index is queued last.
+    {path: "/api/search/en"},
+    {path: "/robots.txt"},
+    {path: "/sitemap.xml"},
+    ...sectionRootRedirectPages,
+    ...staticDocsPages,
+    ...staticMarkdownPages,
+    ...ogPrerenderPages,
+    ...staticLLMSPages,
+    {path: "/api/search/de"},
+  ];
+}
+
 // Rolldown code-splitting: stable per-vendor chunks keep the initial entry
 // lean and stop shared deps from duplicating across per-locale route
 // chunks. Sizes are pre-minification bytes.
@@ -167,27 +185,15 @@ export default defineConfig({
         autoStaticPathsDiscovery: false,
         crawlLinks: false,
         failOnError: true,
+        // The preview server occasionally refuses loopback connections on
+        // small CI containers; retry transient failures instead of dying.
+        retryCount: 3,
+        retryDelay: 2000,
       },
       router: {
         quoteStyle: "double",
       },
-      pages: [
-        {
-          path: "/",
-        },
-        ...i18n.languages.map((lang) => ({path: `/api/search/${lang}`})),
-        {
-          path: "/robots.txt",
-        },
-        {
-          path: "/sitemap.xml",
-        },
-        ...sectionRootRedirectPages,
-        ...staticDocsPages,
-        ...staticMarkdownPages,
-        ...ogPrerenderPages,
-        ...staticLLMSPages,
-      ],
+      pages: buildPrerenderPages(),
     }),
     react({compiler: true}),
   ]),
