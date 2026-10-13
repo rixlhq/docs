@@ -50,6 +50,26 @@
   --color-fd-primary: rgb(255, 164, 28);
 }
 
+/* Keep the outgoing page on screen until the incoming document can paint.
+   Without a cross-document view transition, a full-page navigation (any link
+   click before the SPA hydrates) paints the browser's empty canvas — dark,
+   once the theme script sets color-scheme — for the whole HTML+CSS fetch. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 120ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
 @utility prose-gray {
   --tw-prose-body: var(--color-gray-500);
 }
@@ -118,7 +138,9 @@
     border-radius: calc(var(--spacing) * 1.75);
     padding-inline: calc(var(--spacing) * 2.5);
     padding-block: calc(var(--spacing) * 1);
-    transition: background-color 160ms ease, color 160ms ease;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease;
   }
 
   #nd-nav nav > ul:first-of-type a[data-active="true"] {

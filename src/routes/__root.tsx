@@ -22,6 +22,19 @@ export const Route = createRootRoute({
       {rel: "manifest", href: "/manifest.json"},
       {rel: "stylesheet", href: appCss},
     ],
+    scripts: [
+      {
+        type: "speculationrules",
+        // Prerender hovered pages natively: a click before the SPA hydrates
+        // then activates the prerendered page instantly instead of loading a
+        // fresh document. All pages are static content, so background
+        // hydration during prerender is side-effect free.
+        children: JSON.stringify({
+          prefetch: [{where: {href_matches: "/*"}, eagerness: "moderate"}],
+          prerender: [{where: {href_matches: "/*"}, eagerness: "moderate"}],
+        }),
+      },
+    ],
   }),
   component: RootComponent,
 });
