@@ -1,4 +1,4 @@
-import {createFileRoute} from "@tanstack/react-router";
+import {createFileRoute, notFound} from "@tanstack/react-router";
 import type {TOCItemType} from "fumadocs-core/toc";
 import {getPageImage} from "@/lib/images";
 import {DocsBody, DocsDescription, DocsPage, DocsTitle} from "fumadocs-ui/page";
@@ -20,11 +20,13 @@ export const Route = createFileRoute("/$lang/$")({
   loader: async ({params}) => {
     const splat = params._splat ?? "";
     const slugs = splat ? splat.split("/") : [];
-    const data = await loader({data: {slugs, lang: params.lang}});
+    const data = await loader({data: {slugs, lang: params.lang}}).catch(notFoundIfNotPrerendered);
     // The tree only depends on lang/section/product: trim page slugs so the
     // static server-function cache stores it once per distinct tree.
     const treeSlugs = slugs.slice(0, slugs[0] === "api" ? 1 : 2);
-    const treeData = await treeLoader({data: {slugs: treeSlugs, lang: params.lang, locale: data.page.locale}});
+    const treeData = await treeLoader({data: {slugs: treeSlugs, lang: params.lang, locale: data.page.locale}}).catch(
+      notFoundIfNotPrerendered
+    );
     const combined = {...treeData, ...data};
     if (slugs[0] !== "api") {
       void clientLoader.preload(combined.path);
@@ -54,6 +56,17 @@ export const Route = createFileRoute("/$lang/$")({
     };
   },
 });
+
+/**
+ * In the browser these loaders read JSON prerendered for each real page. For a
+ * URL that was never prerendered the host answers with 404.html instead, so
+ * parsing fails with a SyntaxError: that is a missing page, not a crash.
+ * Anything else (offline, a server-side error) still surfaces as an error.
+ */
+function notFoundIfNotPrerendered(error: unknown): never {
+  if (error instanceof SyntaxError) throw notFound();
+  throw error;
+}
 
 interface LoadedDoc {
   toc: TOCItemType[];

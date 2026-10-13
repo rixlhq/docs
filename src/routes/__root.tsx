@@ -1,4 +1,4 @@
-import {createRootRoute, HeadContent, Outlet, Scripts, useParams} from "@tanstack/react-router";
+import {createRootRoute, HeadContent, Scripts, useParams} from "@tanstack/react-router";
 import {TanstackProvider} from "fumadocs-core/framework/tanstack";
 import * as React from "react";
 import appCss from "@/styles/app.css?url";
@@ -36,16 +36,11 @@ export const Route = createRootRoute({
       },
     ],
   }),
-  component: RootComponent,
+  // The document is the shell, not the root component: TanStack then still
+  // renders it around error and not-found screens, so <html lang>, <head> and
+  // the Provider stay in place instead of the page dropping to a bare error.
+  shellComponent: RootDocument,
 });
-
-function RootComponent() {
-  return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
-  );
-}
 
 function RootDocument({children}: {children: React.ReactNode}) {
   const {lang} = useParams({strict: false});
@@ -53,6 +48,12 @@ function RootDocument({children}: {children: React.ReactNode}) {
   // an unknown "/xx/" prefix); everything else falls back to the default.
   const supported = i18n.languages as readonly string[];
   const validLang = lang && supported.includes(lang) ? lang : i18n.defaultLanguage;
+  // Pages served the 404.html shell (prerendered as English) keep its lang
+  // after hydration, since React does not patch <html> attributes; a missing
+  // /de/ page would stay announced as English.
+  React.useEffect(() => {
+    document.documentElement.lang = validLang;
+  }, [validLang]);
 
   return (
     <html
