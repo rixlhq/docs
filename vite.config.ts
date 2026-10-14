@@ -7,7 +7,12 @@ import tailwindcss from "@tailwindcss/vite";
 import mdx from "fumadocs-mdx/vite";
 import {extractIconsPlugin} from "./plugins/vite-plugin-extract-icons.ts";
 import {i18n} from "./src/lib/i18n.ts";
-import {collectDocsPrerenderPages, createOgPrerenderPages, toStaticPages} from "./scripts/lib/prerender-pages.ts";
+import {
+  collectDocsPrerenderPages,
+  createOgPrerenderPages,
+  createRedirectPrerenderPages,
+  toStaticPages,
+} from "./scripts/lib/prerender-pages.ts";
 
 const docsPrerenderPages = await collectDocsPrerenderPages({
   contentDir: path.resolve(import.meta.dirname, "content"),
@@ -21,22 +26,22 @@ const ogPrerenderPages = createOgPrerenderPages({
 const staticDocsPages = toStaticPages(docsPrerenderPages.docs);
 const staticMarkdownPages = toStaticPages(docsPrerenderPages.markdown);
 const staticLLMSPages = toStaticPages(docsPrerenderPages.llmsFull);
-const sectionRootRedirectPages = i18n.languages.flatMap((lang) => [
-  {path: `/${lang}/home`},
-  {path: `/${lang}/sdk`},
-  {path: `/${lang}/api`},
-]);
+const sectionRootPages = i18n.languages.flatMap((lang) => [{path: `/${lang}/home`}, {path: `/${lang}/sdk`}]);
+const redirectPages = createRedirectPrerenderPages({
+  paths: ["/", ...i18n.languages.map((lang) => `/${lang}/api`)],
+  outputDir: ogOutputDir,
+});
 
 function buildPrerenderPages() {
   return [
-    {path: "/"},
+    ...redirectPages,
     // The en index builds first so the two multi-megabyte index builds never
     // run concurrently (that killed the preview server on small CI
     // containers: loopback ECONNREFUSED); the de index is queued last.
     {path: "/api/search/en"},
     {path: "/robots.txt"},
     {path: "/sitemap.xml"},
-    ...sectionRootRedirectPages,
+    ...sectionRootPages,
     ...staticDocsPages,
     ...staticMarkdownPages,
     ...ogPrerenderPages,
@@ -189,6 +194,12 @@ export default defineConfig({
         // small CI containers; retry transient failures instead of dying.
         retryCount: 3,
         retryDelay: 2000,
+        // Emit "/en/home/platform.html", not ".../platform/index.html": with
+        // index files Cloudflare 307s every page to a trailing-slash URL, the
+        // client then renders a different pathname than the prerender did, and
+        // the hydration mismatch re-renders the whole document (black flash,
+        // and early link clicks fall through to full page loads).
+        autoSubfolderIndex: false,
       },
       router: {
         quoteStyle: "double",

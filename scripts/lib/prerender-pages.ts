@@ -174,3 +174,34 @@ export function createOgPrerenderPages({ogPaths, outputDir}: CreateOgPrerenderPa
     },
   }));
 }
+
+interface CreateRedirectPrerenderPagesOptions {
+  paths: string[];
+  outputDir: string;
+}
+
+/**
+ * Prerendering a route that redirects follows the redirect and saves the
+ * target page's HTML under the redirecting path. That HTML can never hydrate
+ * (the client matches the redirect route, not the page), so React re-renders
+ * the whole document. Replace it with a real HTTP redirect in `_redirects`,
+ * reading the target from the canonical link of the page it landed on.
+ */
+export function createRedirectPrerenderPages({paths, outputDir}: CreateRedirectPrerenderPagesOptions) {
+  const rules = new Map<string, string>();
+
+  return paths.map((pagePath) => ({
+    path: pagePath,
+    prerender: {
+      crawlLinks: false,
+      onSuccess: async ({page, html}: {page: {path: string}; html: string}) => {
+        const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+        if (!canonical) throw new Error(`Redirect page ${page.path} has no canonical target`);
+        rules.set(page.path, new URL(canonical).pathname);
+        await fs.rm(path.join(outputDir, page.path === "/" ? "index.html" : `${page.path.slice(1)}.html`));
+        const lines = [...rules].sort(([a], [b]) => a.localeCompare(b)).map(([from, to]) => `${from} ${to} 307`);
+        await fs.writeFile(path.join(outputDir, "_redirects"), `${lines.join("\n")}\n`);
+      },
+    },
+  }));
+}

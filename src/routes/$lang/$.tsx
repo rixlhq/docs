@@ -1,6 +1,7 @@
 import {createFileRoute, notFound} from "@tanstack/react-router";
 import type {TOCItemType} from "fumadocs-core/toc";
 import {getPageImage} from "@/lib/images";
+import {getBaseUrl} from "@/lib/base-url";
 import {DocsBody, DocsDescription, DocsPage, DocsTitle} from "fumadocs-ui/page";
 import browserCollections from "fumadocs-mdx:collections/browser";
 import SharedLayout from "@/components/layout/shared/shared-layout";
@@ -53,6 +54,9 @@ export const Route = createFileRoute("/$lang/$")({
         {name: "twitter:description", content: page.data.description},
         {name: "twitter:image", content: imageUrl},
       ],
+      // Also read at build time to turn prerendered redirect routes into real
+      // HTTP redirects (see createRedirectPrerenderPages).
+      links: [{rel: "canonical", href: new URL(`/${page.locale}/${page.slugs.join("/")}`, getBaseUrl()).toString()}],
     };
   },
 });
