@@ -15,6 +15,7 @@ import {useFumadocsLoader} from "fumadocs-core/source/client";
 import {StaticApiHtml} from "@/components/mdx/static-api-html";
 import {TableOfContents, TableOfContentsPopover} from "@/components/mdx/toc";
 import {Pagination} from "@/components/mdx/pagination";
+import {ContentSkeleton} from "@/components/mdx/content-skeleton";
 
 export const Route = createFileRoute("/$lang/$")({
   component: Page,
@@ -125,7 +126,15 @@ function Page() {
       treeKey={loaderData.treeKey}
       isApiPage={isApiPage}
     >
-      {isApiPage ? <ApiContent apiPage={loaderData.apiPage} page={loaderData.page} /> : <MdxContent path={loaderData.path} />}
+      {isApiPage ? (
+        <ApiContent apiPage={loaderData.apiPage} page={loaderData.page} />
+      ) : (
+        // The MDX chunk may still be downloading on a quick click: suspend the
+        // content area only, so the layout stays and the page never goes blank.
+        <Suspense fallback={<ContentSkeleton title={loaderData.page.data.title} description={loaderData.page.data.description} />}>
+          <MdxContent path={loaderData.path} />
+        </Suspense>
+      )}
     </SharedLayout>
   );
 }
