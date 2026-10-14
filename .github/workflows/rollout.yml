@@ -52,6 +52,8 @@ jobs:
       RAMP: "100"
       WATCH_MINUTES: 0
       SMOKE_URLS: "https://docs.rixl.com/en/home"
+      # Smoke requests go to the new version's preview URL on this subdomain.
+      WORKERS_SUBDOMAIN: "rixl-d8a.workers.dev"
       WAIT_MINUTES: 45
       DRY_RUN: ${{ inputs.dry_run || false }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -155,6 +157,10 @@ jobs:
             [ -n "${SMOKE_URLS}" ] || { echo "no smoke urls configured, skipping"; return 0; }
             local failed=""
             for url in ${SMOKE_URLS//,/ }; do
+              # The version-override header is not honoured for HTML on the
+              # custom domain (the old version or its cache answers), so smoke
+              # the new version's own preview URL: same path, exact version.
+              url="https://${NEW_VERSION_ID:0:8}-${WORKER}.${WORKERS_SUBDOMAIN}$(echo "${url}" | sed -E 's|https?://[^/]+||')"
               echo "smoke ${label}: ${url}"
               body=$(curl -s -o /dev/null -w '%{http_code}' \
                 -H "Cloudflare-Workers-Version-Overrides: ${WORKER}=\"${NEW_VERSION_ID}\"" "${url}") || failed=1
