@@ -30,7 +30,10 @@ export const Route = createFileRoute("/$lang/$")({
     );
     const combined = {...treeData, ...data};
     if (slugs[0] !== "api") {
-      void clientLoader.preload(combined.path);
+      // Await the MDX chunk: otherwise the route commits first, the content
+      // suspends, and with no boundary below the root the page goes blank
+      // until the chunk loads (the flash on a quick, un-hovered click).
+      await clientLoader.preload(combined.path);
     }
     return combined;
   },
