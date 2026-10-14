@@ -3,7 +3,6 @@ import {TanstackProvider} from "fumadocs-core/framework/tanstack";
 import * as React from "react";
 import appCss from "@/styles/app.css?url";
 import {i18n} from "@/lib/i18n";
-import {earlyNavigationScript, useReplayEarlyNavigation} from "@/lib/early-navigation";
 import {Provider} from "@/components/layout/shared/provider.tsx";
 import {Body} from "@/components/layout/shared/layout-client.tsx";
 
@@ -23,9 +22,6 @@ export const Route = createRootRoute({
       {rel: "manifest", href: "/manifest.json"},
       {rel: "stylesheet", href: appCss},
     ],
-    // Routes internal link clicks through the router even before hydration,
-    // so they never fall through to full page loads (see early-navigation.ts).
-    scripts: [{children: earlyNavigationScript}],
   }),
   // The document is the shell, not the root component: TanStack then still
   // renders it around error and not-found screens, so <html lang>, <head> and
@@ -45,7 +41,6 @@ function RootDocument({children}: {children: React.ReactNode}) {
   React.useEffect(() => {
     document.documentElement.lang = validLang;
   }, [validLang]);
-  useReplayEarlyNavigation();
 
   return (
     <html

@@ -16,9 +16,8 @@ name: Rollout
 #   1. wait until a version tagged with this commit exists (a red build
 #      uploads nothing, so a broken merge can never roll out)
 #   2. add it to the deployment at 0% — Cloudflare only serves two versions
-#      at once, and a version override only works on a version that is IN
-#      the current deployment
-#   3. smoke-test the new version with the version-override header
+#      at once
+#   3. smoke-test the new version on its own preview URL
 #   4. ramp through RAMP percentages, WATCH_MINUTES of soak between
 #   5. any failure rolls back to the previous version at 100% and fails
 on:
@@ -157,13 +156,12 @@ jobs:
             [ -n "${SMOKE_URLS}" ] || { echo "no smoke urls configured, skipping"; return 0; }
             local failed=""
             for url in ${SMOKE_URLS//,/ }; do
-              # The version-override header is not honoured for HTML on the
-              # custom domain (the old version or its cache answers), so smoke
-              # the new version's own preview URL: same path, exact version.
+              # Smoke the new version's own preview URL (same path, exact
+              # version): on the custom domain the version-override header is
+              # not honoured for HTML, so the old version or its cache answers.
               url="https://${NEW_VERSION_ID:0:8}-${WORKER}.${WORKERS_SUBDOMAIN}$(echo "${url}" | sed -E 's|https?://[^/]+||')"
               echo "smoke ${label}: ${url}"
-              body=$(curl -s -o /dev/null -w '%{http_code}' \
-                -H "Cloudflare-Workers-Version-Overrides: ${WORKER}=\"${NEW_VERSION_ID}\"" "${url}") || failed=1
+              body=$(curl -s -o /dev/null -w '%{http_code}' "${url}") || failed=1
               if [ "${body}" != "200" ]; then
                 echo "::error::${url} returned ${body}, not 200"
                 failed=1
@@ -174,7 +172,7 @@ jobs:
               # that don't exist on this version.
               host=$(echo "${url}" | sed -E 's|https?://([^/]+).*|\1|')
               scheme=$(echo "${url}" | sed -E 's|(https?)://.*|\1|')
-              html=$(curl -sf -H "Cloudflare-Workers-Version-Overrides: ${WORKER}=\"${NEW_VERSION_ID}\"" "${url}") || failed=1
+              html=$(curl -sf "${url}") || failed=1
               js=$(grep -oE 'src="[^"]+\.js[^"]*"' <<<"${html:-}" | head -1 | cut -d'"' -f2 || true)
               if [ -z "${js}" ]; then
                 echo "::error::no <script src> found on ${url} — page looks broken"
@@ -185,8 +183,7 @@ jobs:
                 http*) js_url="${js}" ;;
                 *)     js_url="${scheme}://${host}${js}" ;;
               esac
-              js_code=$(curl -s -o /dev/null -w '%{http_code}' \
-                -H "Cloudflare-Workers-Version-Overrides: ${WORKER}=\"${NEW_VERSION_ID}\"" "${js_url}") || failed=1
+              js_code=$(curl -s -o /dev/null -w '%{http_code}' "${js_url}") || failed=1
               if [ "${js_code}" != "200" ]; then
                 echo "::error::${js_url} returned ${js_code}, not 200"
                 failed=1
@@ -202,8 +199,8 @@ jobs:
             exit 0
           fi
 
-          # Add the new version to the deployment at 0% so the override header
-          # can reach it without routing real users to it.
+          # Add the new version to the deployment at 0%: in the deployment,
+          # but no real users routed to it yet.
           echo "Adding ${NEW_VERSION_ID} at 0%"
           wrangler versions deploy "${OLD_VERSION_ID}@100" "${NEW_VERSION_ID}@0" \
             --name "${WORKER}" -y --message "rollout ${TAG}: add at 0%" \

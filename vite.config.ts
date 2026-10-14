@@ -18,18 +18,17 @@ const docsPrerenderPages = await collectDocsPrerenderPages({
   contentDir: path.resolve(import.meta.dirname, "content"),
   supportedLanguages: i18n.languages,
 });
-const ogOutputDir = path.resolve(import.meta.dirname, "dist/client");
+const clientOutputDir = path.resolve(import.meta.dirname, "dist/client");
 const ogPrerenderPages = createOgPrerenderPages({
   ogPaths: docsPrerenderPages.og,
-  outputDir: ogOutputDir,
+  outputDir: clientOutputDir,
 });
 const staticDocsPages = toStaticPages(docsPrerenderPages.docs);
 const staticMarkdownPages = toStaticPages(docsPrerenderPages.markdown);
 const staticLLMSPages = toStaticPages(docsPrerenderPages.llmsFull);
-const sectionRootPages = i18n.languages.flatMap((lang) => [{path: `/${lang}/home`}, {path: `/${lang}/sdk`}]);
 const redirectPages = createRedirectPrerenderPages({
   paths: ["/", ...i18n.languages.map((lang) => `/${lang}/api`)],
-  outputDir: ogOutputDir,
+  outputDir: clientOutputDir,
 });
 
 function buildPrerenderPages() {
@@ -41,7 +40,6 @@ function buildPrerenderPages() {
     {path: "/api/search/en"},
     {path: "/robots.txt"},
     {path: "/sitemap.xml"},
-    ...sectionRootPages,
     ...staticDocsPages,
     ...staticMarkdownPages,
     ...ogPrerenderPages,
