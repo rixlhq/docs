@@ -51,7 +51,7 @@ jobs:
       WORKER: rixl-docs
       RAMP: "100"
       WATCH_MINUTES: 0
-      SMOKE_URLS: "https://docs.rixl.com/"
+      SMOKE_URLS: "https://docs.rixl.com/en/home"
       WAIT_MINUTES: 45
       DRY_RUN: ${{ inputs.dry_run || false }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
