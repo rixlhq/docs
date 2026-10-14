@@ -1,8 +1,9 @@
-import {createRootRoute, HeadContent, Outlet, Scripts, useParams} from "@tanstack/react-router";
+import {createRootRoute, HeadContent, Scripts, useParams} from "@tanstack/react-router";
 import {TanstackProvider} from "fumadocs-core/framework/tanstack";
 import * as React from "react";
 import appCss from "@/styles/app.css?url";
 import {i18n} from "@/lib/i18n";
+import {earlyNavigationScript, useReplayEarlyNavigation} from "@/lib/early-navigation";
 import {Provider} from "@/components/layout/shared/provider.tsx";
 import {Body} from "@/components/layout/shared/layout-client.tsx";
 
@@ -22,30 +23,15 @@ export const Route = createRootRoute({
       {rel: "manifest", href: "/manifest.json"},
       {rel: "stylesheet", href: appCss},
     ],
-    scripts: [
-      {
-        type: "speculationrules",
-        // Prerender hovered pages natively: a click before the SPA hydrates
-        // then activates the prerendered page instantly instead of loading a
-        // fresh document. All pages are static content, so background
-        // hydration during prerender is side-effect free.
-        children: JSON.stringify({
-          prefetch: [{where: {href_matches: "/*"}, eagerness: "moderate"}],
-          prerender: [{where: {href_matches: "/*"}, eagerness: "moderate"}],
-        }),
-      },
-    ],
+    // Routes internal link clicks through the router even before hydration,
+    // so they never fall through to full page loads (see early-navigation.ts).
+    scripts: [{children: earlyNavigationScript}],
   }),
-  component: RootComponent,
+  // The document is the shell, not the root component: TanStack then still
+  // renders it around error and not-found screens, so <html lang>, <head> and
+  // the Provider stay in place instead of the page dropping to a bare error.
+  shellComponent: RootDocument,
 });
-
-function RootComponent() {
-  return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
-  );
-}
 
 function RootDocument({children}: {children: React.ReactNode}) {
   const {lang} = useParams({strict: false});
@@ -53,6 +39,13 @@ function RootDocument({children}: {children: React.ReactNode}) {
   // an unknown "/xx/" prefix); everything else falls back to the default.
   const supported = i18n.languages as readonly string[];
   const validLang = lang && supported.includes(lang) ? lang : i18n.defaultLanguage;
+  // Pages served the 404.html shell (prerendered as English) keep its lang
+  // after hydration, since React does not patch <html> attributes; a missing
+  // /de/ page would stay announced as English.
+  React.useEffect(() => {
+    document.documentElement.lang = validLang;
+  }, [validLang]);
+  useReplayEarlyNavigation();
 
   return (
     <html
