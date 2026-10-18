@@ -47,3 +47,4 @@ out/
 
 # Vite+ hook dispatcher (generated); committed project hooks stay tracked
 /.vite-hooks/_/
+.vitest/
