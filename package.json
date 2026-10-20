@@ -19,7 +19,7 @@
     "format": "vp fmt",
     "generate:icons": "node plugins/vite-plugin-extract-icons.ts",
     "postinstall": "fumadocs-mdx && vp run generate:icons && paraglide-js compile --project project.inlang --outdir ./src/paraglide",
-    "prepare": "[ -n \"$CI\" ] || (git config --unset-all --local core.hooksPath 2>/dev/null; lefthook install)",
+    "prepare": "[ -n \"$CI\" ] || lefthook install --reset-hooks-path",
     "machine-translate": "inlang machine translate --project project.inlang"
   },
   "dependencies": {
