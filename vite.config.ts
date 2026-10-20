@@ -152,10 +152,6 @@ export default defineConfig({
       },
     ],
   },
-  staged: {
-    "*.{js,ts,jsx,tsx}": "vp check --fix",
-    "*.{json,md,yaml,yml,css}": "vp fmt --write",
-  },
   plugins: lazyPlugins(async () => [
     paraglideVitePlugin({
       project: "./project.inlang",
