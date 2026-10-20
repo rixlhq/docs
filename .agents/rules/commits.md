@@ -8,6 +8,6 @@ description: Commit workflow rules for incremental development.
 - Make step-by-step commits as coding work progresses
 - Keep each commit scoped to one logical change
 - Use conventional commit messages for every commit
-- During commit, our lefthook will run lint, react-doctor and format automatically, reporting lint or doctor issues
+- Git hooks run through lefthook (`lefthook.yml`, installed by `prepare`): pre-commit runs `vp check --fix` (format, lint, typecheck) and `vp fmt` on staged files and re-stages the fixes; pre-push runs the link check (`vp run lint:links`) when MDX content changed
 - Before committing run relevant tests for touched code
 - Before commiting run code-simplifier skill
