@@ -1,83 +1,128 @@
 ---
-title: API-Fehlerbehandlung
-description: Beheben Sie häufige API-Fehler und implementieren Sie robustes Wiederholungsverhalten.
+title: Errors, Retries and Idempotency
+description: The RIXL API error format, what each status means, when to retry, and how to make retries safe.
 ---
 
 import {Callout} from "@/snippets";
 
+<Callout type="info" title="Übersetzung ausstehend">
+  Diese Seite ist noch nicht übersetzt. Der folgende Text ist die englische Fassung und gilt verbindlich.
+</Callout>
 
-Verwenden Sie diese Seite, um die häufigsten Fehler der RIXL-API zu diagnostizieren und die richtige Wiederherstellungsstrategie zu wählen.
+This page is the single reference for API errors, retries and idempotency. Other pages link here instead of restating it.
 
-## Triage nach Statuscode
+## Error Format
 
-| Code | Bedeutung | Primäre Lösung |
-|------|-----------|----------------|
-| `401` | Fehlender, ungültiger, widerrufener oder abgelaufener API-Schlüssel | Überprüfen Sie `X-API-Key`, rotieren Sie bei Bedarf den Schlüssel |
-| `403` | Schlüssel kann nicht auf diesen Ressourcenbereich zugreifen | Prüfen Sie Projekt-/Schlüsselbereich und Endpunktziel |
-| `404` | Ressource existiert nicht | Validieren Sie ID und Route |
-| `429` | Anfragerate überschritten | Wiederholen mit Backoff und geringerer Nebenläufigkeit |
-| `5xx` | Serverseitiger Fehler | Wiederholen mit begrenztem Backoff, dann eskalieren |
+Every error response has a JSON body with one field:
 
-## 401 Unauthorized
+```json
+{"error": "invalid request"}
+```
 
-Prüfen Sie in dieser Reihenfolge:
+The message is for humans and is not stable. Branch on the HTTP status code.
 
-- Stellen Sie sicher, dass der Header `X-API-Key` vorhanden ist.
-- Stellen Sie sicher, dass Sie `https://api.rixl.com` als Basis-URL verwenden.
-- Stellen Sie sicher, dass der Schlüsselwert vollständig ist (keine Kürzung oder zusätzliche Zeichen).
-- Falls es weiterhin fehlschlägt, widerrufen Sie den Schlüssel und erstellen Sie einen Ersatzschlüssel.
+## Status Codes
 
-## 403 Forbidden
+| Status | Meaning                                                                                      | Retry?                             |
+| ------ | -------------------------------------------------------------------------------------------- | ---------------------------------- |
+| `400`  | Invalid request, failed precondition, invalid `Idempotency-Key`, or you canceled the request | No                                 |
+| `401`  | Missing, invalid, revoked or expired credential                                              | No                                 |
+| `403`  | The credential is valid but may not access this resource                                     | No                                 |
+| `404`  | The resource or route does not exist                                                         | No                                 |
+| `409`  | Conflict. With `Retry-After`: an idempotent request with the same key is still in flight     | Only when `Retry-After` is present |
+| `429`  | Too many requests (see [Rate Limits](/de/home/platform/api-documentation/rate-limits))       | Only when `Retry-After` is present |
+| `500`  | Internal error                                                                               | No                                 |
+| `501`  | Not implemented                                                                              | No                                 |
+| `502`  | The gateway or an edge proxy could not reach a backend                                       | Yes, for idempotent requests       |
+| `503`  | A backend is unavailable, overloaded, or reset the request                                   | Yes, for idempotent requests       |
+| `504`  | A backend did not answer in time                                                             | Yes, for idempotent requests       |
 
-Der Schlüssel ist gültig, aber nicht für die Zielressource autorisiert.
+`503` and `504` always carry `Retry-After`; `409` and `429` carry it only when a retry can succeed. A `502` has no `Retry-After` because it can come from an edge proxy while the API itself is down: back off and retry idempotent requests.
 
-- Bestätigen Sie, dass der Schlüssel zum selben Projekt bzw. zur selben Ressource gehört, die Sie anfragen.
-- Überprüfen Sie den Endpunktpfad und die Kennungen.
-- Testen Sie zunächst erneut mit einem bekannten funktionierenden Lese-Endpunkt (z. B. Projekte/Videos auflisten).
+## Retries
 
-## 404 Not Found
+Retry a request only if **both** hold:
 
-Ein 404 bedeutet in der Regel, dass die ID oder Route falsch ist.
+1. **The request is idempotent**: `GET`, `HEAD`, `PUT` or `DELETE`, or a `POST` that carries an [`Idempotency-Key`](#idempotency).
+2. **The failure is transient**: a network error or timeout, `502`, `503`, `504`, or a `409` or `429` that has a `Retry-After` header.
 
-- Überprüfen Sie die Pfadparameter (`videoId`, `imageId`, `feedId`).
-- Bestätigen Sie, dass Sie die erwartete Methode auf dem erwarteten Pfad aufrufen.
-- Stellen Sie sicher, dass die Ressourcenerstellung vor dem Abruf abgeschlossen wurde.
+Never retry `400`, `401`, `403`, `404`, `422`, `500` or `501`, or a `409` or `429` without `Retry-After`. Fix the request; a `429` without `Retry-After` is a long cooldown (for example on repeated verification emails), not a transient limit.
 
-## 429 Too Many Requests
+**Delay:**
 
-Implementieren Sie adaptive Wiederholung mit exponentiellem Backoff und Jitter:
+- If the response has `Retry-After`, wait that many seconds.
+- Otherwise use exponential backoff with full jitter: wait a random time between 0 and `min(8s, 0.5s × 2^attempt)`.
+- Stop after **3 retries** and surface the last response.
 
-```javascript
-async function requestWithRetry(send, maxAttempts = 5, baseDelayMs = 500) {
-  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
-    const response = await send();
-    if (response.status !== 429 && response.status < 500) return response;
+```ts
+const RETRYABLE = new Set([502, 503, 504]);
+const IDEMPOTENT = new Set(["GET", "HEAD", "PUT", "DELETE"]);
 
-    const jitter = Math.floor(Math.random() * 200);
-    const delay = baseDelayMs * (2 ** attempt) + jitter;
+async function fetchWithRetry(input: string, init: RequestInit = {}): Promise<Response> {
+  const method = (init.method ?? "GET").toUpperCase();
+  const canRetry = IDEMPOTENT.has(method) || new Headers(init.headers).has("Idempotency-Key");
+
+  for (let attempt = 0; ; attempt++) {
+    let response: Response | undefined;
+    try {
+      response = await fetch(input, init);
+    } catch (err) {
+      if (!canRetry || attempt === 3) throw err;
+    }
+    const retryAfter = response?.headers.get("Retry-After");
+    const transient =
+      !response || RETRYABLE.has(response.status) || ((response.status === 409 || response.status === 429) && retryAfter !== null);
+    if (response && (!canRetry || !transient || attempt === 3)) return response;
+
+    const delay = retryAfter ? Number(retryAfter) * 1000 : Math.random() * Math.min(8000, 500 * 2 ** attempt);
     await new Promise((resolve) => setTimeout(resolve, delay));
   }
-
-  throw new Error("Request failed after retries");
 }
 ```
 
-Weitere Hinweise zur Drosselung finden Sie unter [Rate-Limits](/de/home/platform/api-documentation/rate-limits).
-
-## 5xx-Serverfehler
-
-- Wiederholen Sie idempotente Operationen mit begrenztem exponentiellem Backoff.
-- Erfassen Sie Anfrage-IDs, Endpunkt und Zeitstempel für die Vorfallsanalyse.
-- Bei anhaltenden Fehlern eskalieren Sie mit reproduzierbaren Anfragedetails.
-
-## Verlorener API-Schlüssel
-
-<Callout type="error" title="Schlüssel können nicht abgerufen werden">
-  API-Schlüssel werden nur einmal bei der Erstellung angezeigt. Falls der Wert verloren geht, widerrufen Sie den Schlüssel und erstellen Sie einen neuen.
+<Callout type="error" title="Never retry a plain POST">
+  Retrying a `POST` without an `Idempotency-Key` can create the resource twice, for example a second upload. Send a key, or don't retry.
 </Callout>
 
-## Verwandtes
+## Idempotency
 
-- [API-Schlüssel](/de/home/platform/api-documentation/api-keys)
-- [Rate-Limits](/de/home/platform/api-documentation/rate-limits)
-- [API-Referenz](/de/api)
+Send an `Idempotency-Key` header to make a `POST` safe to retry. It is currently honoured on:
+
+- `CreateVideoUpload` (`POST /media/v1/projects/{project_id}/videos/upload`)
+
+On other operations the header is ignored, so a `POST` there is still not safe to retry.
+
+| Situation                                     | Response                                                                                                |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| No `Idempotency-Key` header                   | Behaves as today (the header is optional)                                                               |
+| Key not 1–255 visible ASCII chars             | `400` "invalid Idempotency-Key"                                                                         |
+| First request with the key                    | Runs normally; a successful response is stored for 24h                                                  |
+| Same key, same request, completed             | The stored response is replayed (same IDs, URLs, `expires_at`), with header `Idempotent-Replayed: true` |
+| Same key, different request body or path      | `400` "Idempotency-Key was reused with a different request"                                             |
+| Same key while the first request is in flight | `409` "a request with this Idempotency-Key is in progress", `Retry-After: 1`                            |
+| First request failed                          | Nothing is stored, so the client may retry with the same key                                            |
+
+- Use a fresh random value, such as a UUID, for each logical operation, and reuse it only to retry that operation.
+- Keys are scoped to your organisation, so they never collide with another customer's. Within an organisation, a user's keys are their own, while all API keys of one project share a single namespace: two services using different API keys on the same project must not reuse each other's `Idempotency-Key` values.
+- The in-flight lock lasts 60 seconds. If the first request has not finished by then, a retry with the same key runs the operation again.
+- A replay returns the stored response as-is, even after its presigned URLs have expired. Check `expires_at` and start a new upload with a new key if they have.
+- Only the in-flight `409` carries `Retry-After`. Any other `409` is a real conflict; don't retry it.
+- Replayed responses still count as billed API requests.
+
+## Request IDs
+
+Send an `X-Request-Id` header (1–128 visible ASCII characters) with each request. The API echoes it on the response; if you send none, or an invalid one, it generates one. Log it, and quote it when you contact support.
+
+## Lost API Key
+
+<Callout type="error" title="Keys Cannot Be Retrieved">
+  API keys are shown once at creation. If the value is lost, revoke the key and create a new one.
+</Callout>
+
+## Related
+
+- [Rate Limits](/de/home/platform/api-documentation/rate-limits)
+- [Versioning and Deprecation](/de/home/platform/api-documentation/versioning)
+- [Pagination](/de/home/platform/api-documentation/pagination)
+- [API Keys](/de/home/platform/api-documentation/api-keys)
+- [API Reference](/de/api)
