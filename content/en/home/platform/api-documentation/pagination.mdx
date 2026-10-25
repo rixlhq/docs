@@ -1,0 +1,78 @@
+---
+title: Pagination
+description: Page through list endpoints with limit and offset.
+---
+
+import {Callout} from "@/snippets";
+
+## Standard Shape
+
+List operations take two query parameters:
+
+| Parameter           | Range | Default | Notes                                                                           |
+| ------------------- | ----- | ------- | ------------------------------------------------------------------------------- |
+| `pagination.limit`  | 1–100 | 25      | Values above 100 are clamped to 100, not rejected. 0 or less means the default. |
+| `pagination.offset` | ≥ 0   | 0       | Number of items to skip. Negative values are treated as 0.                      |
+
+Videos, images, posts and support tickets return the items plus `total`, `limit` and `offset`. `limit` and `offset` are the values the server actually applied, so read them back instead of assuming your request was honoured. `total` is a 64-bit integer and is encoded as a JSON string.
+
+```bash
+curl "https://api.rixl.com/media/v1/projects/$RIXL_PROJECT_ID/videos?pagination.limit=100&pagination.offset=0" \
+  -H "X-API-Key: $RIXL_API_KEY"
+```
+
+## Walking Every Page
+
+Request a page, add its length to `offset`, and stop once `offset + items.length >= total` or a page comes back empty.
+
+```ts
+let offset = 0;
+let total = Infinity;
+
+while (offset < total) {
+  const {data, error} = await videosV1VideoServiceListVideos({
+    path: {project_id: projectId},
+    query: {"pagination.limit": 100, "pagination.offset": offset},
+  });
+  if (error) throw error;
+
+  const page = data?.videos ?? [];
+  total = Number(data?.total ?? 0);
+  if (page.length === 0) break;
+  // process page
+  offset += page.length;
+}
+```
+
+A runnable version is [`examples/10-pagination.ts`](https://github.com/rixlhq/rixl-js/blob/main/examples/10-pagination.ts) in `@rixl/sdk`.
+
+## Ordering and Consistency
+
+Videos and images can be ordered with `sort_field` and `sort_direction`. Other lists use a fixed server-side order.
+
+<Callout type="warn" title="Offsets are not snapshots">
+  Pages are computed per request. If items are created or deleted while you page, an offset can skip or repeat an item. Deduplicate by ID if
+  that matters to you.
+</Callout>
+
+## Exceptions
+
+These operations differ from the standard shape in v1. Check the [API Reference](/en/api) for each response.
+
+| Operations                                                 | Request                                 | Response                               | Stop when                        |
+| ---------------------------------------------------------- | --------------------------------------- | -------------------------------------- | -------------------------------- |
+| Feeds, API keys, client credentials                        | `pagination.limit`, `pagination.offset` | `total` only                           | `offset + items.length >= total` |
+| Invoices                                                   | `pagination.limit`, `pagination.offset` | no pagination fields                   | a page is shorter than `limit`   |
+| Subscription history                                       | `pagination.*` is accepted but ignored  | the latest 100 entries, no pagination fields | after the first response         |
+| Memberships, membership applications, organisation members | `limit`, `offset`                       | no `total`                             | a page is shorter than `limit`   |
+| Permission registry                                        | `limit`, `offset`                       | `total`                                | `offset + items.length >= total` |
+| Analytics dashboards                                       | `page`, `page_size`                     | `page`, `page_size`, `total`           | `page × page_size >= total`      |
+| Support chat messages                                      | `after` (cursor), `limit`               | no pagination fields                   | a page is shorter than `limit`   |
+
+Analytics "top" endpoints take a `limit` for the number of results; they are not paginated.
+
+## Related
+
+- [Versioning and Deprecation](/en/home/platform/api-documentation/versioning)
+- [Error Handling](/en/home/platform/api-documentation/error-handling)
+- [API Reference](/en/api)

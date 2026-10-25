@@ -1,0 +1,40 @@
+---
+title: Versioning and Deprecation
+description: How the RIXL API is versioned, what may change within a version, and how operations are retired.
+---
+
+## Major Version
+
+The API major version is the `v1` path segment, for example `/media/v1/projects/{project_id}/videos`. Every public operation is in v1 today.
+
+## What Changes Within v1
+
+Only additive changes ship within a major version:
+
+- new operations
+- new optional request fields and query parameters
+- new response fields
+- new enum values
+- new response headers
+
+Your client must ignore response fields and enum values it does not recognise. Do not fail on them, and do not validate responses against a closed schema.
+
+## Breaking Changes
+
+A breaking change (removing or renaming an operation or field, changing a type, or making an optional input required) ships only under a new major version, such as `v2`. The previous major version stays available for at least **6 months** after its replacement is generally available.
+
+## Deprecation
+
+1. A deprecated operation is marked `deprecated: true` in the OpenAPI spec and announced in the changelog.
+2. Once a removal date is set, responses from that operation carry a `Deprecation` header ([RFC 9745](https://www.rfc-editor.org/rfc/rfc9745)) and a `Sunset` header ([RFC 8594](https://www.rfc-editor.org/rfc/rfc8594)) with the removal date.
+3. The removal date is at least **90 days** after the `Sunset` header first appears.
+
+## SDKs
+
+[`@rixl/sdk`](https://www.npmjs.com/package/@rixl/sdk) is the supported SDK. It is generated from the same OpenAPI spec and follows semver; while it is `0.x`, a minor release may contain breaking changes, so read its changelog before upgrading. The SDKs for other languages are previews without these guarantees. The [SDK support matrix](https://github.com/rixlhq/openapi#sdk-support) lists each one's status.
+
+## Related
+
+- [Error Handling](/en/home/platform/api-documentation/error-handling)
+- [Pagination](/en/home/platform/api-documentation/pagination)
+- [API Reference](/en/api)
