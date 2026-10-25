@@ -3,9 +3,8 @@ title: API Keys
 description: Create, use, rotate, and revoke API keys for secure server-side API access.
 ---
 
-
 import {Callout} from "@/snippets";
-import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Step, Steps} from "fumadocs-ui/components/steps";
 
 RIXL authenticates API requests with project-scoped keys sent in the `X-API-Key` header.
 
@@ -16,15 +15,9 @@ RIXL authenticates API requests with project-scoped keys sent in the `X-API-Key`
 ## Create an API Key
 
 <Steps>
-  <Step>
-    Open your project in the dashboard and navigate to **Settings → API Keys**.
-  </Step>
-  <Step>
-    Click **Create API Key** and choose a descriptive name (example: `prod-ingest-service`).
-  </Step>
-  <Step>
-    Copy the key immediately and store it in your secret manager or environment variables.
-  </Step>
+  <Step>Open your project in the dashboard and navigate to **Settings → API Keys**.</Step>
+  <Step>Click **Create API Key** and choose a descriptive name (example: `prod-ingest-service`).</Step>
+  <Step>Copy the key immediately and store it in your secret manager or environment variables.</Step>
 </Steps>
 
 <Callout type="warn" title="Shown Once">
@@ -36,12 +29,12 @@ RIXL authenticates API requests with project-scoped keys sent in the `X-API-Key`
 Use the API base URL `https://api.rixl.com` and include `X-API-Key` on each request.
 
 ```bash
-curl -X GET "https://api.rixl.com/projects" \
+curl -X GET "https://api.rixl.com/media/v1/projects/YOUR_PROJECT_ID/videos?pagination.limit=1" \
   -H "X-API-Key: YOUR_PROJECT_API_KEY"
 ```
 
 ```javascript
-const response = await fetch("https://api.rixl.com/projects", {
+const response = await fetch(`https://api.rixl.com/media/v1/projects/${process.env.RIXL_PROJECT_ID}/videos?pagination.limit=1`, {
   headers: {
     "X-API-Key": process.env.RIXL_API_KEY,
   },
@@ -53,7 +46,7 @@ const response = await fetch("https://api.rixl.com/projects", {
 Send a read request with your key:
 
 ```bash
-curl -X GET "https://api.rixl.com/projects" \
+curl -X GET "https://api.rixl.com/media/v1/projects/YOUR_PROJECT_ID/videos?pagination.limit=1" \
   -H "X-API-Key: YOUR_PROJECT_API_KEY"
 ```
 

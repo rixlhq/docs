@@ -85,10 +85,18 @@ Willkommen bei **RIXL**! Mit dieser Schnellstartanleitung laden Sie in nur wenig
 
     **API-Upload:**
     ```bash
-    curl -X POST https://api.rixl.com/videos/upload/init \
+    curl -X POST "https://api.rixl.com/media/v1/projects/YOUR_PROJECT_ID/videos/upload" \
     -H "X-API-Key: YOUR_PROJECT_API_KEY" \
+    -H "Idempotency-Key: $(uuidgen)" \
     -H "Content-Type: application/json" \
-    -d '{"file_name": "your-video.mp4", "video_quality": "pro"}'
+    -d '{"name": "your-video.mp4", "video_quality": "VIDEO_QUALITY_PRO"}'
+    ```
+
+    The response has `video_upload_url` and `poster_upload_url`. `PUT` the video and a poster image to them; processing starts once the upload lands.
+
+    ```bash
+    curl -X PUT --upload-file your-video.mp4 "$VIDEO_UPLOAD_URL"
+    curl -X PUT --upload-file poster.jpg "$POSTER_UPLOAD_URL"
     ```
 
   </Step>

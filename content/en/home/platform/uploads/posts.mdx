@@ -3,17 +3,16 @@ title: Posts
 description: Create social media-style posts by uploading media directly to feeds.
 ---
 
-
-import {Callout} from '@/snippets';
+import {Callout} from "@/snippets";
 
 Feed posts combine media uploads with social metadata to create rich content for structured feeds.
 This process uploads media and creates the post simultaneously.
 
-[//]  # (// TODO: Add a screenshot of the post creation interface.)
+[//] # (// TODO: Add a screenshot of the post creation interface.)
 
 <Callout type="info">
-  Feed posts require an existing feed. Learn about [creating feeds](/en/home/platform/dashboard/feeds/overview) if you haven't
-  set one up yet.
+  Feed posts require an existing feed. Learn about [creating feeds](/en/home/platform/dashboard/feeds/overview) if you haven't set one up
+  yet.
 </Callout>
 
 ## Post Types
@@ -24,73 +23,51 @@ This process uploads media and creates the post simultaneously.
 
 ## Upload Process
 
-Posts combine media upload with feed creation in a single streamlined process:
+Posts combine a media upload with publishing to a feed:
 
 <Steps>
   <Step>
-    ### Initialize Upload
+    ### Create the Upload
 
-    Use the `/feeds/{feedId}/upload/init` endpoint to create a new post. Specify the feed ID where you want to publish.
-  </Step>
+    Call `POST /posts/v1/projects/{project_id}/feeds/{feed_id}/posts/upload` with the content type, file name, creator ID and description.
 
-  <Step>
-    ### Set Parameters
-
-    Include content type (image/video), file name, format, creator ID, and description. Optionally set video quality and
-    image format.
   </Step>
 
   <Step>
     ### Upload Media
 
-    Use the returned presigned URLs to upload your media files directly to cloud storage.
-  </Step>
+    `PUT` your files to the returned presigned URLs. Processing starts once the upload lands; there is no completion call.
 
-  <Step>
-    ### Confirm Upload
-
-    Call the completion endpoint to finalize the post and trigger processing.
   </Step>
 </Steps>
 
-## Required Parameters
+## Request Fields
 
-- **`content_type`** - Either "image" or "video"
+- **`content_type`** - `MEDIA_TYPE_VIDEO` or `MEDIA_TYPE_IMAGE`
 - **`file_name`** - Name of your media file (e.g., "my-video.mp4")
-- **`format`** - File format (e.g., "mp4", "jpg")
 - **`creator_id`** - Unique identifier for the user creating the post
-- **`description`** - Caption or text for the post
-
-## Optional Parameters
-
-- **`video_quality`** - For videos: "basic", "shorts", or "pro" (see [Quality Tiers](/en/home/platform/uploads/videos/quality-tiers) for details)
-- **`image_format`** - For video posts: format for auto-generated poster image
+- **`description`** - Caption for the post (up to 280 characters)
+- **`video_quality`** - For videos: `VIDEO_QUALITY_BASIC`, `VIDEO_QUALITY_SHORTS` or `VIDEO_QUALITY_PRO` (see [Quality Tiers](/en/home/platform/uploads/videos/quality-tiers))
 
 ## API Examples
 
-### Initialize Upload
+### Create the Upload
 
-<Tabs>
+<Tabs items={['Video Post', 'Image Post']}>
   <Tab value="Video Post">
     ```bash
-    # Initialize video upload with error handling and timeout
     curl -f -s -S \
-    -X POST "https://api.rixl.com/feeds/FD4y3QB38S/upload/init" \
-    -H "X-API-Key: YOUR_PROJECT_API_KEY_HERE" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    --retry 3 \
-    --retry-delay 1 \
-    --max-time 30 \
-    --data '{
-    "content_type": "video",
-    "file_name": "my-awesome-clip.mp4",
-    "format": "mp4",
-    "creator_id": "CR8y3QB38S",
-    "description": "Check out this amazing view!",
-    "video_quality": "shorts",
-    "image_format": "jpg"
-  }'
+      -X POST "https://api.rixl.com/posts/v1/projects/YOUR_PROJECT_ID/feeds/FD4y3QB38S/posts/upload" \
+      -H "X-API-Key: YOUR_PROJECT_API_KEY" \
+      -H "Content-Type: application/json" \
+      --max-time 30 \
+      --data '{
+        "content_type": "MEDIA_TYPE_VIDEO",
+        "file_name": "my-awesome-clip.mp4",
+        "creator_id": "CR8y3QB38S",
+        "description": "Check out this amazing view!",
+        "video_quality": "VIDEO_QUALITY_SHORTS"
+      }'
     ```
 
     **Response:**
@@ -98,32 +75,28 @@ Posts combine media upload with feed creation in a single streamlined process:
     {
       "post_id": "PS5IMKoFLm",
       "content_id": "VI9VXQxWXQ",
-      "content_presigned_url": "https://videos.rixl.com/...signed-url-for-video...",
+      "content_upload_url": "https://...signed-url-for-video...",
       "poster_id": "IM8y3QB38S",
-      "poster_presigned_url": "https://images.rixl.com/...signed-url-for-poster...",
-      "upload_expires": 1640995200
+      "poster_upload_url": "https://...signed-url-for-poster...",
+      "upload_expires": "2026-01-01T12:00:00Z"
     }
     ```
+
   </Tab>
 
   <Tab value="Image Post">
     ```bash
-    # Initialize image upload with error handling and timeout
     curl -f -s -S \
-    -X POST "https://api.rixl.com/feeds/FD4y3QB38S/upload/init" \
-    -H "X-API-Key: YOUR_PROJECT_API_KEY_HERE" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    --retry 3 \
-    --retry-delay 1 \
-    --max-time 30 \
-    --data '{
-    "content_type": "image",
-    "file_name": "beautiful-sunset.jpg",
-    "format": "jpg",
-    "creator_id": "CR8y3QB38S",
-    "description": "Beautiful sunset from my balcony"
-  }'
+      -X POST "https://api.rixl.com/posts/v1/projects/YOUR_PROJECT_ID/feeds/FD4y3QB38S/posts/upload" \
+      -H "X-API-Key: YOUR_PROJECT_API_KEY" \
+      -H "Content-Type: application/json" \
+      --max-time 30 \
+      --data '{
+        "content_type": "MEDIA_TYPE_IMAGE",
+        "file_name": "beautiful-sunset.jpg",
+        "creator_id": "CR8y3QB38S",
+        "description": "Beautiful sunset from my balcony"
+      }'
     ```
 
     **Response:**
@@ -131,126 +104,86 @@ Posts combine media upload with feed creation in a single streamlined process:
     {
       "post_id": "PS5IMKoFLm",
       "content_id": "IM8y3QB38S",
-      "content_presigned_url": "https://images.rixl.com/...signed-url-for-image...",
-      "upload_expires": 1640995200
+      "content_upload_url": "https://...signed-url-for-image...",
+      "upload_expires": "2026-01-01T12:00:00Z"
     }
     ```
+
   </Tab>
 </Tabs>
 
-### Upload Media Files
+<Callout type="warn">
+  This `POST` does not honour `Idempotency-Key`, so don't retry it automatically: a retry can create a second post. See
+  [Retries](/en/home/platform/api-documentation/error-handling#retries).
+</Callout>
 
-Use the provided presigned URLs to upload your files directly to storage:
+### Upload Media Files
 
 <Tabs items={['Video Upload', 'Poster Upload']}>
   <Tab value="Video Upload">
     ```bash
-    # Upload video file with progress indicator and error handling
     curl -# -f \
-    -X PUT "{content_presigned_url}" \
-    --upload-file "/path/to/your/local/file/my-awesome-clip.mp4" \
-    -H "Content-Type: video/mp4" \
-    -H "Accept: application/json" \
-    --retry 3 \
-    --retry-delay 2 \
-    --max-time 300
+      -X PUT "$CONTENT_UPLOAD_URL" \
+      --upload-file "/path/to/my-awesome-clip.mp4" \
+      -H "Content-Type: video/mp4" \
+      --retry 3 \
+      --max-time 300
     ```
   </Tab>
 
   <Tab value="Poster Upload">
     ```bash
-    # Upload poster image with error handling and timeout
     curl -# -f \
-    -X PUT "{poster_presigned_url}" \
-    --upload-file "/path/to/your/local/thumbnail/poster-image.jpg" \
-    -H "Content-Type: image/jpeg" \
-    -H "Accept: application/json" \
-    --retry 3 \
-    --retry-delay 2 \
-    --max-time 60
+      -X PUT "$POSTER_UPLOAD_URL" \
+      --upload-file "/path/to/poster-image.jpg" \
+      -H "Content-Type: image/jpeg" \
+      --retry 3 \
+      --max-time 60
     ```
-
-    <Callout type="tip">
-      You can upload a custom poster image. If you don't, RIXL will automatically generate one from the video.
-    </Callout>
   </Tab>
 </Tabs>
 
-### Complete Upload
-
-Once files are uploaded, finalize the process:
-
-```bash
-# Complete upload process with error handling
-curl -f -s -S \
-  -X POST "https://api.rixl.com/feeds/FD4y3QB38S/upload/complete" \
-  -H "X-API-Key: YOUR_PROJECT_API_KEY_HERE" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  --retry 3 \
-  --retry-delay 1 \
-  --max-time 30 \
-  --data '{
-    "post_id": "PS5IMKoFLm"
-  }'
-```
-
-<Callout type="success">
-  A successful response will return the complete Post object with all its details, confirming your new post is live in
-  the feed.
-</Callout>
+A `PUT` to a presigned URL replaces the same object, so retrying it is safe until `upload_expires`.
 
 ## Managing Your Posts
 
-After uploading, you can retrieve and manage your posts using the API. Here are the common operations you'll need for post management.
-
 ### Retrieving Posts
 
-**Get a Specific Post**: Use this when you need to fetch details for a particular post within a feed.
+**Get a Specific Post**:
 
 ```bash
-curl "https://api.rixl.com/feeds/FD4y3QB38S/PS5IMKoFLm" \
-  -H "X-API-Key: YOUR_PROJECT_API_KEY_HERE"
+curl "https://api.rixl.com/posts/v1/projects/YOUR_PROJECT_ID/posts/PS5IMKoFLm" \
+  -H "X-API-Key: YOUR_PROJECT_API_KEY"
 ```
 
-**List Posts in a Feed**: This is how you'd retrieve posts to display in your app with pagination support.
+**List Posts in a Feed** (see [Pagination](/en/home/platform/api-documentation/pagination)):
 
 ```bash
-curl "https://api.rixl.com/feeds/FD4y3QB38S?limit=25&offset=0" \
-  -H "X-API-Key: YOUR_PROJECT_API_KEY_HERE"
+curl "https://api.rixl.com/posts/v1/projects/YOUR_PROJECT_ID/feeds/FD4y3QB38S/posts?pagination.limit=25&pagination.offset=0" \
+  -H "X-API-Key: YOUR_PROJECT_API_KEY"
 ```
 
-**List Posts by a Creator**: To show all content from a specific user in a feed.
+**List Posts by a Creator**:
 
 ```bash
-# List posts by creator with error handling
-curl -f -s -S \
-  "https://api.rixl.com/feeds/FD4y3QB38S/creators/CR8y3QB38S?limit=25&offset=0" \
-  -H "X-API-Key: YOUR_PROJECT_API_KEY_HERE" \
-  -H "Accept: application/json" \
-  --retry 3 \
-  --retry-delay 1 \
-  --max-time 30
+curl "https://api.rixl.com/posts/v1/projects/YOUR_PROJECT_ID/feeds/FD4y3QB38S/posts/creators/CR8y3QB38S?pagination.limit=25" \
+  -H "X-API-Key: YOUR_PROJECT_API_KEY"
 ```
+
+Public feeds are also readable without a key at `GET /posts/v1/feeds/{feed_id}`.
 
 ### Post Operations
 
-**Delete a Post**: Remove a post permanently from the feed.
+**Delete a Post**:
 
 ```bash
-# Delete post with error handling
 curl -f -s -S \
-  -X DELETE "https://api.rixl.com/feeds/FD4y3QB38S/PS5IMKoFLm" \
-  -H "X-API-Key: YOUR_PROJECT_API_KEY_HERE" \
-  -H "Accept: application/json" \
-  --retry 2 \
-  --retry-delay 1 \
+  -X DELETE "https://api.rixl.com/posts/v1/projects/YOUR_PROJECT_ID/posts/PS5IMKoFLm" \
+  -H "X-API-Key: YOUR_PROJECT_API_KEY" \
   --max-time 30
 ```
 
-<Callout type="warn">
-  Deleting a post will permanently remove it from the feed and cannot be undone.
-</Callout>
+<Callout type="warn">Deleting a post will permanently remove it from the feed and cannot be undone.</Callout>
 
 ## Best Practices
 
@@ -260,7 +193,7 @@ When working with posts and feeds, consider these recommendations for optimal pe
 
 **Use descriptive file names** to help with content organization and make debugging easier.
 
-**Implement proper error handling** for failed uploads, including retry mechanisms for network issues.
+**Implement proper error handling** for failed uploads; retry only as described in [Retries](/en/home/platform/api-documentation/error-handling#retries).
 
 **Consider file size limits** when uploading high-quality content to maintain good performance.
 
