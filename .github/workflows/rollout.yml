@@ -228,3 +228,13 @@ jobs:
           done
 
           echo "Rollout of ${TAG} complete on ${WORKER}."
+
+      # Version uploads do not apply custom domains; sync triggers only after
+      # the new version has passed smoke tests and reached 100%.
+      - name: Check out trigger configuration
+        if: ${{ github.event_name == 'push' && inputs.dry_run != true }}
+        uses: actions/checkout@v4
+
+      - name: Deploy Worker triggers
+        if: ${{ github.event_name == 'push' && inputs.dry_run != true }}
+        run: wrangler triggers deploy --name "${WORKER}"
