@@ -7,7 +7,7 @@ description: Core project guidelines for Rixl Documentation. Apply these rules w
 
 ## Project Overview
 
-The official documentation site for Rixl (`docs.rixl.com`), built with TanStack Start, Fumadocs and Vite+. MDX content, API reference generated from the OpenAPI spec, live `@rixl/media-react` player demos, and i18n (`en`, `de`). It builds to static files plus a SPA fallback and deploys to the Cloudflare Worker `rixl-docs`.
+The official documentation site for Rixl (`developers.rixl.com`), built with TanStack Start, Fumadocs and Vite+. MDX content, API reference generated from the OpenAPI spec, live `@rixl/media-react` player demos, and i18n (`en`, `de`). It builds to static files plus a SPA fallback and deploys to the Cloudflare Worker `rixl-docs`.
 
 ## Repository Structure
 
@@ -22,7 +22,7 @@ The official documentation site for Rixl (`docs.rixl.com`), built with TanStack 
 - `plugins/vite-plugin-extract-icons.ts` - generates the icon subset used by content
 - `scripts/lint.ts` - internal link checker (`vp run lint:links`)
 - `source.config.ts` - Fumadocs collections and frontmatter schemas
-- `wrangler.jsonc` - Cloudflare Worker config (`rixl-docs`, `docs.rixl.com`, previews)
+- `wrangler.jsonc` - Cloudflare Worker config (`rixl-docs`, `developers.rixl.com`, previews)
 
 ## Technology Stack
 
