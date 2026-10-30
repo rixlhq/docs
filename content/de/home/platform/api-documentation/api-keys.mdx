@@ -3,9 +3,8 @@ title: API-Schlüssel
 description: Erstellen, verwenden, rotieren und widerrufen Sie API-Schlüssel für sicheren serverseitigen API-Zugriff.
 ---
 
-
 import {Callout} from "@/snippets";
-import {Step, Steps} from 'fumadocs-ui/components/steps';
+import {Step, Steps} from "fumadocs-ui/components/steps";
 
 RIXL authentifiziert API-Anfragen mit projektbezogenen Schlüsseln, die im Header `X-API-Key` gesendet werden.
 
@@ -16,19 +15,14 @@ RIXL authentifiziert API-Anfragen mit projektbezogenen Schlüsseln, die im Heade
 ## Einen API-Schlüssel erstellen
 
 <Steps>
-  <Step>
-    Öffnen Sie Ihr Projekt im Dashboard und navigieren Sie zu **Einstellungen → API-Schlüssel**.
-  </Step>
-  <Step>
-    Klicken Sie auf **API-Schlüssel erstellen** und wählen Sie einen beschreibenden Namen (Beispiel: `prod-ingest-service`).
-  </Step>
-  <Step>
-    Kopieren Sie den Schlüssel sofort und speichern Sie ihn in Ihrem Secret-Manager oder in Umgebungsvariablen.
-  </Step>
+  <Step>Öffnen Sie Ihr Projekt im Dashboard und navigieren Sie zu **Einstellungen → API-Schlüssel**.</Step>
+  <Step>Klicken Sie auf **API-Schlüssel erstellen** und wählen Sie einen beschreibenden Namen (Beispiel: `prod-ingest-service`).</Step>
+  <Step>Kopieren Sie den Schlüssel sofort und speichern Sie ihn in Ihrem Secret-Manager oder in Umgebungsvariablen.</Step>
 </Steps>
 
 <Callout type="warn" title="Nur einmal angezeigt">
-  Der rohe Schlüsselwert wird nur einmal bei der Erstellung angezeigt. Falls er verloren geht, widerrufen Sie ihn und erstellen Sie einen neuen Schlüssel.
+  Der rohe Schlüsselwert wird nur einmal bei der Erstellung angezeigt. Falls er verloren geht, widerrufen Sie ihn und erstellen Sie einen
+  neuen Schlüssel.
 </Callout>
 
 ## Anfragen authentifizieren
@@ -36,12 +30,12 @@ RIXL authentifiziert API-Anfragen mit projektbezogenen Schlüsseln, die im Heade
 Verwenden Sie die API-Basis-URL `https://api.rixl.com` und fügen Sie bei jeder Anfrage `X-API-Key` hinzu.
 
 ```bash
-curl -X GET "https://api.rixl.com/projects" \
+curl -X GET "https://api.rixl.com/media/v1/projects/YOUR_PROJECT_ID/videos?pagination.limit=1" \
   -H "X-API-Key: YOUR_PROJECT_API_KEY"
 ```
 
 ```javascript
-const response = await fetch("https://api.rixl.com/projects", {
+const response = await fetch(`https://api.rixl.com/media/v1/projects/${process.env.RIXL_PROJECT_ID}/videos?pagination.limit=1`, {
   headers: {
     "X-API-Key": process.env.RIXL_API_KEY,
   },
@@ -53,7 +47,7 @@ const response = await fetch("https://api.rixl.com/projects", {
 Senden Sie eine Leseanfrage mit Ihrem Schlüssel:
 
 ```bash
-curl -X GET "https://api.rixl.com/projects" \
+curl -X GET "https://api.rixl.com/media/v1/projects/YOUR_PROJECT_ID/videos?pagination.limit=1" \
   -H "X-API-Key: YOUR_PROJECT_API_KEY"
 ```
 

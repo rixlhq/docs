@@ -386,7 +386,7 @@ const monitorProcessing = async (videoId) => {
 **Monitoring Best Practices:**
 
 - Use smart polling intervals (start frequently, reduce over time)
-- Implement exponential backoff for errors
+- Wiederholen Sie Anfragen nur wie unter [Retries](/de/home/platform/api-documentation/error-handling#retries) beschrieben
 - Cache status responses briefly to reduce API calls
 - Clean up monitoring resources when complete
 - Batch monitors multiple items efficiently

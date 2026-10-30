@@ -1,55 +1,23 @@
 ---
 title: Rate Limits
-description: Design API clients that handle throttling gracefully and recover automatically.
+description: How the RIXL API signals throttling and how your client should respond.
 ---
 
 import {Callout} from "@/snippets";
 
-RIXL API requests can be throttled when request volume exceeds allowed limits for your key or project.
+The API may answer `429 Too Many Requests` when it needs you to slow down, and `503 Service Unavailable` when a backend is overloaded. A `503` from the API carries a `Retry-After` header with the number of seconds to wait. A `429` carries one only when a retry can succeed soon; without it, the limit is a long cooldown and retrying won't help.
 
-## When You Are Rate Limited
+## What Your Client Should Do
 
-If your requests are throttled, the API returns:
+- Honour `Retry-After` when present, then retry as described in [Retries](/en/home/platform/api-documentation/error-handling#retries).
+- Cap concurrency, and batch or cache reads where you can.
 
-- `429 Too Many Requests`
-
-## Recommended Client Behavior
-
-1. Detect `429` responses.
-2. Retry with exponential backoff and jitter.
-3. Reduce request bursts by batching and caching where possible.
-4. Avoid unbounded retry loops.
-
-```javascript
-const baseDelayMs = 500;
-const maxAttempts = 5;
-
-async function requestWithBackoff(fetcher) {
-  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
-    const response = await fetcher();
-    if (response.status !== 429) return response;
-
-    const jitter = Math.floor(Math.random() * 200);
-    const delay = baseDelayMs * (2 ** attempt) + jitter;
-    await new Promise((resolve) => setTimeout(resolve, delay));
-  }
-
-  throw new Error("Rate limit retries exhausted");
-}
-```
-
-## Operational Guidance
-
-- Use separate API keys per environment (`dev`, `staging`, `prod`) to isolate traffic.
-- Prefer queue-based processing for bursty ingestion workloads.
-- Monitor `429` frequency and adjust concurrency before scaling traffic.
-
-<Callout type="warning" title="Do Not Hardcode Limits">
-  Exact limits can vary by plan and may change. Build for adaptive throttling rather than fixed numeric assumptions.
+<Callout type="warning" title="No published limits">
+  RIXL does not publish numeric rate limits. Build for adaptive throttling driven by `Retry-After` rather than fixed numbers.
 </Callout>
 
 ## Related
 
-- [API Reference](/en/api)
+- [Errors, Retries and Idempotency](/en/home/platform/api-documentation/error-handling)
 - [API Keys](/en/home/platform/api-documentation/api-keys)
-- [Error Handling](/en/home/platform/api-documentation/error-handling)
+- [API Reference](/en/api)

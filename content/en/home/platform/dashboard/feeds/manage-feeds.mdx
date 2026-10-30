@@ -117,8 +117,8 @@ import {Card, Columns} from '@/snippets';
 ### API Integration
 
 ```bash
-curl -X GET https://api.rixl.com/feeds/{feedId} \
-     -H "X-API-Key: YOUR_PROJECT_API_KEY"
+# Public feeds need no API key.
+curl -X GET "https://api.rixl.com/posts/v1/feeds/{feedId}?pagination.limit=25"
 ```
 
 ## Specialized Feed Types
