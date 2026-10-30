@@ -86,7 +86,7 @@ vp fmt              # Format code
 
 ## 🚀 Deployment
 
-Deployed to the **Cloudflare Worker `rixl-docs`** (`docs.rixl.com`) by Cloudflare Workers Builds:
+Deployed to the **Cloudflare Worker `rixl-docs`** (`developers.rixl.com`) by Cloudflare Workers Builds:
 every PR gets a preview URL, and merging to `main` uploads a tagged version that the
 `rollout.yml` workflow smoke-tests and promotes. No manual deploy step.
 
