@@ -14,11 +14,11 @@ Jedes Video und jedes Bild hat immer genau einen Status. Diese Seite erklärt je
 
 | Status | API-Status | Bedeutung |
 |---|---|---|
-| Wird hochgeladen | `uploading` | Die Datei wird noch erwartet. Die Übertragung läuft in Ihrem Browser oder Client. |
-| In Warteschlange | `uploaded` | Die Datei ist gespeichert und wartet auf den Start der Verarbeitung. |
-| In Verarbeitung | `processing`, `preparing` | Die Verarbeitung hat begonnen. |
-| Bereit | `ready` | Das Element ist veröffentlicht und verfügbar. |
-| Fehlgeschlagen | `error` | Die Verarbeitung ist fehlgeschlagen. |
+| Wird hochgeladen | `FILE_STATUS_UPLOADING` | Die Datei wird noch erwartet. Die Übertragung läuft in Ihrem Browser oder Client. |
+| In Warteschlange | `FILE_STATUS_UPLOADED` | Die Datei ist gespeichert und wartet auf den Start der Verarbeitung. |
+| In Verarbeitung | `FILE_STATUS_PROCESSING`, `FILE_STATUS_PREPARING` | Die Verarbeitung hat begonnen. |
+| Bereit | `FILE_STATUS_READY` | Das Element ist veröffentlicht und verfügbar. |
+| Fehlgeschlagen | `FILE_STATUS_ERROR` | Die Verarbeitung ist fehlgeschlagen. |
 | Gelöscht | Keiner | Das Element ist aus dem Dashboard und der API entfernt. Die API antwortet mit 404. |
 
 Für die Verarbeitung gibt es noch kein Zeitlimit. Ein Element kann also in diesem Status bleiben, wenn ein Job hängen bleibt. Löschen Sie das Element in diesem Fall und laden Sie es erneut hoch.

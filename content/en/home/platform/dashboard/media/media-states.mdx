@@ -14,11 +14,11 @@ Every video and image has one state at a time. This page explains each state and
 
 | State | API status | Meaning |
 |---|---|---|
-| Uploading | `uploading` | Waiting for the file to arrive. The transfer runs in your browser or client. |
-| Queued | `uploaded` | The file is stored and waiting for processing to start. |
-| Processing | `processing`, `preparing` | Processing has started. |
-| Ready | `ready` | The item is published and available. |
-| Failed | `error` | Processing failed. |
+| Uploading | `FILE_STATUS_UPLOADING` | Waiting for the file to arrive. The transfer runs in your browser or client. |
+| Queued | `FILE_STATUS_UPLOADED` | The file is stored and waiting for processing to start. |
+| Processing | `FILE_STATUS_PROCESSING`, `FILE_STATUS_PREPARING` | Processing has started. |
+| Ready | `FILE_STATUS_READY` | The item is published and available. |
+| Failed | `FILE_STATUS_ERROR` | Processing failed. |
 | Deleted | None | The item is gone from the dashboard and the API, which returns 404. |
 
 Processing has no time limit yet, so an item can stay in this state if a job stalls. If that happens, delete the item and upload it again.
