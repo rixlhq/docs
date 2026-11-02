@@ -44,13 +44,13 @@ There is no way to pause or cancel processing. Deleting the item is the only way
 | Delete an item that is | Work on the server | Published? |
 |---|---|---|
 | Queued | Never starts | No |
-| Processing | Remaining steps never start. The step already running finishes, and its result is discarded | No |
+| Processing | Remaining steps never start. The step already running finishes, but the item's record is not updated | No |
 | Ready or Failed | Nothing to stop | Removed from the dashboard and the API |
 
 Deleted items can keep counting toward your storage quota for up to 15 minutes, because the quota check uses a cached total. Upload usage already recorded is not reversed.
 
 <Callout type="warn">
-  Deleting does not remove stored files immediately, and an existing direct link to a file may keep working after deletion.
+  Deleting does not remove stored files, and an existing direct link to a file may keep working after deletion.
 </Callout>
 
 ---
