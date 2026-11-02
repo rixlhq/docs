@@ -56,7 +56,7 @@ type RixlVideoTheme = "default" | "minimal" | "feed" | "hover" | "hideUI";
 type Page = "feed" | "standalone" | "profile";
 ```
 
-`VideoProps` is a `@lit/react` wrapper around `<rixl-video>`. The React component maps the `id` prop to `videoId` and forwards all other props to the Lit element.
+`VideoProps` specifies the properties for the `Video` component, including media identifiers, player themes, chapter and heatmap markers, and analytics options.
 
 ### VideoPlayerProps
 
@@ -66,7 +66,7 @@ interface VideoPlayerProps {
 }
 ```
 
-`VideoPlayer` establishes a legacy player scope for detached controls. Render hook consumers as siblings of `<Video>` inside `<VideoPlayer>` to share state. The new Lit-backed `<Video>` does not automatically register itself in the legacy player stores; custom controls built with hooks must be wired to a player scope explicitly.
+`VideoPlayer` establishes a player scope for detached controls. Render hook consumers as siblings of `<Video>` inside `<VideoPlayer>` to share state.
 
 ### ImageProps
 
@@ -93,19 +93,25 @@ The React `Image` wrapper maps `id` to `imageId` and forwards `alt`, `imageData`
 
 ```typescript
 interface FeedProps {
+  projectId: string;
   feedId: string;
+  limit?: number;
+  apiKey?: string;
+  className?: string;
   analytics?: boolean;
-  analyticsPage?: Page;
-  onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
-  loop?: boolean;
-  autoscroll?: boolean;
-  muted?: boolean;
-  lang?: string;
-  feedFont?: FontFamilyKey;
-  initialIndex?: number;
-  safeAreaTabBar?: number;
-  posts?: FeedPost[];
-  onFetchMore?: () => void | Promise<void>;
+  theme?: RixlVideoTheme;
+  controls?: boolean;
+  progressBar?: boolean;
+  showChapters?: boolean;
+  heatmap?: boolean;
+  hotSegments?: boolean;
+  allowFullscreen?: boolean;
+  allowPictureInPicture?: boolean;
+  allowPlayPause?: boolean;
+  allowMute?: boolean;
+  allowVolume?: boolean;
+  volumeSlider?: boolean;
+  fontFamily?: FontFamilyKey;
 }
 
 type Page = "feed" | "standalone" | "profile";
@@ -115,13 +121,13 @@ type FontFamilyKey =
   | "proportional_sans" | "casual" | "cursive" | "small_caps";
 ```
 
-`Feed` is a `@lit/react` wrapper around `<rixl-feed>`. `creatorId` and `startPostId` are accepted for backward compatibility but are not used.
+`FeedProps` defines configuration options for the `Feed` component to control feed rendering, pagination, and player themes.
 
 ## Hook Types
 
 ### Player-Scoped Hooks
 
-These hooks read state from the enclosing player scope. Call them inside a component rendered as a child of `<VideoPlayer>`. They take no arguments and bind to the current player scope. Note that the new Lit-backed `<Video>` is a self-contained custom element and does not automatically participate in the player scope; for now, custom controls should be built as siblings inside `<VideoPlayer>` or use `onRixlAnalytics` to react to player events.
+These hooks read state from the enclosing player scope. Call them inside a component rendered as a child of `<VideoPlayer>`. They take no arguments and bind to the current player scope. Custom controls can also use `onRixlAnalytics` to react to player events directly.
 
 ```typescript
 interface UseMediaSettingsResult {

@@ -85,10 +85,10 @@ Welcome to **RIXL**! This quick start guide will have you uploading and optimizi
 
     **API Upload:**
     ```bash
-    curl -X POST https://api.rixl.com/videos/upload/init \
-    -H "X-API-Key: YOUR_PROJECT_API_KEY" \
-    -H "Content-Type: application/json" \
-    -d '{"file_name": "your-video.mp4", "video_quality": "pro"}'
+    curl -X POST "https://api.rixl.com/media/v1/projects/{project_id}/videos/upload" \
+      -H "X-API-Key: YOUR_PROJECT_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"name": "your-video.mp4", "video_quality": "VIDEO_QUALITY_PRO"}'
     ```
 
   </Step>

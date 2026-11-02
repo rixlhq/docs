@@ -117,7 +117,7 @@ import {Card, Columns} from '@/snippets';
 ### API Integration
 
 ```bash
-curl -X GET https://api.rixl.com/feeds/{feedId} \
+curl -X GET "https://api.rixl.com/posts/v1/projects/{project_id}/feeds/{feed_id}/posts?limit=25" \
      -H "X-API-Key: YOUR_PROJECT_API_KEY"
 ```
 
