@@ -333,24 +333,21 @@ class ProcessingErrorHandler {
     }
 
     const errorTypes = {
-      // Retryable errors
       TEMPORARY_FAILURE: {
-        recoverable: true,
-        strategy: "retry",
-        delay: 30000, // 30 seconds
+        recoverable: false,
+        strategy: "reupload",
+        message: "Processing failed, upload the video again",
       },
       QUEUE_OVERLOADED: {
-        recoverable: true,
-        strategy: "retry_later",
-        delay: 300000, // 5 minutes
+        recoverable: false,
+        strategy: "reupload",
+        message: "Processing failed, upload the video again",
       },
       NETWORK_ERROR: {
-        recoverable: true,
-        strategy: "retry",
-        delay: 60000, // 1 minute
+        recoverable: false,
+        strategy: "reupload",
+        message: "Processing failed, upload the video again",
       },
-
-      // Non-retryable errors
       INVALID_FORMAT: {
         recoverable: false,
         strategy: "convert_format",
@@ -419,19 +416,6 @@ class ProcessingErrorHandler {
     console.log(`Strategy: ${errorInfo.strategy}`);
 
     switch (errorInfo.strategy) {
-      case "retry":
-        console.log(`Retrying in ${errorInfo.delay / 1000} seconds...`);
-        await new Promise((resolve) => setTimeout(resolve, errorInfo.delay));
-        return await this.retryProcessing(videoId, apiKey);
-
-      case "retry_later":
-        return {
-          success: false,
-          retry: true,
-          delay: errorInfo.delay,
-          message: `Retry processing in ${errorInfo.delay / 60000} minutes`,
-        };
-
       case "convert_format":
         return {
           success: false,
@@ -452,26 +436,6 @@ class ProcessingErrorHandler {
           action: "manual",
           message: errorInfo.message,
         };
-    }
-  }
-
-  static async retryProcessing(videoId, apiKey) {
-    try {
-      const response = await fetch(`https://api.rixl.com/videos/${videoId}/retry`, {
-        method: "POST",
-        headers: {
-          "X-API-Key": apiKey,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        return {success: true, message: "Processing retry initiated"};
-      } else {
-        return {success: false, message: "Retry failed"};
-      }
-    } catch (error) {
-      return {success: false, message: `Retry error: ${error.message}`};
     }
   }
 }
@@ -671,7 +635,7 @@ console.log(`Recommendation: ${queueStatus.recommendation}`);
 
 - **Appropriate polling intervals**: 5-10 seconds for single videos, longer for batch processing
 - **Timeout handling**: Set reasonable timeouts based on content size and quality tier
-- **Error recovery**: Implement automatic retry logic for temporary failures
+- **Error recovery**: Upload the video again after a failure. Retrying a failed job is not available yet
 - **Progress feedback**: Provide users with meaningful progress updates
 
 ### Performance Optimization
