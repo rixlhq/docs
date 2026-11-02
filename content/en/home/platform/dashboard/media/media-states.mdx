@@ -18,10 +18,10 @@ Every video and image has one state at a time. This page explains each state and
 | Queued | `FILE_STATUS_UPLOADED` | The file is stored and waiting for processing to start. |
 | Processing | `FILE_STATUS_PROCESSING`, `FILE_STATUS_PREPARING` | Processing has started. |
 | Ready | `FILE_STATUS_READY` | The item is published and available. |
-| Failed | `FILE_STATUS_ERROR` | Processing failed. |
+| Failed | `FILE_STATUS_ERROR` | Video preprocessing or image processing failed, or the upload failed or expired before the file was stored. |
 | Deleted | None | The item is gone from the dashboard and the API, which returns 404. |
 
-Processing has no time limit yet, so an item can stay in this state if a job stalls. If that happens, delete the item and upload it again.
+Each video rendition (one output quality) gets up to 3 attempts. If a rendition still fails, the video stays in Processing and never becomes Failed. Processing also has no time limit yet, so an item can stay in this state if a job stalls. In either case, delete the item and upload it again.
 
 ---
 
