@@ -1,0 +1,62 @@
+---
+title: Media States and Actions
+description: What each media state means, and what delete and upload pause actually do.
+---
+
+
+import {Callout} from "@/snippets";
+
+Every video and image has one state at a time. This page explains each state and what you can do while an item is in it.
+
+---
+
+## States
+
+| State | API status | Meaning |
+|---|---|---|
+| Uploading | `uploading` | Waiting for the file to arrive. The transfer runs in your browser or client. |
+| Queued | `uploaded` | The file is stored and waiting for processing to start. |
+| Processing | `processing`, `preparing` | Processing has started. |
+| Ready | `ready` | The item is published and available. |
+| Failed | `error` | Processing failed. |
+| Deleted | None | The item is gone from the dashboard and the API, which returns 404. |
+
+Processing has no time limit yet, so an item can stay in this state if a job stalls. If that happens, delete the item and upload it again.
+
+---
+
+## Stopping a Transfer
+
+Pausing an upload only affects the transfer. It stops the bytes leaving your browser and tells the server nothing.
+
+- The item stays in Uploading, and becomes Failed if the upload link expires before the file arrives.
+- If the file finished arriving just before you paused, it is processed as normal.
+- There is no cancel button for uploads.
+
+To be sure a video is not processed, delete it. An image can only be deleted once its upload has finished.
+
+---
+
+## Stopping Server Work
+
+There is no way to pause or cancel processing. Deleting the item is the only way to stop it, and deletion can't be undone.
+
+| Delete an item that is | Work on the server | Published? |
+|---|---|---|
+| Queued | Never starts | No |
+| Processing | Remaining steps never start. The step already running finishes, and its result is discarded | No |
+| Ready or Failed | Nothing to stop | Removed from the dashboard and the API |
+
+Deleted items stop counting toward your storage quota straight away. Upload usage already recorded is not reversed.
+
+<Callout type="warn">
+  Deleting does not remove stored files immediately, and an existing direct link to a file may keep working after deletion.
+</Callout>
+
+---
+
+## Failed Items
+
+Retrying a failed job is not available yet. To process the file again, delete the failed item and upload the file again.
+
+The **Retry** button on the asset detail page only reloads the page. It does not restart processing.
