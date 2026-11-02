@@ -15,13 +15,13 @@ Jedes Video und jedes Bild hat immer genau einen Status. Diese Seite erklärt je
 | Status | API-Status | Bedeutung |
 |---|---|---|
 | Wird hochgeladen | `FILE_STATUS_UPLOADING` | Die Datei wird noch erwartet. Die Übertragung läuft in Ihrem Browser oder Client. |
-| In Warteschlange | `FILE_STATUS_UPLOADED` | Die Datei ist gespeichert und wartet auf den Start der Verarbeitung. |
-| In Verarbeitung | `FILE_STATUS_PROCESSING`, `FILE_STATUS_PREPARING` | Die Verarbeitung hat begonnen. |
+| Hochgeladen | `FILE_STATUS_UPLOADED` | Die Datei ist gespeichert und wartet auf den Start der Verarbeitung. |
+| Wird verarbeitet | `FILE_STATUS_PROCESSING`, `FILE_STATUS_PREPARING` | Die Verarbeitung hat begonnen. |
 | Bereit | `FILE_STATUS_READY` | Das Element ist veröffentlicht und verfügbar. |
 | Fehlgeschlagen | `FILE_STATUS_ERROR` | Die Vorverarbeitung des Videos oder die Bildverarbeitung ist fehlgeschlagen, oder der Upload ist fehlgeschlagen oder abgelaufen, bevor die Datei gespeichert wurde. |
 | Gelöscht | Keiner | Das Element ist aus dem Dashboard und der API entfernt. Die API antwortet mit 404. |
 
-Jede Video-Rendition (eine Ausgabequalität) wird bis zu 3-mal versucht. Schlägt eine Rendition weiterhin fehl, bleibt das Video im Status „In Verarbeitung“ und wechselt nie zu „Fehlgeschlagen“. Für die Verarbeitung gibt es außerdem noch kein Zeitlimit. Ein Element kann also in diesem Status bleiben, wenn ein Job hängen bleibt. Löschen Sie das Element in beiden Fällen und laden Sie es erneut hoch.
+Jede Video-Rendition (eine Ausgabequalität) wird bis zu 3-mal versucht. Schlägt eine Rendition weiterhin fehl, bleibt das Video im Status „Wird verarbeitet“ und wechselt nie zu „Fehlgeschlagen“. Für die Verarbeitung gibt es außerdem noch kein Zeitlimit. Ein Element kann also in diesem Status bleiben, wenn ein Job hängen bleibt. Löschen Sie das Element in beiden Fällen und laden Sie es erneut hoch.
 
 ---
 
@@ -43,8 +43,8 @@ Die Verarbeitung lässt sich weder pausieren noch abbrechen. Sie stoppen sie nur
 
 | Löschen eines Elements im Status | Arbeit auf dem Server | Veröffentlicht? |
 |---|---|---|
-| In Warteschlange | Startet nie | Nein |
-| In Verarbeitung | Verbleibende Schritte starten nicht. Der laufende Schritt wird beendet, der Datensatz des Elements wird aber nicht aktualisiert | Nein |
+| Hochgeladen | Startet nie | Nein |
+| Wird verarbeitet | Verbleibende Schritte starten nicht. Der laufende Schritt wird beendet, der Datensatz des Elements wird aber nicht aktualisiert | Nein |
 | Bereit oder Fehlgeschlagen | Nichts zu stoppen | Aus dem Dashboard und der API entfernt |
 
 Gelöschte Elemente können bis zu 15 Minuten weiter für Ihr Speicherkontingent zählen, weil die Kontingentprüfung eine zwischengespeicherte Summe verwendet. Bereits erfasste Upload-Nutzung wird nicht zurückgenommen.
@@ -59,4 +59,4 @@ Gelöschte Elemente können bis zu 15 Minuten weiter für Ihr Speicherkontingent
 
 Ein fehlgeschlagener Job kann noch nicht wiederholt werden. Um die Datei erneut zu verarbeiten, löschen Sie das fehlgeschlagene Element und laden Sie die Datei erneut hoch.
 
-Die Schaltfläche **Retry** auf der Detailseite eines Assets lädt nur die Seite neu. Sie startet die Verarbeitung nicht neu.
+Die Schaltfläche **Erneut versuchen** auf der Detailseite eines Assets lädt nur die Seite neu. Sie startet die Verarbeitung nicht neu.
