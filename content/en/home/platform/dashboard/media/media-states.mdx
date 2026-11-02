@@ -47,7 +47,7 @@ There is no way to pause or cancel processing. Deleting the item is the only way
 | Processing | Remaining steps never start. The step already running finishes, and its result is discarded | No |
 | Ready or Failed | Nothing to stop | Removed from the dashboard and the API |
 
-Deleted items stop counting toward your storage quota straight away. Upload usage already recorded is not reversed.
+Deleted items can keep counting toward your storage quota for up to 15 minutes, because the quota check uses a cached total. Upload usage already recorded is not reversed.
 
 <Callout type="warn">
   Deleting does not remove stored files immediately, and an existing direct link to a file may keep working after deletion.
