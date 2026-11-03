@@ -13,6 +13,9 @@ const validLucideIcons = new Set(
     .map((key) => toKebabCase(key))
 );
 
+// Framework and custom SVG icons handled by Icon component
+const validCustomIcons = new Set(["react", "vue", "svelte", "angular", "lit", "core", "ui"]);
+
 // Converts PascalCase to kebab-case
 function toKebabCase(str: string): string {
   return str
@@ -86,7 +89,7 @@ function validateIcons(usages: IconUsage[], rootDir: string): string[] {
   const warnings: string[] = [];
 
   for (const usage of usages) {
-    if (!validLucideIcons.has(usage.icon)) {
+    if (!validLucideIcons.has(usage.icon) && !validCustomIcons.has(usage.icon)) {
       const relPath = relative(rootDir, usage.file);
       warnings.push(`  ⚠️  Unknown icon "${usage.icon}" in ${relPath}:${usage.line}`);
     }
