@@ -114,6 +114,41 @@ export const BRAND_THEMES: Record<string, BrandTheme> = {
     titleHover: "group-hover:text-[#CC342D] dark:group-hover:text-[#f87171]",
     arrowHover: "group-hover:text-[#CC342D] dark:group-hover:text-[#f87171]",
   },
+  typescript: {
+    badge: "border-[#3178C6]/30 bg-[#3178C6]/10 shadow-[#3178C6]/10 dark:border-[#3178C6]/30 dark:bg-[#3178C6]/15",
+    cardHoverBorder: "hover:border-[#3178C6]/50",
+    cardHoverShadow: "hover:shadow-[#3178C6]/10",
+    titleHover: "group-hover:text-[#0284c7] dark:group-hover:text-[#38bdf8]",
+    arrowHover: "group-hover:text-[#0284c7] dark:group-hover:text-[#38bdf8]",
+  },
+  ts: {
+    badge: "border-[#3178C6]/30 bg-[#3178C6]/10 shadow-[#3178C6]/10 dark:border-[#3178C6]/30 dark:bg-[#3178C6]/15",
+    cardHoverBorder: "hover:border-[#3178C6]/50",
+    cardHoverShadow: "hover:shadow-[#3178C6]/10",
+    titleHover: "group-hover:text-[#0284c7] dark:group-hover:text-[#38bdf8]",
+    arrowHover: "group-hover:text-[#0284c7] dark:group-hover:text-[#38bdf8]",
+  },
+  javascript: {
+    badge: "border-[#F7DF1E]/30 bg-[#F7DF1E]/10 shadow-[#F7DF1E]/10 dark:border-[#F7DF1E]/30 dark:bg-[#F7DF1E]/15",
+    cardHoverBorder: "hover:border-[#F7DF1E]/50",
+    cardHoverShadow: "hover:shadow-[#F7DF1E]/10",
+    titleHover: "group-hover:text-[#ca8a04] dark:group-hover:text-[#facc15]",
+    arrowHover: "group-hover:text-[#ca8a04] dark:group-hover:text-[#facc15]",
+  },
+  js: {
+    badge: "border-[#F7DF1E]/30 bg-[#F7DF1E]/10 shadow-[#F7DF1E]/10 dark:border-[#F7DF1E]/30 dark:bg-[#F7DF1E]/15",
+    cardHoverBorder: "hover:border-[#F7DF1E]/50",
+    cardHoverShadow: "hover:shadow-[#F7DF1E]/10",
+    titleHover: "group-hover:text-[#ca8a04] dark:group-hover:text-[#facc15]",
+    arrowHover: "group-hover:text-[#ca8a04] dark:group-hover:text-[#facc15]",
+  },
+  node: {
+    badge: "border-[#5FA04E]/30 bg-[#5FA04E]/10 shadow-[#5FA04E]/10 dark:border-[#5FA04E]/30 dark:bg-[#5FA04E]/15",
+    cardHoverBorder: "hover:border-[#5FA04E]/50",
+    cardHoverShadow: "hover:shadow-[#5FA04E]/10",
+    titleHover: "group-hover:text-[#16a34a] dark:group-hover:text-[#4ade80]",
+    arrowHover: "group-hover:text-[#16a34a] dark:group-hover:text-[#4ade80]",
+  },
 };
 
 export function getBrandTheme(brand?: string, icon?: IconName): BrandTheme | undefined {

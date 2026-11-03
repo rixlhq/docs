@@ -7,6 +7,7 @@ import {
   CsharpIcon,
   GoIcon,
   JavaIcon,
+  JavaScriptIcon,
   LitIcon,
   PhpIcon,
   PythonIcon,
@@ -15,6 +16,7 @@ import {
   RustIcon,
   SvelteIcon,
   TerraformIcon,
+  TypeScriptIcon,
   UiIcon,
   VueIcon,
 } from "@/components/icons/framework-icons";
@@ -35,7 +37,12 @@ export type FrameworkIconName =
   | "rust"
   | "terraform"
   | "php"
-  | "ruby";
+  | "ruby"
+  | "typescript"
+  | "javascript"
+  | "node"
+  | "ts"
+  | "js";
 
 const FRAMEWORK_ICON_MAP: Record<string, (props: ComponentProps<"svg">) => ReactElement> = {
   react: ReactIcon,
@@ -53,6 +60,11 @@ const FRAMEWORK_ICON_MAP: Record<string, (props: ComponentProps<"svg">) => React
   terraform: TerraformIcon,
   php: PhpIcon,
   ruby: RubyIcon,
+  typescript: TypeScriptIcon,
+  javascript: JavaScriptIcon,
+  node: TypeScriptIcon,
+  ts: TypeScriptIcon,
+  js: JavaScriptIcon,
 };
 
 type IconProps = Omit<LucideProps, "name"> &

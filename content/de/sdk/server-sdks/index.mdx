@@ -1,6 +1,6 @@
 ---
 title: "Server-SDKs"
-description: "Offizielle Rixl API-Clients und Infrastruktur-Provider für Go, Python, Java, .NET, Rust, Terraform, PHP und Ruby."
+description: "Offizielle Rixl API-Clients und Infrastruktur-Provider für TypeScript, Go, Python, Java, .NET, Rust, Terraform, PHP und Ruby."
 ---
 
 import {Callout, Card, Columns} from "@/snippets";
@@ -10,7 +10,10 @@ RIXL stellt offizielle, produktionsreife Server-SDKs und einen Infrastruktur-Pro
 
 ## Unterstützte Sprachen & Werkzeuge
 
-<Columns cols={4}>
+<Columns cols={3}>
+  <Card title="TypeScript / Node.js" href="#typescript" icon="typescript">
+    `@rixl/sdk` auf npm Typsicherer REST-API-Client und Laufzeit-Authentifizierung.
+  </Card>
   <Card title="Go" href="#go" icon="go">
     `github.com/rixlhq/rixl-go` Go 1.26+ Client mit Context-Unterstützung.
   </Card>
@@ -56,7 +59,34 @@ export RIXL_API_KEY="rixl_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 ## Schnellstart
 
-<Tabs items={["Go", "Python", "Java", "C#", "Rust", "Terraform", "PHP", "Ruby"]}>
+<Tabs items={["TypeScript", "Go", "Python", "Java", "C#", "Rust", "Terraform", "PHP", "Ruby"]}>
+  <Tab value="TypeScript">
+```bash
+npm i @rixl/sdk
+```
+
+```ts
+import {createClient, imagesV1ImageServiceListImages} from "@rixl/sdk";
+
+const client = createClient({
+  baseUrl: "https://api.rixl.com",
+  auth: process.env.RIXL_API_KEY,
+});
+
+const {data, error} = await imagesV1ImageServiceListImages({
+  client,
+  path: {project_id: "your_project_id"},
+  query: {"pagination.limit": 10},
+});
+
+if (error) {
+  console.error("Fehler beim Abrufen der Bilder:", error);
+} else {
+  console.log(data?.images?.map((image) => image.id));
+}
+```
+
+  </Tab>
   <Tab value="Go">
 ```bash
 go get github.com/rixlhq/rixl-go
@@ -332,6 +362,30 @@ end
 ---
 
 ## Sprach-Leitfäden
+
+### TypeScript
+
+Das offizielle TypeScript- und JavaScript-SDK (`@rixl/sdk`) bietet einen modernen, vollständig typisierten REST-Client für Node.js-Backends, Serverless-Runtimes und Full-Stack-Frameworks.
+
+- **Paket**: `@rixl/sdk`
+- **npm**: [npmjs.com/package/@rixl/sdk](https://www.npmjs.com/package/@rixl/sdk)
+- **Repository**: [github.com/rixlhq/rixl-js](https://github.com/rixlhq/rixl-js)
+- **Voraussetzungen**: Node.js 18+, Bun 1.0+, Deno 1.30+ oder moderne ESM-Umgebungen
+
+#### Installation
+
+```bash
+npm i @rixl/sdk
+# oder: pnpm i @rixl/sdk / bun i @rixl/sdk / vp i @rixl/sdk
+```
+
+#### Hauptmerkmale
+
+- **Strikte TypeScript-Typen**: Vollständig typisierte Methoden, Pfadparameter, Query-Schemas und Antwortmodelle, generiert aus OpenAPI.
+- **Universeller Fetch**: Funktioniert nahtlos in Node.js, Bun, Deno, Next.js, Cloudflare Workers und Browser-Umgebungen.
+- **Dynamische Authentifizierung**: Akzeptiert einen String-Token oder eine asynchrone Funktion zur dynamischen Token-Erneuerung.
+
+---
 
 ### Go
 

@@ -30,6 +30,11 @@ const validCustomIcons = new Set([
   "terraform",
   "php",
   "ruby",
+  "typescript",
+  "javascript",
+  "node",
+  "ts",
+  "js",
 ]);
 
 // Converts PascalCase to kebab-case
