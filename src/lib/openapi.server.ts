@@ -1,6 +1,6 @@
 import "@tanstack/react-start/server-only";
 import {createOpenAPI} from "fumadocs-openapi/server";
-import {mkdir, readFile, writeFile} from "node:fs/promises";
+import {mkdir, readFile, stat, writeFile} from "node:fs/promises";
 import {dirname, join, resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 import {parse} from "yaml";
@@ -19,8 +19,7 @@ import {API_BASE_URL} from "./api-base-url.ts";
  * the spec repo; `openapi.json` is a generated convenience copy. The spec can
  * also be read from a local file by setting `RIXL_OPENAPI_SPEC_URL`.
  */
-const SPEC_URL =
-  process.env.RIXL_OPENAPI_SPEC_URL ?? "https://raw.githubusercontent.com/rixlhq/openapi/main/openapi.yaml";
+const SPEC_URL = process.env.RIXL_OPENAPI_SPEC_URL ?? "https://raw.githubusercontent.com/rixlhq/openapi/main/openapi.yaml";
 
 const OPENAPI_DOCUMENT_ID = "rixl-api";
 
@@ -98,24 +97,44 @@ function assertValidSpec(document: Record<string, unknown>): void {
   }
 }
 
+const DEV_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+async function readCachedDocument(cachePath: string, maxAgeMs?: number): Promise<Record<string, unknown> | undefined> {
+  try {
+    if (maxAgeMs !== undefined) {
+      const stats = await stat(cachePath);
+      if (Date.now() - stats.mtimeMs > maxAgeMs) return undefined;
+    }
+    const contents = await readFile(cachePath, "utf8");
+    return JSON.parse(contents) as Record<string, unknown>;
+  } catch {
+    return undefined;
+  }
+}
+
 async function loadDocument(): Promise<Record<string, unknown>> {
   const projectRoot = await resolveProjectRoot();
   const cachePath = join(projectRoot, "node_modules", ".cache", "rixl-openapi.json");
-  let document: Record<string, unknown>;
+  let document: Record<string, unknown> | undefined;
 
-  try {
-    document = await fetchSpec(projectRoot);
-    assertValidSpec(document);
-    await mkdir(dirname(cachePath), {recursive: true});
-    await writeFile(cachePath, JSON.stringify(document));
-  } catch (error) {
-    // Serving the last good copy beats failing the build outright; it is only
-    // ever as stale as the previous successful build.
-    const cached = await readFile(cachePath, "utf8").catch(() => undefined);
-    if (cached === undefined) throw error;
+  if (process.env.NODE_ENV !== "production" && process.env.RIXL_REFRESH_SPEC !== "true") {
+    document = await readCachedDocument(cachePath, DEV_CACHE_TTL_MS);
+  }
 
-    console.warn("[openapi] using the cached spec from the last successful build:", error);
-    document = JSON.parse(cached) as Record<string, unknown>;
+  if (!document) {
+    try {
+      document = await fetchSpec(projectRoot);
+      assertValidSpec(document);
+      await mkdir(dirname(cachePath), {recursive: true});
+      await writeFile(cachePath, JSON.stringify(document));
+    } catch (error) {
+      // Serving the last good copy beats failing the build outright; it is only
+      // ever as stale as the previous successful build.
+      document = await readCachedDocument(cachePath);
+      if (document === undefined) throw error;
+
+      console.warn("[openapi] using the cached spec from the last successful build:", error);
+    }
   }
 
   return normalizeApiTags(withDefaultApiHost(withoutInternalPaths(document)));

@@ -18,6 +18,7 @@ export const docs = defineDocs({
 });
 
 export default defineConfig({
+  experimentalBuildCache: "node_modules/.cache/fumadocs",
   plugins: [lastModified()],
   mdxOptions: {
     // MDX options

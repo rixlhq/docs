@@ -165,6 +165,9 @@ export default defineConfig({
     mdx(await import("./source.config.ts")),
     tailwindcss(),
     tanstackStart({
+      serverFns: {
+        disableCsrfMiddlewareWarning: true,
+      },
       spa: {
         enabled: true,
         // Custom mask path: the default "/" collides with our prerendered

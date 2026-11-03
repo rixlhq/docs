@@ -79,28 +79,62 @@ interface IconUsage {
   line: number;
 }
 
-function extractIconsFromMdx(rootDir: string): {icons: Set<string>; usages: IconUsage[]} {
+interface FileIcons {
+  icons: Set<string>;
+  usages: IconUsage[];
+}
+
+const fileIconCache = new Map<string, FileIcons>();
+
+function parseFileIcons(file: string): FileIcons {
   const icons = new Set<string>();
   const usages: IconUsage[] = [];
-  const contentDir = join(rootDir, CONTENT_DIR);
+  if (!existsSync(file)) return {icons, usages};
 
-  // Pattern to match icon="icon-name" or icon='icon-name'
+  const content = readFileSync(file, "utf-8");
   const iconPattern = /icon=["']([a-z0-9-]+)["']/gi;
+  const lines = content.split("\n");
 
-  const mdxFiles = findMdxFiles(contentDir);
-  for (const file of mdxFiles) {
-    const content = readFileSync(file, "utf-8");
-    const lines = content.split("\n");
-
-    for (let lineNum = 0; lineNum < lines.length; lineNum++) {
-      const line = lines[lineNum];
-      let match;
-      while ((match = iconPattern.exec(line)) !== null) {
-        const iconName = match[1].toLowerCase();
-        icons.add(iconName);
-        usages.push({icon: iconName, file, line: lineNum + 1});
-      }
+  for (let lineNum = 0; lineNum < lines.length; lineNum++) {
+    const line = lines[lineNum];
+    let match;
+    while ((match = iconPattern.exec(line)) !== null) {
+      const iconName = match[1].toLowerCase();
+      icons.add(iconName);
+      usages.push({icon: iconName, file, line: lineNum + 1});
     }
+  }
+
+  return {icons, usages};
+}
+
+function updateFileCache(rootDir: string, changedFile?: string): void {
+  if (changedFile) {
+    if (existsSync(changedFile)) {
+      fileIconCache.set(changedFile, parseFileIcons(changedFile));
+    } else {
+      fileIconCache.delete(changedFile);
+    }
+    return;
+  }
+
+  const contentDir = join(rootDir, CONTENT_DIR);
+  const mdxFiles = findMdxFiles(contentDir);
+  fileIconCache.clear();
+  for (const file of mdxFiles) {
+    fileIconCache.set(file, parseFileIcons(file));
+  }
+}
+
+function extractIconsFromMdx(rootDir: string, changedFile?: string): {icons: Set<string>; usages: IconUsage[]} {
+  updateFileCache(rootDir, changedFile);
+
+  const icons = new Set<string>();
+  const usages: IconUsage[] = [];
+
+  for (const entry of fileIconCache.values()) {
+    for (const icon of entry.icons) icons.add(icon);
+    usages.push(...entry.usages);
   }
 
   return {icons, usages};
@@ -156,8 +190,8 @@ export type IconName = keyof typeof iconMap;
 `;
 }
 
-function regenerateIcons(rootDir: string, silent = false): void {
-  const {icons, usages} = extractIconsFromMdx(rootDir);
+function regenerateIcons(rootDir: string, changedFile?: string, silent = false): void {
+  const {icons, usages} = extractIconsFromMdx(rootDir, changedFile);
   const outputPath = join(rootDir, OUTPUT_FILE);
 
   // Validate icons and show warnings
@@ -208,19 +242,19 @@ export function extractIconsPlugin(): Plugin {
 
       server.watcher.on("change", (file) => {
         if (file.endsWith(".mdx")) {
-          regenerateIcons(rootDir, true);
+          regenerateIcons(rootDir, file, true);
         }
       });
 
       server.watcher.on("add", (file) => {
         if (file.endsWith(".mdx")) {
-          regenerateIcons(rootDir, true);
+          regenerateIcons(rootDir, file, true);
         }
       });
 
       server.watcher.on("unlink", (file) => {
         if (file.endsWith(".mdx")) {
-          regenerateIcons(rootDir, true);
+          regenerateIcons(rootDir, file, true);
         }
       });
     },
