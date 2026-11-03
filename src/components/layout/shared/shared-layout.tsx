@@ -8,7 +8,7 @@ import {SidebarBanner} from "./sidebar-banner";
 import {SidebarFolderItem} from "./sidebar-folder-item";
 import {Sidebar, SidebarProvider, SidebarTrigger, useSidebar} from "fumadocs-ui/layouts/docs/slots/sidebar";
 import {FullSearchTrigger, SearchTrigger} from "@/components/search-trigger";
-import {SidebarIcon} from "lucide-react";
+import {Menu} from "lucide-react";
 import {cn} from "cn";
 import {buttonVariants} from "@/components/ui/button";
 import {m} from "@/paraglide/messages";
@@ -108,7 +108,7 @@ function MobileSidebarTrigger() {
         "p-2 md:hidden"
       )}
     >
-      <SidebarIcon className="size-5" />
+      <Menu className="size-5" />
     </SidebarTrigger>
   );
 }
