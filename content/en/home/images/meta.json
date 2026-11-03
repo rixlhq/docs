@@ -1,5 +1,8 @@
 {
-  "title": "Image Optimization",
+  "title": "Images",
   "description": "Transform and deliver web-optimized images with automatic AVIF and WebP",
-  "pages": ["overview", "upload-and-transform"]
+  "pages": [
+    "overview",
+    "upload-and-transform"
+  ]
 }

@@ -3,5 +3,19 @@
   "title": "Home",
   "description": "Complete guide to the RIXL media processing platform",
   "pagesIndex": "index",
-  "pages": ["getting-started", "video", "images", "feeds", "dashboard", "account-teams", "developer", "billing", "legal"]
+  "pages": [
+    "getting-started",
+    "---Media---",
+    "video",
+    "images",
+    "feeds",
+    "---Dashboard & Management---",
+    "dashboard",
+    "account-teams",
+    "---Developers & APIs---",
+    "developer",
+    "billing",
+    "---Legal & Compliance---",
+    "legal"
+  ]
 }

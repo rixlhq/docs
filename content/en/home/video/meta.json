@@ -1,5 +1,11 @@
 {
-  "title": "Video Processing",
-  "description": "Automated video transcoding, quality tiers, and adaptive HLS streaming",
-  "pages": ["overview", "quality-tiers", "supported-formats", "upload-implementation", "monitoring-status"]
+  "title": "Videos",
+  "description": "Automated transcoding, quality tiers, and adaptive HLS streaming",
+  "pages": [
+    "overview",
+    "quality-tiers",
+    "supported-formats",
+    "upload-implementation",
+    "monitoring-status"
+  ]
 }

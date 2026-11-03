@@ -5,64 +5,67 @@ description: "Welcome to RIXL documentation. Explore video transcoding, image op
 
 import {Callout, Card, Columns} from "@/snippets";
 
-Welcome to the **RIXL documentation**. Build fast, responsive media experiences with automated video transcoding, intelligent image delivery, and drop-in frontend SDKs.
+Welcome to the **RIXL documentation**. Explore our media processing pipeline, management console, and developer tools.
 
-## Core Media Platform
+<Callout type="tip" title="New to RIXL?">
+  Follow the [Getting Started Guide](/en/home/getting-started/quick-start) to set up your project and upload your first media file in under 5 minutes.
+</Callout>
+
+## Media
+
+Transform, transcode, and deliver high-performance visual media at scale.
 
 <Columns cols={3}>
-  <Card title="Getting Started" href="/en/home/getting-started/overview" icon="rocket">
-    Learn the basics, architecture, and set up your first project.
+  <Card title="Videos" href="/en/home/video/overview" icon="video">
+    Adaptive HLS video streaming, automated transcoding, quality tiers, and direct upload implementation.
   </Card>
-  <Card title="Video Streaming" href="/en/home/video/overview" icon="video">
-    Transcoding, quality tiers, adaptive HLS streams, and direct uploads.
+  <Card title="Images" href="/en/home/images/overview" icon="image">
+    Modern format conversion (AVIF/WebP), responsive image sizing, and blur placeholders.
   </Card>
-  <Card title="Image Optimization" href="/en/home/images/overview" icon="image">
-    Automatic AVIF/WebP conversion, responsive sizing, and smart placeholders.
+  <Card title="Feeds" href="/en/home/feeds/overview" icon="archive">
+    Social-style posts, media collections, and dynamic infinite feed publishing.
   </Card>
 </Columns>
 
-## Management & Collaboration
+## Dashboard & Management
+
+Control your media infrastructure, teams, and projects through the web console.
 
 <Columns cols={3}>
-  <Card title="Feeds & Posts" href="/en/home/feeds/overview" icon="archive">
-    Create dynamic media feeds and publish social-style posts.
+  <Card title="Projects" href="/en/home/dashboard/projects/overview" icon="folder-plus">
+    Create workspaces, organize project resources, and configure project settings.
   </Card>
-  <Card title="Dashboard & Projects" href="/en/home/dashboard/overview" icon="monitor">
-    Manage project workspaces, media assets, and storage in the web console.
+  <Card title="Media Library" href="/en/home/dashboard/media/overview" icon="monitor">
+    Upload, inspect, tag, and manage media assets through the dashboard.
   </Card>
   <Card title="Account & Teams" href="/en/home/account-teams/overview" icon="users">
-    Organizations, team member invitations, roles, and account security.
+    Organizations, member invitations, role permissions, and security settings.
   </Card>
 </Columns>
 
-## Developer Tools & Billing
+## Developers & APIs
+
+Build programmatic media workflows and integrate drop-in UI players.
 
 <Columns cols={3}>
   <Card title="Developer Guides" href="/en/home/developer/overview" icon="code">
-    API keys, authentication, rate limits, and error handling.
-  </Card>
-  <Card title="Billing & Plans" href="/en/home/billing/overview" icon="credit-card">
-    Subscription tiers, storage quotas, and invoice management.
-  </Card>
-  <Card title="Legal & Compliance" href="/en/home/legal/privacy-policy" icon="scale">
-    Privacy policy, terms of service, cookies, and acceptable use.
-  </Card>
-</Columns>
-
-## Client Libraries & SDKs
-
-<Columns cols={3}>
-  <Card title="Media React" href="/en/sdk/media-react" icon="layers">
-    Drop-in React video player, image component, and feed hooks.
-  </Card>
-  <Card title="Media Core" href="/en/sdk/media-core" icon="box">
-    Framework-agnostic TypeScript core client and types.
+    API keys, authentication, rate limits, and error schemas.
   </Card>
   <Card title="REST API Reference" href="/en/api" icon="file-text">
-    Complete interactive REST API specification and endpoints.
+    Full interactive OpenAPI specification for all backend endpoints.
+  </Card>
+  <Card title="Frontend SDKs" href="/en/sdk" icon="package">
+    Components and hooks for React, Vue, Svelte, Angular, Lit, and Node.js.
   </Card>
 </Columns>
 
-<Callout type="tip" title="Looking for a quick start?">
-  Jump straight into the [Getting Started Guide](/en/home/getting-started/quick-start) to upload your first media file in under 5 minutes.
-</Callout>
+## Plans & Compliance
+
+<Columns cols={2}>
+  <Card title="Billing & Plans" href="/en/home/billing/overview" icon="credit-card">
+    Subscription tiers, bandwidth and storage quotas, and invoice management.
+  </Card>
+  <Card title="Legal & Policies" href="/en/home/legal/privacy-policy" icon="scale">
+    Privacy policy, terms of service, cookie policy, and acceptable use guidelines.
+  </Card>
+</Columns>
