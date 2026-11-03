@@ -264,11 +264,12 @@
   }
 
   /* Keep OpenAPI method badges pinned to the right edge in sidebar items. */
-  #nd-sidebar a:has(> .font-mono) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+  .fd-page-tree-item-name {
+    display: inline-flex;
     align-items: center;
-    column-gap: calc(var(--spacing) * 2);
+    gap: calc(var(--spacing) * 1);
+    width: 100%;
+    min-width: 0;
   }
 
   #nd-toc[data-api-rail="true"] {
