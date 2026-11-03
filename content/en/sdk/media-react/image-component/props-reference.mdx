@@ -17,7 +17,6 @@ The unique image identifier from your RIXL dashboard. Upload your image to [dash
 <Image id="your-image-id" />
 ```
 
-This is mapped to `imageId` on the underlying `<rixl-image>` web component.
 
 ### `imageData` **(Optional)**
 
@@ -107,7 +106,7 @@ Marks this post as the active viewport item. `<Feed>` sets this automatically on
 
 **Type:** `(event: CustomEvent<{ event: AnalyticsEvent }>) => void`
 
-Called whenever the underlying `<rixl-image>` dispatches a `rixl-analytics` event. Use this to inspect or forward analytics payloads.
+Called whenever an analytics event is dispatched. Use this to inspect or forward analytics payloads.
 
 ```tsx
 <Image id="your-image-id" onRixlAnalytics={(e) => console.log(e.detail.event)} />

@@ -87,7 +87,7 @@ interface ImageProps {
 type Page = "feed" | "standalone" | "profile";
 ```
 
-The React `Image` wrapper maps `id` to `imageId` and forwards `alt`, `imageData`, `className`, and the analytics props to `<rixl-image>`.
+The React `Image` component accepts `id`, `alt`, `imageData`, `className`, and analytics props.
 
 ### FeedProps
 
@@ -627,5 +627,5 @@ interface BuildSessionStartParams {
 
 - `postAnalytics` queues events and flushes them in a micro-task.
 - The first flush automatically prepends one `session_start` event.
-- All millisecond durations are converted to `GoogleProtobufDuration` strings (`"5s"`, `"1.234s"`) before sending to `/analytics/v1/events`.
+- All millisecond durations are converted to duration strings (`"5s"`, `"1.234s"`) before sending to `/analytics/v1/events`.
 - `content_type` is sent as `MEDIA_TYPE_IMAGE` or `MEDIA_TYPE_VIDEO` on the wire.

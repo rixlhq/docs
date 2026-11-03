@@ -160,7 +160,7 @@ Monitor your video's progress through the processing pipeline:
   <Tab value="API Monitoring">
     ```bash
     # Check video details and processing status
-    curl -X GET "https://api.rixl.com/media/v1/projects/{project_id}/videos/{video_id}" \
+    curl -X GET "https://api.rixl.com/media/v1/videos/{video_id}" \
       -H "X-API-Key: YOUR_PROJECT_API_KEY"
     ```
 
@@ -389,7 +389,7 @@ Monitor your video's progress through the processing pipeline:
       -H "Content-Type: video/mp4"
 
     # 3. Check status
-    curl -X GET "https://api.rixl.com/media/v1/projects/{project_id}/videos/{video_id}" \
+    curl -X GET "https://api.rixl.com/media/v1/videos/{video_id}" \
       -H "X-API-Key: YOUR_PROJECT_API_KEY"
     ```
 
@@ -422,7 +422,7 @@ Monitor your video's progress through the processing pipeline:
     <strong>Processing Delays:</strong>
   </p>
   <ul>
-    <li>Check current queue status via API</li>
+    <li>Check video processing status via API</li>
     <li>Contact support for processing over 2 hours</li>
     <li>Consider using the Basic tier for faster turnaround</li>
   </ul>

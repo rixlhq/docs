@@ -362,12 +362,12 @@ import {Image} from "@rixl/media-react";
 
 ```javascript
 // Check video processing status
-const waitForVideoReady = async (projectId, apiKey, videoId) => {
+const waitForVideoReady = async (apiKey, videoId) => {
   const pollInterval = 3000; // 3 seconds
 
   while (true) {
     const res = await fetch(
-      `https://api.rixl.com/media/v1/projects/${projectId}/videos/${videoId}`,
+      `https://api.rixl.com/media/v1/videos/${videoId}`,
       { headers: { 'X-API-Key': apiKey } }
     );
     const { file } = await res.json();

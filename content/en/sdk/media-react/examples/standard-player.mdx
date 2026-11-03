@@ -6,7 +6,7 @@ description: "Complete guide to the standard video player with built-in RIXL con
 import {Video} from "@/snippets";
 import {Callout} from "fumadocs-ui/components/callout";
 
-The standard video player provides a complete, professional media experience using the RIXL Lit player with adaptive HLS streaming. This is the most common implementation for content platforms, educational sites, and any application requiring full video playback capabilities.
+The standard video player provides a complete, professional media experience using the RIXL video player with adaptive HLS streaming. This is the most common implementation for content platforms, educational sites, and any application requiring full video playback capabilities.
 
 ## Live Example
 
@@ -39,7 +39,7 @@ function StandardVideoPlayer() {
 
 ### Playback
 
-The `Video` component renders the custom `<rixl-video>` element. It loads the HLS manifest returned by the RIXL API and falls back to `hls.js` where native HLS support is missing. Use `controls`, `theme`, `progressBar`, `allowFullscreen`, `allowPictureInPicture`, `chapters`, `heatmap`, and other UI props to configure the built-in player.
+The `Video` component provides adaptive video playback. It loads the HLS manifest returned by the RIXL API and falls back to `hls.js` where native HLS support is missing. Use `controls`, `theme`, `progressBar`, `allowFullscreen`, `allowPictureInPicture`, `chapters`, `heatmap`, and other UI props to configure the built-in player.
 
 ### Analytics
 
@@ -103,6 +103,6 @@ function ResponsivePlayer() {
 </Callout>
 
 <Callout type="info">
-  **Player UI**: `theme`, `controls`, `progressBar`, `allowFullscreen`, `heatmap`, `chapters`, `resumeProgress`, and `volume` are all forwarded
-  to the Lit element. See the [Props Reference](/en/sdk/media-react/video-component/props-reference) for the full list.
+  **Player UI**: `theme`, `controls`, `progressBar`, `allowFullscreen`, `heatmap`, `chapters`, `resumeProgress`, and `volume` are all
+  supported on the `Video` component. See the [Props Reference](/en/sdk/media-react/video-component/props-reference) for the full list.
 </Callout>

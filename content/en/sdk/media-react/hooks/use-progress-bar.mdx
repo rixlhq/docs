@@ -51,4 +51,4 @@ function NativeVideoProgress() {
 
 - This hook does not return `duration`, `isPlaying`, or other playback state.
 - Use it when you need the SDK's drag handling but you already control the raw media element yourself.
-- The new Lit `Video` wrapper does not expose a DOM ref; for a progress bar with it, use `onRixlAnalytics` to observe `watch` events, or use a `VideoPlayer` scope with a raw `<video>` element.
+- The standalone `<Video>` component does not expose a direct DOM ref; for a custom progress bar, use `onRixlAnalytics` to observe `watch` events, or use a `VideoPlayer` scope with a raw `<video>` element.

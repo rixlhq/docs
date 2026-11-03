@@ -25,7 +25,7 @@ After uploading a video to RIXL, the platform inspects the source file and trans
 
   <Tab value="API Request">
     ```bash
-    curl -X GET "https://api.rixl.com/media/v1/projects/{project_id}/videos/{video_id}" \
+    curl -X GET "https://api.rixl.com/media/v1/videos/{video_id}" \
       -H "X-API-Key: YOUR_PROJECT_API_KEY" \
       -H "Accept: application/json"
     ```
@@ -99,12 +99,11 @@ export interface VideoDetails {
 }
 
 export async function getVideo(
-  projectId: string,
   apiKey: string,
   videoId: string
 ): Promise<VideoDetails> {
   const res = await fetch(
-    `https://api.rixl.com/media/v1/projects/${projectId}/videos/${videoId}`,
+    `https://api.rixl.com/media/v1/videos/${videoId}`,
     {
       headers: {
         'X-API-Key': apiKey,
@@ -165,14 +164,13 @@ import time
 import requests
 
 def wait_for_video_ready(
-    project_id: str,
     api_key: str,
     video_id: str,
     interval_sec: int = 5,
     timeout_sec: int = 600
 ) -> dict:
     start_time = time.time()
-    url = f"https://api.rixl.com/media/v1/projects/{project_id}/videos/{video_id}"
+    url = f"https://api.rixl.com/media/v1/videos/{video_id}"
     headers = {"X-API-Key": api_key, "Accept": "application/json"}
 
     while time.time() - start_time < timeout_sec:

@@ -7,7 +7,7 @@ import {Callout} from "@/snippets";
 
 ## Overview
 
-The `Feed` component provides a vertical, scrollable feed of RIXL image and video posts. It is implemented as a Lit web component (`<rixl-feed>`) and wrapped for React, so analytics, pagination, and scroll behavior are consistent across every framework.
+The `Feed` component provides a vertical, scrollable feed of RIXL image and video posts with consistent analytics, pagination, and scroll behavior.
 
 ### Quick Example
 
@@ -41,5 +41,5 @@ The Feed component is perfect for:
 - **Community platforms** with feed-based content distribution
 
 <Callout type="info">
-  Feed child posts are rendered as `<rixl-image>` and `<rixl-video>` web components. Their `feedId` and `postId` are set automatically by the feed.
+  Feed child posts are rendered automatically. Their `feedId` and `postId` are set automatically by the feed.
 </Callout>

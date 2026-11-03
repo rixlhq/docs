@@ -5,12 +5,7 @@ description: "Guide to implementing video, image, and feed analytics tracking"
 
 import {Callout} from "@/snippets";
 
-RIXL SDK analytics are implemented once in the Lit web components and exposed uniformly through every framework wrapper. Each `<rixl-image>`, `<rixl-video>`, and `<rixl-feed>` component dispatches a bubbling, composed `rixl-analytics` custom event with a typed `AnalyticsEvent` payload. In React you receive the same payload through `onRixlAnalytics`.
-
-<Callout type="info">
-  All analytics instrumentation lives in `@rixl/media-lit`. React, Svelte, Vue, and Angular wrappers are thin adapters that forward the
-  `rixl-analytics` event and map legacy prop names.
-</Callout>
+RIXL SDK components provide built-in telemetry for tracking user engagement and playback behavior. Each component dispatches analytics events with a typed `AnalyticsEvent` payload through the `onRixlAnalytics` callback.
 
 ## Enabling and disabling analytics
 
@@ -57,32 +52,9 @@ function FeedPage() {
 }
 ```
 
-## Lit / Vanilla JS usage
-
-Listen for the `rixl-analytics` custom event on the document or on a specific element:
-
-```html
-<script type="module">
-  import "@rixl/media-lit/video";
-
-  const video = document.querySelector("rixl-video");
-  video.addEventListener("rixl-analytics", (e) => {
-    console.log(e.detail.event);
-  });
-</script>
-
-<rixl-video video-id="video-id" analytics-page="standalone"></rixl-video>
-```
-
-```js
-document.addEventListener("rixl-analytics", (e) => {
-  console.log(e.detail.event);
-});
-```
-
 ## Page context and feed/post identifiers
 
-Set `analyticsPage`, `feedId`, and `postId` so events are correctly attributed. When a component is rendered inside `<rixl-feed>`, the feed automatically propagates `feed-id` and `post-id` to the child image and video elements.
+Set `analyticsPage`, `feedId`, and `postId` so events are correctly attributed. When a component is rendered inside `<Feed>`, the feed automatically propagates `feedId` and `postId` to child image and video components.
 
 ```tsx
 <Feed feedId="my-feed">{/* children receive feedId="my-feed" and postId automatically */}</Feed>
@@ -373,7 +345,7 @@ Events are sent as `POST /analytics/v1/events` with a top-level `AnalyticsV1Trac
 ```
 
 <Callout type="info">
-  `watch_duration_ms`, `video_position_ms`, `video_total_duration_ms`, `start_ms`, and `end_ms` are converted to `GoogleProtobufDuration`
+  `watch_duration_ms`, `video_position_ms`, `video_total_duration_ms`, `start_ms`, and `end_ms` are converted to duration
   strings (e.g. `"5s"`, `"1.234s"`) on the wire. `content_type` is sent as `MEDIA_TYPE_IMAGE` or `MEDIA_TYPE_VIDEO`.
 </Callout>
 

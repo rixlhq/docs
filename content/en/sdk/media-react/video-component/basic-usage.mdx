@@ -22,7 +22,6 @@ Every Video component needs at minimum:
 />
 ```
 
-The `id` prop is mapped to `videoId` on the underlying `<rixl-video>` web component.
 
 ## Simple Video Player
 
@@ -54,21 +53,6 @@ function AnalyticsVideo() {
     />
   );
 }
-```
-
-## Lit / Vanilla HTML
-
-```html
-<script type="module">
-  import "@rixl/media-lit/video";
-
-  const video = document.querySelector("rixl-video");
-  video.addEventListener("rixl-analytics", (e) => {
-    console.log(e.detail.event);
-  });
-</script>
-
-<rixl-video video-id="your-video-id" analytics-page="standalone"></rixl-video>
 ```
 
 ## Common Use Cases
@@ -165,5 +149,5 @@ See the [Player Controls](/en/sdk/media-react/video-component/player-controls) g
 </Callout>
 
 <Callout type="info">
-  **Custom themes**: Use `theme`, `controls`, `progressBar`, `allowFullscreen`, `heatmap`, `chapters`, and other UI props to configure the built-in player. All of these are forwarded to the Lit element.
+  **Custom themes**: Use `theme`, `controls`, `progressBar`, `allowFullscreen`, `heatmap`, `chapters`, and other UI props to configure the built-in player.
 </Callout>

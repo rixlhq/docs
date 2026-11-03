@@ -24,7 +24,7 @@ Every Image component needs at minimum:
 />
 ```
 
-The `id` prop is mapped to `imageId` on the underlying `<rixl-image>` web component. `className`, `alt`, and `imageData` are forwarded as expected. You can pass `id` or pre-fetched `imageData`.
+Pass `id` or pre-fetched `imageData` to display the image asset. `className` and `alt` are supported for styling and accessibility.
 
 ## Simple Image Display Example
 
@@ -56,21 +56,6 @@ function AnalyticsImage() {
     />
   );
 }
-```
-
-## Lit / Vanilla HTML
-
-```html
-<script type="module">
-  import "@rixl/media-lit/image";
-
-  const image = document.querySelector("rixl-image");
-  image.addEventListener("rixl-analytics", (e) => {
-    console.log(e.detail.event);
-  });
-</script>
-
-<rixl-image image-id="your-image-id" analytics-page="standalone"></rixl-image>
 ```
 
 ## Common Use Cases
