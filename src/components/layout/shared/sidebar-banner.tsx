@@ -67,23 +67,22 @@ interface CategoryTitleProps {
 }
 
 function CategoryTitle({href, name}: CategoryTitleProps) {
+  const content = <span className="truncate">{name}</span>;
+  const sharedClass = "flex min-h-8 min-w-0 flex-1 items-center rounded-md px-2 text-sm font-semibold text-fd-foreground";
+
   if (!href) {
-    return (
-      <span className="flex min-h-8 min-w-0 flex-1 items-center px-2 text-base font-semibold text-fd-foreground">
-        <span className="truncate">{name}</span>
-      </span>
-    );
+    return <span className={sharedClass}>{content}</span>;
   }
 
   return (
     <Link
       href={href}
       className={cn(
-        "flex min-h-8 min-w-0 flex-1 items-center rounded-md px-2 text-base font-semibold text-fd-foreground transition-colors",
-        "hover:bg-fd-accent hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
+        sharedClass,
+        "transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
       )}
     >
-      <span className="truncate">{name}</span>
+      {content}
     </Link>
   );
 }
@@ -97,22 +96,22 @@ export function SidebarBanner({backUrl}: SidebarBannerProps) {
 
   if (isHome) return null;
 
-  const url = useMemo(() => getFirstPageUrl(root), [root]);
+  const url = useMemo(() => {
+    if (root.name === "API") return `/${lang}/api`;
+    return getFirstPageUrl(root);
+  }, [root, lang]);
   const categoryUrl = url ?? backUrl;
 
   const homeLabel = lang && (locales as readonly string[]).includes(lang) ? m.home({}, {locale: lang as Locale}) : m.home();
+  const homeUrl = `/${lang}/home`;
 
   return (
     <div className="md:order-first mb-0 px-2">
-      {backUrl ? (
-        <div className="flex items-center gap-1">
-          <HomeButton href={backUrl} label={homeLabel} />
-          <span className="bg-fd-border mx-0.5 h-4 w-px shrink-0" aria-hidden="true" />
-          <CategoryTitle href={categoryUrl} name={root.name} />
-        </div>
-      ) : (
-        <CategoryTitle href={url} name={root.name} />
-      )}
+      <div className="flex items-center gap-1">
+        <HomeButton href={homeUrl} label={homeLabel} />
+        <span className="bg-fd-border mx-0.5 h-4 w-px shrink-0" aria-hidden="true" />
+        <CategoryTitle href={categoryUrl} name={root.name} />
+      </div>
     </div>
   );
 }

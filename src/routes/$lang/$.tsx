@@ -203,7 +203,7 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
         toc={toc}
         tableOfContent={{component: <TableOfContents />}}
         tableOfContentPopover={{component: <TableOfContentsPopover />}}
-        breadcrumb={{includeRoot: true, includePage: false}}
+        breadcrumb={{includeRoot: false, includePage: true}}
         slots={{breadcrumb: DocsBreadcrumb}}
         footer={{
           component: (

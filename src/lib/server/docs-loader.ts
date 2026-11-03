@@ -143,6 +143,7 @@ function extractSectionTree(root: Root, lang: string, section: string | undefine
   if (section === "api") {
     return {
       ...root,
+      name: "API",
       children: sectionFolder.children,
     };
   }
@@ -151,6 +152,7 @@ function extractSectionTree(root: Root, lang: string, section: string | undefine
   // Nested roots (e.g. media-react under sdk) are then picked by TreeContextProvider.
   return {
     ...root,
+    name: sectionFolder.name,
     children: [sectionFolder],
   };
 }

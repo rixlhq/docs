@@ -1,6 +1,5 @@
 "use client";
 
-import {ChevronRight} from "lucide-react";
 import Link from "fumadocs-core/link";
 import {usePathname} from "fumadocs-core/framework";
 import {useTreeContext} from "fumadocs-ui/contexts/tree";
@@ -16,44 +15,81 @@ export type DocsBreadcrumbProps = BreadcrumbOptions & {
   className?: string;
 };
 
-export function DocsBreadcrumb({includeRoot = true, includePage = false, className}: DocsBreadcrumbProps) {
+interface CrumbItemProps {
+  name: React.ReactNode;
+  url?: string;
+  isLast: boolean;
+  isFirst: boolean;
+}
+
+function CrumbItem({name, url, isLast, isFirst}: CrumbItemProps) {
+  return (
+    <li className={cn("flex items-center", isLast ? "min-w-0" : "shrink-0")}>
+      {!isFirst && (
+        <span className="text-fd-muted-foreground/50 mx-1.5 shrink-0 select-none" aria-hidden="true">
+          /
+        </span>
+      )}
+      {url && !isLast ? (
+        <Link href={url} className="hover:text-fd-foreground whitespace-nowrap transition-colors">
+          {name}
+        </Link>
+      ) : (
+        <span
+          className={cn(isLast ? "text-fd-foreground truncate font-medium" : "whitespace-nowrap")}
+          {...(isLast ? {"aria-current": "page"} : {})}
+        >
+          {name}
+        </span>
+      )}
+    </li>
+  );
+}
+
+interface RawCrumb {
+  name: React.ReactNode;
+  url?: string;
+}
+
+interface BuildCrumbsOptions {
+  lang: string;
+  rootName: React.ReactNode;
+  categoryUrl?: string;
+  items?: RawCrumb[];
+}
+
+function buildCrumbs({lang, rootName, categoryUrl, items = []}: BuildCrumbsOptions): RawCrumb[] {
+  const isHome = isHomeCategory(rootName, lang);
+  const filteredItems = items.filter((item) => item.name !== rootName && item.url !== categoryUrl);
+
+  return [
+    {name: m.home({}, {locale: lang as Locale}), url: `/${lang}/home`},
+    ...(!isHome && rootName ? [{name: rootName, url: categoryUrl}] : []),
+    ...filteredItems.map((item) => ({name: item.name, url: item.url})),
+  ];
+}
+
+export function DocsBreadcrumb({includeRoot = false, includePage = true, className}: DocsBreadcrumbProps) {
   const pathname = usePathname();
   const {root} = useTreeContext();
   const items = useBreadcrumb(pathname, root, {includeRoot, includePage});
   const [_, lang] = pathname.split("/");
 
-  if (!lang) return null;
-
-  // On the docs directory itself there is nothing to navigate back to.
-  if (items.length === 0 && (pathname === `/${lang}/home` || pathname === `/${lang}/home/`)) return null;
+  if (!lang || pathname === `/${lang}/home` || pathname === `/${lang}/home/`) return null;
 
   const isHome = isHomeCategory(root.name, lang);
-  const categoryUrl = !isHome ? getFirstPageUrl(root) : undefined;
-  const filteredItems = items.filter((item) => item.name !== root.name && item.url !== categoryUrl);
+  const categoryUrl = !isHome ? (root.name === "API" ? `/${lang}/api` : getFirstPageUrl(root)) : undefined;
+  const crumbs = buildCrumbs({lang, rootName: root.name, categoryUrl, items});
 
-  const crumbs = [
-    {name: m.home({}, {locale: lang as Locale}), url: `/${lang}/home`},
-    ...(!isHome && root.name ? [{name: root.name, url: categoryUrl}] : []),
-    ...filteredItems.map((item) => ({name: item.name, url: item.url})),
-  ];
+  if (crumbs.length <= 1) return null;
 
   return (
-    <div className={cn("flex flex-wrap items-center gap-1.5 text-sm text-fd-muted-foreground", className)}>
-      {crumbs.map((item, i) => {
-        const isLast = i === crumbs.length - 1;
-        return (
-          <div key={i} className="flex items-center gap-1.5">
-            {i !== 0 && <ChevronRight className="size-3.5 shrink-0" />}
-            {item.url && !isLast ? (
-              <Link href={item.url} className="truncate transition-opacity hover:opacity-80">
-                {item.name}
-              </Link>
-            ) : (
-              <span className={cn("truncate", isLast && "text-fd-foreground font-medium")}>{item.name}</span>
-            )}
-          </div>
-        );
-      })}
-    </div>
+    <nav aria-label="Breadcrumb" className={cn("min-w-0 pb-2 text-xs font-medium", className)}>
+      <ol className="flex flex-wrap items-center text-fd-muted-foreground">
+        {crumbs.map((item, i) => (
+          <CrumbItem key={i} name={item.name} url={item.url} isLast={i === crumbs.length - 1} isFirst={i === 0} />
+        ))}
+      </ol>
+    </nav>
   );
 }
