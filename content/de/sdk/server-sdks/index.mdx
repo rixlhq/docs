@@ -1,0 +1,551 @@
+---
+title: "Server-SDKs"
+description: "Offizielle Rixl API-Clients und Infrastruktur-Provider für Go, Python, Java, .NET, Rust, Terraform, PHP und Ruby."
+---
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+
+RIXL stellt offizielle, produktionsreife Server-SDKs und einen Infrastruktur-Provider bereit, die direkt aus unseren OpenAPI-Spezifikationen generiert werden. Ob Microservices, Serverless Functions, Hintergrund-Worker oder Infrastructure-as-Code – unsere SDKs bieten typsicheren und idiomatischen Zugriff auf die Rixl-Plattform.
+
+## Unterstützte Sprachen & Werkzeuge
+
+<Columns cols={4}>
+  <Card title="Go" href="#go" icon="go">
+    `github.com/rixlhq/rixl-go` Go 1.26+ Client mit Context-Unterstützung.
+  </Card>
+  <Card title="Python" href="#python" icon="python">
+    `rixl` auf PyPI Asynchroner Client mit Dataclasses und Kiota-Adapter.
+  </Card>
+  <Card title="Java" href="#java" icon="java">
+    `com.rixl:sdk` auf Maven Java 17+ Client mit OkHttp und typisierten Modellen.
+  </Card>
+  <Card title=".NET (C#)" href="#csharp" icon="csharp">
+    `Rixl.Sdk` auf NuGet .NET 8 Asynchroner Client mit stark typisierten Modellen.
+  </Card>
+  <Card title="Rust" href="#rust" icon="rust">
+    `rixl` auf crates.io Asynchrone Crate mit rustls und Bon-Buildern.
+  </Card>
+  <Card title="Terraform" href="#terraform" icon="terraform">
+    `rixlhq/rixl` in der Registry Feeds, Projekte und Schlüssel als Code verwalten.
+  </Card>
+  <Card title="PHP" href="#php" icon="php">
+    `rixl/sdk` auf Packagist PHP 8.2+ Client mit Composer und Guzzle.
+  </Card>
+  <Card title="Ruby" href="#ruby" icon="ruby">
+    `rixl` auf RubyGems Ruby 3.0+ Client mit Faraday-Adapter.
+  </Card>
+</Columns>
+
+---
+
+## Authentifizierung
+
+Alle Server-SDKs authentifizieren sich über einen API-Schlüssel aus dem [RIXL Dashboard](https://dashboard.rixl.com/settings/api-keys). Anfragen werden über den HTTP-Header `X-API-Key` autorisiert. Alternativ werden OAuth-Bearer-Tokens auf allen Endpunkten unterstützt.
+
+```bash
+export RIXL_API_KEY="rixl_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+<Callout type="warn">
+  Gib Server-API-Schlüssel niemals in clientseitigem Code, Frontend-Bundles oder öffentlichen Git-Repositories preis. Lade sie stets über
+  sichere Umgebungsvariablen oder einen Secret-Manager.
+</Callout>
+
+---
+
+## Schnellstart
+
+<Tabs items={["Go", "Python", "Java", "C#", "Rust", "Terraform", "PHP", "Ruby"]}>
+  <Tab value="Go">
+```bash
+go get github.com/rixlhq/rixl-go
+```
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/rixlhq/rixl-go/sdk"
+)
+
+func main() {
+	client := sdk.New(os.Getenv("RIXL_API_KEY"))
+	ctx := context.Background()
+
+	images, err := client.Images.ListImages(ctx, "proj_12345", nil)
+	if err != nil {
+		log.Fatalf("Fehler beim Abrufen der Bilder: %v", err)
+	}
+
+	for _, img := range images.Data {
+		fmt.Printf("Bild-ID: %s (Status: %s)\n", img.ID, img.Status)
+	}
+}
+```
+
+  </Tab>
+
+  <Tab value="Python">
+```bash
+pip install rixl
+```
+
+```python
+import asyncio
+import os
+from kiota_abstractions.authentication.api_key_authentication_provider import (
+    ApiKeyAuthenticationProvider,
+    KeyLocation,
+)
+from kiota_http.httpx_request_adapter import HttpxRequestAdapter
+from rixl import RixlClient
+
+async def main():
+    auth = ApiKeyAuthenticationProvider(
+        api_key=os.environ["RIXL_API_KEY"],
+        parameter_name="X-API-Key",
+        key_location=KeyLocation.Header,
+    )
+    adapter = HttpxRequestAdapter(auth)
+    adapter.base_url = "https://api.rixl.com"
+    client = RixlClient(adapter)
+
+    images = await client.media.v1.projects.by_project_id("proj_12345").images.get()
+    if images and images.data:
+        for img in images.data:
+            print(f"Bild-ID: {img.id} (Status: {img.status})")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+  </Tab>
+
+  <Tab value="Java">
+```xml
+<dependency>
+  <groupId>com.rixl</groupId>
+  <artifactId>sdk</artifactId>
+  <version>1.1.0</version>
+</dependency>
+```
+
+```java
+import com.microsoft.kiota.authentication.ApiKeyAuthenticationProvider;
+import com.microsoft.kiota.authentication.ApiKeyLocation;
+import com.microsoft.kiota.http.OkHttpRequestAdapter;
+import com.rixl.RixlClient;
+
+public class Main {
+    public static void main(String[] args) {
+        var auth = new ApiKeyAuthenticationProvider(
+            System.getenv("RIXL_API_KEY"),
+            "X-API-Key",
+            ApiKeyLocation.HEADER
+        );
+        var adapter = new OkHttpRequestAdapter(auth);
+        adapter.setBaseUrl("https://api.rixl.com");
+        var client = new RixlClient(adapter);
+
+        var images = client.media().v1().projects().byProject_id("proj_12345").images().get();
+        if (images != null && images.getData() != null) {
+            images.getData().forEach(img -> System.out.println("Bild-ID: " + img.getId()));
+        }
+    }
+}
+```
+
+  </Tab>
+
+  <Tab value="C#">
+```bash
+dotnet add package Rixl.Sdk
+```
+
+```csharp
+using System;
+using System.Threading.Tasks;
+using Microsoft.Kiota.Abstractions.Authentication;
+using Microsoft.Kiota.Http.HttpClientLibrary;
+using Rixl.Sdk;
+
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        var apiKey = Environment.GetEnvironmentVariable("RIXL_API_KEY")!;
+        var auth = new ApiKeyAuthenticationProvider(
+            apiKey,
+            "X-API-Key",
+            ApiKeyAuthenticationProvider.KeyLocation.Header
+        );
+
+        var adapter = new HttpClientRequestAdapter(auth)
+        {
+            BaseUrl = "https://api.rixl.com"
+        };
+        var client = new RixlClient(adapter);
+
+        var images = await client.Media.V1.Projects["proj_12345"].Images.GetAsync();
+        if (images?.Data != null)
+        {
+            foreach (var img in images.Data)
+            {
+                Console.WriteLine($"Bild-ID: {img.Id}");
+            }
+        }
+    }
+}
+```
+
+  </Tab>
+
+  <Tab value="Rust">
+```toml
+[dependencies]
+rixl = "1.0"
+tokio = { version = "1", features = ["full"] }
+```
+
+```rust
+use rixl::apis::configuration::{ApiKey, Configuration};
+use rixl::apis::images_api::{self, ListImagesParams};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut config = Configuration::new();
+    config.base_path = "https://api.rixl.com".to_string();
+    config.api_key = Some(ApiKey {
+        prefix: None,
+        key: std::env::var("RIXL_API_KEY")?,
+    });
+
+    let params = ListImagesParams::builder()
+        .project_id("proj_12345".to_string())
+        .build();
+
+    let response = images_api::list_images(&config, params).await?;
+    for img in response.data {
+        println!("Bild-ID: {} (Status: {:?})", img.id, img.status);
+    }
+
+    Ok(())
+}
+```
+
+  </Tab>
+
+  <Tab value="Terraform">
+```hcl
+terraform {
+  required_providers {
+    rixl = {
+      source  = "rixlhq/rixl"
+      version = ">= 0.1.0"
+    }
+  }
+}
+
+provider "rixl" {
+
+# Liest automatisch aus der Umgebungsvariable RIXL_API_KEY
+
+}
+
+resource "rixl_feed" "main" {
+project_id = "proj_12345"
+name = "production-feed"
+description = "Verwalteter Video- und Bild-Feed"
+}
+
+````
+  </Tab>
+
+  <Tab value="PHP">
+```bash
+composer require rixl/sdk
+````
+
+```php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Kiota\Abstractions\Authentication\ApiKeyAuthenticationProvider;
+use Kiota\Abstractions\Authentication\ApiKeyLocation;
+use Kiota\Http\GuzzleRequestAdapter;
+use Rixl\Sdk\RixlClient;
+
+$auth = new ApiKeyAuthenticationProvider(
+    getenv('RIXL_API_KEY'),
+    'X-API-Key',
+    ApiKeyLocation::HEADER
+);
+
+$adapter = new GuzzleRequestAdapter($auth);
+$adapter->setBaseUrl('https://api.rixl.com');
+$client = new RixlClient($adapter);
+
+$images = $client->media()->v1()->projects()->byProjectId('proj_12345')->images()->get()->wait();
+foreach ($images->getData() as $image) {
+    echo "Bild-ID: " . $image->getId() . PHP_EOL;
+}
+```
+
+  </Tab>
+
+  <Tab value="Ruby">
+```bash
+gem install rixl
+```
+
+```ruby
+require 'rixl'
+require 'microsoft_kiota_abstractions'
+require 'microsoft_kiota_faraday'
+
+auth = MicrosoftKiotaAbstractions::ApiKeyAuthenticationProvider.new(
+  ENV.fetch('RIXL_API_KEY'),
+  'X-API-Key',
+  MicrosoftKiotaAbstractions::ApiKeyLocation::HEADER
+)
+
+adapter = MicrosoftKiotaFaraday::FaradayRequestAdapter.new(auth)
+adapter.base_url = 'https://api.rixl.com'
+client = RixlSdk::RixlClient.new(adapter)
+
+images = client.media.v1.projects.by_project_id('proj_12345').images.get.resume
+images.data.each do |image|
+  puts "Bild-ID: #{image.id}"
+end
+```
+
+  </Tab>
+</Tabs>
+
+---
+
+## Sprach-Leitfäden
+
+### Go
+
+Der offizielle Go-Client (`github.com/rixlhq/rixl-go`) ist für hochgradig nebenläufige Backend-Dienste, Microservices und CLI-Tools konzipiert.
+
+- **Paket**: `github.com/rixlhq/rixl-go`
+- **Dokumentation**: [pkg.go.dev/github.com/rixlhq/rixl-go/sdk](https://pkg.go.dev/github.com/rixlhq/rixl-go/sdk)
+- **Repository**: [github.com/rixlhq/rixl-go](https://github.com/rixlhq/rixl-go)
+- **Voraussetzungen**: Go 1.26 oder höher
+
+#### Installation
+
+```bash
+go get github.com/rixlhq/rixl-go
+```
+
+#### Hauptmerkmale
+
+- **Context-First**: Jede Anfrage akzeptiert `context.Context` für Deadlines und Abbruchbehandlung.
+- **Ressourcen-Clients**: Eigene Sub-Clients für `Images`, `Videos`, `Feeds` und `Projects`.
+- **Schlanke Abhängigkeiten**: Leichtgewichtiger HTTP-Client mit nativer JSON-Serialisierung.
+
+---
+
+### Python
+
+Das offizielle Python-SDK (`rixl`) bietet einen asynchronen Client für FastAPI, Django, Celery und Datenpipelines.
+
+- **Paket**: `rixl`
+- **PyPI**: [pypi.org/project/rixl](https://pypi.org/project/rixl/)
+- **Repository**: [github.com/rixlhq/rixl-python](https://github.com/rixlhq/rixl-python)
+- **Voraussetzungen**: Python 3.10+
+
+#### Installation
+
+```bash
+pip install rixl
+```
+
+#### Hauptmerkmale
+
+- **Asynchron nativ**: Entwickelt auf Basis von `httpx` und Kiota für elegante `async`/`await`-Workflows.
+- **Hierarchischer Pfad-Builder**: Fluide Navigation entlang der REST-API-Routenstruktur (`client.media.v1...`).
+- **Umfassende Typisierung**: Vollständige Type-Hints und Dataclasses für IDE-Autovervollständigung und MyPy.
+
+---
+
+### Java
+
+Das offizielle Java-SDK (`com.rixl:sdk`) bietet typsichere Modelle und fluide Request-Builder für Spring Boot, Quarkus und Unternehmensanwendungen.
+
+- **Koordinaten**: `com.rixl:sdk:1.1.0`
+- **Repository**: [github.com/rixlhq/rixl-java](https://github.com/rixlhq/rixl-java)
+- **Voraussetzungen**: Java 17 oder höher
+
+#### Installation
+
+**Maven**:
+
+```xml
+<dependency>
+  <groupId>com.rixl</groupId>
+  <artifactId>sdk</artifactId>
+  <version>1.1.0</version>
+</dependency>
+```
+
+**Gradle**:
+
+```kotlin
+implementation("com.rixl:sdk:1.1.0")
+```
+
+#### Hauptmerkmale
+
+- **OkHttp-Transport**: Bewährtes Connection-Pooling, HTTP/2- und TLS-Unterstützung.
+- **Typisierte Modelle**: Stark typisierte Request- und Response-POJOs mit Jackson-Serialisierung.
+- **Pfadbasierte Builder**: Fluide API-Navigation entsprechend der REST-Ressourcenstruktur.
+
+---
+
+### CSharp
+
+Das offizielle .NET-SDK (`Rixl.Sdk`) ist für ASP.NET Core, Azure Functions und .NET-Backend-Architekturen optimiert.
+
+- **Paket**: `Rixl.Sdk`
+- **NuGet**: [nuget.org/packages/Rixl.Sdk](https://www.nuget.org/packages/Rixl.Sdk)
+- **Repository**: [github.com/rixlhq/rixl-csharp](https://github.com/rixlhq/rixl-csharp)
+- **Voraussetzungen**: .NET 8.0 oder neuer
+
+#### Installation
+
+```bash
+dotnet add package Rixl.Sdk
+```
+
+#### Hauptmerkmale
+
+- **Durchgängiges Async/Await**: Vollständig asynchrone Methoden mit `CancellationToken`-Unterstützung.
+- **Dependency Injection**: Nahtlose Integration mit `Microsoft.Extensions.DependencyInjection`.
+- **System.Text.Json**: Performante, speicherschonende Serialisierung.
+
+---
+
+### Rust
+
+Die offizielle Rust-Crate (`rixl`) bietet speichersicheren, asynchronen Zugriff auf die Rixl-Plattform ohne OpenSSL-Abhängigkeit.
+
+- **Crate**: `rixl`
+- **crates.io**: [crates.io/crates/rixl](https://crates.io/crates/rixl)
+- **Repository**: [github.com/rixlhq/rixl-rust](https://github.com/rixlhq/rixl-rust)
+- **Voraussetzungen**: Rust 1.75+ (Tokio Async-Runtime)
+
+#### Installation
+
+```toml
+[dependencies]
+rixl = "1.0"
+```
+
+#### Hauptmerkmale
+
+- **Reines Rust TLS**: Basiert auf `reqwest` mit `rustls-tls` – keinerlei C- oder OpenSSL-Systemabhängigkeiten.
+- **Builder-Pattern (`bon`)**: Parameterstrukturen nutzen Compile-Time-Builder für sauberen Code.
+- **Modulare APIs**: Getrennte Module für `images_api`, `videos_api`, `feeds_api` und `analytics_api`.
+
+---
+
+### Terraform
+
+Der offizielle Terraform-Provider (`rixlhq/rixl`) ermöglicht DevOps- und Plattformteams die deklarative Verwaltung von Rixl-Ressourcen.
+
+- **Provider**: `rixlhq/rixl`
+- **Registry**: [registry.terraform.io/providers/rixlhq/rixl](https://registry.terraform.io/providers/rixlhq/rixl/latest)
+- **Repository**: [github.com/rixlhq/terraform-provider-rixl](https://github.com/rixlhq/terraform-provider-rixl)
+- **Voraussetzungen**: Terraform CLI >= 1.0
+
+#### Konfiguration
+
+```hcl
+terraform {
+  required_providers {
+    rixl = {
+      source  = "rixlhq/rixl"
+      version = ">= 0.1.0"
+    }
+  }
+}
+
+provider "rixl" {
+  api_key = var.rixl_api_key
+}
+
+resource "rixl_feed" "main" {
+  project_id  = var.project_id
+  name        = "app-feed"
+  description = "Von Terraform verwalteter Medien-Feed"
+}
+```
+
+#### Verwaltete Ressourcen
+
+- **Feeds**: Dynamische Video- und Bild-Feeds deklarieren und konfigurieren (`rixl_feed`).
+- **Datenquellen**: Bestehende Projekte, Videos, Bilder und API-Schlüssel referenzieren.
+- **Statusverwaltung**: Vollständige Unterstützung für Plan, Apply, Drift Detection und State Locking.
+
+---
+
+### PHP
+
+Der offizielle PHP-Client (`rixl/sdk`) unterstützt moderne PHP-Backends, Laravel- und Symfony-Anwendungen.
+
+- **Paket**: `rixl/sdk`
+- **Packagist**: [packagist.org/packages/rixl/sdk](https://packagist.org/packages/rixl/sdk)
+- **Repository**: [github.com/rixlhq/rixl-php](https://github.com/rixlhq/rixl-php)
+- **Voraussetzungen**: PHP 8.2 oder höher (Composer)
+
+#### Installation
+
+```bash
+composer require rixl/sdk
+```
+
+#### Hauptmerkmale
+
+- **Guzzle-Transport**: Industriestandard-HTTP-Client mit PSR-7-Kompatibilität.
+- **Typisierte DTOs**: Strikte Parametervalidierung und typisierte Antwortobjekte.
+- **Promise-Unterstützung**: Asynchrone Ausführung über Promises oder synchrone `.wait()`-Auflösung.
+
+---
+
+### Ruby
+
+Das offizielle Ruby-Gem (`rixl`) stellt idiomatische Bindings für Ruby on Rails, Sidekiq und Ruby-Skripte bereit.
+
+- **Gem**: `rixl`
+- **RubyGems**: [rubygems.org/gems/rixl](https://rubygems.org/gems/rixl)
+- **Repository**: [github.com/rixlhq/rixl-ruby](https://github.com/rixlhq/rixl-ruby)
+- **Voraussetzungen**: Ruby 3.0 oder höher
+
+#### Installation
+
+```bash
+gem install rixl
+```
+
+Oder im `Gemfile`:
+
+```ruby
+gem "rixl", "~> 1.0"
+```
+
+#### Hauptmerkmale
+
+- **Faraday-Integration**: Konfigurierbare Middlewares, Retries und HTTP-Adapter.
+- **Fluide Methodenverkettung**: Pfadnavigation analog zu REST-Ressourcen (`client.media.v1...`).
+- **Thread-sicher**: Zuverlässig für nebenläufige Hintergrund-Worker wie Sidekiq und GoodJob.

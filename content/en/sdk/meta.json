@@ -12,6 +12,8 @@
     "media-lit",
     "media-core",
     "---UI & Design System---",
-    "ui"
+    "ui",
+    "---Server SDKs---",
+    "server-sdks"
   ]
 }

@@ -1,10 +1,41 @@
 import type {LucideProps} from "lucide-react";
 import {cloneElement, type ComponentProps, type ReactElement} from "react";
 import {iconMap, type IconName} from "@/generated/icons";
-import {AngularIcon, CoreIcon, LitIcon, ReactIcon, SvelteIcon, UiIcon, VueIcon} from "@/components/icons/framework-icons";
+import {
+  AngularIcon,
+  CoreIcon,
+  CsharpIcon,
+  GoIcon,
+  JavaIcon,
+  LitIcon,
+  PhpIcon,
+  PythonIcon,
+  ReactIcon,
+  RubyIcon,
+  RustIcon,
+  SvelteIcon,
+  TerraformIcon,
+  UiIcon,
+  VueIcon,
+} from "@/components/icons/framework-icons";
 import {cn} from "cn";
 
-export type FrameworkIconName = "react" | "vue" | "svelte" | "angular" | "lit" | "core" | "ui";
+export type FrameworkIconName =
+  | "react"
+  | "vue"
+  | "svelte"
+  | "angular"
+  | "lit"
+  | "core"
+  | "ui"
+  | "go"
+  | "python"
+  | "java"
+  | "csharp"
+  | "rust"
+  | "terraform"
+  | "php"
+  | "ruby";
 
 const FRAMEWORK_ICON_MAP: Record<string, (props: ComponentProps<"svg">) => ReactElement> = {
   react: ReactIcon,
@@ -14,6 +45,14 @@ const FRAMEWORK_ICON_MAP: Record<string, (props: ComponentProps<"svg">) => React
   lit: LitIcon,
   core: CoreIcon,
   ui: UiIcon,
+  go: GoIcon,
+  python: PythonIcon,
+  java: JavaIcon,
+  csharp: CsharpIcon,
+  rust: RustIcon,
+  terraform: TerraformIcon,
+  php: PhpIcon,
+  ruby: RubyIcon,
 };
 
 type IconProps = Omit<LucideProps, "name"> &

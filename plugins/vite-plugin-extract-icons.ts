@@ -14,7 +14,23 @@ const validLucideIcons = new Set(
 );
 
 // Framework and custom SVG icons handled by Icon component
-const validCustomIcons = new Set(["react", "vue", "svelte", "angular", "lit", "core", "ui"]);
+const validCustomIcons = new Set([
+  "react",
+  "vue",
+  "svelte",
+  "angular",
+  "lit",
+  "core",
+  "ui",
+  "go",
+  "python",
+  "java",
+  "csharp",
+  "rust",
+  "terraform",
+  "php",
+  "ruby",
+]);
 
 // Converts PascalCase to kebab-case
 function toKebabCase(str: string): string {
