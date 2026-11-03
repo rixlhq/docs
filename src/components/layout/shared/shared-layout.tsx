@@ -87,7 +87,8 @@ function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sea
       banner: <SidebarBanner backUrl={backUrl} />,
       footer: null,
       collapsible: false,
-      className: "[&_div:empty]:hidden [&>div:first-child]:p-6 [&>div:first-child]:!gap-3 [&_[data-radix-scroll-area-viewport]]:pt-2",
+      className:
+        "[&_div:empty]:hidden [&>div:first-child]:px-4 [&>div:first-child]:pt-0 [&>div:first-child]:pb-3 [&>div:first-child]:gap-0 [&_[data-radix-scroll-area-viewport]]:pt-2",
       components: {
         Folder: SidebarFolderItem,
       },

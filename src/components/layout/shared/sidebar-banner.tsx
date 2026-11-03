@@ -52,11 +52,11 @@ function HomeButton({href, label}: HomeButtonProps) {
       href={href}
       aria-label={label}
       className={cn(
-        "flex size-8 shrink-0 items-center justify-center rounded-md text-fd-muted-foreground transition-colors",
-        "hover:bg-fd-accent hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
+        "flex size-10 shrink-0 items-center justify-center rounded-lg text-fd-muted-foreground transition-colors",
+        "hover:bg-fd-accent hover:text-fd-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
       )}
     >
-      <LayoutGrid className="size-4" />
+      <LayoutGrid className="size-4.5" />
     </Link>
   );
 }
@@ -68,7 +68,7 @@ interface CategoryTitleProps {
 
 function CategoryTitle({href, name}: CategoryTitleProps) {
   const content = <span className="truncate">{name}</span>;
-  const sharedClass = "flex min-h-8 min-w-0 flex-1 items-center rounded-md px-2 text-sm font-semibold text-fd-foreground";
+  const sharedClass = "flex min-h-10 min-w-0 flex-1 items-center rounded-lg px-2.5 text-sm font-semibold text-fd-foreground";
 
   if (!href) {
     return <span className={sharedClass}>{content}</span>;
@@ -79,7 +79,7 @@ function CategoryTitle({href, name}: CategoryTitleProps) {
       href={href}
       className={cn(
         sharedClass,
-        "transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
+        "transition-colors hover:bg-fd-accent hover:text-fd-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
       )}
     >
       {content}
@@ -106,10 +106,10 @@ export function SidebarBanner({backUrl}: SidebarBannerProps) {
   const homeUrl = `/${lang}/home`;
 
   return (
-    <div className="md:order-first mb-0 px-2">
-      <div className="flex items-center gap-1">
+    <div className="md:order-first mb-0">
+      <div className="flex items-center gap-1 py-2.5">
         <HomeButton href={homeUrl} label={homeLabel} />
-        <span className="bg-fd-border mx-0.5 h-4 w-px shrink-0" aria-hidden="true" />
+        <span className="bg-fd-border mx-0.5 h-5 w-px shrink-0" aria-hidden="true" />
         <CategoryTitle href={categoryUrl} name={root.name} />
       </div>
     </div>

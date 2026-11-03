@@ -100,7 +100,7 @@ export function DocsBreadcrumb({includeRoot = false, includePage = true, classNa
   if (crumbs.length <= 1) return null;
 
   return (
-    <nav aria-label="Breadcrumb" className={cn("min-w-0 text-xs font-medium", className)}>
+    <nav aria-label="Breadcrumb" className={cn("min-w-0 pb-2 text-xs font-medium", className)}>
       <ol className="flex flex-wrap items-center text-fd-muted-foreground">
         {crumbs.map((item, i) => (
           <CrumbItem key={i} name={item.name} url={item.url} isLast={i === crumbs.length - 1} isFirst={i === 0} />
