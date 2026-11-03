@@ -90,9 +90,12 @@ export function AngularIcon({className, ...props}: SVGProps<SVGSVGElement>) {
 
 export function LitIcon({className, ...props}: SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} {...props}>
+    <svg viewBox="0 0 160 200" aria-hidden="true" className={className} {...props}>
       <title>Lit</title>
-      <path d="m2.4 9.6 4.8 4.8V24l-4.8-4.8zm4.8-4.8v9.6L12 9.6V0zM12 9.6v9.6l4.8-4.8V4.8zm4.8 4.8V24l4.8-4.8V9.6z" />
+      <path fill="#00e8ff" d="m40 120 20-60 90 90-30 50-40-40H60" />
+      <path fill="#283198" d="M80 160V80l40-40v80M0 160l40 40 20-40-20-40H20" />
+      <path fill="#324fff" d="M40 120V40L80 0v80m40 120v-80l40-40v80M0 160V80l40 40" />
+      <path fill="#0ff" d="M40 200v-80l40 40" />
     </svg>
   );
 }
