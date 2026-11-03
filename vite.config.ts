@@ -34,9 +34,6 @@ const redirectPages = createRedirectPrerenderPages({
 function buildPrerenderPages() {
   return [
     ...redirectPages,
-    // The en index builds first so the two multi-megabyte index builds never
-    // run concurrently (that killed the preview server on small CI
-    // containers: loopback ECONNREFUSED); the de index is queued last.
     {path: "/api/search/en"},
     {path: "/robots.txt"},
     {path: "/sitemap.xml"},
@@ -44,7 +41,6 @@ function buildPrerenderPages() {
     ...staticMarkdownPages,
     ...ogPrerenderPages,
     ...staticLLMSPages,
-    {path: "/api/search/de"},
   ];
 }
 

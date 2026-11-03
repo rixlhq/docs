@@ -1,7 +1,0 @@
-{
-  "root": true,
-  "title": "Server-SDKs",
-  "description": "Offizielle Rixl API-Clients und Infrastruktur-Provider für Go, Python, Java, .NET, Rust, Terraform, PHP und Ruby.",
-  "pagesIndex": "index",
-  "pages": []
-}

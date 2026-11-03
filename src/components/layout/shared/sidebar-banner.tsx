@@ -34,13 +34,7 @@ export function getFirstPageUrl(node: PageTree.Root | PageTree.Folder): string |
 export function isHomeCategory(name: React.ReactNode, lang?: string): boolean {
   if (typeof name !== "string") return false;
   const homeLocalized = lang && (locales as readonly string[]).includes(lang) ? m.home({}, {locale: lang as Locale}) : m.home();
-  return (
-    name === "Home" ||
-    name === "Startseite" ||
-    name === "Documentation Home" ||
-    name === "Dokumentation – Startseite" ||
-    name === homeLocalized
-  );
+  return name === "Home" || name === "Documentation Home" || name === homeLocalized;
 }
 
 interface SidebarBannerProps {
