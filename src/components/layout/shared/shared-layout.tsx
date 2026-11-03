@@ -1,11 +1,16 @@
 import {DocsLayout} from "fumadocs-ui/layouts/docs";
 import {HomeLayout} from "fumadocs-ui/layouts/home";
-import {ReactNode} from "react";
+import type {ReactNode} from "react";
 import {baseOptions} from "@/lib/layout.shared";
 import type {Root} from "fumadocs-core/page-tree";
 import {Background} from "@/components/layout/home/background";
 import {SidebarBanner} from "./sidebar-banner";
 import {SidebarFolderItem} from "./sidebar-folder-item";
+import {Sidebar, SidebarProvider, SidebarTrigger, useSidebar} from "fumadocs-ui/layouts/docs/slots/sidebar";
+import {FullSearchTrigger, SearchTrigger} from "@/components/search-trigger";
+import {SidebarIcon} from "lucide-react";
+import {cn} from "cn";
+import {buttonVariants} from "@/components/ui/button";
 
 interface LayoutProps {
   lang: string;
@@ -69,6 +74,12 @@ function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sea
       // The top navbar already renders the language switcher; hide the
       // duplicate in the docs sidebar (footer + mobile drawer).
       languageSelect: false as const,
+      sidebar: {
+        provider: ({children}: {children?: ReactNode}) => <>{children}</>,
+        root: Sidebar,
+        trigger: SidebarTrigger,
+        useSidebar,
+      },
     },
     sidebar: {
       enabled: sidebar,
@@ -81,6 +92,31 @@ function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sea
       },
     },
   };
+}
+
+function MobileSidebarTrigger() {
+  return (
+    <SidebarTrigger
+      className={cn(
+        buttonVariants({
+          variant: "ghost",
+          size: "icon-sm",
+        }),
+        "p-2 md:hidden"
+      )}
+    >
+      <SidebarIcon className="size-5" />
+    </SidebarTrigger>
+  );
+}
+
+function MobileSearchWithSidebarTrigger({sidebar, ...props}: {sidebar: boolean} & Parameters<typeof SearchTrigger>[0]) {
+  return (
+    <>
+      <SearchTrigger {...props} />
+      {sidebar && <MobileSidebarTrigger />}
+    </>
+  );
 }
 
 export default function SharedLayout({
@@ -107,19 +143,28 @@ export default function SharedLayout({
   });
 
   return (
-    <div className="relative z-10 flex min-h-svh flex-col">
-      <Background />
-      <HomeLayout
-        {...options}
-        searchToggle={{
-          enabled: false,
-        }}
-        className={`flex-1 ${layoutWidthClass}`}
-      >
-        <DocsLayout key={treeKey} {...docsLayoutProps}>
-          {children}
-        </DocsLayout>
-      </HomeLayout>
-    </div>
+    <SidebarProvider>
+      <div className="relative z-10 flex min-h-svh flex-col">
+        <Background />
+        <HomeLayout
+          {...options}
+          searchToggle={{
+            enabled: false,
+          }}
+          slots={{
+            ...options.slots,
+            searchTrigger: {
+              full: FullSearchTrigger,
+              sm: (props) => <MobileSearchWithSidebarTrigger sidebar={sidebar} {...props} />,
+            },
+          }}
+          className={`flex-1 ${layoutWidthClass}`}
+        >
+          <DocsLayout key={treeKey} {...docsLayoutProps}>
+            {children}
+          </DocsLayout>
+        </HomeLayout>
+      </div>
+    </SidebarProvider>
   );
 }
