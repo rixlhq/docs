@@ -157,6 +157,20 @@
     position: relative;
   }
 
+  #nd-nav .lg\:hidden button:has(svg.lucide-chevron-down),
+  #nd-nav .lg\:hidden button[aria-label="Toggle Menu"],
+  #nd-nav .lg\:hidden button[aria-label="Toggle menu"],
+  #nd-nav .lg\:hidden > .list-none {
+    display: none !important;
+  }
+
+  @media (width < 1024px) {
+    #nd-nav [data-radix-navigation-menu-viewport] {
+      display: none !important;
+      height: 0 !important;
+    }
+  }
+
   #nd-nav nav > ul:first-of-type {
     position: absolute;
     left: 50%;
