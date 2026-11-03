@@ -5,6 +5,7 @@ import {usePathname} from "fumadocs-core/framework";
 import {useTreeContext} from "fumadocs-ui/contexts/tree";
 import {useBreadcrumb, type BreadcrumbOptions} from "fumadocs-core/breadcrumb";
 import {cn} from "cn";
+import {ChevronRight} from "lucide-react";
 import {m} from "@/paraglide/messages";
 import {locales} from "@/paraglide/runtime";
 import {getFirstPageUrl, isHomeCategory} from "./sidebar-banner";
@@ -25,11 +26,7 @@ interface CrumbItemProps {
 function CrumbItem({name, url, isLast, isFirst}: CrumbItemProps) {
   return (
     <li className={cn("flex items-center", isLast ? "min-w-0" : "shrink-0")}>
-      {!isFirst && (
-        <span className="text-fd-muted-foreground/50 mx-1.5 shrink-0 select-none" aria-hidden="true">
-          /
-        </span>
-      )}
+      {!isFirst && <ChevronRight className="text-fd-muted-foreground/60 mx-1.5 size-3.5 shrink-0" aria-hidden="true" />}
       {url && !isLast ? (
         <Link href={url} className="hover:text-fd-foreground whitespace-nowrap transition-colors">
           {name}
@@ -52,19 +49,37 @@ interface RawCrumb {
 }
 
 interface BuildCrumbsOptions {
+  pathname: string;
   lang: string;
   rootName: React.ReactNode;
   categoryUrl?: string;
   items?: RawCrumb[];
 }
 
-function buildCrumbs({lang, rootName, categoryUrl, items = []}: BuildCrumbsOptions): RawCrumb[] {
+function getSectionCrumb(section: string | undefined, product: string | undefined, lang: string): RawCrumb | null {
+  if (!section || section === "home") return null;
+  if (section === "sdk" && product) {
+    return {name: "SDK", url: `/${lang}/sdk`};
+  }
+  return null;
+}
+
+function buildCrumbs({pathname, lang, rootName, categoryUrl, items = []}: BuildCrumbsOptions): RawCrumb[] {
+  const segments = pathname.split("/").filter(Boolean);
+  const section = segments[1];
+  const product = segments[2];
+
+  const sectionCrumb = getSectionCrumb(section, product, lang);
   const isHome = isHomeCategory(rootName, lang);
-  const filteredItems = items.filter((item) => item.name !== rootName && item.url !== categoryUrl);
+
+  const filteredItems = items.filter(
+    (item) => item.name !== rootName && item.name !== sectionCrumb?.name && item.url !== categoryUrl && item.url !== sectionCrumb?.url
+  );
 
   return [
     {name: m.home({}, {locale: lang as Locale}), url: `/${lang}/home`},
-    ...(!isHome && rootName ? [{name: rootName, url: categoryUrl}] : []),
+    ...(sectionCrumb ? [sectionCrumb] : []),
+    ...(!isHome && rootName && rootName !== sectionCrumb?.name ? [{name: rootName, url: categoryUrl}] : []),
     ...filteredItems.map((item) => ({name: item.name, url: item.url})),
   ];
 }
@@ -79,7 +94,7 @@ export function DocsBreadcrumb({includeRoot = false, includePage = true, classNa
 
   const isHome = isHomeCategory(root.name, lang);
   const categoryUrl = !isHome ? (root.name === "API" ? `/${lang}/api` : getFirstPageUrl(root)) : undefined;
-  const crumbs = buildCrumbs({lang, rootName: root.name, categoryUrl, items});
+  const crumbs = buildCrumbs({pathname, lang, rootName: root.name, categoryUrl, items});
 
   if (crumbs.length <= 1) return null;
 
