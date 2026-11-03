@@ -217,11 +217,30 @@
   }
 
   #nd-nav [data-search-full] {
+    width: 180px;
+    max-width: 180px;
+    min-width: 0;
+    height: calc(var(--spacing) * 8.5);
     border-radius: calc(var(--spacing) * 2);
-    min-width: 220px;
-    background: transparent;
-    border: 0 !important;
-    box-shadow: none !important;
+    border: 1px solid var(--color-fd-border);
+    background-color: var(--color-fd-secondary);
+    box-shadow: none;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease;
+  }
+
+  #nd-nav [data-search-full]:hover {
+    background-color: var(--color-fd-accent);
+    color: var(--color-fd-accent-foreground);
+    border-color: color-mix(in srgb, var(--color-fd-primary) 35%, var(--color-fd-border));
+  }
+
+  /* Completely hide search trigger in docs sidebar since it lives in navbar */
+  #nd-sidebar [data-search-full],
+  #nd-sidebar [data-search] {
+    display: none !important;
   }
 
   #nd-nav a[href="https://dash.rixl.com"] {

@@ -39,7 +39,6 @@ type DocsLayoutPropsConfig = {
   backUrl?: string;
   options: ReturnType<typeof baseOptions>;
   docsLayoutWidthClass: string;
-  searchToggle: boolean;
   sidebar: boolean;
 };
 
@@ -54,7 +53,7 @@ function EmptySidebarProvider({children}: {children?: ReactNode}) {
   return <>{children}</>;
 }
 
-function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, searchToggle, sidebar}: DocsLayoutPropsConfig) {
+function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sidebar}: DocsLayoutPropsConfig) {
   return {
     tree,
     ...options,
@@ -68,7 +67,7 @@ function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sea
       children: null,
     },
     searchToggle: {
-      enabled: searchToggle,
+      enabled: false,
     },
     themeSwitch: {
       enabled: false,
@@ -76,8 +75,9 @@ function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sea
     tabs: false as const,
     slots: {
       ...options.slots,
-      // The top navbar already renders the language switcher; hide the
-      // duplicate in the docs sidebar (footer + mobile drawer).
+      // The top navbar already renders search and the language switcher; hide the
+      // duplicates in the docs sidebar.
+      searchTrigger: false as const,
       languageSelect: false as const,
       sidebar: {
         provider: EmptySidebarProvider,
@@ -165,7 +165,6 @@ export default function SharedLayout({
     backUrl,
     options,
     docsLayoutWidthClass,
-    searchToggle,
     sidebar,
   });
   const homeLayoutSlots = buildHomeLayoutSlots(options, searchToggle, sidebar);

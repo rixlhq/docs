@@ -56,11 +56,11 @@ export function FullSearchTrigger({hideIfDisabled, ...props}: FullSearchTriggerP
         setOpenSearch(true);
       }}
     >
-      <Search className="size-4" />
-      {m.search()}
+      <Search className="size-4 shrink-0" />
+      <span className="truncate">{m.search()}</span>
       <div className="ms-auto inline-flex gap-0.5">
         {hotKey.map((k, i) => (
-          <kbd key={i} className="rounded-md border bg-fd-background px-1.5">
+          <kbd key={i} className="rounded-md border bg-fd-background px-1.5 py-0.5 text-[10px] font-mono leading-none">
             {k.display}
           </kbd>
         ))}
