@@ -106,7 +106,7 @@ export function SidebarBanner({backUrl}: SidebarBannerProps) {
   const homeUrl = `/${lang}/home`;
 
   return (
-    <div className="md:order-first mb-0">
+    <div data-sidebar-banner="" className="md:order-first mb-0">
       <div className="flex items-center gap-1 py-2.5">
         <HomeButton href={homeUrl} label={homeLabel} />
         <span className="bg-fd-border mx-0.5 h-5 w-px shrink-0" aria-hidden="true" />
