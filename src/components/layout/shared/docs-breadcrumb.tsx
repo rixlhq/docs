@@ -8,6 +8,7 @@ import {useBreadcrumb, type BreadcrumbOptions} from "fumadocs-core/breadcrumb";
 import {cn} from "cn";
 import {m} from "@/paraglide/messages";
 import {locales} from "@/paraglide/runtime";
+import {getFirstPageUrl, isHomeCategory} from "./sidebar-banner";
 
 type Locale = (typeof locales)[number];
 
@@ -24,11 +25,16 @@ export function DocsBreadcrumb({includeRoot = true, includePage = false, classNa
   if (!lang) return null;
 
   // On the docs directory itself there is nothing to navigate back to.
-  if (items.length === 0 && pathname === `/${lang}/home`) return null;
+  if (items.length === 0 && (pathname === `/${lang}/home` || pathname === `/${lang}/home/`)) return null;
+
+  const isHome = isHomeCategory(root.name, lang);
+  const categoryUrl = !isHome ? getFirstPageUrl(root) : undefined;
+  const filteredItems = items.filter((item) => item.name !== root.name && item.url !== categoryUrl);
 
   const crumbs = [
     {name: m.home({}, {locale: lang as Locale}), url: `/${lang}/home`},
-    ...items.map((item) => ({name: item.name, url: item.url})),
+    ...(!isHome && root.name ? [{name: root.name, url: categoryUrl}] : []),
+    ...filteredItems.map((item) => ({name: item.name, url: item.url})),
   ];
 
   return (

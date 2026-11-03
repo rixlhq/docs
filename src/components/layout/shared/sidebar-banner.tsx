@@ -12,7 +12,7 @@ import type * as PageTree from "fumadocs-core/page-tree";
 
 type Locale = (typeof locales)[number];
 
-function getFirstPageUrl(node: PageTree.Root | PageTree.Folder): string | undefined {
+export function getFirstPageUrl(node: PageTree.Root | PageTree.Folder): string | undefined {
   if ("index" in node && node.index?.url) {
     return node.index.url;
   }
@@ -29,6 +29,18 @@ function getFirstPageUrl(node: PageTree.Root | PageTree.Folder): string | undefi
   }
 
   return undefined;
+}
+
+export function isHomeCategory(name: React.ReactNode, lang?: string): boolean {
+  if (typeof name !== "string") return false;
+  const homeLocalized = lang && (locales as readonly string[]).includes(lang) ? m.home({}, {locale: lang as Locale}) : m.home();
+  return (
+    name === "Home" ||
+    name === "Startseite" ||
+    name === "Documentation Home" ||
+    name === "Dokumentation – Startseite" ||
+    name === homeLocalized
+  );
 }
 
 interface SidebarBannerProps {
@@ -85,10 +97,15 @@ function CategoryTitle({href, name}: CategoryTitleProps) {
 export function SidebarBanner({backUrl}: SidebarBannerProps) {
   const pathname = usePathname();
   const {root} = useTreeContext();
+  const [_, lang] = pathname.split("/");
+
+  const isHome = pathname === `/${lang}/home` || pathname === `/${lang}/home/` || isHomeCategory(root.name, lang);
+
+  if (isHome) return null;
+
   const url = useMemo(() => getFirstPageUrl(root), [root]);
   const categoryUrl = url ?? backUrl;
 
-  const [_, lang] = pathname.split("/");
   const homeLabel = lang && (locales as readonly string[]).includes(lang) ? m.home({}, {locale: lang as Locale}) : m.home();
 
   return (
