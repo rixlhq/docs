@@ -71,13 +71,14 @@ function buildCrumbs({pathname, lang, rootName, categoryUrl, items = []}: BuildC
 
   const sectionCrumb = getSectionCrumb(section, product, lang);
   const isHome = isHomeCategory(rootName, lang);
+  const isHomeSection = section === "home";
 
   const filteredItems = items.filter(
     (item) => item.name !== rootName && item.name !== sectionCrumb?.name && item.url !== categoryUrl && item.url !== sectionCrumb?.url
   );
 
   return [
-    {name: m.home({}, {locale: lang as Locale}), url: `/${lang}/home`},
+    ...(!isHomeSection ? [{name: m.home({}, {locale: lang as Locale}), url: `/${lang}/home`}] : []),
     ...(sectionCrumb ? [sectionCrumb] : []),
     ...(!isHome && rootName && rootName !== sectionCrumb?.name ? [{name: rootName, url: categoryUrl}] : []),
     ...filteredItems.map((item) => ({name: item.name, url: item.url})),
