@@ -11,6 +11,7 @@ import {FullSearchTrigger, SearchTrigger} from "@/components/search-trigger";
 import {SidebarIcon} from "lucide-react";
 import {cn} from "cn";
 import {buttonVariants} from "@/components/ui/button";
+import {m} from "@/paraglide/messages";
 
 interface LayoutProps {
   lang: string;
@@ -95,8 +96,10 @@ function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sea
 }
 
 function MobileSidebarTrigger() {
+  const {open} = useSidebar();
   return (
     <SidebarTrigger
+      aria-label={open ? m.closeSidebar() : m.openSidebar()}
       className={cn(
         buttonVariants({
           variant: "ghost",
@@ -110,13 +113,32 @@ function MobileSidebarTrigger() {
   );
 }
 
-function MobileSearchWithSidebarTrigger({sidebar, ...props}: {sidebar: boolean} & Parameters<typeof SearchTrigger>[0]) {
+function MobileSearchWithSidebarTrigger({
+  sidebar,
+  searchEnabled,
+  ...props
+}: {
+  sidebar: boolean;
+  searchEnabled: boolean;
+} & Parameters<typeof SearchTrigger>[0]) {
   return (
     <>
-      <SearchTrigger {...props} />
+      {searchEnabled && <SearchTrigger {...props} />}
       {sidebar && <MobileSidebarTrigger />}
     </>
   );
+}
+
+function buildHomeLayoutSlots(options: ReturnType<typeof baseOptions>, searchToggle: boolean, sidebar: boolean) {
+  return {
+    ...options.slots,
+    searchTrigger: {
+      full: searchToggle ? FullSearchTrigger : () => null,
+      sm: (props: Parameters<typeof SearchTrigger>[0]) => (
+        <MobileSearchWithSidebarTrigger sidebar={sidebar} searchEnabled={searchToggle} {...props} />
+      ),
+    },
+  };
 }
 
 export default function SharedLayout({
@@ -141,6 +163,7 @@ export default function SharedLayout({
     searchToggle,
     sidebar,
   });
+  const homeLayoutSlots = buildHomeLayoutSlots(options, searchToggle, sidebar);
 
   return (
     <SidebarProvider>
@@ -149,15 +172,9 @@ export default function SharedLayout({
         <HomeLayout
           {...options}
           searchToggle={{
-            enabled: false,
+            enabled: searchToggle || sidebar,
           }}
-          slots={{
-            ...options.slots,
-            searchTrigger: {
-              full: FullSearchTrigger,
-              sm: (props) => <MobileSearchWithSidebarTrigger sidebar={sidebar} {...props} />,
-            },
-          }}
+          slots={homeLayoutSlots}
           className={`flex-1 ${layoutWidthClass}`}
         >
           <DocsLayout key={treeKey} {...docsLayoutProps}>
