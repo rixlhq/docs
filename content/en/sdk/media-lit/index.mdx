@@ -111,18 +111,18 @@ The `<rixl-video>` component is a custom Lit player. Set `controls` to enable th
 
 ### `<rixl-feed>`
 
-| Attribute        | Type                                  | Required | Default  | Description                                                       |
-| ---------------- | ------------------------------------- | -------- | -------- | ----------------------------------------------------------------- |
-| `feed-id`          | `string`                              | Yes      | —        | RIXL feed ID                                                      |
-| `loop`             | `boolean`                             | No       | `false`  | Restart from the first post after the last post finishes          |
-| `autoscroll`       | `boolean`                             | No       | `false`  | Auto-advance when the current video ends or after a dwell timeout |
-| `analytics`        | `boolean`                             | No       | `true`   | Enable analytics                                                  |
-| `analytics-page`   | `"feed" \| "standalone" \| "profile"` | No       | `"feed"` | View context                                                      |
-| `initial-index`    | `number`                              | No       | `0`      | Index of the post to show first                                   |
-| `safe-area-tab-bar`| `number`                              | No       | `12`     | Safe-area padding for tab bars (vh units)                         |
-| `muted`            | `boolean`                             | No       | `true`   | Start feed with muted media                                       |
-| `lang`             | `string`                              | No       | `"en"`   | Player language                                                   |
-| `feed-font`        | `string`                              | No       | —        | Font family key for captions/overlays                             |
+| Attribute           | Type                                  | Required | Default  | Description                                                       |
+| ------------------- | ------------------------------------- | -------- | -------- | ----------------------------------------------------------------- |
+| `feed-id`           | `string`                              | Yes      | —        | RIXL feed ID                                                      |
+| `loop`              | `boolean`                             | No       | `false`  | Restart from the first post after the last post finishes          |
+| `autoscroll`        | `boolean`                             | No       | `false`  | Auto-advance when the current video ends or after a dwell timeout |
+| `analytics`         | `boolean`                             | No       | `true`   | Enable analytics                                                  |
+| `analytics-page`    | `"feed" \| "standalone" \| "profile"` | No       | `"feed"` | View context                                                      |
+| `initial-index`     | `number`                              | No       | `0`      | Index of the post to show first                                   |
+| `safe-area-tab-bar` | `number`                              | No       | `12`     | Safe-area padding for tab bars (vh units)                         |
+| `muted`             | `boolean`                             | No       | `true`   | Start feed with muted media                                       |
+| `lang`              | `string`                              | No       | `"en"`   | Player language                                                   |
+| `feed-font`         | `string`                              | No       | —        | Font family key for captions/overlays                             |
 
 For React / JS, you can also set `posts` and `onFetchMore` as properties to drive the feed directly instead of fetching by `feedId`.
 

@@ -100,7 +100,7 @@ function footerResourcesSection(lang: string, locale: Locale): FooterSection {
     links: [
       {text: m.footerApi({}, {locale}), url: `/${lang}/api`},
       {text: m.footerDocumentation({}, {locale}), url: `/${lang}/home/getting-started/overview`},
-      {text: m.footerGuides({}, {locale}), url: `/${lang}/home/guides`},
+      {text: m.footerGuides({}, {locale}), url: `/${lang}/home/getting-started/quick-start`},
       {text: m.footerExamples({}, {locale}), url: `/${lang}/sdk/media-react/examples`},
     ],
   };
@@ -135,9 +135,9 @@ function footerToolsSection(lang: string, locale: Locale): FooterSection {
   return {
     title: m.footerTools({}, {locale}),
     links: [
-      {text: m.footerCli({}, {locale}), url: `/${lang}/home/platform/api-documentation/overview`},
+      {text: m.footerCli({}, {locale}), url: `/${lang}/home/developer/overview`},
       {text: m.footerSdk({}, {locale}), url: `/${lang}/sdk`},
-      {text: m.footerIntegrations({}, {locale}), url: `/${lang}/home/guides`},
+      {text: m.footerIntegrations({}, {locale}), url: `/${lang}/sdk`},
       {text: m.footerExtensions({}, {locale}), url: `/${lang}/sdk/media-react/examples`},
     ],
   };

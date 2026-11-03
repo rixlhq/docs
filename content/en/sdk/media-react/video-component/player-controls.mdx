@@ -14,38 +14,38 @@ import {Callout} from "fumadocs-ui/components/callout";
 
 The player ships with a built-in control bar and several themes.
 
-| Prop                     | Type      | Default | Description                                                |
-| ------------------------ | --------- | ------- | ---------------------------------------------------------- |
-| `controls`               | `boolean` | `true`  | Show the built-in control bar.                             |
-| `theme`                  | `string`  | `default` | `default`, `minimal`, `feed`, `hover`, `hideUI`.          |
-| `progressBar`            | `boolean` | `true`  | Show the progress/seek bar.                                |
-| `showChapters`           | `boolean` | `true`  | Render chapter markers on the progress bar.                |
-| `heatmap`                | `boolean` | `true`  | Show an engagement heatmap overlay when data is available. |
-| `hotSegments`            | `boolean` | `false` | Highlight hot (high-engagement) segments.                  |
-| `allowPlayPause`         | `boolean` | `true`  | Allow play/pause toggles.                                  |
-| `allowFullscreen`        | `boolean` | `true`  | Allow fullscreen toggles.                                  |
-| `allowPictureInPicture`  | `boolean` | `true`  | Allow picture-in-picture toggles.                          |
-| `autoHideMs`             | `number`  | `3000`  | Time before the UI hides after inactivity.               |
-| `hideUI`                 | `boolean` | `false` | Hide the entire built-in UI.                               |
+| Prop                    | Type      | Default   | Description                                                |
+| ----------------------- | --------- | --------- | ---------------------------------------------------------- |
+| `controls`              | `boolean` | `true`    | Show the built-in control bar.                             |
+| `theme`                 | `string`  | `default` | `default`, `minimal`, `feed`, `hover`, `hideUI`.           |
+| `progressBar`           | `boolean` | `true`    | Show the progress/seek bar.                                |
+| `showChapters`          | `boolean` | `true`    | Render chapter markers on the progress bar.                |
+| `heatmap`               | `boolean` | `true`    | Show an engagement heatmap overlay when data is available. |
+| `hotSegments`           | `boolean` | `false`   | Highlight hot (high-engagement) segments.                  |
+| `allowPlayPause`        | `boolean` | `true`    | Allow play/pause toggles.                                  |
+| `allowFullscreen`       | `boolean` | `true`    | Allow fullscreen toggles.                                  |
+| `allowPictureInPicture` | `boolean` | `true`    | Allow picture-in-picture toggles.                          |
+| `autoHideMs`            | `number`  | `3000`    | Time before the UI hides after inactivity.                 |
+| `hideUI`                | `boolean` | `false`   | Hide the entire built-in UI.                               |
 
 ```tsx
 import {Video} from "@rixl/media-react";
 
-<Video id="your-video-id" controls theme="default" progressBar allowFullscreen />
+<Video id="your-video-id" controls theme="default" progressBar allowFullscreen />;
 ```
 
 ## Standard Media Attributes
 
 The player also accepts standard media attributes, which it forwards to the underlying media element:
 
-| Attribute     | Type                             | Description                                           |
-| ------------- | -------------------------------- | ----------------------------------------------------- |
-| `autoPlay`    | `boolean`                        | Start playback as soon as the video can play.         |
-| `muted`       | `boolean`                        | Mute audio by default.                                |
-| `loop`        | `boolean`                        | Loop playback when the video ends.                    |
-| `playsInline` | `boolean`                        | Prefer inline playback on mobile browsers.            |
-| `poster`      | `string`                         | URL of an image to show before the video loads.       |
-| `volume`      | `number`                         | Initial volume level from `0` to `1`.                 |
+| Attribute     | Type      | Description                                     |
+| ------------- | --------- | ----------------------------------------------- |
+| `autoPlay`    | `boolean` | Start playback as soon as the video can play.   |
+| `muted`       | `boolean` | Mute audio by default.                          |
+| `loop`        | `boolean` | Loop playback when the video ends.              |
+| `playsInline` | `boolean` | Prefer inline playback on mobile browsers.      |
+| `poster`      | `string`  | URL of an image to show before the video loads. |
+| `volume`      | `number`  | Initial volume level from `0` to `1`.           |
 
 ## Themes
 
@@ -64,6 +64,7 @@ The player also accepts standard media attributes, which it forwards to the unde
     ```tsx
     <Video id="video-id" theme="default" />
     ```
+
   </TabsContent>
 
   <TabsContent value="minimal">
@@ -72,6 +73,7 @@ The player also accepts standard media attributes, which it forwards to the unde
     ```tsx
     <Video id="video-id" theme="minimal" />
     ```
+
   </TabsContent>
 
   <TabsContent value="feed">
@@ -80,6 +82,7 @@ The player also accepts standard media attributes, which it forwards to the unde
     ```tsx
     <Video id="video-id" theme="feed" />
     ```
+
   </TabsContent>
 
   <TabsContent value="hover">
@@ -88,6 +91,7 @@ The player also accepts standard media attributes, which it forwards to the unde
     ```tsx
     <Video id="video-id" theme="hover" />
     ```
+
   </TabsContent>
 
   <TabsContent value="hideui">
@@ -96,6 +100,7 @@ The player also accepts standard media attributes, which it forwards to the unde
     ```tsx
     <Video id="video-id" theme="hideUI" />
     ```
+
   </TabsContent>
 </Tabs>
 
@@ -117,7 +122,7 @@ The video component emits `rixl-analytics` events through `onRixlAnalytics`. The
 | `picture_in_picture`   | `interaction`   | Picture-in-Picture mode was entered or exited.            |
 | `quality_change`       | `interaction`   | The HLS quality level changed.                            |
 | `settings_open`        | `interaction`   | The player settings menu was opened.                      |
-| `error`                | `error`         | A media load or playback error occurred.                |
+| `error`                | `error`         | A media load or playback error occurred.                  |
 
 ```tsx
 <Video

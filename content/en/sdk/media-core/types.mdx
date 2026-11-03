@@ -117,8 +117,7 @@ interface FeedProps {
 type Page = "feed" | "standalone" | "profile";
 
 type FontFamilyKey =
-  | "monospace_serif" | "proportional_serif" | "monospace_sans"
-  | "proportional_sans" | "casual" | "cursive" | "small_caps";
+  "monospace_serif" | "proportional_serif" | "monospace_sans" | "proportional_sans" | "casual" | "cursive" | "small_caps";
 ```
 
 `FeedProps` defines configuration options for the `Feed` component to control feed rendering, pagination, and player themes.
@@ -338,12 +337,7 @@ type FileStatus = "uploading" | "uploaded" | "processing" | "ready" | "error";
 Union of all events that can be sent through `postAnalytics` or dispatched via `rixl-analytics`.
 
 ```typescript
-type AnalyticsEvent =
-  | ContentViewEvent
-  | EngagementEvent
-  | InteractionEvent
-  | ErrorEvent
-  | SessionStartEvent;
+type AnalyticsEvent = ContentViewEvent | EngagementEvent | InteractionEvent | ErrorEvent | SessionStartEvent;
 
 type ContentType = "video" | "image";
 type ViewType = "start" | "watch" | "end";

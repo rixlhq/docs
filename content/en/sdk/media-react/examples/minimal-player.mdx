@@ -50,13 +50,7 @@ Build TikTok/Instagram-style feeds with custom UI:
 function FeedVideo({videoId}) {
   return (
     <div className="relative w-full h-screen">
-      <Video
-        id={videoId}
-        className="w-full h-full object-cover"
-        muted={true}
-        autoPlay={true}
-        theme="hideUI"
-      />
+      <Video id={videoId} className="w-full h-full object-cover" muted={true} autoPlay={true} theme="hideUI" />
 
       {/* Your custom overlay UI */}
       <div className="absolute bottom-20 left-6 text-white">
@@ -73,14 +67,7 @@ function FeedVideo({videoId}) {
 ```tsx
 <div className="grid grid-cols-3 gap-4">
   {videos.map((video) => (
-    <Video
-      key={video.id}
-      id={video.id}
-      className="w-full aspect-video object-cover rounded-lg"
-      muted={true}
-      autoPlay={true}
-      theme="feed"
-    />
+    <Video key={video.id} id={video.id} className="w-full aspect-video object-cover rounded-lg" muted={true} autoPlay={true} theme="feed" />
   ))}
 </div>
 ```

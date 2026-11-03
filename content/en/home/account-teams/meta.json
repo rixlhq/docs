@@ -1,0 +1,16 @@
+{
+  "title": "Account & Teams",
+  "description": "Manage your personal account, team settings, and organization preferences",
+  "pages": [
+    "overview",
+    "---Organizations & Teams---",
+    "organizations-overview",
+    "create-organization",
+    "team-management",
+    "membership",
+    "invitations",
+    "---Personal Account---",
+    "general-settings",
+    "security"
+  ]
+}

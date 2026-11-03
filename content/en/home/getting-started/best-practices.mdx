@@ -29,7 +29,7 @@ Get the most out of **RIXL** with these proven best practices. Whether you're ju
 
 ### Quality Tier Selection
 
-Choose the right [quality tier](/en/home/platform/uploads/videos/quality-tiers) based on your content and audience:
+Choose the right [quality tier](/en/home/video/quality-tiers) based on your content and audience:
 
 <Tabs items={['Basic Tier', 'Shorts Tier', 'Pro Tier']}>
   <Tab value="Basic Tier">
@@ -366,11 +366,8 @@ const waitForVideoReady = async (apiKey, videoId) => {
   const pollInterval = 3000; // 3 seconds
 
   while (true) {
-    const res = await fetch(
-      `https://api.rixl.com/media/v1/videos/${videoId}`,
-      { headers: { 'X-API-Key': apiKey } }
-    );
-    const { file } = await res.json();
+    const res = await fetch(`https://api.rixl.com/media/v1/videos/${videoId}`, {headers: {"X-API-Key": apiKey}});
+    const {file} = await res.json();
 
     if (file?.status === "FILE_STATUS_READY") {
       return file.url;
@@ -429,5 +426,5 @@ const waitForVideoReady = async (apiKey, videoId) => {
 
 <Callout type="tip">
   Ready to put these practices into action? Start with the [5-Minute Quick Start Guide](/en/home/getting-started/quick-start) or explore the
-  [Platform Dashboard Guide](/en/home/platform/dashboard/guide) for more in-depth workflows.
+  [Platform Dashboard Guide](/en/home/dashboard/guide) for more in-depth workflows.
 </Callout>

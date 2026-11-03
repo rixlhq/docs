@@ -1,55 +1,68 @@
 ---
 title: "Home"
-description: "Welcome to RIXL documentation. Explore the platform, SDKs, and guides."
+description: "Welcome to RIXL documentation. Explore video transcoding, image optimization, developer SDKs, and platform guides."
 ---
 
 import {Callout, Card, Columns} from "@/snippets";
 
-Welcome to the **RIXL documentation**. Pick a topic below to start building with media processing, delivery, and SDKs.
+Welcome to the **RIXL documentation**. Build fast, responsive media experiences with automated video transcoding, intelligent image delivery, and drop-in frontend SDKs.
 
-## Get Started
+## Core Media Platform
 
 <Columns cols={3}>
   <Card title="Getting Started" href="/en/home/getting-started/overview" icon="rocket">
-    Learn the basics and set up your first RIXL project.
+    Learn the basics, architecture, and set up your first project.
   </Card>
-  <Card title="Video" href="/en/home/video" icon="video">
-    Transcoding, adaptive streaming, and video delivery.
+  <Card title="Video Streaming" href="/en/home/video/overview" icon="video">
+    Transcoding, quality tiers, adaptive HLS streams, and direct uploads.
   </Card>
-  <Card title="Images" href="/en/home/images" icon="image">
-    AVIF optimization, responsive images, and transformations.
+  <Card title="Image Optimization" href="/en/home/images/overview" icon="image">
+    Automatic AVIF/WebP conversion, responsive sizing, and smart placeholders.
   </Card>
 </Columns>
 
-## Platform & Guides
+## Management & Collaboration
 
 <Columns cols={3}>
-  <Card title="Platform" href="/en/home/platform" icon="upload">
-    Dashboard, uploads, teams, billing, and API integration.
+  <Card title="Feeds & Posts" href="/en/home/feeds/overview" icon="archive">
+    Create dynamic media feeds and publish social-style posts.
   </Card>
-  <Card title="Guides" href="/en/home/guides" icon="book-open">
-    Step-by-step tutorials and real-world examples.
+  <Card title="Dashboard & Projects" href="/en/home/dashboard/overview" icon="monitor">
+    Manage project workspaces, media assets, and storage in the web console.
   </Card>
-  <Card title="Legal" href="/en/home/legal/privacy-policy" icon="scale">
-    Privacy, terms, and acceptable use policies.
+  <Card title="Account & Teams" href="/en/home/account-teams/overview" icon="users">
+    Organizations, team member invitations, roles, and account security.
   </Card>
 </Columns>
 
-## Build with RIXL
+## Developer Tools & Billing
+
+<Columns cols={3}>
+  <Card title="Developer Guides" href="/en/home/developer/overview" icon="code">
+    API keys, authentication, rate limits, and error handling.
+  </Card>
+  <Card title="Billing & Plans" href="/en/home/billing/overview" icon="credit-card">
+    Subscription tiers, storage quotas, and invoice management.
+  </Card>
+  <Card title="Legal & Compliance" href="/en/home/legal/privacy-policy" icon="scale">
+    Privacy policy, terms of service, cookies, and acceptable use.
+  </Card>
+</Columns>
+
+## Client Libraries & SDKs
 
 <Columns cols={3}>
   <Card title="Media React" href="/en/sdk/media-react" icon="layers">
-    Drop-in React components and hooks.
+    Drop-in React video player, image component, and feed hooks.
   </Card>
   <Card title="Media Core" href="/en/sdk/media-core" icon="box">
-    Framework-agnostic core API and types.
+    Framework-agnostic TypeScript core client and types.
   </Card>
-  <Card title="API Reference" href="/en/api" icon="code">
-    REST API endpoints and parameters.
+  <Card title="REST API Reference" href="/en/api" icon="file-text">
+    Complete interactive REST API specification and endpoints.
   </Card>
 </Columns>
 
-<Callout type="tip" title="Not sure where to start?">
-  Jump to the [Getting Started overview](/en/home/getting-started/overview) for a quick introduction, or explore the [Media React
-  SDK](/en/sdk/media-react) if you are building a frontend.
+<Callout type="tip" title="Looking for a quick start?">
+  Jump straight into the [Getting Started Guide](/en/home/getting-started/quick-start) to upload your first media file in under 5 minutes.
 </Callout>

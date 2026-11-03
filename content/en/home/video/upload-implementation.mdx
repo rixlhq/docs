@@ -1,0 +1,316 @@
+---
+title: Upload Implementation
+description: Code examples and best practices for implementing video uploads
+---
+
+import {Card, Columns} from "@/snippets";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+
+Implement video uploads with comprehensive code examples and best practices for reliable, efficient video processing.
+
+## Upload Implementation
+
+### Implementation Overview
+
+Video uploads on RIXL use a secure **two-step direct upload** model:
+
+1. **Initialize Upload**: Request upload credentials and presigned URLs for your video (and optional poster).
+2. **Direct Upload**: Stream your media file directly to the presigned storage URL using HTTP `PUT`. Once bytes are written, transcoding begins automatically.
+
+### Upload Optimization Guidelines
+
+<Columns cols={3}>
+  <Card title="Format: MP4 + H.264">Fastest processing with universal compatibility across all target devices</Card>
+  <Card title="Resolution: Upload Highest Available">Up to 4K for Pro tier, platform automatically generates lower renditions</Card>
+  <Card title="Audio: Opus / AAC Codec">Best compression, fidelity, and cross-browser streaming performance</Card>
+</Columns>
+
+---
+
+## SDK Quick Start (`@rixl/media`)
+
+If you are building a TypeScript or JavaScript application, use `@rixl/media` for a pre-built uploader with progress events and cancellation:
+
+```bash
+npm install @rixl/media
+```
+
+```typescript
+import {uploadVideo} from "@rixl/media";
+
+const videoId = await uploadVideo({
+  projectId: "YOUR_PROJECT_ID",
+  apiKey: "YOUR_PROJECT_API_KEY",
+  file: selectedFile,
+  videoQuality: "VIDEO_QUALITY_PRO",
+  onProgress: (percent) => {
+    console.log(`Upload progress: ${percent}%`);
+  },
+});
+
+console.log(`Video uploaded and processing! Video ID: ${videoId}`);
+```
+
+---
+
+## REST API Code Examples
+
+<Tabs items={['TypeScript', 'Python', 'cURL']}>
+  <Tab value="TypeScript">
+    ```typescript
+    interface CreateVideoUploadResponse {
+      video_id: string;
+      video_upload_url: string;
+      poster_id?: string;
+      poster_upload_url?: string;
+      expires_at?: string;
+    }
+
+    async function uploadVideo(
+      projectId: string,
+      apiKey: string,
+      videoFile: File,
+      videoQuality: 'VIDEO_QUALITY_BASIC' | 'VIDEO_QUALITY_SHORTS' | 'VIDEO_QUALITY_PRO' = 'VIDEO_QUALITY_PRO',
+      onProgress?: (percentage: number) => void
+    ): Promise<string> {
+      // Step 1: Initialize upload to get presigned upload URL
+      const initResponse = await fetch(
+        `https://api.rixl.com/media/v1/projects/${projectId}/videos/upload`,
+        {
+          method: 'POST',
+          headers: {
+            'X-API-Key': apiKey,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: videoFile.name,
+            video_quality: videoQuality
+          })
+        }
+      );
+
+      if (!initResponse.ok) {
+        const error = await initResponse.json().catch(() => ({}));
+        throw new Error(`Upload initialization failed: ${error.message || initResponse.statusText}`);
+      }
+
+      const { video_id, video_upload_url }: CreateVideoUploadResponse = await initResponse.json();
+
+      // Step 2: Upload file bytes directly to signed URL with progress tracking
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        if (onProgress) {
+          xhr.upload.addEventListener('progress', (e) => {
+            if (e.lengthComputable) {
+              onProgress(Math.round((e.loaded / e.total) * 100));
+            }
+          });
+        }
+
+        xhr.addEventListener('load', () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve();
+          } else {
+            reject(new Error(`Storage upload failed with status ${xhr.status}`));
+          }
+        });
+
+        xhr.addEventListener('error', () => reject(new Error('Network error during file upload')));
+        xhr.addEventListener('abort', () => reject(new Error('Upload aborted')));
+
+        xhr.open('PUT', video_upload_url);
+        xhr.setRequestHeader('Content-Type', videoFile.type || 'video/mp4');
+        xhr.send(videoFile);
+      });
+
+      return video_id;
+    }
+    ```
+
+  </Tab>
+
+  <Tab value="Python">
+    ```python
+    import requests
+    from pathlib import Path
+    import logging
+
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
+    class VideoUploadError(Exception):
+        """Custom exception for video upload errors"""
+        pass
+
+    def upload_video(
+        project_id: str,
+        api_key: str,
+        file_path: Path,
+        video_quality: str = "VIDEO_QUALITY_PRO"
+    ) -> str:
+        """
+        Uploads a video to RIXL in two steps:
+        1. Request upload credentials
+        2. Stream binary file directly to storage
+        """
+        if not file_path.exists():
+            raise VideoUploadError(f"Video file not found: {file_path}")
+
+        session = requests.Session()
+        session.headers.update({"X-API-Key": api_key})
+
+        # Step 1: Initialize upload
+        logger.info(f"Creating video upload for {file_path.name}")
+        init_response = session.post(
+            f"https://api.rixl.com/media/v1/projects/{project_id}/videos/upload",
+            json={
+                "name": file_path.name,
+                "video_quality": video_quality
+            },
+            timeout=30
+        )
+        init_response.raise_for_status()
+        data = init_response.json()
+
+        # Step 2: Upload file bytes directly to presigned URL
+        logger.info("Uploading video payload to storage...")
+        with open(file_path, "rb") as video_file:
+            upload_response = session.put(
+                data["video_upload_url"],
+                data=video_file,
+                headers={"Content-Type": "video/mp4"},
+                timeout=600
+            )
+            upload_response.raise_for_status()
+
+        logger.info(f"Upload complete! Video ID: {data['video_id']}")
+        return data["video_id"]
+    ```
+
+  </Tab>
+
+  <Tab value="cURL">
+    ```bash
+    # Step 1: Create upload URL
+    INIT_RESPONSE=$(curl -X POST "https://api.rixl.com/media/v1/projects/{project_id}/videos/upload" \
+      -H "X-API-Key: YOUR_PROJECT_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "name": "clip.mp4",
+        "video_quality": "VIDEO_QUALITY_PRO"
+      }')
+
+    # Extract video_upload_url and video_id using jq
+    UPLOAD_URL=$(echo $INIT_RESPONSE | jq -r .video_upload_url)
+    VIDEO_ID=$(echo $INIT_RESPONSE | jq -r .video_id)
+
+    # Step 2: Upload video file directly to signed URL
+    curl -# -X PUT "$UPLOAD_URL" \
+      --upload-file clip.mp4 \
+      -H "Content-Type: video/mp4"
+
+    # Step 3: Check video status
+    curl -X GET "https://api.rixl.com/media/v1/videos/$VIDEO_ID" \
+      -H "X-API-Key: YOUR_PROJECT_API_KEY"
+    ```
+
+  </Tab>
+</Tabs>
+
+---
+
+## Resilient Upload Pattern
+
+When uploading large video files, wrap the upload step with exponential backoff to handle intermittent network dropouts:
+
+```typescript
+async function uploadVideoWithRetry(projectId: string, apiKey: string, file: File, maxRetries = 3): Promise<string> {
+  // Initialize once to obtain signed URL
+  const initResponse = await fetch(`https://api.rixl.com/media/v1/projects/${projectId}/videos/upload`, {
+    method: "POST",
+    headers: {
+      "X-API-Key": apiKey,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: file.name,
+      video_quality: "VIDEO_QUALITY_PRO",
+    }),
+  });
+
+  if (!initResponse.ok) {
+    throw new Error(`Failed to initialize upload: ${initResponse.statusText}`);
+  }
+
+  const {video_id, video_upload_url} = await initResponse.json();
+
+  // Retry the binary PUT upload if network drops
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const uploadResponse = await fetch(video_upload_url, {
+        method: "PUT",
+        body: file,
+        headers: {
+          "Content-Type": file.type || "video/mp4",
+        },
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error(`Upload returned status ${uploadResponse.status}`);
+      }
+
+      return video_id;
+    } catch (error) {
+      if (attempt === maxRetries) throw error;
+      const backoffMs = Math.pow(2, attempt) * 1000;
+      await new Promise((resolve) => setTimeout(resolve, backoffMs));
+    }
+  }
+
+  return video_id;
+}
+```
+
+---
+
+## Batch Uploads
+
+To upload multiple assets without saturating the client browser's network pipe, run uploads with a controlled concurrency limit:
+
+```typescript
+async function batchUploadVideos(
+  projectId: string,
+  apiKey: string,
+  files: File[],
+  concurrency = 2
+): Promise<Array<{fileName: string; videoId?: string; error?: string}>> {
+  const results: Array<{fileName: string; videoId?: string; error?: string}> = [];
+
+  for (let i = 0; i < files.length; i += concurrency) {
+    const chunk = files.slice(i, i + concurrency);
+    const chunkResults = await Promise.all(
+      chunk.map(async (file) => {
+        try {
+          const videoId = await uploadVideoWithRetry(projectId, apiKey, file);
+          return {fileName: file.name, videoId};
+        } catch (err) {
+          return {fileName: file.name, error: (err as Error).message};
+        }
+      })
+    );
+    results.push(...chunkResults);
+  }
+
+  return results;
+}
+```
+
+---
+
+## Next Steps
+
+- Set up [processing status monitoring](/en/home/video/monitoring-status) to track transcoding progress
+- Learn about [quality tiers](/en/home/video/quality-tiers) to optimize resolution ladders
+- Play videos using the React component in [Video Player Reference](/en/sdk/media-react/video-component)
+- Review [supported formats](/en/home/video/supported-formats) for optimal compatibility

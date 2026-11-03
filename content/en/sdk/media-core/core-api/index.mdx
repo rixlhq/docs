@@ -68,12 +68,7 @@ console.log(page.posts, page.total, page.offset, page.limit);
 Call `initializeAnalyticsContext()` once before emitting events, or rely on `connect()` which calls it for you. The context stores (`analyticsContextStore`, `analyticsDeviceStore`, `analyticsSessionStore`) hold `device_id`, `session_id`, `country`, `language`, `browser`, `os`, `device_type`, and `screen_resolution`.
 
 ```ts
-import {
-  initializeAnalyticsContext,
-  analyticsContextStore,
-  analyticsDeviceStore,
-  analyticsSessionStore,
-} from "@rixl/media";
+import {initializeAnalyticsContext, analyticsContextStore, analyticsDeviceStore, analyticsSessionStore} from "@rixl/media";
 
 initializeAnalyticsContext();
 
@@ -85,7 +80,8 @@ analyticsContextStore.set({...analyticsContextStore.get(), page: "feed", feed_id
 ```
 
 <Callout type="info">
-  `analyticsContextStore` is a `nanostores` writable atom. Use `.set()` to replace its value or `.get()` to read it. `setAnalyticsContext(overrides)` is also exported to merge partial updates.
+  `analyticsContextStore` is a `nanostores` writable atom. Use `.set()` to replace its value or `.get()` to read it.
+  `setAnalyticsContext(overrides)` is also exported to merge partial updates.
 </Callout>
 
 ### Posting events
@@ -227,7 +223,7 @@ declare function getHotSegments(options: GetHotSegmentsOptions): Promise<HotSegm
 ```
 
 <Callout type="info">
-  `postContentEvent` takes `BuildEventParams` and `buildVideoAnalyticsPayload` takes `BuildVideoAnalyticsPayloadParams`.
-  Millisecond durations are converted to duration strings (e.g. `"5s"`, `"1.234s"`) and `content_type` is sent as
-  `MEDIA_TYPE_IMAGE` or `MEDIA_TYPE_VIDEO` on the wire to `/analytics/v1/events`.
+  `postContentEvent` takes `BuildEventParams` and `buildVideoAnalyticsPayload` takes `BuildVideoAnalyticsPayloadParams`. Millisecond
+  durations are converted to duration strings (e.g. `"5s"`, `"1.234s"`) and `content_type` is sent as `MEDIA_TYPE_IMAGE` or
+  `MEDIA_TYPE_VIDEO` on the wire to `/analytics/v1/events`.
 </Callout>

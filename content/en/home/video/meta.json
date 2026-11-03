@@ -1,5 +1,5 @@
 {
   "title": "Video Processing",
-  "description": "Professional video transcoding with adaptive streaming and global delivery",
-  "collapsible": false
+  "description": "Automated video transcoding, quality tiers, and adaptive HLS streaming",
+  "pages": ["overview", "quality-tiers", "supported-formats", "upload-implementation", "monitoring-status"]
 }

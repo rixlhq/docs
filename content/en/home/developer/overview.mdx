@@ -1,0 +1,60 @@
+---
+title: Developer Platform Overview
+description: Build on RIXL with REST APIs, drop-in frontend SDKs, and webhook integrations.
+---
+
+import {Callout, Card, Columns} from "@/snippets";
+
+Welcome to the **RIXL Developer Platform**. RIXL provides clean, predictable REST APIs and frontend components for building media-first web and mobile applications.
+
+## Developer Resources
+
+<Columns cols={3}>
+  <Card title="API Keys & Auth" href="/en/home/developer/api-keys" icon="key">
+    Create, rotate, and manage API keys for authenticating API requests.
+  </Card>
+  <Card title="Rate Limits & Quotas" href="/en/home/developer/rate-limits" icon="clock">
+    Request limits, rate limit headers, and backoff recommendations.
+  </Card>
+  <Card title="Error Handling" href="/en/home/developer/error-handling" icon="alert-circle">
+    HTTP status codes, standard error schemas, and troubleshooting.
+  </Card>
+</Columns>
+
+## Building with RIXL
+
+You can integrate RIXL into your stack using two complementary approaches:
+
+### 1. REST APIs
+
+For backend ingestion, project configuration, and headless workflows. All API endpoints use standard HTTP methods, accept and return JSON payloads, and authenticate with project-scoped API keys.
+
+- Base URL: `https://api.rixl.com`
+- Full reference: [RIXL REST API Reference](/en/api)
+
+### 2. Frontend SDKs
+
+For dropping video players, responsive images, and infinite media feeds into your client apps with zero boilerplate.
+
+<Columns cols={3}>
+  <Card title="Media React" href="/en/sdk/media-react" icon="layers">
+    Drop-in React components and playback hooks.
+  </Card>
+  <Card title="Media Core" href="/en/sdk/media-core" icon="box">
+    Framework-agnostic core client and TypeScript types.
+  </Card>
+  <Card title="All SDKs" href="/en/sdk" icon="package">
+    Vue, Svelte, Angular, Lit, and server SDKs.
+  </Card>
+</Columns>
+
+## Next Steps
+
+<Columns cols={2}>
+  <Card title="Set up API Keys" href="/en/home/developer/api-keys" icon="key">
+    Generate your first API key in the RIXL dashboard.
+  </Card>
+  <Card title="Direct Video Upload" href="/en/home/video/upload-implementation" icon="upload">
+    Implement two-step binary upload in your backend.
+  </Card>
+</Columns>

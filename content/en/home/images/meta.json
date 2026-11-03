@@ -1,5 +1,5 @@
 {
-  "title": "Image Processing",
-  "description": "Transform and optimize images with automatic AVIF compression and global delivery",
-  "collapsible": false
+  "title": "Image Optimization",
+  "description": "Transform and deliver web-optimized images with automatic AVIF and WebP",
+  "pages": ["overview", "upload-and-transform"]
 }

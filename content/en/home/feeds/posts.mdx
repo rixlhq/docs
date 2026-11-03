@@ -1,0 +1,203 @@
+---
+title: Posts
+description: Create social media-style posts by uploading media directly to feeds.
+---
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Step, Steps} from "fumadocs-ui/components/steps";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+
+Feed posts combine media uploads with social metadata to create rich content for structured feeds.
+This process creates the post record and provides presigned upload URLs for your media.
+
+<Callout type="info">
+  Feed posts require an existing feed. Learn about [creating feeds](/en/home/feeds/overview) if you haven't set one up yet.
+</Callout>
+
+## Post Types
+
+**Video Posts** – Upload videos with automatic poster generation and thumbnail images for feed display.
+
+**Image Posts** – Upload standalone images optimized for mobile and web feeds with automatic AVIF conversion.
+
+## Upload Process
+
+Posts combine media upload with feed publishing in a direct workflow:
+
+<Steps>
+  <Step>
+    ### Create Post Upload
+
+    Call the `POST /posts/v1/projects/{project_id}/feeds/{feed_id}/posts/upload` endpoint with your post metadata and media type.
+
+  </Step>
+
+  <Step>
+    ### Set Metadata Parameters
+
+    Specify `content_type` (`CONTENT_TYPE_VIDEO` or `CONTENT_TYPE_IMAGE`), `creator_id`, `description`, `file_name`, and optional quality settings.
+
+  </Step>
+
+  <Step>
+    ### Upload Media to Presigned URL
+
+    Use the returned `content_upload_url` (and optional `poster_upload_url`) to upload your media file directly via HTTP `PUT`.
+
+  </Step>
+
+  <Step>
+    ### Automatic Processing
+
+    Once uploaded to the storage URL, RIXL automatically processes the media and makes the post available in your feed.
+
+  </Step>
+</Steps>
+
+## Request Parameters
+
+- **`content_type`** – `CONTENT_TYPE_VIDEO` or `CONTENT_TYPE_IMAGE`
+- **`file_name`** – Name of your media file (e.g. `highlight-clip.mp4`)
+- **`creator_id`** – Unique identifier for the user or author creating the post
+- **`description`** – Caption or text for the post
+- **`video_quality`** _(optional, for videos)_ – `VIDEO_QUALITY_BASIC`, `VIDEO_QUALITY_SHORTS`, or `VIDEO_QUALITY_PRO`
+- **`image_format`** _(optional)_ – Poster image format (`jpg`, `png`, `webp`)
+
+## API Examples
+
+### 1. Initialize Post Upload
+
+<Tabs items={['Video Post', 'Image Post']}>
+  <Tab value="Video Post">
+    ```bash
+    curl -X POST "https://api.rixl.com/posts/v1/projects/{project_id}/feeds/{feed_id}/posts/upload" \
+      -H "X-API-Key: YOUR_PROJECT_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "content_type": "CONTENT_TYPE_VIDEO",
+        "file_name": "highlight-clip.mp4",
+        "creator_id": "user_12345",
+        "description": "Check out this amazing view!",
+        "video_quality": "VIDEO_QUALITY_SHORTS"
+      }'
+    ```
+
+    **Response:**
+    ```json
+    {
+      "post_id": "PS5IMKoFLm",
+      "content_id": "VI9VXQxWXQ",
+      "poster_id": "IM8y3QB38S",
+      "content_upload_url": "https://videos.rixl.com/upload/...",
+      "poster_upload_url": "https://images.rixl.com/upload/...",
+      "upload_expires": "2026-01-15T12:00:00Z"
+    }
+    ```
+
+  </Tab>
+
+  <Tab value="Image Post">
+    ```bash
+    curl -X POST "https://api.rixl.com/posts/v1/projects/{project_id}/feeds/{feed_id}/posts/upload" \
+      -H "X-API-Key: YOUR_PROJECT_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "content_type": "CONTENT_TYPE_IMAGE",
+        "file_name": "sunset.jpg",
+        "creator_id": "user_12345",
+        "description": "Golden hour from the roof."
+      }'
+    ```
+
+    **Response:**
+    ```json
+    {
+      "post_id": "PS5IMKoFLm",
+      "content_id": "IM8y3QB38S",
+      "content_upload_url": "https://images.rixl.com/upload/...",
+      "upload_expires": "2026-01-15T12:00:00Z"
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+### 2. Upload Media Directly
+
+Use the returned presigned URLs to upload your files directly to cloud storage:
+
+<Tabs items={['Video Upload', 'Custom Poster Upload']}>
+  <Tab value="Video Upload">
+    ```bash
+    curl -X PUT "{content_upload_url}" \
+      --upload-file "/path/to/highlight-clip.mp4" \
+      -H "Content-Type: video/mp4"
+    ```
+  </Tab>
+
+  <Tab value="Custom Poster Upload">
+    ```bash
+    curl -X PUT "{poster_upload_url}" \
+      --upload-file "/path/to/custom-poster.jpg" \
+      -H "Content-Type: image/jpeg"
+    ```
+
+    <Callout type="tip">
+      Uploading a custom poster is optional. If omitted, RIXL automatically generates a high-quality poster image from the video.
+    </Callout>
+
+  </Tab>
+</Tabs>
+
+## Managing Your Posts
+
+Retrieve and manage feed posts via REST API:
+
+### Retrieving Posts
+
+**Get a Specific Post**: Fetch metadata and media URLs for an individual post.
+
+```bash
+curl -X GET "https://api.rixl.com/posts/v1/projects/{project_id}/feeds/{feed_id}/posts/{post_id}" \
+  -H "X-API-Key: YOUR_PROJECT_API_KEY"
+```
+
+**List Posts in a Feed**: Paginate through posts in a feed.
+
+```bash
+curl -X GET "https://api.rixl.com/posts/v1/projects/{project_id}/feeds/{feed_id}/posts?limit=25" \
+  -H "X-API-Key: YOUR_PROJECT_API_KEY"
+```
+
+**List Posts by Creator**: Filter feed posts created by a specific user.
+
+```bash
+curl -X GET "https://api.rixl.com/posts/v1/projects/{project_id}/feeds/{feed_id}/posts/creators/{creator_id}?limit=25" \
+  -H "X-API-Key: YOUR_PROJECT_API_KEY"
+```
+
+### Deleting a Post
+
+```bash
+curl -X DELETE "https://api.rixl.com/posts/v1/projects/{project_id}/feeds/{feed_id}/posts/{post_id}" \
+  -H "X-API-Key: YOUR_PROJECT_API_KEY"
+```
+
+<Callout type="warn">Deleting a post permanently removes it from the feed.</Callout>
+
+## Best Practices
+
+- **Provide descriptive metadata**: Set clear captions and creator IDs to power client feed rendering and user attribution.
+- **Match quality tiers to use case**: Use `VIDEO_QUALITY_SHORTS` for vertical mobile feeds, or `VIDEO_QUALITY_PRO` for high-resolution landscape showcases.
+- **Leverage the React Feed component**: Render feeds effortlessly in web apps with `<Feed feedId="..." />` from `@rixl/media-react`.
+
+## Next Steps
+
+<Columns cols={2}>
+  <Card title="Feed Component" href="/en/sdk/media-react/feed-component/props-reference" icon="layers">
+    Render responsive, scrollable feeds in React with built-in analytics.
+  </Card>
+  <Card title="API Reference" href="/en/api" icon="code">
+    Explore the full REST API specification for feeds and posts.
+  </Card>
+</Columns>

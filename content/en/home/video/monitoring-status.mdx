@@ -1,0 +1,201 @@
+---
+title: Monitoring Status
+description: Track video processing progress and handle errors effectively.
+---
+
+import {Callout} from "@/snippets";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+
+Monitor video processing status, track progress through the pipeline, and implement robust error handling for reliable video uploads.
+
+## Processing Status Monitoring
+
+After uploading a video to RIXL, the platform inspects the source file and transcodes it into multi-quality HLS streams. You can query the video's status programmatically to know when it is ready for streaming.
+
+### Status Enum (`FileStatus`)
+
+<Tabs items={['Status Values', 'API Request']}>
+  <Tab value="Status Values">
+    - **`FILE_STATUS_UPLOADING`** – Upload credentials generated; waiting for binary video upload
+    - **`FILE_STATUS_UPLOADED`** – File bytes received in storage; awaiting transcoding
+    - **`FILE_STATUS_PROCESSING`** – Generating multi-resolution renditions and HLS streaming package
+    - **`FILE_STATUS_READY`** – Video is fully packaged and ready to stream
+    - **`FILE_STATUS_ERROR`** – An error occurred during ingest or transcoding
+  </Tab>
+
+  <Tab value="API Request">
+    ```bash
+    curl -X GET "https://api.rixl.com/media/v1/videos/{video_id}" \
+      -H "X-API-Key: YOUR_PROJECT_API_KEY" \
+      -H "Accept: application/json"
+    ```
+
+    **Example Response (`200 OK`):**
+    ```json
+    {
+      "id": "FpzVPNx1cG",
+      "project_id": "PRJ123",
+      "name": "clip.mp4",
+      "video_quality": "VIDEO_QUALITY_PRO",
+      "file": {
+        "status": "FILE_STATUS_READY",
+        "format": "hls",
+        "duration": 142.6,
+        "width": 1920,
+        "height": 1080,
+        "bitrate": 4500000,
+        "framerate": 60,
+        "codec": "h264",
+        "size": 80240100,
+        "url": "https://videos.rixl.com/PRJ123/FpzVPNx1cG"
+      },
+      "poster": {
+        "id": "FpvLwyDMqu",
+        "status": "FILE_STATUS_READY",
+        "format": "avif",
+        "url": "https://images.rixl.com/PRJ123/FpvLwyDMqu"
+      },
+      "created_at": "2026-01-15T11:00:00Z",
+      "updated_at": "2026-01-15T11:02:15Z"
+    }
+    ```
+
+  </Tab>
+</Tabs>
+
+<Callout type="info">
+  When video transcoding completes, `file.format` changes to `"hls"`. Modern players (such as `@rixl/media-react`'s `<Video>`) automatically use adaptive HLS streaming when `format` is `"hls"`.
+</Callout>
+
+---
+
+## Status Monitoring Implementation
+
+### Polling Helper (TypeScript)
+
+Here is a lightweight, promise-based status polling helper with timeout protection:
+
+```typescript
+export type FileStatus =
+  | "FILE_STATUS_UNSPECIFIED"
+  | "FILE_STATUS_UPLOADING"
+  | "FILE_STATUS_UPLOADED"
+  | "FILE_STATUS_PROCESSING"
+  | "FILE_STATUS_READY"
+  | "FILE_STATUS_ERROR";
+
+export interface VideoDetails {
+  id: string;
+  project_id: string;
+  name: string;
+  video_quality: string;
+  file: {
+    status: FileStatus;
+    format?: string;
+    duration?: number;
+    width?: number;
+    height?: number;
+    url?: string;
+  };
+}
+
+export async function getVideo(apiKey: string, videoId: string): Promise<VideoDetails> {
+  const res = await fetch(`https://api.rixl.com/media/v1/videos/${videoId}`, {
+    headers: {
+      "X-API-Key": apiKey,
+      Accept: "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch video: ${res.statusText}`);
+  }
+
+  return res.json();
+}
+
+export async function waitForVideoReady(
+  projectId: string,
+  apiKey: string,
+  videoId: string,
+  options: {
+    intervalMs?: number;
+    timeoutMs?: number;
+    onStatusChange?: (status: FileStatus) => void;
+  } = {}
+): Promise<VideoDetails> {
+  const {intervalMs = 3000, timeoutMs = 600000, onStatusChange} = options;
+  const startTime = Date.now();
+  let lastStatus: FileStatus | undefined;
+
+  while (Date.now() - startTime < timeoutMs) {
+    const video = await getVideo(projectId, apiKey, videoId);
+    const currentStatus = video.file.status;
+
+    if (currentStatus !== lastStatus) {
+      lastStatus = currentStatus;
+      onStatusChange?.(currentStatus);
+    }
+
+    if (currentStatus === "FILE_STATUS_READY") {
+      return video;
+    }
+
+    if (currentStatus === "FILE_STATUS_ERROR") {
+      throw new Error(`Video processing failed for video ${videoId}`);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, intervalMs));
+  }
+
+  throw new Error(`Video processing timed out after ${timeoutMs / 1000}s`);
+}
+```
+
+### Python Implementation
+
+```python
+import time
+import requests
+
+def wait_for_video_ready(
+    api_key: str,
+    video_id: str,
+    interval_sec: int = 5,
+    timeout_sec: int = 600
+) -> dict:
+    start_time = time.time()
+    url = f"https://api.rixl.com/media/v1/videos/{video_id}"
+    headers = {"X-API-Key": api_key, "Accept": "application/json"}
+
+    while time.time() - start_time < timeout_sec:
+        response = requests.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
+        data = response.json()
+        status = data.get("file", {}).get("status")
+
+        if status == "FILE_STATUS_READY":
+            print(f"Video {video_id} is ready for streaming!")
+            return data
+        elif status == "FILE_STATUS_ERROR":
+            raise RuntimeError(f"Video processing failed: {data}")
+
+        print(f"Current status: {status}... checking again in {interval_sec}s")
+        time.sleep(interval_sec)
+
+    raise TimeoutError(f"Video {video_id} did not complete within {timeout_sec}s")
+```
+
+---
+
+## Best Practices
+
+- **Poll with Reasonable Intervals**: A 3 to 5 second interval is optimal for web and mobile uploads while processing is active.
+- **Graceful Fallbacks**: Display low-resolution ThumbHash or poster image placeholders while `file.status` is `FILE_STATUS_PROCESSING`.
+- **Use React SDK**: If you are rendering videos with `@rixl/media-react`, the `<Video>` component seamlessly handles poster display and streaming setup without requiring manual polling loops.
+
+## Next Steps
+
+- Explore [Quality Tiers](/en/home/video/quality-tiers) for rendition ladders
+- Review [Upload Implementation](/en/home/video/upload-implementation) for step-by-step code samples
+- Learn how to play streams with [Video Component](/en/sdk/media-react/video-component)

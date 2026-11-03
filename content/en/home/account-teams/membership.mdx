@@ -1,0 +1,207 @@
+---
+title: Membership Management
+description: View and manage your roles across different organizations and teams.
+---
+
+import {Callout} from "@/snippets";
+import {Step, Steps} from "fumadocs-ui/components/steps";
+
+Manage your participation in [organizations](/en/home/account-teams/organizations-overview), view your roles and permissions, and control your collaborative access across RIXL.
+
+## Current Organization Memberships
+
+View all organizations you belong to and your role within each.
+
+### Membership Overview
+
+Your [membership dashboard](/en/home/account-teams/membership) displays:
+
+- **Organization Name**: The name of each organization you belong
+- **Your Role**: Your specific role (Owner, Admin, Member)
+- **Join Date**: When you became a member
+- **Status**: Active, pending, or any restrictions
+
+<Steps>
+    <Step>
+        Review your current organization memberships in the table
+    </Step>
+
+    <Step>
+        Click **View Details** next to any organization to see:
+        - Your specific permissions
+        - Team members and their roles
+        - Organization projects you can access
+    </Step>
+
+    <Step>
+        Use **Manage** for organizations where you have admin privileges
+    </Step>
+
+</Steps>
+
+## Understanding Roles
+
+### Organization-Level Roles
+
+<div className="grid gap-6 sm:grid-cols-3 mt-6">
+    <div className="border rounded-lg p-4">
+        <h4 className="font-semibold">Owner</h4>
+        <p>Full control of everything. Manages billing, adds/removes anyone, and controls all projects.</p>
+        <ul className="text-sm mt-2 space-y-1">
+            <li> Billing and subscription management</li>
+            <li> Add/remove any team member</li>
+            <li> Create and delete projects</li>
+            <li> Change organization settings</li>
+        </ul>
+    </div>
+
+    <div className="border rounded-lg p-4">
+        <h4 className="font-semibold">Admin</h4>
+        <p>Creates and manages projects. Invites team members and configures settings.</p>
+        <ul className="text-sm mt-2 space-y-1">
+            <li> Create and manage projects</li>
+            <li> Invite team members</li>
+            <li> Configure project settings</li>
+            <li> View usage analytics</li>
+        </ul>
+    </div>
+
+    <div className="border rounded-lg p-4">
+        <h4 className="font-semibold">Member</h4>
+        <p>Works on assigned projects only. Can create content but can't manage the organization.</p>
+        <ul className="text-sm mt-2 space-y-1">
+            <li> Access assigned projects</li>
+            <li> Upload and manage media</li>
+            <li> Create content within projects</li>
+            <li> View project analytics</li>
+        </ul>
+    </div>
+
+</div>
+
+### Project-Level Permissions
+
+Within each [project](/en/home/dashboard/projects/overview), you may have additional specific permissions:
+
+- **Media Upload**: Create and upload new content
+- **Media Management**: Edit and delete existing content
+- **Feed Management**: Create and configure content feeds
+- **Analytics Access**: View project performance data
+- **Settings Access**: Modify project configuration
+
+## Managing Your Memberships
+
+### Changing Your Role
+
+<Callout type="info">
+  Only organization Owners and Admins can modify member roles. Contact your organization administrator if you need different permissions.
+</Callout>
+
+### Leaving an Organization
+
+<Steps>
+    <Step>
+        Navigate to the organization you want to leave
+    </Step>
+
+    <Step>
+        Click **Leave Organization** in the membership actions
+    </Step>
+
+    <Step>
+        **Confirm your decision:**
+        - Review what access you'll lose
+        - Consider transferring any personal projects
+        - Confirm with organization administrators if needed
+    </Step>
+
+</Steps>
+
+<Callout type="warn" title="Before Leaving">
+  - **Owners**: Transfer ownership before leaving - **Active Projects**: Complete or transfer any critical work - **Billing Access**: Ensure
+  continuity for paid plans
+</Callout>
+
+## Membership Notifications
+
+Control how you receive updates about your memberships:
+
+- **Role Changes**: Notifications when your permissions are modified
+- **New Projects**: Alerts when you're added to projects
+- **Team Updates**: Member additions, removals, and role changes
+- **Organization News**: Important announcements and policy changes
+
+### Notification Settings
+
+<Steps>
+    <Step>
+        Go to **Membership → Notification Preferences**
+    </Step>
+
+    <Step>
+        Configure notification methods:
+        - Email notifications
+        - In-app notifications
+        - Project-specific alerts
+    </Step>
+
+    <Step>
+        Set frequency preferences:
+        - Immediate alerts
+        - Daily summaries
+        - Weekly digests
+    </Step>
+
+</Steps>
+
+## Membership Activity
+
+### Recent Activity
+
+Track your recent membership-related activities:
+
+- Project access changes
+- New organization invitations
+- Role modifications
+- Team collaborations
+
+### Access History
+
+View your access patterns:
+
+- Organizations joined and left
+- Role changes over time
+- Project assignments
+- Permission modifications
+
+<Callout type="tip">
+  Regular review of your membership activity helps ensure you have appropriate access levels and can identify any unauthorized changes.
+</Callout>
+
+## Troubleshooting Membership Issues
+
+### Common Issues
+
+**Can't access a project:**
+
+1. Verify your organization membership status
+2. Check project-specific permissions
+3. Contact your organization admin
+
+**Missing permissions:**
+
+1. Review your current role
+2. Check if permissions were recently changed
+3. Request access from organization owners/admins
+
+**Organization not appearing:**
+
+1. Check pending invitations
+2. Verify email address match
+3. Contact the organization administrator
+
+## Related Settings
+
+- **[Invitations](/en/home/account-teams/invitations)** - Manage pending organization invites
+- **[Organizations](/en/home/account-teams/organizations-overview)** - Create and manage organizations
+- **[General Settings](/en/home/account-teams/general-settings)** - Update profile information

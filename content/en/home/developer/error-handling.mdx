@@ -1,0 +1,82 @@
+---
+title: API Error Handling
+description: Troubleshoot common API failures and implement resilient retry behavior.
+---
+
+import {Callout} from "@/snippets";
+
+Use this page to diagnose the most common RIXL API failures and choose the correct recovery strategy.
+
+## Status Code Triage
+
+| Code  | Meaning                                       | Primary Fix                                   |
+| ----- | --------------------------------------------- | --------------------------------------------- |
+| `401` | Missing, invalid, revoked, or expired API key | Verify `X-API-Key`, then rotate key if needed |
+| `403` | Key cannot access this resource scope         | Check project/key scope and endpoint target   |
+| `404` | Resource does not exist                       | Validate ID and route                         |
+| `429` | Request rate exceeded                         | Retry with backoff and lower concurrency      |
+| `5xx` | Server-side failure                           | Retry with capped backoff, then escalate      |
+
+## 401 Unauthorized
+
+Check in this order:
+
+- Ensure `X-API-Key` header is present.
+- Ensure you are using `https://api.rixl.com` as base URL.
+- Ensure the key value is complete (no truncation or extra characters).
+- If still failing, revoke and create a replacement key.
+
+## 403 Forbidden
+
+The key is valid but not authorized for the target resource.
+
+- Confirm the key belongs to the same project/resource you are requesting.
+- Verify the endpoint path and identifiers.
+- Re-test with a known-good read endpoint first (for example, list projects/videos).
+
+## 404 Not Found
+
+A 404 typically means the ID or route is wrong.
+
+- Re-check path parameters (`videoId`, `imageId`, `feedId`).
+- Confirm you are calling the expected method on the expected path.
+- Ensure resource creation completed before retrieval.
+
+## 429 Too Many Requests
+
+Implement adaptive retry with exponential backoff and jitter:
+
+```javascript
+async function requestWithRetry(send, maxAttempts = 5, baseDelayMs = 500) {
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    const response = await send();
+    if (response.status !== 429 && response.status < 500) return response;
+
+    const jitter = Math.floor(Math.random() * 200);
+    const delay = baseDelayMs * 2 ** attempt + jitter;
+    await new Promise((resolve) => setTimeout(resolve, delay));
+  }
+
+  throw new Error("Request failed after retries");
+}
+```
+
+For more throttling guidance, see [Rate Limits](/en/home/developer/rate-limits).
+
+## 5xx Server Errors
+
+- Retry idempotent operations with capped exponential backoff.
+- Record request IDs, endpoint, and timestamp for incident review.
+- If persistent, escalate with reproducible request details.
+
+## Lost API Key
+
+<Callout type="error" title="Keys Cannot Be Retrieved">
+  API keys are shown once at creation. If the value is lost, revoke the key and create a new one.
+</Callout>
+
+## Related
+
+- [API Keys](/en/home/developer/api-keys)
+- [Rate Limits](/en/home/developer/rate-limits)
+- [API Reference](/en/api)

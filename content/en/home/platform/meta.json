@@ -1,6 +1,0 @@
-{
-  "title": "Platform",
-  "description": "Upload, manage, and optimize media through the RIXL platform",
-  "pagesIndex": "index",
-  "pages": ["account-teams", "dashboard", "uploads", "api-documentation", "billing"]
-}

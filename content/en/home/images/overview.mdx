@@ -1,0 +1,127 @@
+---
+title: Image Optimization
+description: Transform any image into lightning-fast AVIF files with smart placeholders, responsive delivery, and global CDN distribution.
+---
+
+import {Callout, Card, Columns} from "@/snippets";
+import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+import {Step, Steps} from "fumadocs-ui/components/steps";
+
+Welcome to **RIXL Image Optimization** — automated image processing that converts raw images into ultra-efficient AVIF and WebP files with smart placeholders, responsive sizing, and global CDN delivery.
+
+## Quick Actions
+
+<Columns cols={3}>
+  <Card title="Upload & Formats" href="/en/home/images/upload-and-transform" icon="upload">
+    Supported image formats, upload workflows, and compression guidelines.
+  </Card>
+  <Card title="React Component" href="/en/sdk/media-react/image-component" icon="layers">
+    Drop-in Image component with automatic responsive sizing and placeholders.
+  </Card>
+  <Card title="Media Library" href="/en/home/dashboard/media/overview" icon="monitor">
+    Manage and organize images through the dashboard interface.
+  </Card>
+</Columns>
+
+## How RIXL Optimizes Images
+
+<Steps>
+  <Step>
+    **Upload Any Standard Format**
+
+    Upload JPEG, PNG, WebP, GIF, or SVG files up to 100MB through the dashboard or direct API.
+
+  </Step>
+
+  <Step>
+    **Automatic Modern Format Conversion**
+
+    Raster images are encoded into AVIF and WebP for optimal compression without visible fidelity loss.
+
+  </Step>
+
+  <Step>
+    **Smart Blur Placeholders**
+
+    Instant thumbhash placeholders prevent layout shifts while high-resolution assets load.
+
+  </Step>
+
+  <Step>
+    **Global CDN Delivery**
+
+    Optimized assets are cached across global edge locations for instant delivery.
+
+  </Step>
+</Steps>
+
+## Image Optimization Features
+
+<Columns cols={3}>
+  <Card title="Modern Formats" icon="zap">
+    Up to 50% smaller payloads than traditional JPEG with automatic format negotiation.
+  </Card>
+  <Card title="Smart Placeholders" icon="eye">
+    Instant lightweight placeholders eliminate layout shifts during page loading.
+  </Card>
+  <Card title="Responsive Variants" icon="smartphone">
+    Deliver appropriately scaled renditions for phones, tablets, and desktop displays.
+  </Card>
+  <Card title="Vector Preservation" icon="layers">
+    SVG vectors are preserved intact for lossless scaling at any resolution.
+  </Card>
+  <Card title="Metadata Sanitization" icon="shield">
+    Unnecessary EXIF metadata is stripped to protect user privacy and reduce payload size.
+  </Card>
+  <Card title="Global Edge Network" icon="globe">
+    Assets cached close to your users worldwide for minimal latency.
+  </Card>
+</Columns>
+
+## Implementation Examples
+
+### React Component
+
+```jsx
+import {Image} from "@rixl/media-react";
+
+export function ProfileHeader({imageId}) {
+  return <Image id={imageId} className="w-full h-64 object-cover rounded-xl" alt="Profile banner" />;
+}
+```
+
+### Direct API Ingestion
+
+```javascript
+// Step 1: Initialize image upload
+const initResponse = await fetch(`https://api.rixl.com/media/v1/projects/${projectId}/images/upload`, {
+  method: "POST",
+  headers: {
+    "X-API-Key": apiKey,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({name: imageFile.name}),
+});
+
+const {image_id, image_upload_url} = await initResponse.json();
+
+// Step 2: Upload raw image binary
+await fetch(image_upload_url, {
+  method: "PUT",
+  headers: {"Content-Type": imageFile.type || "image/jpeg"},
+  body: imageFile,
+});
+
+console.log("Image uploaded successfully:", image_id);
+```
+
+## Next Steps
+
+<Columns cols={2}>
+  <Card title="Upload & Formats Guide" href="/en/home/images/upload-and-transform" icon="upload">
+    Detailed specifications for upload flows and supported formats.
+  </Card>
+  <Card title="React Component Props" href="/en/sdk/media-react/image-component/props-reference" icon="code">
+    Complete API reference for `<Image />` props and sizing options.
+  </Card>
+</Columns>

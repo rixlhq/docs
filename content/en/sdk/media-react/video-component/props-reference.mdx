@@ -17,7 +17,6 @@ The media identifier from your RIXL dashboard. Pass this to `<Video />` so the S
 <Video id="D3OCjdLP60" />
 ```
 
-
 ### `src` **(Optional)**
 
 **Type:** `string`
@@ -187,12 +186,7 @@ Render chapter markers on the progress bar when chapters are available.
 Override or supply chapter data directly. If omitted and `videoData.chapters` exists, those are used.
 
 ```tsx
-<Video
-  id="D3OCjdLP60"
-  chapters={[
-    {title: "Intro", start_time_sec: 0, end_time_sec: 30, duration_label: "0:30"},
-  ]}
-/>
+<Video id="D3OCjdLP60" chapters={[{title: "Intro", start_time_sec: 0, end_time_sec: 30, duration_label: "0:30"}]} />
 ```
 
 ### `heatmap` **(Optional)**
@@ -402,5 +396,6 @@ type RixlVideoTheme = "default" | "minimal" | "feed" | "hover" | "hideUI";
 ```
 
 <Callout type="info">
-  The `Video` component forwards all props listed above. Standard HTML media attributes such as `className`, `autoPlay`, `muted`, `loop`, `playsInline`, `poster`, and `volume` are also supported.
+  The `Video` component forwards all props listed above. Standard HTML media attributes such as `className`, `autoPlay`, `muted`, `loop`,
+  `playsInline`, `poster`, and `volume` are also supported.
 </Callout>
