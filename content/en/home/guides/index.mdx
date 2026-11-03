@@ -170,7 +170,7 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
 </Tabs>
 
 <Callout type="info">
-  The React SDK wraps the Lit web components (`<rixl-video>`, `<rixl-image>`, `<rixl-feed>`) with `@lit/react`. Use `onRixlAnalytics` to receive analytics events. `Video` forwards standard media attributes (`autoPlay`, `muted`, `loop`, `playsInline`, `poster`, `volume`) and player UI props (`controls`, `theme`, `progressBar`, `showChapters`, `chapters`, `heatmap`, `hotSegments`, `allowFullscreen`, `allowPictureInPicture`, `autoHideMs`, `resumeProgress`, `soundDisabled`).
+  The React SDK provides first-class components (`Video`, `Image`, `Feed`) with unified behavior and built-in analytics. Use `onRixlAnalytics` to receive analytics events. `Video` forwards standard media attributes (`autoPlay`, `muted`, `loop`, `playsInline`, `poster`, `volume`) and player UI props (`controls`, `theme`, `progressBar`, `showChapters`, `chapters`, `heatmap`, `hotSegments`, `allowFullscreen`, `allowPictureInPicture`, `autoHideMs`, `resumeProgress`, `soundDisabled`).
 </Callout>
 
 ### API Integration Examples
@@ -179,104 +179,79 @@ Welcome to the **RIXL Guides** — your comprehensive resource for building medi
   <Tab value="Upload Video">
     ```javascript
     // Initialize video upload
-    const uploadVideo = async (file) => {
-    const initResponse = await fetch('https://api.rixl.com/videos/upload/init', {
-    method: 'POST',
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY',
-    'Content-Type': 'application/json'
-  },
-    body: JSON.stringify({
-    file_name: file.name,
-    video_quality: 'pro',
-    image_format: 'jpg'
-  })
-  });
+    const uploadVideo = async (projectId, apiKey, file) => {
+      const initResponse = await fetch(`https://api.rixl.com/media/v1/projects/${projectId}/videos/upload`, {
+        method: 'POST',
+        headers: {
+          'X-API-Key': apiKey,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: file.name,
+          video_quality: 'VIDEO_QUALITY_PRO'
+        })
+      });
 
-    const {video_id, video_presigned_url} = await initResponse.json();
+      const { video_id, video_upload_url } = await initResponse.json();
 
-    // Upload file to presigned URL
-    await fetch(video_presigned_url, {
-    method: 'PUT',
-    body: file
+      // Upload file directly to presigned URL
+      await fetch(video_upload_url, {
+        method: 'PUT',
+        body: file
+      });
 
-});
-
-    return video_id;
-
-};
-
-````
+      return video_id;
+    };
+    ```
 
   </Tab>
 
   <Tab value="Process Image">
     ```javascript
-    // Upload and process image
-    const uploadImage = async (imageFile) => {
-    // Initialize upload
-    const initResponse = await fetch('https://api.rixl.com/images/upload/init', {
-    method: 'POST',
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY',
-    'Content-Type': 'application/json'
-  },
-    body: JSON.stringify({
-    name: imageFile.name,
-    format: 'jpg'
-  })
-  });
+    // Upload and optimize image
+    const uploadImage = async (projectId, apiKey, imageFile) => {
+      const initResponse = await fetch(`https://api.rixl.com/media/v1/projects/${projectId}/images/upload`, {
+        method: 'POST',
+        headers: {
+          'X-API-Key': apiKey,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: imageFile.name
+        })
+      });
 
-    const {image_id, presigned_url} = await initResponse.json();
+      const { image_id, upload_url } = await initResponse.json();
 
-    // Upload file to presigned URL
-    await fetch(presigned_url, {
-    method: 'PUT',
-    body: imageFile
+      // Upload file directly to presigned URL
+      await fetch(upload_url, {
+        method: 'PUT',
+        body: imageFile
+      });
 
-});
-
-    // Complete upload
-    const completeResponse = await fetch('https://api.rixl.com/images/upload/complete', {
-    method: 'POST',
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY',
-    'Content-Type': 'application/json'
-
-},
-body: JSON.stringify({
-image_id: image_id
-})
-});
-
-    const result = await completeResponse.json();
-    return result.data;
-
-};
-````
+      return image_id;
+    };
+    ```
 
   </Tab>
 
   <Tab value="Get Feed Content">
     ```javascript
-    // Get feed content
-    const getFeedContent = async (feedId, creatorId = null) => {
-    const params = new URLSearchParams();
-    if (creatorId) params.append('creator_id', creatorId);
+    // Get feed posts
+    const getFeedContent = async (projectId, feedId, apiKey, limit = 20) => {
+      const response = await fetch(
+        `https://api.rixl.com/posts/v1/projects/${projectId}/feeds/${feedId}/posts?limit=${limit}`,
+        {
+          headers: {
+            'X-API-Key': apiKey
+          }
+        }
+      );
 
-    const response = await fetch(`https://api.rixl.com/feeds/${feedId}?${params}`, {
-    headers: {
-    'X-API-Key': 'YOUR_PROJECT_API_KEY'
-
-}
-});
-
-    const result = await response.json();
-    return result.data;
-
-};
-
-```
+      const result = await response.json();
+      return result.posts;
+    };
+    ```
 
   </Tab>
 </Tabs>

@@ -328,32 +328,30 @@ import {Image} from "@rixl/media-react";
 
 <Steps>
   <Step>
-    **Initialize Upload**
+    **Direct Upload Flow**
 
-    Use the three-step upload process:
-    1. Initialize upload to get presigned URLs
-    2. Upload file directly to secure cloud storage
-    3. Complete upload to trigger processing
+    Use the direct upload model:
+    1. **Initialize Upload**: Request upload credentials and presigned upload URLs from the RIXL API.
+    2. **Direct Upload**: Stream bytes directly to the signed cloud storage URL using HTTP `PUT`. Processing begins automatically once the file is uploaded.
 
   </Step>
   <Step>
     **Error Handling**
 
     Implement comprehensive error handling:
-    - Retry logic for failed uploads
-    - Progress tracking and user feedback
+    - Exponential backoff retry logic for failed binary transfers
+    - Progress tracking via `XMLHttpRequest` or upload progress events
     - Timeout handling for large files
-    - Network error recovery
+    - Handling signed URL expirations gracefully
 
   </Step>
   <Step>
-    **Performance**
+    **Performance & Concurrency**
 
     Improve upload performance:
-    - Use multipart uploads for files >100MB
-    - Implement resume capability for interrupted uploads
-    - Monitor upload progress and provide feedback
-    - Batch multiple uploads efficiently
+    - Use `@rixl/media`'s built-in `uploadVideo` helper for automatic progress and error handling
+    - Batch multiple uploads with bounded concurrency (2-3 simultaneous files) to prevent browser network saturation
+    - Show instant ThumbHash placeholders for immediate user feedback
 
   </Step>
 </Steps>
@@ -363,21 +361,23 @@ import {Image} from "@rixl/media-react";
 **Implement effective monitoring:**
 
 ```javascript
-// Example status monitoring pattern
-const monitorProcessing = async (videoId) => {
-  const pollInterval = 5000; // 5 seconds
+// Check video processing status
+const waitForVideoReady = async (apiKey, videoId) => {
+  const pollInterval = 3000; // 3 seconds
 
   while (true) {
-    const status = await checkProcessingStatus(videoId);
+    const res = await fetch(
+      `https://api.rixl.com/media/v1/videos/${videoId}`,
+      { headers: { 'X-API-Key': apiKey } }
+    );
+    const { file } = await res.json();
 
-    if (status.state === "completed") {
-      break;
-    } else if (status.state === "failed") {
-      handleProcessingError(status.error);
-      break;
+    if (file?.status === "FILE_STATUS_READY") {
+      return file.url;
+    } else if (file?.status === "FILE_STATUS_ERROR") {
+      throw new Error(`Video processing failed for ${videoId}`);
     }
 
-    // Adjust polling frequency based on processing stage
     await new Promise((resolve) => setTimeout(resolve, pollInterval));
   }
 };

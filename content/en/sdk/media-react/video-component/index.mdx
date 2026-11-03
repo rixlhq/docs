@@ -7,7 +7,7 @@ import {Callout} from "@/snippets";
 
 ## Overview
 
-The `Video` component plays RIXL video content using adaptive HLS streaming. It is implemented as a Lit web component (`<rixl-video>`) and wrapped for React so analytics and playback behavior are consistent across every framework.
+The `Video` component plays RIXL video content using adaptive HLS streaming with consistent playback behavior and integrated analytics.
 
 The player ships with a built-in control bar and multiple themes (`default`, `minimal`, `feed`, `hover`, `hideUI`). You can also hide the built-in UI and build your own controls as siblings of the component.
 
@@ -32,9 +32,9 @@ function Player() {
 
 **Streaming & Playback**
 
-- HLS playback with automatic `hls.js` fallback
-- Muted autoplay by default for browser compliance
-- Custom Lit player with configurable control bar
+- HLS playback with automatic fallback
+- Muted autoplay support for browser compliance
+- Built-in player with configurable control bar
 - `src` override for direct streams
 - `videoData` for pre-fetched metadata
 
@@ -42,7 +42,7 @@ function Player() {
 
 - `content_views` `start`/`watch`/`end` events with segments
 - Interaction events: `play`, `pause`, `seek`, `mute`, `volume_change`, `fullscreen`, `picture_in_picture`, `quality_change`, `settings_open`
-- Error events: `video_load_error`, `video_api_error`, and `hls_*` errors
+- Error events: `video_load_error`, `video_api_error`, and playback errors
 - `feed_id`, `post_id`, and `page` context support
 
 **Customization**
@@ -52,8 +52,7 @@ function Player() {
 - Responsive design with aspect ratio preservation
 
 <Callout type="info">
-  The React `Video` wrapper is a `@lit/react` wrapper around `<rixl-video>`. It forwards all documented props (mapping `id` to `videoId`) and
-  emits analytics through `onRixlAnalytics`.
+  The `Video` component accepts all media attributes and player configuration properties, emitting telemetry events through `onRixlAnalytics`.
 </Callout>
 
 ### Custom Controls

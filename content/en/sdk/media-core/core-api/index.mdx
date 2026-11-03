@@ -228,6 +228,6 @@ declare function getHotSegments(options: GetHotSegmentsOptions): Promise<HotSegm
 
 <Callout type="info">
   `postContentEvent` takes `BuildEventParams` and `buildVideoAnalyticsPayload` takes `BuildVideoAnalyticsPayloadParams`.
-  Millisecond durations are converted to `GoogleProtobufDuration` strings (e.g. `"5s"`, `"1.234s"`) and `content_type` is sent as
+  Millisecond durations are converted to duration strings (e.g. `"5s"`, `"1.234s"`) and `content_type` is sent as
   `MEDIA_TYPE_IMAGE` or `MEDIA_TYPE_VIDEO` on the wire to `/analytics/v1/events`.
 </Callout>

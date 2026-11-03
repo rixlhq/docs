@@ -17,7 +17,6 @@ The media identifier from your RIXL dashboard. Pass this to `<Video />` so the S
 <Video id="D3OCjdLP60" />
 ```
 
-The `id` prop is mapped to `videoId` on the underlying `<rixl-video>` web component.
 
 ### `src` **(Optional)**
 
@@ -123,7 +122,7 @@ Initial volume level from `0` to `1`.
 
 ## Player UI Props
 
-The `<rixl-video>` element is a custom Lit player. These props control its built-in UI.
+These props control the built-in player UI.
 
 ### `controls` **(Optional)**
 
@@ -346,7 +345,7 @@ Specifies the page context for analytics reporting.
 
 **Type:** `(event: CustomEvent<{ event: AnalyticsEvent }>) => void`
 
-Called whenever the underlying `<rixl-video>` dispatches a `rixl-analytics` event. Use this to inspect or forward analytics payloads.
+Called whenever an analytics event is dispatched. Use this to inspect or forward analytics payloads.
 
 ```tsx
 <Video id="D3OCjdLP60" onRixlAnalytics={(e) => console.log(e.detail.event)} />
@@ -403,7 +402,5 @@ type RixlVideoTheme = "default" | "minimal" | "feed" | "hover" | "hideUI";
 ```
 
 <Callout type="info">
-  The React `Video` component is a `@lit/react` wrapper around `<rixl-video>`. It forwards all props listed above except mapping `id` to
-  `videoId`. Standard HTML attributes such as `className`, `autoPlay`, `muted`, `loop`, `playsInline`, `poster`, and `volume` are also
-  forwarded as expected.
+  The `Video` component forwards all props listed above. Standard HTML media attributes such as `className`, `autoPlay`, `muted`, `loop`, `playsInline`, `poster`, and `volume` are also supported.
 </Callout>

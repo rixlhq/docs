@@ -7,12 +7,12 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/t
 import {Callout} from "fumadocs-ui/components/callout";
 
 <Callout type="info">
-  The React `Video` component is a `@lit/react` wrapper around the Lit `<rixl-video>` element. It is a custom player, not a raw HTML `<video>`. You configure the built-in UI with props such as `theme`, `controls`, `progressBar`, `allowFullscreen`, and `allowPictureInPicture`, or build your own controls with `theme="hideUI"` and `onRixlAnalytics`.
+  The `Video` component provides a fully featured video player beyond raw HTML `<video>`. You can configure the built-in UI using props such as `theme`, `controls`, `progressBar`, `allowFullscreen`, and `allowPictureInPicture`, or build custom controls with `theme="hideUI"` and `onRixlAnalytics`.
 </Callout>
 
 ## Built-in UI
 
-The `<rixl-video>` player ships with a built-in control bar and several themes.
+The player ships with a built-in control bar and several themes.
 
 | Prop                     | Type      | Default | Description                                                |
 | ------------------------ | --------- | ------- | ---------------------------------------------------------- |
@@ -136,8 +136,7 @@ The video component emits `rixl-analytics` events through `onRixlAnalytics`. The
 If you need a fully custom control bar, use `theme="hideUI"` and place your own controls as siblings of `<Video>`. You can drive them from `onRixlAnalytics` or from your own React state.
 
 <Callout type="warning">
-  Do not render custom controls as children of the `Video` component. The `Video` wrapper is a self-contained Lit web component and does not
-  provide an internal slot for child controls.
+  Do not render custom controls as children of the `Video` component. Render custom controls as sibling elements alongside `<Video>` instead.
 </Callout>
 
 ## Keyboard Shortcuts

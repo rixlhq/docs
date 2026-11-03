@@ -5,12 +5,7 @@ description: "Use RIXL Media SDK web components without a framework"
 
 import {Callout} from "@/snippets";
 
-The `@rixl/media-lit` package provides framework-free web components built with [Lit](https://lit.dev/). Each component is available as a tree-shakable subpath import, so you only load the component you use. React, Svelte, Vue, and Angular wrappers consume the same Lit components under the hood.
-
-<Callout type="info">
-  All UI and analytics instrumentation lives in Lit. Framework wrappers are thin adapters that expose `onRixlAnalytics` and map legacy prop
-  names.
-</Callout>
+The `@rixl/media-lit` package provides framework-free web components built with [Lit](https://lit.dev/). Each component is available as a tree-shakable subpath import, so you only load the components you use.
 
 ## Installation
 
@@ -158,6 +153,6 @@ image.addEventListener("rixl-analytics", (e) => {
 
 For details on the event taxonomy and core helpers, see [Analytics Integration](/en/sdk/media-react/video-component/analytics-integration) and [Core API](/en/sdk/media-core/core-api).
 
-## Framework Wrappers
+## Framework SDKs
 
-`@rixl/media-react` is a thin React wrapper around the same Lit components. Use it if you are in a React app; use `@rixl/media-lit` directly for any other framework or vanilla JS. Future Svelte, Vue, and Angular wrappers will follow the same pattern.
+For React applications, use [`@rixl/media-react`](/en/sdk/media-react). For vanilla JavaScript, HTML, or other environments, use `@rixl/media-lit` directly.

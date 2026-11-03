@@ -8,7 +8,7 @@ import {Callout} from "fumadocs-ui/components/callout";
 The React package exports a small set of public hooks for custom player UI. These hooks are **player-scoped**: they read state from an enclosing `<VideoPlayer>` provider.
 
 <Callout type="warning">
-  The new Lit-backed `<Video>` is a self-contained custom element and does **not** automatically register with the React player scope. The hooks below are intended for custom controls built around the `VideoPlayer` scope (for example, a raw `<video>` element or a future React wrapper that participates in the scope). For the current Lit `Video` wrapper, use `onRixlAnalytics` to observe events.
+  The standalone `<Video>` component is self-contained and does **not** automatically register with the `<VideoPlayer>` scope. The hooks below are intended for custom controls built around an enclosing `VideoPlayer` scope. For standalone `<Video>`, use `onRixlAnalytics` to observe events or render custom controls as siblings.
 </Callout>
 
 ## Recommended Pattern
@@ -60,9 +60,9 @@ function PlayerPage() {
 - Add `usePlayerTracks()` only if your videos expose audio or subtitle track choices.
 - Use `useGlobalPlayerSettings()` only when one page-level control should affect several mounted players.
 
-## Analytics with the Lit Video Wrapper
+## Analytics with Standalone Video
 
-If you are using the current Lit `Video` component, capture events instead of calling scope actions:
+When using the standalone `<Video>` component, capture events through `onRixlAnalytics`:
 
 ```tsx
 import {Video} from "@rixl/media-react";

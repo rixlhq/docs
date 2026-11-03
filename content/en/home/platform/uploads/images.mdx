@@ -82,60 +82,99 @@ Every image you upload gets the full optimization treatment:
   loading, you save bandwidth costs — everyone wins.
 </Callout>
 
-## Behind the Scenes
+## AVIF Optimization & ThumbHash Previews
 
 **AVIF Optimization Settings**
-- **Quality Level**: 50% for the sweet spot between size and visual perfection
-- **Color Depth**: 8-bit for universal browser support (no compatibility worries)
-- **Smart Metadata**: Camera settings and color profiles preserved when useful
-- **Auto-Rotation**: Images display correctly based on their EXIF orientation data
+- **Quality Level**: Balanced for the sweet spot between minimal size and visual perfection
+- **Color Depth**: 8-bit for universal browser support
+- **Smart Metadata**: Essential camera settings and color profiles preserved when useful
+- **Auto-Rotation**: Images automatically display correctly based on their EXIF orientation data
 
-**Thumbhash Technology**
-Your images also generate tiny ~25-byte "thumbhash" placeholders that create beautiful, instant-loading previews while the full image loads in the background.
+**ThumbHash Previews**
+Each processed image generates a compact ~25-byte ThumbHash placeholder that produces instant-loading previews while the full image downloads:
 
-- **Zero network requests** - Embedded in your application data
-- **Instant rendering** - Immediate visual feedback
-- **Color-accurate** - Preserves dominant colors and contrast
-- **Smooth transitions** - Natural blur-to-sharp loading effect
+- **Zero extra network requests** – Easily embedded directly into initial page payloads or API responses
+- **Instant rendering** – Immediate, flicker-free visual feedback
+- **Color-accurate** – Faithfully preserves dominant colors and luminance
+- **Smooth transitions** – Natural blur-to-sharp loading effect
 
-**Implementation Example:**
+### Implementation Example
 
-[//]  # (```md)
+Upload an image programmatically and display it using the React SDK:
 
-[//]  # (We can have an implementation example here)
+```typescript
+// 1. Initialize image upload
+const initResponse = await fetch(
+  `https://api.rixl.com/media/v1/projects/${projectId}/images/upload`,
+  {
+    method: 'POST',
+    headers: {
+      'X-API-Key': apiKey,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: file.name
+    })
+  }
+);
 
-[//]  # (```)
+const { image_id, upload_url } = await initResponse.json();
+
+// 2. Upload image file directly to presigned URL
+await fetch(upload_url, {
+  method: 'PUT',
+  body: file
+});
+```
+
+```tsx
+// 3. Render anywhere in your React application
+import { Image } from '@rixl/media-react';
+
+export function ProductHero({ imageId }: { imageId: string }) {
+  return (
+    <Image
+      id={imageId}
+      className="w-full h-auto rounded-xl object-cover shadow-lg"
+      analytics
+      analyticsPage="product-detail"
+    />
+  );
+}
+```
 
 ## Performance Impact
 
 **File Size Reductions:**
-- **Photography:** 70-90% smaller than JPEG
-- **Screenshots:** 60-80% reduction from PNG
-- **Graphics with text:** 50-70% improvement
-- **Web graphics:** 40-60% smaller than WebP
+- **Photography:** 70–90% smaller than JPEG
+- **Screenshots:** 60–80% reduction from PNG
+- **Graphics with text:** 50–70% improvement
+- **Web graphics:** 40–60% smaller than WebP
 
 **Loading Performance:**
-- Instant placeholders eliminate loading delays
-- Reduced bandwidth usage, especially on mobile
-- Improved Core Web Vitals scores
-- Better perceived performance
+- Instant placeholders eliminate perceived loading delays
+- Substantially reduced bandwidth usage, especially on mobile
+- Improved Core Web Vitals (LCP & CLS) scores
 
 ## Browser Support
 
 <Callout type="info">
-  **AVIF supported by ~95% of modern browsers**
+  **AVIF is natively supported by over 95% of global browser traffic.**
 </Callout>
 
-**Full Support:**
-
-[//]  # ([//]: # I need to check for broswer compatibility rate)
+- **Google Chrome**: Version 85+
+- **Mozilla Firefox**: Version 93+
+- **Apple Safari**: Version 16.0+ (macOS Ventura, iOS 16+)
+- **Microsoft Edge**: Version 85+
+- **Opera**: Version 71+
+- **Android Browser / Chrome**: Version 85+
 
 ## Processing Pipeline Details
 
 <Steps>
   <Step>
     ### Upload and Check
-    Images are added to the processing queue and checked for valid formats and security issues.
+    Images are ingested, verified, and validated for supported formats and dimensions.
   </Step>
 
   <Step>
