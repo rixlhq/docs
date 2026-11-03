@@ -132,6 +132,13 @@ function findFirstNodePageUrlByPrefix(node: Node, prefix: string): string | unde
   }
 }
 
+function markCategoryFolders(folder: Folder): Folder {
+  return {
+    ...folder,
+    children: folder.children.map((child) => (child.type === "folder" ? {...child, isCategory: true} : child)),
+  };
+}
+
 function extractSectionTree(root: Root, lang: string, section: string | undefined): Root {
   if (!section) return root;
 
@@ -153,7 +160,7 @@ function extractSectionTree(root: Root, lang: string, section: string | undefine
   return {
     ...root,
     name: sectionFolder.name,
-    children: [sectionFolder],
+    children: [markCategoryFolders(sectionFolder)],
   };
 }
 

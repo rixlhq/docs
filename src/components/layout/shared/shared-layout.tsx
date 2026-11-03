@@ -5,6 +5,7 @@ import {baseOptions} from "@/lib/layout.shared";
 import type {Root} from "fumadocs-core/page-tree";
 import {Background} from "@/components/layout/home/background";
 import {SidebarBanner} from "./sidebar-banner";
+import {SidebarFolderItem} from "./sidebar-folder-item";
 
 interface LayoutProps {
   lang: string;
@@ -75,6 +76,9 @@ function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sea
       footer: null,
       collapsible: false,
       className: "[&_div:empty]:hidden [&>div:first-child]:p-6 [&>div:first-child]:!gap-3 [&_[data-radix-scroll-area-viewport]]:pt-2",
+      components: {
+        Folder: SidebarFolderItem,
+      },
     },
   };
 }
