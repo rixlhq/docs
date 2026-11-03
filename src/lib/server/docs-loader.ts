@@ -202,7 +202,8 @@ function extractProductTree(root: Root, lang: string, slugs: string[]): ProductT
     description: productFolder.description,
     children: productFolder.children,
     type: "root",
-  };
+    ...(productFolder.index ? {index: productFolder.index} : {}),
+  } as Root;
 
   return {
     tree: productRoot,
