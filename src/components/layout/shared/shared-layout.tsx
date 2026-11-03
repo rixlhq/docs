@@ -50,6 +50,10 @@ function getLayoutWidthClasses(isApiPage: boolean): LayoutWidthClasses {
   };
 }
 
+function EmptySidebarProvider({children}: {children?: ReactNode}) {
+  return <>{children}</>;
+}
+
 function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, searchToggle, sidebar}: DocsLayoutPropsConfig) {
   return {
     tree,
@@ -76,7 +80,7 @@ function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sea
       // duplicate in the docs sidebar (footer + mobile drawer).
       languageSelect: false as const,
       sidebar: {
-        provider: ({children}: {children?: ReactNode}) => <>{children}</>,
+        provider: EmptySidebarProvider,
         root: Sidebar,
         trigger: SidebarTrigger,
         useSidebar,

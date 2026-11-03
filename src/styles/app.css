@@ -112,17 +112,28 @@
     --fd-sidebar-drawer-offset: -100% !important;
     width: 100vw !important;
     max-width: 100vw !important;
+    left: 0 !important;
+    right: auto !important;
     inset-inline-start: 0 !important;
-    inset-inline-end: 0 !important;
+    inset-inline-end: auto !important;
     border-inline-start-width: 0 !important;
+    z-index: 50 !important;
+    transform: translateX(0);
+    will-change: transform;
   }
 
   #nd-sidebar-mobile[data-state="open"] {
-    animation: fd-sidebar-in-left 250ms ease !important;
+    animation: fd-sidebar-in-left 250ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
   }
 
   #nd-sidebar-mobile[data-state="closed"] {
-    animation: fd-sidebar-out-left 250ms ease !important;
+    animation: fd-sidebar-out-left 200ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
+  }
+
+  #nd-docs-layout div:has(+ #nd-sidebar-mobile) {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(0, 0, 0, 0.45) !important;
   }
 
   #nd-sidebar-mobile button[aria-controls="nd-sidebar-mobile"] svg {
@@ -267,9 +278,15 @@
   from {
     transform: translateX(-100%);
   }
+  to {
+    transform: translateX(0);
+  }
 }
 
 @keyframes fd-sidebar-out-left {
+  from {
+    transform: translateX(0);
+  }
   to {
     transform: translateX(-100%);
   }
