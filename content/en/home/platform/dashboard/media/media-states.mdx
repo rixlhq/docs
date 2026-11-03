@@ -14,49 +14,41 @@ Every video and image has one state at a time. This page explains each state and
 
 | State | API status | Meaning |
 |---|---|---|
-| Uploading | `FILE_STATUS_UPLOADING` | Waiting for the file to arrive. The transfer runs in your browser or client. |
-| Uploaded | `FILE_STATUS_UPLOADED` | The file is stored and waiting for processing to start. |
-| Processing | `FILE_STATUS_PROCESSING`, `FILE_STATUS_PREPARING` | Processing has started. |
-| Ready | `FILE_STATUS_READY` | The item is published and available. |
-| Failed | `FILE_STATUS_ERROR` | Video preprocessing or image processing failed, or the upload failed or expired before the file was stored. |
-| Deleted | None | The item is gone from the dashboard and the API, which returns 404. |
-
-Each video rendition (one output quality) gets up to 3 attempts. If a rendition still fails, the video stays in Processing and never becomes Failed. Processing also has no time limit yet, so an item can stay in this state if a job stalls. In either case, delete the item and upload it again.
+| Uploading | `FILE_STATUS_UPLOADING` | Waiting for the binary payload to arrive at the storage endpoint. |
+| Uploaded | `FILE_STATUS_UPLOADED` | File received in storage; awaiting ingestion and processing. |
+| Processing | `FILE_STATUS_PROCESSING` | Media transcoding, optimization, and packaging in progress. |
+| Ready | `FILE_STATUS_READY` | Processing complete; media is published and ready for delivery. |
+| Failed | `FILE_STATUS_ERROR` | An error occurred during upload, ingestion, or transcoding. |
+| Deleted | None | The item is removed from the dashboard and API (returns 404). |
 
 ---
 
 ## Stopping a Transfer
 
-Pausing an upload only affects the transfer. It stops the bytes leaving your browser and tells the server nothing.
+Pausing an upload only affects the client-side binary transfer:
 
-- The item stays in Uploading, and becomes Failed if the upload link expires before the file arrives.
-- If the file finished arriving just before you paused, it is processed as normal.
-- There is no cancel button for uploads.
-
-To be sure a video is not processed, delete it. An image can only be deleted once its upload has finished.
+- The asset stays in `FILE_STATUS_UPLOADING` until the transfer resumes or the upload link expires.
+- If the binary transfer completed before pausing, processing proceeds automatically.
+- To cancel an unneeded upload, delete the media asset from the dashboard or API.
 
 ---
 
-## Stopping Server Work
+## Media Deletion
 
-There is no way to pause or cancel processing. Deleting the item is the only way to stop it, and deletion can't be undone.
+When an asset is deleted, it is immediately removed from your project library, and the API returns a 404 response.
 
-| Delete an item that is | Work on the server | Published? |
+| Asset State at Deletion | Processing Status | Availability |
 |---|---|---|
-| Uploaded | Never starts | No |
-| Processing | Remaining steps never start. The step already running finishes, but the item's record is not updated | No |
-| Ready or Failed | Nothing to stop | Removed from the dashboard and the API |
+| Uploaded | Ingest canceled | Not published |
+| Processing | Processing terminated | Not published |
+| Ready or Failed | Removed | Removed from dashboard and API |
 
-Deleted items can keep counting toward your storage quota for up to 15 minutes, because the quota check uses a cached total. Upload usage already recorded is not reversed.
-
-<Callout type="warn">
-  Deleting does not remove stored files, and an existing direct link to a file may keep working after deletion.
-</Callout>
+Storage quota updates may take a few moments to reflect recently deleted assets.
 
 ---
 
 ## Failed Items
 
-Retrying a failed job is not available yet. To process the file again, delete the failed item and upload the file again.
-
-The **Retry** button on the asset detail page only reloads the page. It does not restart processing.
+If an asset encounters an error during processing:
+- Check the asset details in the dashboard for failure indicators.
+- Re-upload the source file or contact support if errors persist.

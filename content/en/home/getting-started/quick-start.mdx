@@ -55,8 +55,8 @@ Welcome to **RIXL**! This quick start guide will have you uploading and optimizi
     Sign up for a free RIXL account at [dash.rixl.com/signup](https://dash.rixl.com/signup)
 
     - No credit card required
-    - 1GB free storage
-    - 10GB free bandwidth per month
+    - 50GB free video storage
+    - 1GB free image storage
     - Instant account activation
 
   </Step>
@@ -85,10 +85,16 @@ Welcome to **RIXL**! This quick start guide will have you uploading and optimizi
 
     **API Upload:**
     ```bash
+    # 1. Initialize upload to obtain the presigned upload URL
     curl -X POST "https://api.rixl.com/media/v1/projects/{project_id}/videos/upload" \
       -H "X-API-Key: YOUR_PROJECT_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{"name": "your-video.mp4", "video_quality": "VIDEO_QUALITY_PRO"}'
+
+    # 2. Stream binary video directly to the returned video_upload_url
+    curl -X PUT "<video_upload_url>" \
+      -H "Content-Type: video/mp4" \
+      --data-binary @your-video.mp4
     ```
 
   </Step>
