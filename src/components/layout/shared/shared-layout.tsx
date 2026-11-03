@@ -92,7 +92,7 @@ function buildDocsLayoutProps({tree, backUrl, options, docsLayoutWidthClass, sid
       footer: null,
       collapsible: false,
       className:
-        "[&_div:empty]:hidden [&>div:first-child]:px-4 [&>div:first-child]:pb-3 [&>div:first-child]:gap-0 [&:has([data-sidebar-banner])_>div:first-child]:pt-0 [&:not(:has([data-sidebar-banner]))_>div:first-child]:pt-6 [&:not(:has([data-sidebar-banner])):not(:has([data-search-full]))_[data-radix-scroll-area-viewport]]:!pt-6 [&_[data-radix-scroll-area-viewport]]:pt-2",
+        "[&_div:empty]:hidden [&_a:empty]:hidden [&>div:first-child]:px-4 [&>div:first-child]:pb-3 [&>div:first-child]:gap-0 [&:has([data-sidebar-banner])_>div:first-child]:pt-0 [&:not(:has([data-sidebar-banner])):not(:has([data-search-full]))_>div:first-child]:hidden [&:not(:has([data-sidebar-banner])):has([data-search-full])_>div:first-child]:pt-2.5 [&:not(:has([data-sidebar-banner])):not(:has([data-search-full]))_[data-radix-scroll-area-viewport]]:!pt-2.5 [&_[data-radix-scroll-area-viewport]]:pt-2",
       components: {
         Folder: SidebarFolderItem,
       },
