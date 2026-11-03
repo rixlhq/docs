@@ -4,12 +4,14 @@
   "description": "Choose a RIXL SDK for your framework or language.",
   "pagesIndex": "index",
   "pages": [
+    "---Media SDKs---",
     "media-react",
-    "media-core",
-    "media-lit",
     "media-vue",
     "media-svelte",
     "media-angular",
+    "media-lit",
+    "media-core",
+    "---UI & Design System---",
     "ui"
   ]
 }

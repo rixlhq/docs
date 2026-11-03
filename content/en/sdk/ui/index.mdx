@@ -1,6 +1,74 @@
 ---
 title: "Rixl UI"
-description: "React 19 design-system and UI component library."
+description: "React 19 design system and accessible UI component library."
 ---
 
-Rixl UI is a React 19 design-system and component library. Public documentation is coming soon.
+import {Callout} from "@/snippets";
+
+`@rixl/ui` is the official design system for RIXL applications. Built for React 19 and Tailwind CSS v4, it provides accessible, customizable UI components built on top of Radix UI primitives.
+
+## Installation
+
+Install `@rixl/ui` into your React 19 project:
+
+```bash
+npm install @rixl/ui
+```
+
+## Styling Setup
+
+Import the RIXL UI theme preset in your main CSS file alongside Tailwind CSS v4:
+
+```css title="src/styles/globals.css"
+@import "tailwindcss";
+@import "@rixl/ui/preset.css";
+```
+
+The preset defines all core design tokens (colors, radii, typography, elevation) as CSS variables with automatic light and dark mode support.
+
+## Usage
+
+Each component is exported from its own scoped subpath for optimal tree-shaking:
+
+```tsx title="src/components/UserActions.tsx"
+import {Button} from "@rixl/ui/button";
+import {Badge} from "@rixl/ui/badge";
+import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger} from "@rixl/ui/dialog";
+
+export function UserActions() {
+  return (
+    <div className="flex items-center gap-3">
+      <Badge variant="secondary">Pro Plan</Badge>
+
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="default">Manage Subscription</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Subscription Settings</DialogTitle>
+            <DialogDescription>Update your billing plan and media storage quota.</DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+```
+
+## Available Components
+
+`@rixl/ui` provides a full suite of production-ready components:
+
+| Category         | Components                                                                  |
+| :--------------- | :-------------------------------------------------------------------------- |
+| **Actions**      | `button`, `dropdown-menu`, `popover`                                        |
+| **Overlays**     | `dialog`, `sheet`, `tooltip`, `toaster`                                     |
+| **Forms**        | `input`, `textarea`, `select`, `checkbox`, `switch`, `radio-group`, `label` |
+| **Navigation**   | `tabs`, `breadcrumb`, `accordion`                                           |
+| **Data Display** | `card`, `table`, `avatar`, `badge`, `separator`                             |
+| **Feedback**     | `skeleton`, `slider`, `scroll-area`                                         |
+
+<Callout type="info">
+  All interactive components support full keyboard navigation, ARIA attributes, and automatic focus management out of the box.
+</Callout>

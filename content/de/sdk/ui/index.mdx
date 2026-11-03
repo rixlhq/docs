@@ -1,6 +1,74 @@
 ---
 title: "Rixl UI"
-description: "React 19 Design-System und UI-Komponentenbibliothek."
+description: "React 19 Design-System und barrierefreie UI-Komponentenbibliothek."
 ---
 
-Rixl UI ist ein React 19 Design-System und eine UI-Komponentenbibliothek. Die öffentliche Dokumentation ist demnächst verfügbar.
+import {Callout} from "@/snippets";
+
+`@rixl/ui` ist das offizielle Design-System für RIXL-Anwendungen. Entwickelt für React 19 und Tailwind CSS v4, bietet es barrierefreie, flexible UI-Komponenten auf Basis von Radix UI Primitives.
+
+## Installation
+
+Installiere `@rixl/ui` in deinem React 19 Projekt:
+
+```bash
+npm install @rixl/ui
+```
+
+## Styling-Einrichtung
+
+Importiere das RIXL UI Preset in deiner Haupt-CSS-Datei zusammen mit Tailwind CSS v4:
+
+```css title="src/styles/globals.css"
+@import "tailwindcss";
+@import "@rixl/ui/preset.css";
+```
+
+Das Preset definiert alle Design-Tokens (Farben, Radien, Typografie, Schatten) als CSS-Variablen mit automatischer Unterstützung für Hell- und Dunkelmodus.
+
+## Verwendung
+
+Jede Komponente wird aus einem eigenen Subpath für optimales Tree-Shaking exportiert:
+
+```tsx title="src/components/UserActions.tsx"
+import {Button} from "@rixl/ui/button";
+import {Badge} from "@rixl/ui/badge";
+import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger} from "@rixl/ui/dialog";
+
+export function UserActions() {
+  return (
+    <div className="flex items-center gap-3">
+      <Badge variant="secondary">Pro Plan</Badge>
+
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="default">Abo verwalten</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Abonnement-Einstellungen</DialogTitle>
+            <DialogDescription>Verwalte deinen Tarif und dein Speicherplatz-Kontingent.</DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+```
+
+## Verfügbare Komponenten
+
+`@rixl/ui` bietet ein umfassendes Set produktionsbereiter Komponenten:
+
+| Kategorie        | Komponenten                                                                 |
+| :--------------- | :-------------------------------------------------------------------------- |
+| **Aktionen**     | `button`, `dropdown-menu`, `popover`                                        |
+| **Overlays**     | `dialog`, `sheet`, `tooltip`, `toaster`                                     |
+| **Formulare**    | `input`, `textarea`, `select`, `checkbox`, `switch`, `radio-group`, `label` |
+| **Navigation**   | `tabs`, `breadcrumb`, `accordion`                                           |
+| **Datenanzeige** | `card`, `table`, `avatar`, `badge`, `separator`                             |
+| **Feedback**     | `skeleton`, `slider`, `scroll-area`                                         |
+
+<Callout type="info">
+  Alle interaktiven Komponenten unterstützen Tastaturnavigation, ARIA-Attribute und automatisches Fokus-Management.
+</Callout>

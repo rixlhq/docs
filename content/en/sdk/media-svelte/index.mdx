@@ -1,6 +1,126 @@
 ---
 title: "Media Svelte"
-description: "Svelte media components are coming soon."
+description: "Use RIXL Media components in Svelte and SvelteKit applications."
 ---
 
-Media Svelte is on the roadmap. Check back later or follow [rixlhq on GitHub](https://github.com/rixlhq) for updates.
+import {Callout} from "@/snippets";
+
+RIXL media components are built on standard Web Components via `@rixl/media-lit`, providing seamless, zero-overhead interoperability with Svelte 4 and Svelte 5. You can render `<rixl-video>`, `<rixl-image>`, and `<rixl-feed>` as standard HTML elements with reactive bindings.
+
+## Installation
+
+Install the Web Component library and core headless client:
+
+```bash
+npm install @rixl/media-lit @rixl/media
+```
+
+## Authentication
+
+Connect to RIXL in your root layout or on application mount:
+
+```ts
+import {connect} from "@rixl/media";
+
+await connect({
+  baseUrl: "https://api.rixl.com",
+  apiKey: "your-api-key",
+});
+```
+
+## Video Player
+
+Import the `@rixl/media-lit/video` element in your Svelte component:
+
+```svelte title="VideoPlayer.svelte"
+<script lang="ts">
+  import "@rixl/media-lit/video";
+
+  interface Props {
+    videoId: string;
+    autoplay?: boolean;
+    controls?: boolean;
+  }
+
+  let { videoId, autoplay = false, controls = true }: Props = $props();
+</script>
+
+<div class="player-wrapper">
+  <rixl-video
+    video-id={videoId}
+    {autoplay}
+    {controls}
+  />
+</div>
+```
+
+## Responsive Images
+
+Render responsive images with automatic format optimization and lazy loading:
+
+```svelte title="ImageViewer.svelte"
+<script lang="ts">
+  import "@rixl/media-lit/image";
+
+  interface Props {
+    imageId: string;
+    alt?: string;
+  }
+
+  let { imageId, alt = "Media item" }: Props = $props();
+</script>
+
+<rixl-image
+  image-id={imageId}
+  {alt}
+/>
+```
+
+## Media Feeds
+
+Render story or post feeds with infinite scroll:
+
+```svelte title="MediaFeed.svelte"
+<script lang="ts">
+  import "@rixl/media-lit/feed";
+
+  interface Props {
+    feedId: string;
+  }
+
+  let { feedId }: Props = $props();
+</script>
+
+<rixl-feed
+  feed-id={feedId}
+  loop
+  autoscroll
+/>
+```
+
+## Handling Analytics Events
+
+Listen to playback analytics events dispatched by the player:
+
+```svelte title="PlayerWithAnalytics.svelte"
+<script lang="ts">
+  import "@rixl/media-lit/video";
+
+  let { videoId } = $props();
+
+  function onAnalytics(event: CustomEvent) {
+    console.log("Analytics event:", event.detail);
+  }
+</script>
+
+<rixl-video
+  video-id={videoId}
+  onrixl-analytics={onAnalytics}
+  controls
+/>
+```
+
+<Callout type="info">
+  When using **SvelteKit** with SSR, ensure custom element registration and client-only logic execute inside `onMount` or behind a `browser`
+  guard from `$app/environment`.
+</Callout>

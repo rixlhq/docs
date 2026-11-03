@@ -1,6 +1,117 @@
 ---
 title: "Media Angular"
-description: "Angular media components are coming soon."
+description: "Use RIXL Media components in Angular applications."
 ---
 
-Media Angular is on the roadmap. Check back later or follow [rixlhq on GitHub](https://github.com/rixlhq) for updates.
+import {Callout} from "@/snippets";
+
+RIXL media components are powered by standard Web Components via `@rixl/media-lit`. In Angular 17+, you can easily use `<rixl-video>`, `<rixl-image>`, and `<rixl-feed>` in standalone components by including `CUSTOM_ELEMENTS_SCHEMA`.
+
+## Installation
+
+Install `@rixl/media-lit` and the headless `@rixl/media` core:
+
+```bash
+npm install @rixl/media-lit @rixl/media
+```
+
+## Authentication
+
+Initialize the RIXL client in an `APP_INITIALIZER` or within your root application config:
+
+```ts title="app.config.ts"
+import {ApplicationConfig} from "@angular/core";
+import {connect} from "@rixl/media";
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    {
+      provide: "RIXL_INIT",
+      useFactory: () => () =>
+        connect({
+          baseUrl: "https://api.rixl.com",
+          apiKey: "your-api-key",
+        }),
+    },
+  ],
+};
+```
+
+## Enabling Custom Elements
+
+Add `CUSTOM_ELEMENTS_SCHEMA` to your standalone component's `schemas` array:
+
+```ts title="video-player.component.ts"
+import {Component, Input, CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
+import "@rixl/media-lit/video";
+
+@Component({
+  selector: "app-video-player",
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  template: `
+    <div class="video-container">
+      <rixl-video
+        [attr.video-id]="videoId"
+        [attr.autoplay]="autoplay ? '' : null"
+        [attr.controls]="controls ? '' : null"
+        (rixl-analytics)="onAnalytics($event)"
+      ></rixl-video>
+    </div>
+  `,
+})
+export class VideoPlayerComponent {
+  @Input() videoId!: string;
+  @Input() autoplay = false;
+  @Input() controls = true;
+
+  onAnalytics(event: Event) {
+    const customEvent = event as CustomEvent;
+    console.log("Analytics event:", customEvent.detail);
+  }
+}
+```
+
+## Responsive Images
+
+Render responsive images optimized with AVIF and WebP delivery:
+
+```ts title="image-viewer.component.ts"
+import {Component, Input, CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
+import "@rixl/media-lit/image";
+
+@Component({
+  selector: "app-image-viewer",
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  template: ` <rixl-image [attr.image-id]="imageId" [attr.alt]="alt"></rixl-image> `,
+})
+export class ImageViewerComponent {
+  @Input() imageId!: string;
+  @Input() alt = "Media image";
+}
+```
+
+## Media Feeds
+
+Render story carousels and infinite vertical feeds:
+
+```ts title="feed.component.ts"
+import {Component, Input, CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
+import "@rixl/media-lit/feed";
+
+@Component({
+  selector: "app-media-feed",
+  standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  template: ` <rixl-feed [attr.feed-id]="feedId" loop autoscroll></rixl-feed> `,
+})
+export class MediaFeedComponent {
+  @Input() feedId!: string;
+}
+```
+
+<Callout type="info">
+  When binding boolean attributes to Web Components in Angular templates, use `[attr.attrName]="condition ? '' : null"` so Angular adds or
+  removes the boolean attribute correctly.
+</Callout>
