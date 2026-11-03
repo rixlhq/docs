@@ -215,12 +215,13 @@ function extractProductTree(root: Root, lang: string, slugs: string[]): ProductT
 }
 
 function findFolderByPrefix(node: Node, prefix: string): Folder | undefined {
-  if (node.type === "folder") {
-    if (node.index?.url.startsWith(prefix)) return node;
-    for (const child of node.children) {
-      const match = findFolderByPrefix(child, prefix);
-      if (match) return match;
+  if (node.type !== "folder") return undefined;
+
+  for (const child of node.children) {
+    if (child.type === "folder" && hasPrefixInNode(child, prefix)) {
+      return child;
     }
   }
+
   return undefined;
 }
