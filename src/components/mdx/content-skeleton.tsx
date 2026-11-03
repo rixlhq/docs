@@ -11,7 +11,7 @@ const LINE_WIDTHS = ["w-full", "w-11/12", "w-4/5", "w-full", "w-2/3", "w-full", 
 export function ContentSkeleton({title, description}: {title: string; description?: string}) {
   return (
     <DocsPage
-      className="pt-6 md:pt-8 xl:pt-10 md:px-7 xl:px-10"
+      className="pt-6 md:pt-6 xl:pt-6 md:px-7 xl:px-10"
       full={false}
       toc={[]}
       breadcrumb={{enabled: false}}

@@ -198,7 +198,7 @@ function DocsContent({toc, frontmatter, default: MDX}: LoadedDoc) {
   return (
     <>
       <DocsPage
-        className="pt-6 md:pt-8 xl:pt-10 md:px-7 xl:px-10"
+        className="pt-6 md:pt-6 xl:pt-6 md:px-7 xl:px-10"
         full={false}
         toc={toc}
         tableOfContent={{component: <TableOfContents />}}

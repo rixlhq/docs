@@ -9,17 +9,7 @@
  * and `<DocsPage tableOfContentPopover={{component: <TableOfContentsPopover />}} />`.
  */
 import {ChevronDown, Text} from "lucide-react";
-import {
-  type ComponentProps,
-  type ReactNode,
-  createContext,
-  use,
-  useEffect,
-  useEffectEvent,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import {type ComponentProps, type ReactNode, createContext, use, useEffect, useEffectEvent, useMemo, useRef, useState} from "react";
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "fumadocs-ui/components/ui/collapsible";
 import {TOCItem, TOCItems} from "fumadocs-ui/components/toc/default";
 import {TOCScrollArea, useItems, useTOCItems} from "fumadocs-ui/components/toc";
@@ -34,9 +24,7 @@ type TOCProps = {
 };
 
 function TOCEmpty() {
-  return (
-    <div className="rounded-lg border bg-fd-card p-3 text-xs text-fd-muted-foreground">{m.tocNoHeadings()}</div>
-  );
+  return <div className="rounded-lg border bg-fd-card p-3 text-xs text-fd-muted-foreground">{m.tocNoHeadings()}</div>;
 }
 
 export function TableOfContents({container, header, footer}: TOCProps) {
@@ -51,7 +39,7 @@ export function TableOfContents({container, header, footer}: TOCProps) {
       id="nd-toc"
       {...container}
       className={cn(
-        "sticky top-(--fd-docs-row-1) h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] flex flex-col [grid-area:toc] w-(--fd-toc-width) pt-12 pe-4 pb-2 xl:layout:[--fd-toc-width:268px] max-xl:hidden",
+        "sticky top-(--fd-docs-row-1) h-[calc(var(--fd-docs-height)-var(--fd-docs-row-1))] flex flex-col [grid-area:toc] w-(--fd-toc-width) pt-6 pe-4 pb-2 xl:layout:[--fd-toc-width:268px] max-xl:hidden",
         container?.className
       )}
     >
@@ -187,12 +175,7 @@ function TOCPopoverTrigger({className, ...props}: ComponentProps<"button">) {
         >
           {path?.name ?? m.toc()}
         </span>
-        <span
-          className={cn(
-            "truncate transition-[opacity,translate]",
-            !showItem && "opacity-0 translate-y-full pointer-events-none"
-          )}
-        >
+        <span className={cn("truncate transition-[opacity,translate]", !showItem && "opacity-0 translate-y-full pointer-events-none")}>
           {items[selectedIdx]?.original.title}
         </span>
       </span>
@@ -223,15 +206,7 @@ type ProgressCircleProps = Omit<ComponentProps<"svg">, "value" | "max"> & {
   size?: number;
 };
 
-function ProgressCircle({
-  value,
-  strokeWidth = 1.5,
-  size = 18,
-  min = 0,
-  max = 100,
-  style,
-  ...rest
-}: ProgressCircleProps) {
+function ProgressCircle({value, strokeWidth = 1.5, size = 18, min = 0, max = 100, style, ...rest}: ProgressCircleProps) {
   const normalized = clamp(value, min, max);
   const radius = size / 2 - strokeWidth;
   const circumference = 2 * Math.PI * radius;
@@ -248,12 +223,7 @@ function ProgressCircle({
   } as const;
 
   return (
-    <svg
-      viewBox={`0 0 ${size} ${size}`}
-      style={{width: size, height: size, ...style}}
-      {...svgProps}
-      {...rest}
-    >
+    <svg viewBox={`0 0 ${size} ${size}`} style={{width: size, height: size, ...style}} {...svgProps} {...rest}>
       <circle {...circleProps} className="stroke-current/25" />
       <circle
         {...circleProps}
