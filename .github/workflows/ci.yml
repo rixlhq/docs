@@ -43,3 +43,15 @@ jobs:
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           command: preview --name pr-${{ github.event.pull_request.number }}
+
+      - name: 🏷️ Version tag
+        if: github.ref == 'refs/heads/main'
+        run: echo "VERSION_TAG=${GITHUB_SHA:0:12}" >> "${GITHUB_ENV}"
+
+      - name: 📤 Upload version
+        if: github.ref == 'refs/heads/main'
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: versions upload --tag ${{ env.VERSION_TAG }} --message "main ${{ env.VERSION_TAG }}"
