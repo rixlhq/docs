@@ -68,11 +68,9 @@ docs/
 
 ```bash
 vp dev              # Dev server with HMR
-vp run build        # Clean + lint + production build
+vp run build        # Clean + production build (link check runs inside the build)
 vp preview          # Preview the production build
 vp run serve        # Serve the static build output
-vp run lint         # Oxlint + fumadocs-mdx
-vp run lint:fix     # Fix linting issues
 vp fmt              # Format code
 ```
 
