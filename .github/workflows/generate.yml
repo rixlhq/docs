@@ -1,0 +1,28 @@
+name: Generate API Docs
+
+on:
+  repository_dispatch:
+    types: [regenerate-docs]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  generate-sdk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - name: Update OpenAPI spec SHA
+        run: |
+          set -o pipefail
+          git ls-remote --exit-code https://github.com/rixlhq/openapi.git refs/heads/main | cut -f1 > .openapi-spec-sha
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "docs(api): regenerate based on latest OpenAPI spec"
+          file_pattern: ".openapi-spec-sha"
