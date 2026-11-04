@@ -42,7 +42,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          command: preview --name pr-${{ github.event.pull_request.number }}
+          command: preview
 
       - name: 🏷️ Version tag
         if: github.ref == 'refs/heads/main'
