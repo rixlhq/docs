@@ -36,7 +36,7 @@ jobs:
             run: vp build
 
       - name: 🚀 Deploy to CF
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false && github.actor != 'dependabot[bot]'
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
