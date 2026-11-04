@@ -44,15 +44,12 @@ Use `vp` for everything; don't call `bun`, `npm` or `npx` directly. Vite+ runs t
 ```bash
 vp install           # Install dependencies (postinstall generates MDX sources, icons, Paraglide)
 vp dev               # Dev server (http://localhost:3000)
-vp run build         # Clean + lint + production build (the Cloudflare gate is `ci:build` = this)
+vp run build         # Clean + production build (link check runs inside the build)
 vp preview           # Preview the production build
-vp run lint          # Oxlint (max-warnings=0) + fumadocs-mdx
-vp run lint:fix      # Auto-fix Oxlint issues
-vp run lint:links    # Check internal links in content
 vp fmt               # Format with Oxfmt
 ```
 
-Deploys: merging to `main` uploads a tagged Worker version (`cf:upload`) and the vendored `rollout.yml` smoke-tests and promotes it. docs is a public repo, so it can't call the private shared workflows; port shared-workflow fixes here by hand.
+Deploys: merging to `main` runs CI, which builds and uploads a tagged Worker version; `rollout.yml` (triggered on green CI) smoke-tests and promotes it. docs is a public repo, so it can't call the private shared workflows; port shared-workflow fixes here by hand.
 
 ## Documentation Content (MDX)
 
