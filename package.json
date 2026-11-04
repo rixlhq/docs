@@ -13,7 +13,7 @@
     "start": "vp preview",
     "serve": "vp dlx serve@latest --no-port-switching dist/client -l tcp://127.0.0.1:4173",
     "serve:spa": "vp dlx serve@latest --no-port-switching -s dist/client -l tcp://127.0.0.1:4173",
-    "lint": "vp lint --max-warnings=0 && fumadocs-mdx",
+    "lint": "vp lint --max-warnings=0",
     "lint:fix": "vp lint --fix",
     "format": "vp fmt",
     "generate:icons": "node plugins/vite-plugin-extract-icons.ts",
