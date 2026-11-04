@@ -14,11 +14,7 @@ type ResponseContentSummary = {
 };
 
 export function getRequestBodies(operation: OpenApiOperation): RequestBodySummary[] {
-  const bodies = [
-    ...collectRequestBodyContent(operation),
-    ...collectBodyParameters(operation),
-    ...collectFormDataParameters(operation),
-  ];
+  const bodies = [...collectRequestBodyContent(operation), ...collectBodyParameters(operation), ...collectFormDataParameters(operation)];
 
   return dedupeRequestBodies(bodies);
 }

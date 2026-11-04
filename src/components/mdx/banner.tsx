@@ -15,12 +15,7 @@ type BannerProps = HTMLAttributes<HTMLDivElement> & {
   changeLayout?: boolean;
 };
 
-const DEFAULT_RAINBOW_COLORS = [
-  "rgba(0,149,255,0.56)",
-  "rgba(231,77,255,0.77)",
-  "rgba(255,0,0,0.73)",
-  "rgba(131,255,166,0.66)",
-];
+const DEFAULT_RAINBOW_COLORS = ["rgba(0,149,255,0.56)", "rgba(231,77,255,0.77)", "rgba(255,0,0,0.73)", "rgba(131,255,166,0.66)"];
 
 function BannerCloseButton({onClose}: {onClose: () => void}) {
   return (
@@ -58,9 +53,7 @@ function BannerHeadStyles({
     <>
       {changeLayout && open ? (
         <style>
-          {globalKey
-            ? `:root:not(.${globalKey}) { --fd-banner-height: ${height}; }`
-            : `:root { --fd-banner-height: ${height}; }`}
+          {globalKey ? `:root:not(.${globalKey}) { --fd-banner-height: ${height}; }` : `:root { --fd-banner-height: ${height}; }`}
         </style>
       ) : null}
       {globalKey ? <style>{`.${globalKey} #${id} { display: none; }`}</style> : null}
@@ -136,8 +129,7 @@ export function Banner({
   );
 }
 
-const maskImage =
-  "linear-gradient(to bottom,white,transparent), radial-gradient(circle at top center, white, transparent)";
+const maskImage = "linear-gradient(to bottom,white,transparent), radial-gradient(circle at top center, white, transparent)";
 
 function RainbowFlow({colors}: {colors: string[]}) {
   return (

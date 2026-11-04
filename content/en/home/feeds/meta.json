@@ -1,10 +1,5 @@
 {
   "title": "Feeds",
   "description": "Publish dynamic media feeds and social-style posts",
-  "pages": [
-    "overview",
-    "posts",
-    "create-feed",
-    "manage-feeds"
-  ]
+  "pages": ["overview", "posts", "create-feed", "manage-feeds"]
 }

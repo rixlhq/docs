@@ -41,11 +41,7 @@ function renderOperationSection(
   return lines;
 }
 
-function renderWebhookSection(
-  item: WebhookItem,
-  operation: OpenApiOperation | undefined,
-  schema: OpenApiDereferencedSchema | undefined
-) {
+function renderWebhookSection(item: WebhookItem, operation: OpenApiOperation | undefined, schema: OpenApiDereferencedSchema | undefined) {
   const method = item.method.toUpperCase();
   const title = operation?.summary || operation?.operationId || `${method} /${item.name}`;
   const lines = [`### ${title}`, "", `- Method: \`${method}\``, `- Webhook: \`/${item.name}\``];

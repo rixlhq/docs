@@ -5,14 +5,7 @@ import defaultMdxComponents from "fumadocs-ui/mdx";
 import type {MDXComponents} from "mdx/types";
 import {Callout, Card, Columns, Video} from "@/components";
 import {Banner} from "@/components/mdx/banner";
-import {
-  CodeBlock,
-  CodeBlockTab,
-  CodeBlockTabs,
-  CodeBlockTabsList,
-  CodeBlockTabsTrigger,
-  Pre,
-} from "@/components/mdx/codeblock";
+import {CodeBlock, CodeBlockTab, CodeBlockTabs, CodeBlockTabsList, CodeBlockTabsTrigger, Pre} from "@/components/mdx/codeblock";
 import {Heading} from "@/components/mdx/heading";
 
 // use this function to get MDX components, you will need it for rendering MDX
