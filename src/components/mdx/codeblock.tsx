@@ -1,16 +1,7 @@
 "use client";
 
 import {Check, Clipboard} from "lucide-react";
-import {
-  type ComponentPropsWithRef,
-  type HTMLAttributes,
-  type ReactNode,
-  type RefObject,
-  createContext,
-  use,
-  useMemo,
-  useRef,
-} from "react";
+import {type ComponentPropsWithRef, type HTMLAttributes, type ReactNode, type RefObject, createContext, use, useMemo, useRef} from "react";
 import {useCopyButton} from "fumadocs-ui/utils/use-copy-button";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/ui/tabs";
 import {m} from "@/paraglide/messages";
@@ -48,9 +39,7 @@ type CodeBlockProps = ComponentPropsWithRef<"figure"> & {
   Actions?: (props: ActionsProps) => ReactNode;
 };
 
-const defaultActions = (props: ActionsProps) => (
-  <div {...props} className={cn("empty:hidden", props.className)} />
-);
+const defaultActions = (props: ActionsProps) => <div {...props} className={cn("empty:hidden", props.className)} />;
 
 function normalizeAllowCopy(value: CodeBlockProps["allowCopy"]): boolean {
   if (value === "true") return true;
@@ -71,11 +60,7 @@ function CodeBlockHeader({
 }) {
   return (
     <div className="flex text-fd-muted-foreground items-center gap-2 h-9.5 border-b px-4">
-      {typeof icon === "string" ? (
-        <div className="[&_svg]:size-3.5" dangerouslySetInnerHTML={{__html: icon}} />
-      ) : (
-        icon
-      )}
+      {typeof icon === "string" ? <div className="[&_svg]:size-3.5" dangerouslySetInnerHTML={{__html: icon}} /> : icon}
       <figcaption className="flex-1 truncate">{title}</figcaption>
       {Actions({className: "-me-2", children: copyButton})}
     </div>
@@ -151,12 +136,14 @@ export function CodeBlock({
         props.className
       )}
     >
-      {title
-        ? <CodeBlockHeader title={title} icon={icon} Actions={Actions} copyButton={copyButton} />
-        : Actions({
-            className: "absolute top-3 right-2 z-2 backdrop-blur-lg rounded-lg text-fd-muted-foreground",
-            children: copyButton,
-          })}
+      {title ? (
+        <CodeBlockHeader title={title} icon={icon} Actions={Actions} copyButton={copyButton} />
+      ) : (
+        Actions({
+          className: "absolute top-3 right-2 z-2 backdrop-blur-lg rounded-lg text-fd-muted-foreground",
+          children: copyButton,
+        })
+      )}
       <CodeBlockViewport
         areaRef={areaRef}
         viewportProps={viewportProps}
@@ -209,11 +196,7 @@ export function CodeBlockTabs({ref, ...props}: ComponentPropsWithRef<typeof Tabs
   const containerRef = useRef<HTMLDivElement | null>(null);
   const nested = use(TabsContext) !== null;
   return (
-    <Tabs
-      ref={mergeRefs(containerRef, ref)}
-      {...props}
-      className={cn("bg-fd-card rounded-xl border", !nested && "my-4", props.className)}
-    >
+    <Tabs ref={mergeRefs(containerRef, ref)} {...props} className={cn("bg-fd-card rounded-xl border", !nested && "my-4", props.className)}>
       <TabsContext.Provider value={useMemo(() => ({containerRef, nested}), [nested])}>{props.children}</TabsContext.Provider>
     </Tabs>
   );
@@ -221,10 +204,7 @@ export function CodeBlockTabs({ref, ...props}: ComponentPropsWithRef<typeof Tabs
 
 export function CodeBlockTabsList(props: ComponentPropsWithRef<typeof TabsList>) {
   return (
-    <TabsList
-      {...props}
-      className={cn("flex flex-row px-2 overflow-x-auto text-fd-muted-foreground", props.className)}
-    >
+    <TabsList {...props} className={cn("flex flex-row px-2 overflow-x-auto text-fd-muted-foreground", props.className)}>
       {props.children}
     </TabsList>
   );
