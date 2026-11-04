@@ -33,7 +33,7 @@ jobs:
             run: vp check
 
           - name: 🛠️ Build
-            run: vp build
+            run: vpr build
 
       - name: 🚀 Deploy to CF
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false && github.actor != 'dependabot[bot]'
