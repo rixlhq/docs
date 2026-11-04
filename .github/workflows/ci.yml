@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Static checks: format, lint, and type-check (typeAware/typeCheck are on).
+  check:
+    runs-on: rixl-runner
+    timeout-minutes: 15
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v7
+
+      - name: ⚙️ Setup Vite+
+        uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          cache: true
+
+      - name: 🧩 Check
+        run: vp check --deny-warnings
+
+  # Full production build (clean + lint + links + bundle, same as the old
+  # Cloudflare gate). On PRs the built output is previewed below.
+  build:
+    runs-on: rixl-runner
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      deployments: write # wrangler-action preview records a GitHub Deployment
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v7
+
+      - name: ⚙️ Setup Vite+
+        uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          cache: true
+
+      - name: 🛠️ Build
+        run: vp run build
+
+      - name: 🚀 Preview
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+        id: preview
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: preview --name pr-${{ github.event.pull_request.number }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

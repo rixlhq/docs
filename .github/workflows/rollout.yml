@@ -7,10 +7,11 @@ name: Rollout
 # env block on the job below.
 #
 # Merges to main deploy to production through Cloudflare gradual
-# deployments: the Workers Builds run uploads a version tagged with the
-# commit (cf:upload is the deploy command), and this workflow waits for it,
-# smoke-tests it at 0% traffic, then ramps. Trigger manually with
-# dry_run=true to print the plan without touching traffic.
+# deployments: CI (ci.yml) builds and checks the commit, the Workers Build
+# uploads a version tagged with the commit (cf:upload is the deploy command),
+# and this workflow waits for it, smoke-tests it at 0% traffic, then ramps.
+# Trigger manually with dry_run=true to print the plan without touching
+# traffic.
 #
 # Flow per rollout:
 #   1. wait until a version tagged with this commit exists (a red build
@@ -21,7 +22,11 @@ name: Rollout
 #   4. ramp through RAMP percentages, WATCH_MINUTES of soak between
 #   5. any failure rolls back to the previous version at 100% and fails
 on:
-  push:
+  # Runs only after CI passes on main (conclusion is checked on the job).
+  # workflow_run always uses the workflow file from the default branch.
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
     inputs:
@@ -44,6 +49,7 @@ concurrency:
 
 jobs:
   rollout:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     env:
@@ -66,7 +72,10 @@ jobs:
       - name: Resolve version tag
         run: |
           TAG="${{ inputs.version-tag }}"
-          [ -z "${TAG}" ] && TAG="$(echo "${{ github.sha }}" | cut -c1-12)"
+          if [ -z "${TAG}" ]; then
+            # workflow_run: the CI head sha; dispatch: the pushed sha.
+            TAG="$(echo "${{ github.event.workflow_run.head_sha || github.sha }}" | cut -c1-12)"
+          fi
           echo "TAG=${TAG}" >> "${GITHUB_ENV}"
           echo "Rolling out ${WORKER} version tagged ${TAG}"
 
