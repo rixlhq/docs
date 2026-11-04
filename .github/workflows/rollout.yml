@@ -7,11 +7,10 @@ name: Rollout
 # env block on the job below.
 #
 # Merges to main deploy to production through Cloudflare gradual
-# deployments: CI (ci.yml) builds and checks the commit, the Workers Build
-# uploads a version tagged with the commit (cf:upload is the deploy command),
-# and this workflow waits for it, smoke-tests it at 0% traffic, then ramps.
-# Trigger manually with dry_run=true to print the plan without touching
-# traffic.
+# deployments: CI (ci.yml) builds, checks, and uploads a version tagged with
+# the commit, and this workflow waits for it, smoke-tests it at 0% traffic,
+# then ramps. Trigger manually with dry_run=true to print the plan without
+# touching traffic.
 #
 # Flow per rollout:
 #   1. wait until a version tagged with this commit exists (a red build
