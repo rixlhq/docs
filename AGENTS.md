@@ -20,7 +20,7 @@ The official documentation site for Rixl (`developers.rixl.com`), built with Tan
 - `src/generated/`, `src/paraglide/`, `src/routeTree.gen.ts` - generated; never edit
 - `content/<locale>/` - MDX documentation (`en` is the source, `de` is translated)
 - `plugins/` - build-time codegen: icon subset extraction, internal link validation
-- `source.config.ts` - Fumadocs collections and frontmatter schemas
+- `src/lib/docs.ts` - Fumadocs collections (macro) and frontmatter schemas
 - `wrangler.jsonc` - Cloudflare Worker config (`rixl-docs`, `developers.rixl.com`, previews)
 
 ## Technology Stack

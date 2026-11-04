@@ -1,7 +1,7 @@
 import "@tanstack/react-start/server-only";
 import {loader, multiple} from "fumadocs-core/source";
 import * as icons from "lucide-static";
-import {docs} from "fumadocs-mdx:collections/server";
+import {docs} from "@/lib/docs";
 import {i18n} from "@/lib/i18n";
 import {createElement} from "react";
 import {openapiPlugin, openapiSource} from "fumadocs-openapi/server";

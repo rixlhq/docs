@@ -9,9 +9,8 @@
     "build": "vp build",
     "preview": "vp preview",
     "generate:icons": "vpx plugins/vite-plugin-extract-icons.ts",
-    "generate:fumadocs": "fumadocs-mdx",
     "generate:paraglide": "paraglide-js compile --project project.inlang --outdir ./src/paraglide",
-    "postinstall": "vpr generate:fumadocs && vpr generate:paraglide && vpr generate:icons",
+    "postinstall": "vpr generate:paraglide && vpr generate:icons",
     "prepare": "[ -n \"$CI\" ] || lefthook install --reset-hooks-path",
     "machine-translate": "inlang machine translate --project project.inlang"
   },

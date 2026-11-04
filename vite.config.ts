@@ -4,7 +4,7 @@ import {defineConfig, lazyPlugins} from "vite-plus";
 import {tanstackStart} from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import mdx from "fumadocs-mdx/vite";
+import {fumadocsMdx} from "fumadocs-mdx/vite";
 import {extractIconsPlugin} from "./plugins/vite-plugin-extract-icons.ts";
 import {linkCheckPlugin} from "./plugins/vite-plugin-link-check.ts";
 import {i18n} from "./src/lib/i18n.ts";
@@ -164,7 +164,7 @@ export default defineConfig({
       strategy: ["url", "globalVariable", "cookie", "baseLocale"],
     }),
     extractIconsPlugin(),
-    mdx(await import("./source.config.ts")),
+    fumadocsMdx(),
     tailwindcss(),
     tanstackStart({
       serverFns: {

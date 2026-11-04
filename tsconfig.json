@@ -23,8 +23,7 @@
     "noUncheckedSideEffectImports": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@/snippets": ["./src/components/mdx"],
-      "fumadocs-mdx:collections/*": ["./.source/*"]
+      "@/snippets": ["./src/components/mdx"]
     }
   }
 }

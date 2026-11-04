@@ -3,14 +3,14 @@ import type {TOCItemType} from "fumadocs-core/toc";
 import {getPageImage} from "@/lib/images";
 import {getBaseUrl} from "@/lib/base-url";
 import {DocsBody, DocsDescription, DocsPage, DocsTitle} from "fumadocs-ui/page";
-import browserCollections from "fumadocs-mdx:collections/browser";
 import SharedLayout from "@/components/layout/shared/shared-layout";
 import {getMDXComponents} from "@/components/mdx-components";
 import {Footer} from "@/components/layout/footer/footer";
 import {LLMCopyButton} from "@/components/page-actions/llm-copy-button";
 import {DocsBreadcrumb} from "@/components/layout/shared/docs-breadcrumb";
 import {loader, treeLoader} from "@/lib/server/docs-loader";
-import {Suspense} from "react";
+import {docs} from "@/lib/docs";
+import {Suspense, use} from "react";
 import {useFumadocsLoader} from "fumadocs-core/source/client";
 import {StaticApiHtml} from "@/components/mdx/static-api-html";
 import {TableOfContents, TableOfContentsPopover} from "@/components/mdx/toc";
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/$lang/$")({
     );
     const combined = {...treeData, ...data};
     if (slugs[0] !== "api") {
-      void clientLoader.preload(combined.path);
+      void docs.getPage(combined.path)?.preload();
     }
     return combined;
   },
@@ -88,9 +88,12 @@ interface StaticOpenApiPage {
   html: string;
 }
 
-const clientLoader = browserCollections.docs.createClientLoader<{}>({
-  component: DocsContent,
-});
+function MdxContent({path}: {path: string}) {
+  const entry = docs.getPage(path);
+  if (!entry) throw notFound();
+  const compiled = use(entry.load());
+  return <DocsContent toc={compiled.toc} frontmatter={{title: entry.title, description: entry.description}} default={compiled.body} />;
+}
 
 function Page() {
   const {lang} = Route.useParams();
@@ -137,10 +140,6 @@ function Page() {
       )}
     </SharedLayout>
   );
-}
-
-function MdxContent({path}: {path: string}) {
-  return clientLoader.useContent(path, {});
 }
 
 function ApiContent({
