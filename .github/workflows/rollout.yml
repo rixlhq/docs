@@ -158,6 +158,28 @@ jobs:
             exit 1
           }
 
+          # Cloudflare's versions list can return a version before the deploy
+          # endpoint can see it (replication lag surfaces as error 100146
+          # "version could not be found"). Retry deploys briefly instead of
+          # failing the rollout on a transient miss; genuine failures still
+          # roll back once retries are exhausted.
+          vdeploy() {
+            local message="$1"
+            shift
+            local attempt=0
+            while [ "${attempt}" -lt 5 ]; do
+              if wrangler versions deploy "$@" --name "${WORKER}" -y --message "${message}"; then
+                return 0
+              fi
+              attempt=$((attempt + 1))
+              if [ "${attempt}" -lt 5 ]; then
+                echo "Deploy failed (attempt ${attempt}/5); retrying in 30s..."
+                sleep 30
+              fi
+            done
+            return 1
+          }
+
           smoke() {
             local label="$1"
             [ -n "${SMOKE_URLS}" ] || { echo "no smoke urls configured, skipping"; return 0; }
@@ -201,16 +223,14 @@ jobs:
 
           if [ -z "${OLD_VERSION_ID}" ]; then
             echo "First deploy — straight to 100%."
-            wrangler versions deploy "${NEW_VERSION_ID}@100" \
-              --name "${WORKER}" -y --message "first deploy ${TAG}"
+            vdeploy "first deploy ${TAG}" "${NEW_VERSION_ID}@100"
             exit 0
           fi
 
           # Add the new version to the deployment at 0%: in the deployment,
           # but no real users routed to it yet.
           echo "Adding ${NEW_VERSION_ID} at 0%"
-          wrangler versions deploy "${OLD_VERSION_ID}@100" "${NEW_VERSION_ID}@0" \
-            --name "${WORKER}" -y --message "rollout ${TAG}: add at 0%" \
+          vdeploy "rollout ${TAG}: add at 0%" "${OLD_VERSION_ID}@100" "${NEW_VERSION_ID}@0" \
             || rollback "deploy to 0% failed"
 
           smoke "0%" || rollback "smoke failed at 0%"
@@ -218,13 +238,11 @@ jobs:
           for p in ${RAMP//,/ }; do
             if [ "${p}" = "100" ]; then
               echo "Moving to 100%"
-              wrangler versions deploy "${NEW_VERSION_ID}@100" \
-                --name "${WORKER}" -y --message "rollout ${TAG}: 100%" \
+              vdeploy "rollout ${TAG}: 100%" "${NEW_VERSION_ID}@100" \
                 || rollback "deploy to 100% failed"
             else
               echo "Moving to ${p}%"
-              wrangler versions deploy "${OLD_VERSION_ID}@$((100 - p))" "${NEW_VERSION_ID}@${p}" \
-                --name "${WORKER}" -y --message "rollout ${TAG}: ${p}%" \
+              vdeploy "rollout ${TAG}: ${p}%" "${OLD_VERSION_ID}@$((100 - p))" "${NEW_VERSION_ID}@${p}" \
                 || rollback "deploy to ${p}% failed"
               if [ "${WATCH_MINUTES}" -gt 0 ]; then
                 echo "Watching for ${WATCH_MINUTES}m"
