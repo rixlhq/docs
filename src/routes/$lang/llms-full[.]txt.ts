@@ -12,7 +12,7 @@ export const Route = createFileRoute("/$lang/llms-full.txt")({
 
             const hasMarkdownText = typeof (page.data as {getText?: unknown}).getText === "function";
             const hasOpenApiData =
-              typeof (page.data as {getAPIPageProps?: unknown}).getAPIPageProps === "function" &&
+              typeof (page.data as {getOpenAPIPageProps?: unknown}).getOpenAPIPageProps === "function" &&
               typeof (page.data as {getSchema?: unknown}).getSchema === "function";
 
             return hasMarkdownText || hasOpenApiData;

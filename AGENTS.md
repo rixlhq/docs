@@ -29,8 +29,7 @@ The official documentation site for Rixl (`developers.rixl.com`), built with Tan
 - Node 24 (`.node-version`)
 - TanStack Start + TanStack Router (static prerender)
 - React 19
-- Fumadocs 16 (`fumadocs-core`, `fumadocs-ui`, `fumadocs-mdx`)
-  - `fumadocs-openapi` pinned to v11: v12 breaks `api-page.server.tsx` and `get-llm-text`
+- Fumadocs 16 (`fumadocs-core`, `fumadocs-ui`, `fumadocs-mdx`, `fumadocs-openapi`)
 - Tailwind CSS 4, Radix UI primitives
 - Shiki (syntax highlighting), Orama (search)
 - Paraglide JS / inlang (i18n)

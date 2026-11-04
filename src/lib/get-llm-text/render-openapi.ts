@@ -1,6 +1,5 @@
-import type {OperationItem, WebhookItem} from "fumadocs-openapi/ui";
-// @ts-expect-error -- internal util, no public subpath or types in v11
-import {dereferenceBundledDocument} from "../../../node_modules/fumadocs-openapi/dist/utils/document/dereference.js";
+import type {OperationItem, WebhookItem} from "fumadocs-openapi";
+import {dereference} from "@fumadocs/json-schema";
 import {appendOperationDetails} from "./openapi-details";
 import type {OpenApiDereferencedSchema, OpenApiLLMPage, OpenApiOperation} from "./types";
 
@@ -51,8 +50,8 @@ function renderWebhookSection(item: WebhookItem, operation: OpenApiOperation | u
 }
 
 export function renderOpenApiMarkdown(page: OpenApiLLMPage) {
-  const props = page.data.getAPIPageProps();
-  const schema = dereferenceBundledDocument(page.data.getSchema().bundled).dereferenced as OpenApiDereferencedSchema;
+  const props = page.data.getOpenAPIPageProps();
+  const schema = dereference(page.data.getSchema().bundled) as OpenApiDereferencedSchema;
 
   const lines = buildHeaderLines(page);
   appendOperations(lines, props.operations, schema);

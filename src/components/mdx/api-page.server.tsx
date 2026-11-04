@@ -1,6 +1,7 @@
 import "@tanstack/react-start/server-only";
 import type {HTMLAttributes} from "react";
 import {createOpenAPIPage} from "fumadocs-openapi/ui";
+import {useComponents, useOpenAPI} from "fumadocs-openapi";
 import {highlight} from "fumadocs-core/highlight";
 import {CodeBlock, Pre} from "@/components/mdx/codeblock";
 import {renderStaticExampleTabs} from "@/components/mdx/api-page/render-static-example-tabs";
@@ -9,9 +10,11 @@ import {renderStaticResponseSection} from "@/components/mdx/api-page/render-stat
 import {findOperationPath} from "@/components/mdx/api-page/path-utils";
 import type {MethodWithPath, OpenApiRenderContext, PathItemLite} from "@/components/mdx/api-page/types";
 
-// v11 exposes a single render context to content hooks. Adapt it to the project's
-// static-render context: markdown via the built-in processor, code via fumadocs' Shiki
-// highlighter, and the dereferenced schema directly (no longer nested under `.dereferenced`).
+// v12 only passes render options through the content `ctx`, so the document,
+// its media adapters, and the default Markdown renderer come from the page
+// hooks instead. Adapt it to the project's static-render context: markdown
+// via the built-in processor, code via fumadocs' Shiki highlighter, and the
+// dereferenced schema directly.
 /**
  * Renders highlighted code through the same CodeBlock the MDX `pre` mapping
  * uses.
@@ -40,10 +43,15 @@ export const APIPage = createOpenAPIPage({
   showResponseSchema: false,
   content: {
     async renderOperationLayout(slots, {operation, method, pathItem, ctx}) {
+      // v12 passes only render options through `ctx`; the document and its
+      // helpers come from the hooks. Called synchronously at the top so the
+      // hooks run during render, before the first await below.
+      const {doc, mediaAdapters} = useOpenAPI();
+      const {Markdown} = useComponents();
       const typedCtx: OpenApiRenderContext = {
-        schema: ctx.schema.dereferenced,
-        mediaAdapters: ctx.mediaAdapters,
-        renderMarkdown: (md) => ctx._default_processMarkdown(md),
+        schema: doc.dereferenced,
+        mediaAdapters,
+        renderMarkdown: (md) => <Markdown md={md} />,
         // defaultColor is forced off rather than left to fumadocs' defaults:
         // applyDefaultThemes returns the options untouched once `themes` is
         // present, and fumadocs-openapi always sets it. Without this Shiki

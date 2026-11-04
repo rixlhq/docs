@@ -3,6 +3,7 @@ import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 // @ts-expect-error -- runtime export exists but not in .d.ts
 import {getExampleRequests} from "../../../../node_modules/fumadocs-openapi/dist/utils/get-example-requests.js";
 import type {CodeUsageGenerator} from "fumadocs-openapi/requests/generators";
+import {dereference} from "@fumadocs/json-schema";
 import {csharp} from "fumadocs-openapi/requests/generators/csharp";
 import {curl} from "fumadocs-openapi/requests/generators/curl";
 import {go} from "fumadocs-openapi/requests/generators/go";
@@ -105,6 +106,23 @@ type RequestUrlInput = {
   encoded: EncodedRequestData;
 };
 
+function mergeParameters(operation: MethodWithPath, pathItem: PathItemLite): unknown[] {
+  // Same order and dedup as fumadocs' own page renderer: operation-level
+  // parameters first, then path-level ones, keyed by location and name.
+  const merged: unknown[] = [];
+  const seen = new Set<string>();
+  for (const list of [operation.parameters, pathItem.parameters]) {
+    for (const item of list ?? []) {
+      const param = dereference(item) as {in?: string; name?: string};
+      const key = `${param.in}:${param.name}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      merged.push(param);
+    }
+  }
+  return merged;
+}
+
 function resolveRequestUrl({path, operation, ctx, encoded}: RequestUrlInput): string {
   const rootSchema = ctx.schema as ApiServerRoot | undefined;
   return joinApiUrl(resolveOpenApiBaseUrl(rootSchema, operation.servers), resolveRequestPath(path, encoded));
@@ -124,7 +142,13 @@ export async function renderStaticExampleTabs({
   ctx: OpenApiRenderContext;
 }) {
   const responseTabs = await renderResponseTabs(buildResponseTabs(operation), ctx);
-  const [firstExample] = getExampleRequests({path, operation, method, pathItem, ctx});
+  const [firstExample] = getExampleRequests({
+    path,
+    operation,
+    method,
+    mediaAdapters: ctx.mediaAdapters,
+    parameters: mergeParameters(operation, pathItem),
+  });
   if (!firstExample) return responseTabs;
 
   const encoded = firstExample.encoded as EncodedRequestData;
