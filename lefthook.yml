@@ -14,4 +14,7 @@ pre-push:
   parallel: true
   commands:
     build:
+      glob:
+        - "**/*.{js,ts,jsx,tsx}"
+        - "content/**"
       run: vp build
