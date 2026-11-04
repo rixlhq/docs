@@ -8,13 +8,14 @@ name: Rollout
 #
 # Merges to main deploy to production through Cloudflare gradual
 # deployments: CI (ci.yml) builds, checks, and uploads a version tagged with
-# the commit, and this workflow waits for it, smoke-tests it at 0% traffic,
+# the commit, and this workflow resolves it, smoke-tests it at 0% traffic,
 # then ramps. Trigger manually with dry_run=true to print the plan without
 # touching traffic.
 #
 # Flow per rollout:
-#   1. wait until a version tagged with this commit exists (a red build
-#      uploads nothing, so a broken merge can never roll out)
+#   1. resolve the version tagged with this commit (CI uploads it in the same
+#      run before triggering this workflow, so it must exist — a red build
+#      uploads nothing and never triggers a rollout at all)
 #   2. add it to the deployment at 0% — Cloudflare only serves two versions
 #      at once
 #   3. smoke-test the new version on its own preview URL
@@ -58,7 +59,6 @@ jobs:
       SMOKE_URLS: "https://docs.rixl.com/en/home"
       # Smoke requests go to the new version's preview URL on this subdomain.
       WORKERS_SUBDOMAIN: "rixl-d8a.workers.dev"
-      WAIT_MINUTES: 45
       DRY_RUN: ${{ inputs.dry_run || false }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
@@ -78,30 +78,29 @@ jobs:
           echo "TAG=${TAG}" >> "${GITHUB_ENV}"
           echo "Rolling out ${WORKER} version tagged ${TAG}"
 
-      - name: Wait for the tagged version
+      - name: Resolve the tagged version
         run: |
           set -euo pipefail
-          deadline=$(( $(date +%s) + WAIT_MINUTES * 60 ))
-          NEW_VERSION_ID=""
-          while [ "$(date +%s)" -lt "${deadline}" ]; do
-            NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
-              | jq -r --arg t "${TAG}" '[.[] | select(.annotations["workers/tag"] == $t)] | last | .id // empty')
-            [ -n "${NEW_VERSION_ID}" ] && break
+          # CI uploads the version in the same run before this workflow starts
+          # (workflow_run on green CI), so it must already exist — no waiting.
+          # Only dry runs (manual, possibly before any upload) fall back to
+          # planning against the newest uploaded version.
+          NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
+            | jq -r --arg t "${TAG}" '[.[] | select(.annotations["workers/tag"] == $t)] | last | .id // empty')
+          if [ -z "${NEW_VERSION_ID}" ]; then
             if [ "${DRY_RUN}" = "true" ]; then
-              # A dry run should be runnable before the CI upload exists — plan
-              # against the newest uploaded version instead of waiting.
               NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
                 | jq -r 'last | .id // empty')
               if [ -n "${NEW_VERSION_ID}" ]; then
                 echo "No version tagged ${TAG}; dry run will plan against the latest version (${NEW_VERSION_ID})."
               fi
-              break
+            else
+              echo "::error::No ${WORKER} version tagged ${TAG} — CI should have uploaded it before triggering this rollout."
+              exit 1
             fi
-            echo "No version tagged ${TAG} yet; retrying in 30s"
-            sleep 30
-          done
+          fi
           if [ -z "${NEW_VERSION_ID}" ]; then
-            echo "::error::No ${WORKER} version tagged ${TAG} after ${WAIT_MINUTES}m — the CI build probably failed (a red build uploads nothing)."
+            echo "::error::No ${WORKER} versions exist at all."
             exit 1
           fi
           echo "NEW_VERSION_ID=${NEW_VERSION_ID}" >> "${GITHUB_ENV}"
