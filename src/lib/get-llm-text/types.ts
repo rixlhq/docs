@@ -1,4 +1,4 @@
-import type {ApiPageProps} from "fumadocs-openapi/ui";
+import type {OpenAPIPageProps} from "fumadocs-openapi/ui";
 import type {ApiServer, ApiServerRoot} from "@/lib/api-base-url";
 
 export interface OpenApiSchema {
@@ -90,14 +90,14 @@ export interface LLMPage {
     description?: string;
     type?: string;
     getText?: (format: "processed") => Promise<string>;
-    getAPIPageProps?: () => Omit<ApiPageProps, "document">;
+    getOpenAPIPageProps?: () => Omit<OpenAPIPageProps, "document">;
     getSchema?: () => OpenApiRootSchema;
   };
 }
 
 export type OpenApiLLMPage = LLMPage & {
   data: LLMPage["data"] & {
-    getAPIPageProps: () => Omit<ApiPageProps, "document">;
+    getOpenAPIPageProps: () => Omit<OpenAPIPageProps, "document">;
     getSchema: () => OpenApiRootSchema;
   };
 };
@@ -105,7 +105,7 @@ export type OpenApiLLMPage = LLMPage & {
 export interface OpenApiPageData {
   title?: string;
   description?: string;
-  getAPIPageProps?: () => Omit<ApiPageProps, "document">;
+  getOpenAPIPageProps?: () => Omit<OpenAPIPageProps, "document">;
   getSchema?: () => OpenApiRootSchema;
 }
 

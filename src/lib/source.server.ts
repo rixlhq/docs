@@ -10,7 +10,7 @@ import {openApiPagesOptions} from "@/lib/openapi-pages";
 
 const openApi = await openapiSource(openapi, {
   ...openApiPagesOptions,
-  baseDir: "en/api",
+  baseDir: "api",
 });
 
 export const source = loader({

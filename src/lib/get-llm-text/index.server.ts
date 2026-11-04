@@ -1,5 +1,5 @@
 import "@tanstack/react-start/server-only";
-import type {ApiPageProps} from "fumadocs-openapi/ui";
+import type {OpenAPIPageProps} from "fumadocs-openapi/ui";
 import {openapiSource} from "fumadocs-openapi/server";
 import {openapi} from "@/lib/openapi.server";
 import {openApiPagesOptions} from "@/lib/openapi-pages";
@@ -37,7 +37,7 @@ async function getOpenApiFallbackIndex() {
     openApiFallbackIndexPromise = (async () => {
       const result = await openapiSource(openapi, {
         ...openApiPagesOptions,
-        baseDir: "en/api",
+        baseDir: "api",
       });
       const map = new Map<string, OpenApiPageData>();
 
@@ -62,7 +62,7 @@ async function renderOpenApiFallbackByUrl(page: LLMPage) {
   const localizedUrl = url.startsWith("/api/") ? `/en${url}` : url;
   const deLocalizedUrl = url.replace(/^\/[a-z]{2}(?=\/api\/)/u, "");
   const fallbackData = map.get(url) ?? map.get(localizedUrl) ?? map.get(deLocalizedUrl);
-  if (!fallbackData || typeof fallbackData.getAPIPageProps !== "function" || typeof fallbackData.getSchema !== "function") return;
+  if (!fallbackData || typeof fallbackData.getOpenAPIPageProps !== "function" || typeof fallbackData.getSchema !== "function") return;
 
   return renderOpenApiMarkdown({
     ...page,
@@ -70,7 +70,7 @@ async function renderOpenApiFallbackByUrl(page: LLMPage) {
       ...page.data,
       title: fallbackData.title ?? page.data.title,
       description: fallbackData.description ?? page.data.description,
-      getAPIPageProps: fallbackData.getAPIPageProps,
+      getOpenAPIPageProps: fallbackData.getOpenAPIPageProps,
       getSchema: fallbackData.getSchema,
     },
   });
@@ -83,12 +83,12 @@ function isNotFoundPayload(processed: string) {
 
 function isOpenAPIPage(page: LLMPage): page is LLMPage & {
   data: LLMPage["data"] & {
-    getAPIPageProps: () => Omit<ApiPageProps, "document">;
+    getOpenAPIPageProps: () => Omit<OpenAPIPageProps, "document">;
     getSchema: () => OpenApiRootSchema;
   };
 } {
   return (
-    typeof page.data.getAPIPageProps === "function" &&
+    typeof page.data.getOpenAPIPageProps === "function" &&
     typeof page.data.getSchema === "function" &&
     (page.data.type === "openapi" || page.url.includes("/api/"))
   );

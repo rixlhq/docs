@@ -26,6 +26,7 @@ export interface MethodWithPath {
   operationId?: string;
   summary?: string;
   servers?: ApiServer[];
+  parameters?: unknown[];
   requestBody?: RequestBodyLite;
   responses?: Record<string, ResponseObjectLite>;
 }

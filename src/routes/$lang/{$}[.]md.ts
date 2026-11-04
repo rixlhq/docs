@@ -1,7 +1,7 @@
 import {createFileRoute, notFound} from "@tanstack/react-router";
 
 type OpenApiData = {
-  getAPIPageProps?: unknown;
+  getOpenAPIPageProps?: unknown;
   getSchema?: unknown;
 };
 
@@ -17,7 +17,7 @@ function hasMarkdownText(page: LLMPage | undefined): boolean {
 
 function hasOpenApiData(page: LLMPage | undefined): boolean {
   const data = page?.data;
-  return typeof data?.getAPIPageProps === "function" && typeof data?.getSchema === "function";
+  return typeof data?.getOpenAPIPageProps === "function" && typeof data?.getSchema === "function";
 }
 
 function isSupportedPage(page: LLMPage | undefined): boolean {
