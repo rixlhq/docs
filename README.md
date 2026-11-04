@@ -68,10 +68,9 @@ docs/
 
 ```bash
 vp dev              # Dev server with HMR
-vp run build        # Clean + production build (link check runs inside the build)
+vp run build        # Production build (link check runs inside the build)
 vp preview          # Preview the production build
-vp run serve        # Serve the static build output
-vp fmt              # Format code
+vp check --fix      # Format, lint, type-check; auto-fix what can be fixed
 ```
 
 ## 📚 Documentation

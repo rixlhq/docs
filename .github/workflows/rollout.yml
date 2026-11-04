@@ -88,7 +88,7 @@ jobs:
               | jq -r --arg t "${TAG}" '[.[] | select(.annotations["workers/tag"] == $t)] | last | .id // empty')
             [ -n "${NEW_VERSION_ID}" ] && break
             if [ "${DRY_RUN}" = "true" ]; then
-              # A dry run should be runnable before cf:upload exists — plan
+              # A dry run should be runnable before the CI upload exists — plan
               # against the newest uploaded version instead of waiting.
               NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
                 | jq -r 'last | .id // empty')
@@ -101,7 +101,7 @@ jobs:
             sleep 30
           done
           if [ -z "${NEW_VERSION_ID}" ]; then
-            echo "::error::No ${WORKER} version tagged ${TAG} after ${WAIT_MINUTES}m — the Cloudflare build probably failed (a red ci:build uploads nothing)."
+            echo "::error::No ${WORKER} version tagged ${TAG} after ${WAIT_MINUTES}m — the CI build probably failed (a red build uploads nothing)."
             exit 1
           fi
           echo "NEW_VERSION_ID=${NEW_VERSION_ID}" >> "${GITHUB_ENV}"
