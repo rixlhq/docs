@@ -5,9 +5,9 @@
   "type": "module",
   "sideEffects": false,
   "scripts": {
-    "start": "vp preview",
-    "serve": "vpx serve@latest --no-port-switching dist/client -l tcp://127.0.0.1:4173",
-    "serve:spa": "vpx serve@latest --no-port-switching -s dist/client -l tcp://127.0.0.1:4173",
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
     "generate:icons": "vpx plugins/vite-plugin-extract-icons.ts",
     "generate:fumadocs": "fumadocs-mdx",
     "generate:paraglide": "paraglide-js compile --project project.inlang --outdir ./src/paraglide",
