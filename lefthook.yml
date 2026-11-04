@@ -2,12 +2,10 @@ pre-commit:
   parallel: true
   commands:
     check:
-      glob: "*.{js,ts,jsx,tsx}"
+      glob:
+        - "*.{js,ts,jsx,tsx}"
+        - "*.{json,md,yaml,yml,css}"
       run: vp check --fix {staged_files}
-      stage_fixed: true
-    format:
-      glob: "*.{json,md,yaml,yml,css}"
-      run: vp fmt --write {staged_files}
       stage_fixed: true
 
 pre-push:
