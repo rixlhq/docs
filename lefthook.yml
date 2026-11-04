@@ -9,9 +9,3 @@ pre-commit:
       glob: "*.{json,md,yaml,yml,css}"
       run: vp fmt --write {staged_files}
       stage_fixed: true
-
-pre-push:
-  commands:
-    links:
-      glob: "content/**/*.mdx"
-      run: vp run lint:links

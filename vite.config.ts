@@ -6,6 +6,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import mdx from "fumadocs-mdx/vite";
 import {extractIconsPlugin} from "./plugins/vite-plugin-extract-icons.ts";
+import {linkCheckPlugin} from "./plugins/vite-plugin-link-check.ts";
 import {i18n} from "./src/lib/i18n.ts";
 import {
   collectDocsPrerenderPages,
@@ -153,6 +154,7 @@ export default defineConfig({
     ],
   },
   plugins: lazyPlugins(async () => [
+    linkCheckPlugin(),
     paraglideVitePlugin({
       project: "./project.inlang",
       outdir: "./src/paraglide",

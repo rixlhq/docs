@@ -1,3 +1,4 @@
+import type {Plugin} from "vite";
 import fs from "node:fs/promises";
 import path from "node:path";
 import {type FileObject, printErrors, validateFiles, type ScanResult} from "next-validate-link";
@@ -67,8 +68,8 @@ async function walkMarkdownFiles(contentPath: string): Promise<string[]> {
   return files;
 }
 
-async function collectDocs(): Promise<DocFile[]> {
-  const contentPath = path.resolve(process.cwd(), "content");
+async function collectDocs(root: string): Promise<DocFile[]> {
+  const contentPath = path.resolve(root, "content");
   const files = await walkMarkdownFiles(contentPath);
   const docs = await Promise.all(
     files.map(async (filePath) => ({
@@ -115,8 +116,8 @@ function createScannedPages(docs: DocFile[]): ScanResult {
   };
 }
 
-async function checkLinks() {
-  const docs = await collectDocs();
+async function checkLinks(root: string): Promise<void> {
+  const docs = await collectDocs(root);
   const scanned = createScannedPages(docs);
   const files: FileObject[] = docs.map((doc) => ({
     path: doc.path,
@@ -135,7 +136,22 @@ async function checkLinks() {
     checkRelativePaths: "as-url",
   });
 
-  printErrors(results, true);
+  const broken = results.filter((result) => result.errors.length > 0);
+  if (broken.length > 0) {
+    printErrors(broken, false);
+    throw new Error(`Broken internal links found in ${broken.length} file(s).`);
+  }
 }
 
-void checkLinks();
+// Validates internal doc links at build time (replaces the old standalone
+// lint:links script). Build-only: `vp dev` is unaffected, and `vp check`
+// stays limited to format/lint/types.
+export function linkCheckPlugin(): Plugin {
+  return {
+    name: "rixl-link-check",
+    apply: "build",
+    async buildStart() {
+      await checkLinks(process.cwd());
+    },
+  };
+}

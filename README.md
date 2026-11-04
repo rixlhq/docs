@@ -73,7 +73,6 @@ vp preview          # Preview the production build
 vp run serve        # Serve the static build output
 vp run lint         # Oxlint + fumadocs-mdx
 vp run lint:fix     # Fix linting issues
-vp run lint:links   # Check internal links in content
 vp fmt              # Format code
 ```
 

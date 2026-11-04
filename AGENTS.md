@@ -20,7 +20,7 @@ The official documentation site for Rixl (`developers.rixl.com`), built with Tan
 - `src/generated/`, `src/paraglide/`, `src/routeTree.gen.ts` - generated; never edit
 - `content/<locale>/` - MDX documentation (`en` is the source, `de` is translated)
 - `plugins/vite-plugin-extract-icons.ts` - generates the icon subset used by content
-- `scripts/lint.ts` - internal link checker (`vp run lint:links`)
+- `plugins/vite-plugin-link-check.ts` - fails the build on broken internal content links
 - `source.config.ts` - Fumadocs collections and frontmatter schemas
 - `wrangler.jsonc` - Cloudflare Worker config (`rixl-docs`, `developers.rixl.com`, previews)
 
