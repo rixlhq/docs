@@ -13,22 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v7
-
-      - name: ⚙️ Setup Vite+
-        uses: voidzero-dev/setup-vp@v1.22.0
-        with:
-          cache: true
-
-      - name: 🧩 Check
-        run: vp check --deny-warnings
-
-  build:
+  ci:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -43,15 +28,18 @@ jobs:
         with:
           cache: true
 
-      - name: 🛠️ Build
-        run: vp run build
+      - parallel:
+          - name: 🧩 Check
+            run: vp check --deny-warnings
 
-      - name: 🚀 Preview
+          - name: 🛠️ Build
+            run: vp run build
+
+      - name: 🚀 Deploy to CF
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
-        id: preview
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          command: preview --name pr-${{ github.event.pull_request.number }}
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: preview --name pr-${{ github.event.pull_request.number }}
