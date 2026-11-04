@@ -3,11 +3,20 @@ updates:
   - package-ecosystem: "bun"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     ignore:
       # v12 breaks api-page.server.tsx and get-llm-text; remove once migrated
       - dependency-name: "fumadocs-openapi"
         update-types: ["version-update:semver-major"]
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: "daily"
     groups:
       dependencies:
         patterns:
