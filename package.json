@@ -36,19 +36,19 @@
     "fumadocs-mdx": "^15.4.10",
     "fumadocs-openapi": "^11.4.3",
     "fumadocs-ui": "^16.17.10",
-    "lucide-react": "^1.67.0",
-    "lucide-static": "^1.67.0",
+    "lucide-react": "^1.68.0",
+    "lucide-static": "^1.68.0",
     "openapi-sampler": "^1.7.10",
     "radix-ui": "^1.8.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "shiki": "^4.6.0",
     "yaml": "^2.9.1",
-    "zbsearch": "^4.0.1"
+    "zbsearch": "^4.0.2"
   },
   "devDependencies": {
-    "@inlang/cli": "^3.5.0",
-    "@inlang/paraglide-js": "^3.0.0",
+    "@inlang/cli": "^3.6.0",
+    "@inlang/paraglide-js": "^3.1.0",
     "@tailwindcss/postcss": "^4.3.4",
     "@tailwindcss/vite": "^4.3.4",
     "@tanstack/devtools-vite": "^0.8.6",
@@ -63,8 +63,8 @@
     "oxc-transform-react": "^0.157.0",
     "tailwindcss": "^4.3.4",
     "typescript": "^7.0.2",
-    "vite": "npm:@voidzero-dev/vite-plus-core@1.4.0",
-    "vite-plus": "1.4.0",
+    "vite": "npm:@voidzero-dev/vite-plus-core@1.5.0",
+    "vite-plus": "1.5.0",
     "wrangler": "^4.157.0"
   },
   "overrides": {
