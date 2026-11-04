@@ -1,29 +1,15 @@
 name: Rollout
 
 # Vendored copy of rixlhq/github-actions' cloudflare-rollout.yml: docs is a
-# public repo, and public repos cannot call reusable workflows in a private
-# repo. Keep this file in sync with that one — fixes there must be ported
-# here by hand. Rollout parameters (worker, ramp, smoke urls, waits) are the
-# env block on the job below.
+# public repo, so it can't call reusable workflows in a private repo. Rollout
+# parameters (worker, ramp, smoke urls) live in the env block on the job.
 #
-# Merges to main deploy to production through Cloudflare gradual
-# deployments: CI (ci.yml) builds, checks, and uploads a version tagged with
-# the commit, and this workflow resolves it, smoke-tests it at 0% traffic,
-# then ramps. Trigger manually with dry_run=true to print the plan without
-# touching traffic.
-#
-# Flow per rollout:
-#   1. resolve the version tagged with this commit (CI uploads it in the same
-#      run before triggering this workflow, so it must exist — a red build
-#      uploads nothing and never triggers a rollout at all)
-#   2. add it to the deployment at 0% — Cloudflare only serves two versions
-#      at once
-#   3. smoke-test the new version on its own preview URL
-#   4. ramp through RAMP percentages, WATCH_MINUTES of soak between
-#   5. any failure rolls back to the previous version at 100% and fails
+# CI uploads a version tagged with the commit, then triggers this workflow.
+# It puts the version at 0% traffic, smoke-tests it, ramps to 100%, and rolls
+# back to the previous version on any failure. Trigger manually with
+# dry_run=true to print the plan without touching traffic.
 on:
-  # Runs only after CI passes on main (conclusion is checked on the job).
-  # workflow_run always uses the workflow file from the default branch.
+  # Runs only after green CI on main (conclusion is checked on the job).
   workflow_run:
     workflows: ["CI"]
     types: [completed]
@@ -63,61 +49,51 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
     steps:
-      # CLI-only operations, so a global install beats checking out the repo
-      # and installing its devDependencies. Floor matches the repos' pin.
+      # No checkout: CLI-only operations, so a global install beats installing
+      # the repo's devDependencies.
       - name: Install Wrangler
         run: npm install -g wrangler@^4.135.0
 
-      - name: Resolve version tag
+      - name: Resolve versions
         run: |
+          set -euo pipefail
           TAG="${{ inputs.version-tag }}"
           if [ -z "${TAG}" ]; then
             # workflow_run: the CI head sha; dispatch: the pushed sha.
             TAG="$(echo "${{ github.event.workflow_run.head_sha || github.sha }}" | cut -c1-12)"
           fi
-          echo "TAG=${TAG}" >> "${GITHUB_ENV}"
-          echo "Rolling out ${WORKER} version tagged ${TAG}"
 
-      - name: Resolve the tagged version
-        run: |
-          set -euo pipefail
-          # CI uploads the version in the same run before this workflow starts
-          # (workflow_run on green CI), so it must already exist — no waiting.
-          # Only dry runs (manual, possibly before any upload) fall back to
+          # CI uploads the version before triggering this workflow, so it must
+          # already exist — a red build uploads nothing and never triggers a
+          # rollout at all. Dry runs may target anything, so they fall back to
           # planning against the newest uploaded version.
           NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
             | jq -r --arg t "${TAG}" '[.[] | select(.annotations["workers/tag"] == $t)] | last | .id // empty')
+          if [ -z "${NEW_VERSION_ID}" ] && [ "${DRY_RUN}" = "true" ]; then
+            NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
+              | jq -r 'last | .id // empty')
+            [ -n "${NEW_VERSION_ID}" ] && echo "No version tagged ${TAG}; dry run will plan against ${NEW_VERSION_ID}."
+          fi
           if [ -z "${NEW_VERSION_ID}" ]; then
             if [ "${DRY_RUN}" = "true" ]; then
-              NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
-                | jq -r 'last | .id // empty')
-              if [ -n "${NEW_VERSION_ID}" ]; then
-                echo "No version tagged ${TAG}; dry run will plan against the latest version (${NEW_VERSION_ID})."
-              fi
+              echo "::error::No ${WORKER} versions exist at all — nothing to plan against."
             else
-              echo "::error::No ${WORKER} version tagged ${TAG} — CI should have uploaded it before triggering this rollout."
-              exit 1
+              echo "::error::No ${WORKER} version tagged ${TAG} — CI should have uploaded it."
             fi
-          fi
-          if [ -z "${NEW_VERSION_ID}" ]; then
-            echo "::error::No ${WORKER} versions exist at all."
             exit 1
           fi
-          echo "NEW_VERSION_ID=${NEW_VERSION_ID}" >> "${GITHUB_ENV}"
 
-      - name: Read current deployment
-        run: |
-          set -euo pipefail
-          # A brand-new Worker has no deployment yet; then the rollout is just
-          # putting the new version at 100% (safe — no users to split away from).
+          # The currently serving version (empty on a brand-new Worker, in
+          # which case the rollout just puts the new version at 100%).
           CURRENT=$(wrangler deployments status --name "${WORKER}" --json 2>/dev/null || true)
           OLD_VERSION_ID=$(jq -r '.versions | max_by(.percentage) | .version_id // empty' <<<"${CURRENT:-{}}" 2>/dev/null || true)
-          echo "OLD_VERSION_ID=${OLD_VERSION_ID}" >> "${GITHUB_ENV}"
-          if [ -n "${OLD_VERSION_ID}" ]; then
-            echo "Current serving version: ${OLD_VERSION_ID}"
-          else
-            echo "No current deployment — this will be the first deploy."
-          fi
+
+          {
+            echo "TAG=${TAG}"
+            echo "NEW_VERSION_ID=${NEW_VERSION_ID}"
+            echo "OLD_VERSION_ID=${OLD_VERSION_ID}"
+          } >> "${GITHUB_ENV}"
+          echo "Rolling out ${TAG}: ${OLD_VERSION_ID:-none} → ${NEW_VERSION_ID}"
 
       - name: Plan
         run: |
@@ -144,8 +120,7 @@ jobs:
           fi
 
       # Everything below is one script so a single rollback path covers every
-      # failure: on smoke failure at any stage, the old version goes back to
-      # 100% and the run turns red.
+      # failure: the old version goes back to 100% and the run turns red.
       - name: Roll out
         if: ${{ inputs.dry_run != true }}
         run: |
@@ -158,11 +133,10 @@ jobs:
             exit 1
           }
 
-          # Cloudflare's versions list can return a version before the deploy
-          # endpoint can see it (replication lag surfaces as error 100146
-          # "version could not be found"). Retry deploys briefly instead of
-          # failing the rollout on a transient miss; genuine failures still
-          # roll back once retries are exhausted.
+          # The versions list can show a version before the deploy endpoint
+          # can see it (replication lag surfaces as error 100146). Retry
+          # briefly instead of failing on a transient miss; genuine failures
+          # still roll back once retries are exhausted.
           vdeploy() {
             local message="$1"
             shift
@@ -227,8 +201,6 @@ jobs:
             exit 0
           fi
 
-          # Add the new version to the deployment at 0%: in the deployment,
-          # but no real users routed to it yet.
           echo "Adding ${NEW_VERSION_ID} at 0%"
           vdeploy "rollout ${TAG}: add at 0%" "${OLD_VERSION_ID}@100" "${NEW_VERSION_ID}@0" \
             || rollback "deploy to 0% failed"
