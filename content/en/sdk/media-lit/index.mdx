@@ -13,14 +13,14 @@ The `@rixl/media-lit` package provides framework-free web components built with 
 npm install @rixl/media-lit
 ```
 
-You will also need the peer dependencies (`lit`, `hls.js`, `@rixl/media`, and `nanostores`) if your package manager does not install them automatically.
+All dependencies (`lit`, `@rixl/media-core`, `thumbhash`) ship with the package — there are no peer dependencies to install, and no separate core package to add.
 
 ## Authenticate
 
 Standalone apps must call `connect()` once before rendering any media component:
 
 ```ts
-import {connect} from "@rixl/media";
+import {connect} from "@rixl/media-lit";
 
 await connect({
   baseUrl: "https://api.rixl.com",

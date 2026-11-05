@@ -181,12 +181,12 @@ Render chapter markers on the progress bar when chapters are available.
 
 ### `chapters` **(Optional)**
 
-**Type:** `Chapter[]`
+**Type:** `boolean` | **Default:** `true`
 
-Override or supply chapter data directly. If omitted and `videoData.chapters` exists, those are used.
+Show chapter markers on the progress bar. This is a shorthand for `showChapters` and takes precedence when both are set. Chapter data itself comes from `videoData.chapters`.
 
 ```tsx
-<Video id="D3OCjdLP60" chapters={[{title: "Intro", start_time_sec: 0, end_time_sec: 30, duration_label: "0:30"}]} />
+<Video id="D3OCjdLP60" chapters={true} />
 ```
 
 ### `heatmap` **(Optional)**
@@ -367,7 +367,7 @@ interface VideoProps {
   hideUI?: boolean;
   progressBar?: boolean;
   showChapters?: boolean;
-  chapters?: Chapter[];
+  chapters?: boolean;
   heatmap?: boolean;
   heatmapData?: VideoHeatmap | null;
   hotSegments?: boolean;

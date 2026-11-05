@@ -5,7 +5,7 @@ description: "Framework-agnostic API for fetching media, sending analytics, and 
 
 import {Callout} from "@/snippets";
 
-The `@rixl/media` package exports the framework-agnostic core of the SDK. You can use it directly in any JavaScript or TypeScript app, or build your own UI layer on top of it.
+The media core ships bundled inside `@rixl/media-react` — no separate install needed. Import everything below from `@rixl/media-react` and use it directly in any JavaScript or TypeScript app, or build your own UI layer on top of it.
 
 ## Authentication
 
@@ -14,7 +14,7 @@ All core API calls share the `@rixl/sdk` HTTP client. If your host app already c
 For standalone apps, call `connect()` once before making any API calls:
 
 ```ts
-import {connect} from "@rixl/media";
+import {connect} from "@rixl/media-react";
 
 await connect({
   baseUrl: "https://api.rixl.com",
@@ -22,14 +22,14 @@ await connect({
 });
 ```
 
-`connect` is re-exported from `@rixl/media` for convenience. It accepts a `ConnectConfig` object with `baseUrl` and `apiKey`. It also seeds the analytics context (`device`, `session`, `locale`, etc.) so the first analytics flush can prepend a `session_start` event.
+`connect` is re-exported from `@rixl/media-react` for convenience. It accepts a `ConnectConfig` object with `baseUrl` and `apiKey`. It also seeds the analytics context (`device`, `session`, `locale`, etc.) so the first analytics flush can prepend a `session_start` event.
 
 ## Fetching Media
 
 ### Images
 
 ```ts
-import {getImage} from "@rixl/media";
+import {getImage} from "@rixl/media-react";
 
 const image = await getImage("your-image-id");
 console.log(image.file.url);
@@ -38,7 +38,7 @@ console.log(image.file.url);
 ### Videos
 
 ```ts
-import {getVideo} from "@rixl/media";
+import {getVideo} from "@rixl/media-react";
 
 const video = await getVideo("your-video-id");
 console.log(video.file.url, video.poster.file.url);
@@ -47,7 +47,7 @@ console.log(video.file.url, video.poster.file.url);
 ### Feed Posts
 
 ```ts
-import {getFeedPost, getFeedPosts} from "@rixl/media";
+import {getFeedPost, getFeedPosts} from "@rixl/media-react";
 
 // Single post
 const post = await getFeedPost("feed-id", "post-id");
@@ -68,7 +68,7 @@ console.log(page.posts, page.total, page.offset, page.limit);
 Call `initializeAnalyticsContext()` once before emitting events, or rely on `connect()` which calls it for you. The context stores (`analyticsContextStore`, `analyticsDeviceStore`, `analyticsSessionStore`) hold `device_id`, `session_id`, `country`, `language`, `browser`, `os`, `device_type`, and `screen_resolution`.
 
 ```ts
-import {initializeAnalyticsContext, analyticsContextStore, analyticsDeviceStore, analyticsSessionStore} from "@rixl/media";
+import {initializeAnalyticsContext, analyticsContextStore, analyticsDeviceStore, analyticsSessionStore} from "@rixl/media-react";
 
 initializeAnalyticsContext();
 
@@ -89,7 +89,7 @@ analyticsContextStore.set({...analyticsContextStore.get(), page: "feed", feed_id
 The simplest way to send analytics events is through the typed helpers. Each helper builds the event, enqueues it for the next flush, and returns the constructed event.
 
 ```ts
-import {postContentEvent, postEngagement, postInteraction, postError} from "@rixl/media";
+import {postContentEvent, postEngagement, postInteraction, postError} from "@rixl/media-react";
 
 postContentEvent({
   contentId: "video-id",
@@ -127,7 +127,7 @@ postError({
 You can also build a low-level array and pass it to `postAnalytics`:
 
 ```ts
-import {postAnalytics, type ContentViewEvent} from "@rixl/media";
+import {postAnalytics, type ContentViewEvent} from "@rixl/media-react";
 
 const event: ContentViewEvent = {
   _type: "content_views",
@@ -152,7 +152,7 @@ await postAnalytics([event]);
 ### Flush on demand
 
 ```ts
-import {flushAnalytics} from "@rixl/media";
+import {flushAnalytics} from "@rixl/media-react";
 
 await flushAnalytics();
 ```
@@ -160,7 +160,7 @@ await flushAnalytics();
 ### Heatmap
 
 ```ts
-import {getVideoHeatmap} from "@rixl/media";
+import {getVideoHeatmap} from "@rixl/media-react";
 
 const heatmap = await getVideoHeatmap({videoId: "your-video-id", buckets: 101});
 console.log(heatmap?.data);
@@ -169,7 +169,7 @@ console.log(heatmap?.data);
 ### Hot Segments
 
 ```ts
-import {getHotSegments} from "@rixl/media";
+import {getHotSegments} from "@rixl/media-react";
 
 const segments = await getHotSegments({
   videoId: "your-video-id",

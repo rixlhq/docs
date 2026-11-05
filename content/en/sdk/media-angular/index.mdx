@@ -9,10 +9,10 @@ RIXL media components are powered by standard Web Components via `@rixl/media-li
 
 ## Installation
 
-Install `@rixl/media-lit` and the headless `@rixl/media` core:
+Install `@rixl/media-lit` (the core ships bundled inside — no separate install needed):
 
 ```bash
-npm install @rixl/media-lit @rixl/media
+npm install @rixl/media-lit
 ```
 
 ## Authentication
@@ -21,7 +21,7 @@ Initialize the RIXL client in an `APP_INITIALIZER` or within your root applicati
 
 ```ts title="app.config.ts"
 import {ApplicationConfig} from "@angular/core";
-import {connect} from "@rixl/media";
+import {connect} from "@rixl/media-lit";
 
 export const appConfig: ApplicationConfig = {
   providers: [
