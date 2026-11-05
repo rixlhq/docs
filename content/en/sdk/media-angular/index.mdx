@@ -5,14 +5,12 @@ description: "Use RIXL Media components in Angular applications."
 
 import {Callout} from "@/snippets";
 
-RIXL media components are powered by standard Web Components via `@rixl/media-lit`. In Angular 17+, you can easily use `<rixl-video>`, `<rixl-image>`, and `<rixl-feed>` in standalone components by including `CUSTOM_ELEMENTS_SCHEMA`.
+RIXL provides idiomatic Angular standalone components via `@rixl/media-angular`, backed by the shared Lit UI. The package is self-contained — the core ships bundled inside, so you only install the one package. Compatible with Angular 20+.
 
 ## Installation
 
-Install `@rixl/media-lit` (the core ships bundled inside — no separate install needed):
-
 ```bash
-npm install @rixl/media-lit
+npm install @rixl/media-angular
 ```
 
 ## Authentication
@@ -21,7 +19,7 @@ Initialize the RIXL client in an `APP_INITIALIZER` or within your root applicati
 
 ```ts title="app.config.ts"
 import {ApplicationConfig} from "@angular/core";
-import {connect} from "@rixl/media-lit";
+import {connect} from "@rixl/media-angular/core";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -37,54 +35,51 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-## Enabling Custom Elements
+`connect` initializes the shared HTTP client and seeds the analytics context (`device`, `session`, `navigator`, and user locale).
 
-Add `CUSTOM_ELEMENTS_SCHEMA` to your standalone component's `schemas` array:
+## Video Player
+
+Import `VideoComponent` into your standalone component and bind inputs directly — no `CUSTOM_ELEMENTS_SCHEMA` needed:
 
 ```ts title="video-player.component.ts"
-import {Component, Input, CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
-import "@rixl/media-lit/video";
+import {Component, Input} from "@angular/core";
+import {VideoComponent} from "@rixl/media-angular";
 
 @Component({
   selector: "app-video-player",
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [VideoComponent],
   template: `
     <div class="video-container">
-      <rixl-video
-        [attr.video-id]="videoId"
-        [attr.autoplay]="autoplay ? '' : null"
-        [attr.controls]="controls ? '' : null"
-        (rixl-analytics)="onAnalytics($event)"
-      ></rixl-video>
+      <rixl-media-video [id]="videoId" [controls]="controls" (play)="onPlay()"></rixl-media-video>
     </div>
   `,
 })
 export class VideoPlayerComponent {
   @Input() videoId!: string;
-  @Input() autoplay = false;
   @Input() controls = true;
 
-  onAnalytics(event: Event) {
-    const customEvent = event as CustomEvent;
-    console.log("Analytics event:", customEvent.detail);
+  onPlay() {
+    console.log("Playback started");
   }
 }
 ```
+
+The video component provides adaptive playback with the built-in control bar. Chapter markers are toggled with the `chapters` boolean — chapter data itself comes from `videoData.chapters`. Player outputs include `play`, `pause`, `pausedChange`, `ended`, `timeUpdate`, `loadedMetadata`, `error`, `volumeChange`, `loadingChange`, `rateChange`, and `qualityChange`.
 
 ## Responsive Images
 
 Render responsive images optimized with AVIF and WebP delivery:
 
 ```ts title="image-viewer.component.ts"
-import {Component, Input, CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
-import "@rixl/media-lit/image";
+import {Component, Input} from "@angular/core";
+import {ImageComponent} from "@rixl/media-angular";
 
 @Component({
   selector: "app-image-viewer",
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  template: ` <rixl-image [attr.image-id]="imageId" [attr.alt]="alt"></rixl-image> `,
+  imports: [ImageComponent],
+  template: `<rixl-media-image [id]="imageId" [alt]="alt"></rixl-media-image>`,
 })
 export class ImageViewerComponent {
   @Input() imageId!: string;
@@ -97,21 +92,38 @@ export class ImageViewerComponent {
 Render story carousels and infinite vertical feeds:
 
 ```ts title="feed.component.ts"
-import {Component, Input, CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
-import "@rixl/media-lit/feed";
+import {Component, Input} from "@angular/core";
+import {FeedComponent} from "@rixl/media-angular";
 
 @Component({
   selector: "app-media-feed",
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  template: ` <rixl-feed [attr.feed-id]="feedId" loop autoscroll></rixl-feed> `,
+  imports: [FeedComponent],
+  template: `<rixl-media-feed [feedId]="feedId" [loop]="true" [autoscroll]="true"></rixl-media-feed>`,
 })
 export class MediaFeedComponent {
   @Input() feedId!: string;
 }
 ```
 
-<Callout type="info">
-  When binding boolean attributes to Web Components in Angular templates, use `[attr.attrName]="condition ? '' : null"` so Angular adds or
-  removes the boolean attribute correctly.
-</Callout>
+## Analytics
+
+Set `analyticsPage` to `"feed"`, `"standalone"`, or `"profile"` to tag the view context. The underlying player dispatches a bubbling, composed `rixl-analytics` custom event carrying an `AnalyticsEvent` payload — listen for it at the document level to inspect or forward analytics:
+
+```ts
+document.addEventListener("rixl-analytics", (e) => {
+  console.log((e as CustomEvent).detail.event);
+});
+```
+
+For details on the event taxonomy and core helpers, see [Analytics Integration](/en/sdk/media-react/video-component/analytics-integration) and [Core API](/en/sdk/media-core/core-api).
+
+## Subpath Exports
+
+| Subpath                     | Contents                                                                    |
+| --------------------------- | --------------------------------------------------------------------------- |
+| `@rixl/media-angular`       | `ImageComponent`, `VideoComponent`, `VideoPlayerComponent`, `FeedComponent` |
+| `@rixl/media-angular/core`  | `connect`, stores, upload helpers, analytics, and types                     |
+| `@rixl/media-angular/image` | `ImageComponent`                                                            |
+| `@rixl/media-angular/video` | `VideoComponent` and `VideoPlayerComponent`                                 |
+| `@rixl/media-angular/feed`  | `FeedComponent`                                                             |

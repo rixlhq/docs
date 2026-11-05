@@ -5,36 +5,41 @@ description: "Use RIXL Media components in Svelte and SvelteKit applications."
 
 import {Callout} from "@/snippets";
 
-RIXL media components are built on standard Web Components via `@rixl/media-lit`, providing seamless, zero-overhead interoperability with Svelte 4 and Svelte 5. You can render `<rixl-video>`, `<rixl-image>`, and `<rixl-feed>` as standard HTML elements with reactive bindings.
+RIXL provides idiomatic Svelte 5 components via `@rixl/media-svelte`, backed by the shared Lit UI. The package is self-contained — the core ships bundled inside, so you only install the one package. Render `<Video>`, `<Image>`, and `<Feed>` as standard Svelte components with reactive props.
 
 ## Installation
 
-Install the Web Component library (the core headless client ships bundled inside — no separate install needed):
-
 ```bash
-npm install @rixl/media-lit
+npm install @rixl/media-svelte
 ```
+
+Requires Svelte 5 or higher.
 
 ## Authentication
 
 Connect to RIXL in your root layout or on application mount:
 
 ```ts
-import {connect} from "@rixl/media-lit";
+import {onMount} from "svelte";
+import {connect} from "@rixl/media-svelte/core";
 
-await connect({
-  baseUrl: "https://api.rixl.com",
-  apiKey: "your-api-key",
+onMount(async () => {
+  await connect({
+    baseUrl: "https://api.rixl.com",
+    apiKey: "your-api-key",
+  });
 });
 ```
 
+`connect` initializes the shared HTTP client and seeds the analytics context (`device`, `session`, `navigator`, and user locale).
+
 ## Video Player
 
-Import the `@rixl/media-lit/video` element in your Svelte component:
+Import the `Video` component in your Svelte component:
 
 ```svelte title="VideoPlayer.svelte"
 <script lang="ts">
-  import "@rixl/media-lit/video";
+  import {Video} from "@rixl/media-svelte";
 
   interface Props {
     videoId: string;
@@ -46,13 +51,11 @@ Import the `@rixl/media-lit/video` element in your Svelte component:
 </script>
 
 <div class="player-wrapper">
-  <rixl-video
-    video-id={videoId}
-    {autoplay}
-    {controls}
-  />
+  <Video id={videoId} {autoplay} {controls} />
 </div>
 ```
+
+The `Video` component provides adaptive playback with the built-in control bar. Chapter markers are toggled with the `chapters` boolean — chapter data itself comes from `videoData.chapters`.
 
 ## Responsive Images
 
@@ -60,7 +63,7 @@ Render responsive images with automatic format optimization and lazy loading:
 
 ```svelte title="ImageViewer.svelte"
 <script lang="ts">
-  import "@rixl/media-lit/image";
+  import {Image} from "@rixl/media-svelte";
 
   interface Props {
     imageId: string;
@@ -70,10 +73,7 @@ Render responsive images with automatic format optimization and lazy loading:
   let { imageId, alt = "Media item" }: Props = $props();
 </script>
 
-<rixl-image
-  image-id={imageId}
-  {alt}
-/>
+<Image id={imageId} {alt} />
 ```
 
 ## Media Feeds
@@ -82,7 +82,7 @@ Render story or post feeds with infinite scroll:
 
 ```svelte title="MediaFeed.svelte"
 <script lang="ts">
-  import "@rixl/media-lit/feed";
+  import {Feed} from "@rixl/media-svelte";
 
   interface Props {
     feedId: string;
@@ -91,36 +91,51 @@ Render story or post feeds with infinite scroll:
   let { feedId }: Props = $props();
 </script>
 
-<rixl-feed
-  feed-id={feedId}
-  loop
-  autoscroll
-/>
+<Feed {feedId} loop autoscroll />
 ```
 
-## Handling Analytics Events
+## Handling Player Events
 
-Listen to playback analytics events dispatched by the player:
+Pass event callback props to react to playback:
 
-```svelte title="PlayerWithAnalytics.svelte"
+```svelte title="PlayerWithEvents.svelte"
 <script lang="ts">
-  import "@rixl/media-lit/video";
+  import {Video} from "@rixl/media-svelte";
 
   let { videoId } = $props();
-
-  function onAnalytics(event: CustomEvent) {
-    console.log("Analytics event:", event.detail);
-  }
 </script>
 
-<rixl-video
-  video-id={videoId}
-  onrixl-analytics={onAnalytics}
+<Video
+  id={videoId}
+  analyticsPage="standalone"
   controls
+  onPlay={() => console.log("Playback started")}
+  onPause={() => console.log("Playback paused")}
 />
 ```
 
+Available callbacks include `onPlay`, `onPause`, `onPausedChange`, `onEnded`, `onTimeUpdate`, `onLoadedMetadata`, `onError`, `onVolumeChange`, `onLoadingChange`, `onRateChange`, and `onQualityChange`. Set `analyticsPage` to `"feed"`, `"standalone"`, or `"profile"` to tag the view context.
+
+The underlying player also dispatches a bubbling, composed `rixl-analytics` custom event carrying an `AnalyticsEvent` payload. Listen for it at the document level to inspect or forward analytics:
+
+```ts
+document.addEventListener("rixl-analytics", (e) => {
+  console.log((e as CustomEvent).detail.event);
+});
+```
+
+For details on the event taxonomy and core helpers, see [Analytics Integration](/en/sdk/media-react/video-component/analytics-integration) and [Core API](/en/sdk/media-core/core-api).
+
 <Callout type="info">
-  When using **SvelteKit** with SSR, ensure custom element registration and client-only logic execute inside `onMount` or behind a `browser`
-  guard from `$app/environment`.
+  When using **SvelteKit** with SSR, ensure client-only logic executes inside `onMount` or behind a `browser` guard from `$app/environment`.
 </Callout>
+
+## Subpath Exports
+
+| Subpath                    | Contents                                                    |
+| -------------------------- | ----------------------------------------------------------- |
+| `@rixl/media-svelte`       | `Image`, `Video`, `VideoPlayer` components and player scope |
+| `@rixl/media-svelte/core`  | `connect`, stores, upload helpers, analytics, and types     |
+| `@rixl/media-svelte/image` | `Image` component                                           |
+| `@rixl/media-svelte/video` | `Video` and `VideoPlayer` components                        |
+| `@rixl/media-svelte/feed`  | `Feed` component                                            |
