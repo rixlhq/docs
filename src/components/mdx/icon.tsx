@@ -3,6 +3,7 @@ import {cloneElement, type ComponentProps, type ReactElement} from "react";
 import {iconMap, type IconName} from "@/generated/icons";
 import {
   AngularIcon,
+  AstroIcon,
   CoreIcon,
   CsharpIcon,
   GoIcon,
@@ -27,6 +28,7 @@ export type FrameworkIconName =
   | "vue"
   | "svelte"
   | "angular"
+  | "astro"
   | "lit"
   | "core"
   | "ui"
@@ -49,6 +51,7 @@ const FRAMEWORK_ICON_MAP: Record<string, (props: ComponentProps<"svg">) => React
   vue: VueIcon,
   svelte: SvelteIcon,
   angular: AngularIcon,
+  astro: AstroIcon,
   lit: LitIcon,
   core: CoreIcon,
   ui: UiIcon,

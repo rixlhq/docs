@@ -155,11 +155,62 @@ function MediaShowcase() {
 export default MediaShowcase;
 ```
 
+## Server-Side Rendering (Next.js / TanStack Start)
+
+The same `@rixl/media-react` package works with SSR — no separate wrapper, adapter plugin, `ssr: false` wrapper, or `<ClientOnly>` needed. The `/core` entry remains usable on the server.
+
+During SSR or static prerendering, React renders the `<rixl-image>`, `<rixl-video>`, and `<rixl-feed>` host tags and any children you supply. In the browser, React restores component properties and Lit renders their shadow DOM. The inner `<img>`, `<video>`, player controls, and feed items are **not rendered into the initial server HTML** — JavaScript is required to display and operate them.
+
+Passing `imageData`, `videoData`, or `posts` from a server loader avoids an additional media-data request in the browser. Set component dimensions or an aspect ratio for stable page layout, and render essential page text and metadata in your application when they must be present in the initial HTML.
+
+### Next.js App Router
+
+The public UI entries preserve `"use client"`, so a Server Component can import components directly:
+
+```tsx
+// app/page.tsx — Server Component
+import {Image} from "@rixl/media-react/image";
+import type {ImageData} from "@rixl/media-react/core";
+import {loadImageData} from "./data";
+
+export default async function Page() {
+  const imageData: ImageData = await loadImageData();
+  return <Image imageData={imageData} analytics={false} alt="Mountain landscape" />;
+}
+```
+
+Pass serializable data across the server/client boundary. Event handlers, refs, and player hooks belong in your own `"use client"` components. When loading media by ID, initialize the shared SDK in a client component and await `connect` before mounting the media components. Only send credentials intended for client use to the browser.
+
+### TanStack Start
+
+Use your normal TanStack Start configuration — no Rixl-specific `ssr.noExternal` setting or CSS import is needed:
+
+```tsx
+// src/routes/media.tsx
+import {createFileRoute} from "@tanstack/react-router";
+import {Image} from "@rixl/media-react/image";
+import {loadImageData} from "../data";
+
+export const Route = createFileRoute("/media")({
+  loader: () => loadImageData(),
+  component: MediaPage,
+});
+
+function MediaPage() {
+  const imageData = Route.useLoaderData();
+  return <Image imageData={imageData} analytics={false} alt="Mountain landscape" />;
+}
+```
+
+Use a server function when the loader needs private credentials. If components fetch by ID or send analytics, initialize the shared SDK in the browser before mounting them.
+
 ## Styling Setup (Optional)
 
 ### With TailwindCSS
 
 If you're using TailwindCSS (recommended), the examples above will work out of the box. Ensure TailwindCSS is properly configured in your project.
+
+Component styles live inside their shadow DOM — the SDK builds no global stylesheet and your app needs no CSS import for the player UI. When migrating from the older React UI, remove `import "@rixl/media-react/style.css"`; that entry is no longer exported.
 
 ### Without TailwindCSS
 
