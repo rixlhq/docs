@@ -1,43 +1,29 @@
 ---
-title: "Overview"
-description: "Infinite-scrolling feed for RIXL content with automatic playback, lazy loading, and built-in analytics"
+title: "React media feed"
+description: "Render vertical Rixl image and video feeds in React with SDK pagination, looping, and automatic advancement."
 ---
 
-import {Callout} from "@/snippets";
-
-## Overview
-
-The `Feed` component provides a vertical, scrollable feed of RIXL image and video posts with consistent analytics, pagination, and scroll behavior.
-
-### Quick Example
+`Feed` displays a vertical stream of Rixl image and video posts and loads content through the SDK using `feedId`.
 
 ```tsx
-import {Feed} from "@rixl/media-react";
+import {Feed} from "@rixl/media-react/feed";
 
-function FeedPage() {
-  return <Feed feedId="my-feed-id" analyticsPage="feed" onRixlAnalytics={(e) => console.log(e.detail.event)} />;
+export function FeedPage() {
+  return <Feed feedId="YOUR_FEED_ID" muted style={{display: "block", height: "36rem"}} />;
 }
 ```
 
-### Key Features
+Connect the SDK before mounting the feed and give its host an explicit height.
 
-- Vertical feed of image and video posts
-- Automatic play/pause of visible video posts
-- `autoscroll` and `loop` modes
-- `feedId`, `lang`, and `feedFont` propagation to all child posts
-- `initialIndex` and `safeAreaTabBar` layout control
-- Direct-data mode with `posts` and `onFetchMore`
-- Built-in analytics: `feed_refresh`, `scroll`, `load_more`, `post_change`
-- Child `Image` and `Video` events bubble up through `onRixlAnalytics`
+## Capabilities
 
-### When to Use
+- SDK-backed feed loading and pagination.
+- Active media coordination while scrolling.
+- Looping and automatic advancement options.
+- Shared language, font, mute, and analytics configuration.
+- Mute and current-index callbacks.
 
-The Feed component is perfect for:
+The feed manages its child media components and supplies their feed and post context. Published components do not use direct posts or custom pagination callbacks as a replacement for SDK loading.
 
-- **Social media platforms** requiring vertical scrolling feeds
-- **Content discovery applications** with video and image posts
-- **Creator platforms** with user-generated content
-- **Mobile-first apps** with TikTok-style experiences
-- **Community platforms** with feed-based content distribution
-
-<Callout type="info">Feed child posts are rendered automatically. Their `feedId` and `postId` are set automatically by the feed.</Callout>
+- [Feed usage](/en/sdk/media-react/feed-component/basic-usage)
+- [Feed props](/en/sdk/media-react/feed-component/props-reference)

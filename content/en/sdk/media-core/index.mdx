@@ -1,25 +1,115 @@
 ---
 title: "Media Core"
-description: "Framework-agnostic core of the RIXL Media SDK."
+description: "Headless TypeScript media SDK for Rixl: media fetching, uploads, player state, HLS utilities, captions, and analytics."
 ---
 
-import {Card, Columns} from "@/snippets";
+Headless TypeScript APIs for Rixl images, video, uploads, and media feeds. `@rixl/media-core` provides media fetching and caching, reactive player stores, HLS utilities, captions, and analytics without a UI framework.
 
-`@rixl/media` is the framework-agnostic core of the RIXL Media SDK. It provides the data stores, upload helpers, analytics context, and TypeScript types that power every framework wrapper.
+## When to use Core
 
-## Guides
+Use Core to build your own media interface, integrate Rixl into an existing player, or upload media. For ready-made components, install your framework's media package instead: it includes Core and exposes these APIs through `/core`.
 
-<Columns cols={2}>
-  <Card title="Core API" href="/en/sdk/media-core/core-api" icon="server">
-    Fetch media, send analytics, and manage context.
-  </Card>
-  <Card title="Upload SDK" href="/en/sdk/media-core/upload" icon="upload">
-    Upload videos, images, audio tracks, subtitles, and feed posts.
-  </Card>
-  <Card title="Settings" href="/en/sdk/media-core/settings" icon="settings">
-    Player settings, captions, and global preferences.
-  </Card>
-  <Card title="Types" href="/en/sdk/media-core/types" icon="file-code">
-    Complete TypeScript type definitions.
-  </Card>
-</Columns>
+- Fetch image and video metadata and paginate feed posts.
+- Upload images, videos, audio tracks, subtitles, and feed posts using presigned URLs.
+- Read and control individual players through shared reactive stores.
+- Reuse progress, buffering, chapters, captions, quality, and analytics utilities.
+- Import pure helpers on the server; initialize browser-dependent interactions in the browser.
+
+## Install
+
+```sh
+npm install @rixl/media-core
+```
+
+ES modules and TypeScript declarations are included. No React, Vue, Svelte, Angular, or Lit installation is required for headless usage.
+
+## Quick start
+
+Connect once before requesting media. Use a Rixl API endpoint and credentials intended for the environment running this code.
+
+```ts
+import {connect, getImage, getVideo, getFeedPosts} from "@rixl/media-core";
+
+await connect({
+  baseUrl: "https://api.rixl.com",
+  apiKey: "YOUR_API_KEY",
+});
+
+const image = await getImage("YOUR_IMAGE_ID");
+const video = await getVideo("YOUR_VIDEO_ID");
+const page = await getFeedPosts("YOUR_FEED_ID", 0, 10);
+
+console.log(image.file.url);
+console.log(video.file.url);
+console.log(page.posts, page.total);
+```
+
+If your application already authenticates the shared `@rixl/sdk` client, reuse that connection. Browser applications should use credentials intended for client access; keep server credentials on the server.
+
+## Media APIs
+
+| API                                     | Returns                      | Use                                                 |
+| --------------------------------------- | ---------------------------- | --------------------------------------------------- |
+| `getImage(imageId)`                     | `Promise<ImageData>`         | Image metadata and file URL                         |
+| `getVideo(videoId)`                     | `Promise<VideoData>`         | Video metadata, source URL, poster, and chapters    |
+| `getFeedPost(feedId, postId)`           | `Promise<FeedPost>`          | One feed post                                       |
+| `getFeedPosts(feedId, offset?, limit?)` | `Promise<FeedPostsResponse>` | A page of posts; defaults to offset `0`, limit `10` |
+
+Image, video, and individual post lookups reuse cached records and pending requests. Feed pagination caches its initial page; later pages are requested from the API.
+
+## Upload media
+
+```ts
+import {uploadImage} from "@rixl/media-core";
+
+export async function uploadPhoto(file: File) {
+  const result = await uploadImage(file, {
+    projectId: "YOUR_PROJECT_ID",
+    name: file.name,
+  });
+  return result.imageId;
+}
+```
+
+Call this after connecting. Upload helpers accept `Blob` or `Uint8Array`, request presigned upload targets, and send the bytes to storage. Upload completion does not mean media processing has finished.
+
+Use `createImageUpload`, `createVideoUpload`, `createAudioTrackUpload`, `createSubtitleUpload`, and `createPostUpload` when you need to handle the file transfer yourself. See the [upload guide](/en/sdk/media-core/upload) for each signature.
+
+## Player state and actions
+
+Core stores are shared with the UI packages, so custom controls can use the same player state.
+
+| Export                                     | Purpose                                                 |
+| ------------------------------------------ | ------------------------------------------------------- |
+| `playerStateStore`                         | Playback, volume, tracks, seeking, and per-player state |
+| `settingsStore`                            | Shared player preferences and caption settings          |
+| `controlsStore`                            | Player controls visibility                              |
+| `playerMediaElementStore`                  | Registered media elements                               |
+| `playerContainerElementStore`              | Registered player containers                            |
+| `postStore`, `feedStore`, `feedCacheStore` | Feed content, interaction state, and cached pages       |
+| `analyticsStore`                           | Watched segments and analytics state                    |
+
+Player actions use a player ID. For example, `showPlayerControls(playerId)` and `togglePlayerFullscreen(playerId)` target that player's registered elements. React's scoped hooks handle this association for you.
+
+`initProgressBar({video, onProgressChange, onDraggingChange})` connects a browser video element to seeking interactions and returns `handleDragStart` and `destroy`. Call `destroy()` when removing the control.
+
+## Pure utilities
+
+```ts
+import {computeProgressFraction, formatTime} from "@rixl/media-core";
+
+const progress = computeProgressFraction(30, 120);
+const label = formatTime(90);
+console.log(progress, label);
+```
+
+Other exports cover buffer ranges, chapter navigation, subtitle cues, HLS quality labels, persisted preferences, and analytics payloads. See the [API guide](/en/sdk/media-core/core-api) and the declarations shipped with the package.
+
+## Ready-made components
+
+Choose [React](https://www.npmjs.com/package/@rixl/media-react), [Vue](https://www.npmjs.com/package/@rixl/media-vue), [Svelte](https://www.npmjs.com/package/@rixl/media-svelte), [Angular](https://www.npmjs.com/package/@rixl/media-angular), [Astro](https://www.npmjs.com/package/@rixl/media-astro), or [Lit / vanilla JavaScript](https://www.npmjs.com/package/@rixl/media-lit).
+
+## More Core guides
+
+- [Settings and persistence](/en/sdk/media-core/settings)
+- [TypeScript types](/en/sdk/media-core/types)

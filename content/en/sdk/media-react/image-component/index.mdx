@@ -1,77 +1,35 @@
 ---
-title: "Overview"
-description: "Optimized image display with lazy loading, thumbhash placeholders, automatic CDN delivery, and built-in analytics"
+title: "React image component"
+description: "Display Rixl images in React with lazy loading, ThumbHash placeholders, alt text, and analytics."
 ---
 
-import {Callout} from "@/snippets";
-
-## Overview
-
-The `Image` component provides optimized image display with automatic lazy loading, thumbhash placeholders, and intelligent CDN delivery, offering consistent image analytics and UI behavior.
-
-### Quick Example
+`Image` resolves a Rixl image ID and displays the returned asset with native lazy loading and a ThumbHash placeholder when one is available.
 
 ```tsx
-import {Image} from "@rixl/media-react";
+import {Image} from "@rixl/media-react/image";
 
-function ImageDisplay() {
-  return (
-    <Image
-      id="your-image-id"
-      className="object-contain w-full h-full rounded-lg"
-      analyticsPage="standalone"
-      onRixlAnalytics={(e) => console.log(e.detail.event)}
-    />
-  );
+export function Cover() {
+  return <Image id="YOUR_IMAGE_ID" alt="Mountain lake at sunrise" style={{display: "block", width: "100%", aspectRatio: "16 / 9"}} />;
 }
 ```
 
-### Key Features
+Connect the SDK before mounting the component. See [Installation](/en/sdk/media-react/getting-started/installation).
 
-**Automatic Processing**
+## Behavior
 
-- Lazy loading by default for improved page performance
-- Thumbhash placeholders during loading for visual continuity
-- Automatic format selection (WebP, AVIF) based on browser support
-- Responsive image serving based on device pixel density
+- Fetches media by ID through the SDK.
+- Uses the returned file URL and image dimensions.
+- Shows a placeholder when ThumbHash data is available.
+- Emits loading-state callbacks and supports image analytics configuration.
+- Includes image styles inside shadow DOM.
 
-**Developer Experience**
+The component uses the returned asset; it does not expose a responsive `srcset`, client-selected format negotiation, or image transformation parameters.
 
-- Simple API with minimal required props
-- Full TypeScript support with type safety
-- CSS framework compatibility (TailwindCSS, etc.)
-- Accessibility-first with proper alt text handling
+## Layout and accessibility
 
-**Analytics**
+Set the host's dimensions or aspect ratio and provide meaningful `alt` text. `className` and `style` affect the host; they do not set the internal image's `object-fit`.
 
-- Automatic `content_views` `start`/`watch`/`end` events
-- `image_click` interactions with click coordinates
-- `image_load_error` events for failed media loads
-- Page, feed, and post context support
+React SSR can render the host and children. The internal image renders in the browser, so render essential page metadata in your application when it needs to be in the initial HTML.
 
-**Performance Benefits**
-
-- CDN delivery for global distribution
-- Automatic image processing and resizing
-- Progressive loading for better perceived performance
-- Memory-efficient rendering and cleanup
-
-<Callout type="info">
-  All images are automatically optimized for different screen sizes and device capabilities. No additional configuration needed for basic
-  usage. Analytics are enabled by default.
-</Callout>
-
-### When to Use
-
-The Image component is perfect for:
-
-- **Product galleries** requiring high-quality image display
-- **Hero sections** with responsive background images
-- **Content management** with user-uploaded images
-- **E-commerce platforms** needing optimized product photos
-- **Portfolio websites** showcasing visual work
-- **Feed posts** alongside the `Feed` component
-
-### Browser Support
-
-Works across all modern browsers with automatic fallbacks for older browsers that don't support advanced image formats.
+- [Image usage](/en/sdk/media-react/image-component/basic-usage)
+- [Image props](/en/sdk/media-react/image-component/props-reference)

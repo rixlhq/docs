@@ -3,28 +3,15 @@ title: "Video: Hover Preview"
 description: "Play-on-hover video preview for thumbnails and content cards"
 ---
 
-import {Video} from "@/snippets";
 import {Callout} from "fumadocs-ui/components/callout";
 
 # Hover Preview Player
 
 A video preview that plays automatically and reveals its controls on hover. Ideal for video thumbnails and content cards (Netflix/YouTube style).
 
-## Live Example
+## Before you start
 
-Hover over the video to see the control bar:
-
-<div className="w-full max-w-md">
-  <Video
-    id="your-video-id"
-    className="w-full aspect-video rounded-lg"
-    muted={true}
-    autoPlay={true}
-    theme="hover"
-    loop={true}
-    soundDisabled={true}
-  />
-</div>
+[Connect the SDK](/en/sdk/media-react/getting-started/installation) before mounting media. Replace the placeholder IDs in the implementation below with IDs from your Rixl project.
 
 ## Basic Implementation
 

@@ -1,82 +1,35 @@
 ---
-title: "Basic Usage"
-description: "Learn how to implement the Feed component with common patterns and use cases"
+title: "Feed usage"
+description: "Load vertical Rixl media feeds by feed ID, configure playback, and handle mute and index events."
 ---
 
-import {Callout} from "@/snippets";
-
-## Importing the Feed Component
+Connect the SDK before mounting the feed, as shown in [Installation](/en/sdk/media-react/getting-started/installation).
 
 ```tsx
-import {Feed} from "@rixl/media-react";
-```
+import {Feed} from "@rixl/media-react/feed";
 
-## Essential Props
-
-Every Feed component needs at minimum:
-
-```tsx
-<Feed
-  feedId="your-feed-id" // Required: Your feed ID from dash.rixl.com/feeds
-/>
-```
-
-## Simple Feed Example
-
-```tsx
-import {Feed} from "@rixl/media-react";
-
-function FeedExample() {
-  return <Feed feedId="your-feed-id" analyticsPage="feed" />;
-}
-```
-
-## Analytics Events
-
-Listen to all feed and child post analytics events with one handler:
-
-```tsx
-import {Feed} from "@rixl/media-react";
-
-function FeedWithAnalytics() {
+export function MediaFeed() {
   return (
     <Feed
-      feedId="your-feed-id"
-      analyticsPage="feed"
-      onRixlAnalytics={(e) => {
-        const {event} = e.detail;
-        console.log(event._type, event);
-      }}
+      feedId="YOUR_FEED_ID"
+      muted
+      loop
+      autoscroll
+      style={{display: "block", height: "36rem"}}
+      onMuteChange={(muted) => console.log("Muted:", muted)}
+      onCurrentIndexChange={(index, postId) => console.log(index, postId)}
     />
   );
 }
 ```
 
-## Autoscroll and Loop
+`feedId` selects the feed. The SDK loads and paginates its posts and resolves the media IDs used by its children. Give the feed a height so it has a visible scrolling viewport.
 
-```tsx
-<Feed feedId="your-feed-id" autoscroll={true} loop={true} />
-```
+- `loop` enables looping behavior.
+- `autoscroll` enables automatic advancement after video completion or the image dwell interval.
+- `muted` sets the initial mute preference; `onMuteChange` reports changes.
+- `onCurrentIndexChange` receives the visible index and the post ID, when available.
 
-## Direct Data Mode
+Published SDK components use Rixl data loading. Direct `posts` and custom `onFetchMore` inputs are private development shortcuts and do not replace SDK pagination in npm builds. The removed `creatorId` and `startPostId` props had no effect; select the appropriate feed using `feedId`.
 
-If you already have posts, pass them directly and handle pagination with `onFetchMore`:
-
-```tsx
-function FeedFromData({posts, loadMore}) {
-  return <Feed feedId="your-feed-id" posts={posts} onFetchMore={loadMore} analyticsPage="feed" />;
-}
-```
-
-## Best Practices
-
-<Callout type="default">
-  **Feed ID**: The `feedId` is automatically passed to every child image and video post so analytics can be attributed correctly.
-</Callout>
-
-<Callout type="info">**Container Height**: Always use `h-screen` or `h-full` on the container for proper scrolling.</Callout>
-
-<Callout type="warning">
-  **Legacy props**: `creatorId` and `startPostId` are accepted for backward compatibility but are not used. Use `feedId`, `initialIndex`,
-  and `posts` / `onFetchMore` for current behavior.
-</Callout>
+See [Feed props](/en/sdk/media-react/feed-component/props-reference) for configuration and event details.

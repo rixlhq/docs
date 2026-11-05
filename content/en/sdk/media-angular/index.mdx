@@ -1,117 +1,104 @@
 ---
 title: "Media Angular"
-description: "Use RIXL Media components in Angular applications."
+description: "Angular standalone video player, image components, and infinite media feeds for Rixl, with typed inputs, outputs, and player injection."
 ---
 
-import {Callout} from "@/snippets";
+Angular standalone video player, image components, and infinite media feeds for Rixl. `@rixl/media-angular` provides typed inputs, outputs, and player dependency injection over the shared Rixl media UI.
 
-RIXL media components are powered by standard Web Components via `@rixl/media-lit`. In Angular 17+, you can easily use `<rixl-video>`, `<rixl-image>`, and `<rixl-feed>` in standalone components by including `CUSTOM_ELEMENTS_SCHEMA`.
+## What you get
 
-## Installation
+- Adaptive HLS playback, captions, quality selection, fullscreen, and picture-in-picture.
+- Images with lazy loading and ThumbHash placeholders when available.
+- Vertical media feeds with pagination, looping, and automatic advancement.
+- Standalone Angular components with typed events and per-player injection.
+- Included player styles; no Tailwind CSS setup or `CUSTOM_ELEMENTS_SCHEMA` is needed when using the Angular wrappers.
 
-Install `@rixl/media-lit` and the headless `@rixl/media` core:
+## Install
 
-```bash
-npm install @rixl/media-lit @rixl/media
+```sh
+npm install @rixl/media-angular
 ```
 
-## Authentication
+Requires Angular 20 or later, including `@angular/core` and `@angular/common`. Core and Lit are included as dependencies. The examples below target browser applications.
 
-Initialize the RIXL client in an `APP_INITIALIZER` or within your root application config:
+## Connect before rendering
 
-```ts title="app.config.ts"
-import {ApplicationConfig} from "@angular/core";
-import {connect} from "@rixl/media";
+Add a browser application initializer to your existing app configuration so media mounts after authentication:
+
+```ts
+// app.config.ts
+import {provideAppInitializer, type ApplicationConfig} from "@angular/core";
+import {connect} from "@rixl/media-angular/core";
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    {
-      provide: "RIXL_INIT",
-      useFactory: () => () =>
-        connect({
-          baseUrl: "https://api.rixl.com",
-          apiKey: "your-api-key",
-        }),
-    },
+    provideAppInitializer(() =>
+      connect({
+        baseUrl: "https://api.rixl.com",
+        apiKey: "YOUR_PUBLIC_API_KEY",
+      })
+    ),
   ],
 };
 ```
 
-## Enabling Custom Elements
+Keep your application's other providers. Use credentials intended for browser access. If your host already authenticates the shared `@rixl/sdk` client, reuse that connection instead.
 
-Add `CUSTOM_ELEMENTS_SCHEMA` to your standalone component's `schemas` array:
+## Add media components
 
-```ts title="video-player.component.ts"
-import {Component, Input, CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
-import "@rixl/media-lit/video";
+```ts
+import {Component} from "@angular/core";
+import {ImageComponent} from "@rixl/media-angular/image";
+import {VideoComponent} from "@rixl/media-angular/video";
+import {FeedComponent} from "@rixl/media-angular/feed";
 
 @Component({
-  selector: "app-video-player",
+  selector: "app-media",
   standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [ImageComponent, VideoComponent, FeedComponent],
   template: `
-    <div class="video-container">
-      <rixl-video
-        [attr.video-id]="videoId"
-        [attr.autoplay]="autoplay ? '' : null"
-        [attr.controls]="controls ? '' : null"
-        (rixl-analytics)="onAnalytics($event)"
-      ></rixl-video>
-    </div>
+    <rixl-media-video id="YOUR_VIDEO_ID" [muted]="true" class="player" />
+    <rixl-media-image id="YOUR_IMAGE_ID" alt="Mountain lake at sunrise" class="image" />
+    <rixl-media-feed feedId="YOUR_FEED_ID" [muted]="true" class="feed" />
+  `,
+  styles: `
+    .player,
+    .image {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+    }
+    .feed {
+      display: block;
+      height: 36rem;
+    }
   `,
 })
-export class VideoPlayerComponent {
-  @Input() videoId!: string;
-  @Input() autoplay = false;
-  @Input() controls = true;
-
-  onAnalytics(event: Event) {
-    const customEvent = event as CustomEvent;
-    console.log("Analytics event:", customEvent.detail);
-  }
-}
+export class MediaComponent {}
 ```
 
-## Responsive Images
+Production components request media by `id` or `feedId` through the SDK. Boolean inputs use normal Angular property binding, such as `[muted]="false"`.
 
-Render responsive images optimized with AVIF and WebP delivery:
+## Events and custom controls
 
-```ts title="image-viewer.component.ts"
-import {Component, Input, CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
-import "@rixl/media-lit/image";
+Video outputs include `play`, `pause`, `ended`, `pausedChange`, `loadingChange`, `timeUpdate`, `loadedMetadata`, `volumeChange`, `rateChange`, `qualityChange`, and `error`. Image emits `loadingChange`; Feed emits `muteChange` and `mutedChange`.
 
-@Component({
-  selector: "app-image-viewer",
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  template: ` <rixl-image [attr.image-id]="imageId" [attr.alt]="alt"></rixl-image> `,
-})
-export class ImageViewerComponent {
-  @Input() imageId!: string;
-  @Input() alt = "Media image";
-}
+```html
+<rixl-media-video id="YOUR_VIDEO_ID" (pausedChange)="onPausedChange($event)" />
 ```
 
-## Media Feeds
+`pausedChange` and `loadingChange` emit booleans. Use `VideoPlayerComponent` (`<rixl-media-video-player>`) to share one player with sibling controls. Custom controls can call `injectPlayerId()` or `injectOptionalPlayerId()` from `/video`; use `/core` for player state and actions. Each media component exposes its underlying Lit `element`.
 
-Render story carousels and infinite vertical feeds:
+## Styling and imports
 
-```ts title="feed.component.ts"
-import {Component, Input, CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
-import "@rixl/media-lit/feed";
+Use host `class` and `style` for dimensions and layout. Player styles live in shadow DOM; application CSS does not select internal controls. Give images and videos a height or aspect ratio, and feeds a height.
 
-@Component({
-  selector: "app-media-feed",
-  standalone: true,
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  template: ` <rixl-feed [attr.feed-id]="feedId" loop autoscroll></rixl-feed> `,
-})
-export class MediaFeedComponent {
-  @Input() feedId!: string;
-}
-```
+| Import                      | Exports                                                                         |
+| --------------------------- | ------------------------------------------------------------------------------- |
+| `@rixl/media-angular/image` | `ImageComponent`, `RixlImageComponent`                                          |
+| `@rixl/media-angular/video` | `VideoComponent`, `VideoPlayerComponent`, aliases, and player injection helpers |
+| `@rixl/media-angular/feed`  | `FeedComponent`, `RixlFeedComponent`                                            |
+| `@rixl/media-angular/core`  | Headless APIs, stores, utilities, and types                                     |
+| `@rixl/media-angular`       | Components and Core exports                                                     |
 
-<Callout type="info">
-  When binding boolean attributes to Web Components in Angular templates, use `[attr.attrName]="condition ? '' : null"` so Angular adds or
-  removes the boolean attribute correctly.
-</Callout>
+An image-only subpath import excludes video, feed, and HLS code. For documented React or Astro server-rendering integrations, see the [SDK overview](/en/sdk).

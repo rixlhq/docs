@@ -1,0 +1,96 @@
+---
+title: "Media Astro"
+description: "Native Astro image, video player, and media feed components for Rixl, with server-rendered hosts and browser media playback."
+---
+
+Native Astro components for Rixl images, video playback, and infinite media feeds. `@rixl/media-astro` renders media hosts on the server and initializes the shared media UI in the browser, without adding a React or Vue runtime.
+
+## What you get
+
+- Adaptive HLS video playback with controls, captions, quality selection, fullscreen, and picture-in-picture.
+- Images with lazy loading and ThumbHash placeholders when available.
+- Vertical media feeds with pagination, looping, and automatic advancement.
+- Native `.astro` components, slots, and processed client scripts.
+- Included player styles; no integration plugin, `client:*` directive, or Tailwind CSS setup.
+
+## Install
+
+```sh
+npm install @rixl/media-astro
+```
+
+Requires Astro 7 or later. Core and Lit are included as dependencies.
+
+## Quick start
+
+Use `MediaConfig` once in your page or shared layout. It connects the browser client before the media components request their content.
+
+```astro
+---
+import MediaConfig from "@rixl/media-astro/config";
+import Video from "@rixl/media-astro/video";
+import Image from "@rixl/media-astro/image";
+import Feed from "@rixl/media-astro/feed";
+---
+
+<MediaConfig
+  baseUrl="https://api.rixl.com"
+  apiKey={import.meta.env.PUBLIC_RIXL_API_KEY}
+/>
+
+<Video id="YOUR_VIDEO_ID" muted={true} class="player" />
+<Image id="YOUR_IMAGE_ID" alt="Mountain lake at sunrise" class="image" />
+<Feed feedId="YOUR_FEED_ID" muted={true} class="feed" />
+
+<style>
+  .player, .image { display: block; width: 100%; aspect-ratio: 16 / 9; }
+  .feed { display: block; height: 36rem; }
+</style>
+```
+
+Set `PUBLIC_RIXL_API_KEY` in your application's environment. `MediaConfig` serializes its configuration into the page, so use credentials intended for browser access. Keep server credentials in server code. If your app already initializes the shared `@rixl/sdk` client, you can reuse that connection.
+
+## Server rendering and navigation
+
+Astro renders the `<rixl-image>`, `<rixl-video>`, and `<rixl-feed>` hosts and any slot content on the server. The image, video, controls, and feed items inside shadow DOM render in the browser and require JavaScript.
+
+This is host rendering with browser initialization, rather than full server-rendered media markup. Put essential page text and metadata in your Astro page when they need to be present in the initial HTML.
+
+The adapters initialize media properties on Astro client navigation as well. No `client:load` or other hydration directive is needed: Astro processes the components' scripts directly.
+
+## Props, slots, and events
+
+Load media using `id` for Image and Video, or `feedId` for Feed. The adapter transfers serializable configuration props before the custom element connects. Boolean `false` and numeric `0` retain their values.
+
+```astro
+---
+import Video from "@rixl/media-astro/video";
+---
+
+<Video id="YOUR_VIDEO_ID" chapters={false} volume={0.7}>
+  <p>Featured interview</p>
+</Video>
+
+<script>
+  document.addEventListener("paused-change", (event) => {
+    if (event instanceof CustomEvent) console.log(event.detail.paused);
+  });
+</script>
+```
+
+This example assumes `MediaConfig` is provided by the layout. Children pass into the default slot. Listen for DOM events in a processed Astro script; React-style function callbacks cannot be serialized as component props.
+
+## Styling and imports
+
+Style the host with `class` and `style`, and give media an explicit height or aspect ratio. Internal player styles are included inside shadow DOM; host CSS does not select internal controls.
+
+| Import                     | Exports                                     |
+| -------------------------- | ------------------------------------------- |
+| `@rixl/media-astro/image`  | Default `Image` component                   |
+| `@rixl/media-astro/video`  | Default `Video` component                   |
+| `@rixl/media-astro/feed`   | Default `Feed` component                    |
+| `@rixl/media-astro/config` | Default `MediaConfig` component             |
+| `@rixl/media-astro/core`   | Headless APIs, stores, utilities, and types |
+| `@rixl/media-astro`        | Named components, props, and Core exports   |
+
+Importing only Image excludes video, feed, and HLS code from its client bundle. See the [Astro guide](/en/sdk/media-astro) for more.

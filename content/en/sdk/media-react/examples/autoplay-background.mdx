@@ -3,32 +3,11 @@ title: "Video: Autoplay Background"
 description: "Perfect for hero sections, landing pages, and marketing content where you want an engaging video background without audio interruption."
 ---
 
-import {Video} from "@/snippets";
 import {Callout} from "@/snippets";
 
-## Live Example
+## Before you start
 
-<div className="relative w-full h-96 overflow-hidden rounded-xl mb-8">
-  <Video
-    id="hero-background-video"
-    className="absolute inset-0 w-full h-full object-cover"
-    autoPlay={true}
-    muted={true}
-    loop={true}
-    theme="hideUI"
-    soundDisabled={true}
-  />
-
-  <div
-      className={`absolute inset-0 w-full flex
-   items-center justify-center bg-black/50`}
-  >
-    <div className="text-center text-white">
-      <h1 className="text-4xl font-bold mb-4 text-white">Welcome to Our Platform</h1>
-      <p className="text-xl">Experience the future of media delivery</p>
-    </div>
-  </div>
-</div>
+[Connect the SDK](/en/sdk/media-react/getting-started/installation) before mounting media. Replace the placeholder IDs in the implementation below with IDs from your Rixl project.
 
 ## Code Implementation
 
@@ -87,7 +66,7 @@ function HeroSection() {
 ## Best Practices
 
 <Callout type="info">
-  <strong>Browser Autoplay:</strong> The SDK handles autoplay compliance by muting the video. For background videos, keep{" "}
+  <strong>Browser Autoplay:</strong> Browser playback policy still applies; request muted playback explicitly. For background videos, keep{" "}
   <code>muted=&#123;true&#125;</code>.
 </Callout>
 

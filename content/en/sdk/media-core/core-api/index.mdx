@@ -5,7 +5,7 @@ description: "Framework-agnostic API for fetching media, sending analytics, and 
 
 import {Callout} from "@/snippets";
 
-The `@rixl/media` package exports the framework-agnostic core of the SDK. You can use it directly in any JavaScript or TypeScript app, or build your own UI layer on top of it.
+The `@rixl/media-core` package exports the framework-agnostic core of the SDK. You can use it directly in any JavaScript or TypeScript app, or build your own UI layer on top of it.
 
 ## Authentication
 
@@ -14,7 +14,7 @@ All core API calls share the `@rixl/sdk` HTTP client. If your host app already c
 For standalone apps, call `connect()` once before making any API calls:
 
 ```ts
-import {connect} from "@rixl/media";
+import {connect} from "@rixl/media-core";
 
 await connect({
   baseUrl: "https://api.rixl.com",
@@ -22,14 +22,14 @@ await connect({
 });
 ```
 
-`connect` is re-exported from `@rixl/media` for convenience. It accepts a `ConnectConfig` object with `baseUrl` and `apiKey`. It also seeds the analytics context (`device`, `session`, `locale`, etc.) so the first analytics flush can prepend a `session_start` event.
+`connect` is re-exported from `@rixl/media-core` for convenience. It accepts a `ConnectConfig` object with `baseUrl` and `apiKey`. It also seeds the analytics context (`device`, `session`, `locale`, etc.) so the first analytics flush can prepend a `session_start` event.
 
 ## Fetching Media
 
 ### Images
 
 ```ts
-import {getImage} from "@rixl/media";
+import {getImage} from "@rixl/media-core";
 
 const image = await getImage("your-image-id");
 console.log(image.file.url);
@@ -38,16 +38,16 @@ console.log(image.file.url);
 ### Videos
 
 ```ts
-import {getVideo} from "@rixl/media";
+import {getVideo} from "@rixl/media-core";
 
 const video = await getVideo("your-video-id");
-console.log(video.file.url, video.poster.file.url);
+console.log(video.file.url, video.poster?.file.url);
 ```
 
 ### Feed Posts
 
 ```ts
-import {getFeedPost, getFeedPosts} from "@rixl/media";
+import {getFeedPost, getFeedPosts} from "@rixl/media-core";
 
 // Single post
 const post = await getFeedPost("feed-id", "post-id");
@@ -58,7 +58,8 @@ console.log(page.posts, page.total, page.offset, page.limit);
 ```
 
 <Callout type="info">
-  `getImage`, `getVideo`, `getFeedPost`, and `getFeedPosts` cache results and deduplicate in-flight requests automatically.
+  `getImage`, `getVideo`, and `getFeedPost` reuse cached records and pending requests. Feed pagination caches the initial page; later pages
+  are requested from the API.
 </Callout>
 
 ## Analytics
@@ -68,7 +69,7 @@ console.log(page.posts, page.total, page.offset, page.limit);
 Call `initializeAnalyticsContext()` once before emitting events, or rely on `connect()` which calls it for you. The context stores (`analyticsContextStore`, `analyticsDeviceStore`, `analyticsSessionStore`) hold `device_id`, `session_id`, `country`, `language`, `browser`, `os`, `device_type`, and `screen_resolution`.
 
 ```ts
-import {initializeAnalyticsContext, analyticsContextStore, analyticsDeviceStore, analyticsSessionStore} from "@rixl/media";
+import {initializeAnalyticsContext, analyticsContextStore, analyticsDeviceStore, analyticsSessionStore} from "@rixl/media-core";
 
 initializeAnalyticsContext();
 
@@ -89,7 +90,7 @@ analyticsContextStore.set({...analyticsContextStore.get(), page: "feed", feed_id
 The simplest way to send analytics events is through the typed helpers. Each helper builds the event, enqueues it for the next flush, and returns the constructed event.
 
 ```ts
-import {postContentEvent, postEngagement, postInteraction, postError} from "@rixl/media";
+import {postContentEvent, postEngagement, postInteraction, postError} from "@rixl/media-core";
 
 postContentEvent({
   contentId: "video-id",
@@ -127,7 +128,7 @@ postError({
 You can also build a low-level array and pass it to `postAnalytics`:
 
 ```ts
-import {postAnalytics, type ContentViewEvent} from "@rixl/media";
+import {postAnalytics, type ContentViewEvent} from "@rixl/media-core";
 
 const event: ContentViewEvent = {
   _type: "content_views",
@@ -152,7 +153,7 @@ await postAnalytics([event]);
 ### Flush on demand
 
 ```ts
-import {flushAnalytics} from "@rixl/media";
+import {flushAnalytics} from "@rixl/media-core";
 
 await flushAnalytics();
 ```
@@ -160,7 +161,7 @@ await flushAnalytics();
 ### Heatmap
 
 ```ts
-import {getVideoHeatmap} from "@rixl/media";
+import {getVideoHeatmap} from "@rixl/media-core";
 
 const heatmap = await getVideoHeatmap({videoId: "your-video-id", buckets: 101});
 console.log(heatmap?.data);
@@ -169,7 +170,7 @@ console.log(heatmap?.data);
 ### Hot Segments
 
 ```ts
-import {getHotSegments} from "@rixl/media";
+import {getHotSegments} from "@rixl/media-core";
 
 const segments = await getHotSegments({
   videoId: "your-video-id",
@@ -182,45 +183,15 @@ for (const s of segments) {
 }
 ```
 
-## TypeScript Interfaces
+## TypeScript contracts
 
-```typescript
-interface ConnectConfig {
-  baseUrl: string;
-  apiKey: string;
-}
+Use the declarations shipped with the package:
 
-declare function connect(config: ConnectConfig): Promise<void>;
-
-declare function getImage(imageId: string): Promise<ImageData>;
-declare function getVideo(videoId: string): Promise<VideoData>;
-declare function getFeedPost(feedId: string, postId: string): Promise<FeedPost>;
-declare function getFeedPosts(feedId: string, offset?: number, limit?: number): Promise<FeedPostsResponse>;
-
-declare function initializeAnalyticsContext(): void;
-declare function postContentEvent(params: BuildEventParams): ContentViewEvent;
-declare function buildVideoAnalyticsPayload(params: BuildVideoAnalyticsPayloadParams): VideoAnalyticsPayload;
-declare function postEngagement(params: BuildEngagementParams): EngagementEvent;
-declare function postInteraction(params: BuildInteractionParams): InteractionEvent;
-declare function postError(params: BuildErrorParams): ErrorEvent;
-declare function postAnalytics(events: AnalyticsEvent[]): Promise<void>;
-declare function flushAnalytics(): Promise<void>;
-
-interface GetVideoHeatmapOptions {
-  videoId: string;
-  buckets?: number;
-}
-
-declare function getVideoHeatmap(options: GetVideoHeatmapOptions): Promise<VideoHeatmap | null>;
-
-interface GetHotSegmentsOptions {
-  videoId: string;
-  startDate?: string;
-  endDate?: string;
-}
-
-declare function getHotSegments(options: GetHotSegmentsOptions): Promise<HotSegment[]>;
+```ts
+import type {ConnectConfig, ImageData, VideoData, FeedPost, FeedPostsResponse} from "@rixl/media-core";
 ```
+
+`connect(config)` returns `Promise<string | undefined>`. Its `ConnectConfig` comes from `@rixl/sdk` and supports the shared client's authentication options. See [TypeScript types](/en/sdk/media-core/types) for the public type surface.
 
 <Callout type="info">
   `postContentEvent` takes `BuildEventParams` and `buildVideoAnalyticsPayload` takes `BuildVideoAnalyticsPayloadParams`. Millisecond

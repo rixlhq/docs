@@ -5,12 +5,12 @@ description: "Customize player settings, captions, and global preferences with t
 
 import {Callout} from "@/snippets";
 
-The `@rixl/media` package exposes a `settingsStore` that powers the player's global preferences: volume, playback speed, and caption appearance. Settings are automatically persisted to `localStorage`.
+The `@rixl/media-core` package exposes a `settingsStore` that powers the player's global preferences: volume, playback speed, and caption appearance. Settings are automatically persisted to `localStorage`.
 
 ## Reading and Updating Settings
 
 ```ts
-import {settingsStore, defaultSettings} from "@rixl/media";
+import {settingsStore, defaultSettings} from "@rixl/media-core";
 
 // Current settings
 const current = settingsStore.getSettings();
@@ -49,7 +49,7 @@ settingsStore.setCaptionCharacterEdgeStyle("drop-shadow");
 For custom settings panels, you can load and validate raw objects against the SDK schema:
 
 ```ts
-import {loadSettings, saveSettings, validateSettings} from "@rixl/media";
+import {loadSettings, saveSettings, validateSettings} from "@rixl/media-core";
 
 const restored = loadSettings();
 const validated = validateSettings({volume: 2.5}); // clamped to valid range

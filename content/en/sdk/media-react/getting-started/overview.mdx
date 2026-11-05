@@ -1,107 +1,47 @@
 ---
-title: "Overview"
-description: "Get started with RIXL Media SDK - high-performance media components for modern web applications"
+title: "React SDK overview"
+description: "React SPA, Next.js, and TanStack Start components for Rixl video, images, and media feeds."
 ---
 
-## What is RIXL Media SDK
+`@rixl/media-react` works in ordinary client-rendered React applications as well as Next.js and TanStack Start. It provides `Image`, `Video`, `Feed`, and hooks for custom controls.
 
-The RIXL Media SDK is a collection of high-performance media components designed to seamlessly integrate RIXL's advanced video and image delivery platform into your applications. Built for performance and developer experience, the SDK handles complex media processing, adaptive streaming, and content delivery while providing simple, intuitive APIs.
+## How the SDK fits together
 
-Upload your media to [dash.rixl.com/videos](https://dash.rixl.com/videos) or [dash.rixl.com/images](https://dash.rixl.com/images), get your media IDs, and start building rich media experiences with just a few lines of code.
+- Core provides media fetching, uploads, player state, and reusable TypeScript utilities.
+- Lit implements the media UI and its styles.
+- React maps props, callbacks, refs, and player context to that shared UI.
 
-## Choose Your SDK
+Install the React package to get all three layers. Your app does not need a separate Lit configuration, CSS import, or Tailwind CSS setup.
 
-Select the SDK that matches your development stack:
+## Choose your integration
 
-| Package               | Ecosystem            | Guide                                  | Installation                    |
-| :-------------------- | :------------------- | :------------------------------------- | :------------------------------ |
-| **@rixl/media-react** | React / Next.js      | [React Guide](/en/sdk/media-react)     | `npm install @rixl/media-react` |
-| **@rixl/media-lit**   | Vue 3 / Nuxt         | [Vue Guide](/en/sdk/media-vue)         | `npm install @rixl/media-lit`   |
-| **@rixl/media-lit**   | Svelte / SvelteKit   | [Svelte Guide](/en/sdk/media-svelte)   | `npm install @rixl/media-lit`   |
-| **@rixl/media-lit**   | Angular              | [Angular Guide](/en/sdk/media-angular) | `npm install @rixl/media-lit`   |
-| **@rixl/media-lit**   | Lit / Vanilla HTML   | [Lit Guide](/en/sdk/media-lit)         | `npm install @rixl/media-lit`   |
-| **@rixl/media**       | Core Headless / Node | [Core Guide](/en/sdk/media-core)       | `npm install @rixl/media`       |
+| Application               | Package               | Rendering                                       |
+| ------------------------- | --------------------- | ----------------------------------------------- |
+| React SPA                 | `@rixl/media-react`   | Client rendering                                |
+| Next.js or TanStack Start | `@rixl/media-react`   | Server-rendered hosts and browser media UI      |
+| Vue 3                     | `@rixl/media-vue`     | Vue component adapters                          |
+| Svelte 5                  | `@rixl/media-svelte`  | Browser-compiled Svelte components              |
+| Angular 20+               | `@rixl/media-angular` | Standalone Angular components                   |
+| Astro 7+                  | `@rixl/media-astro`   | Native Astro hosts and processed client scripts |
+| Lit or vanilla JavaScript | `@rixl/media-lit`     | Custom elements                                 |
+| Custom UI or uploads      | `@rixl/media-core`    | Headless APIs and stores                        |
 
-<Callout type="info">
-  The React SDK (`@rixl/media-react`) provides idiomatic React components and re-exports the framework-agnostic core (`@rixl/media`).
-</Callout>
+## Start with a media ID
 
-## Key Features and Benefits
+Upload media through the [Rixl dashboard](https://dash.rixl.com), connect the SDK, then pass the image, video, or feed ID to a component. Published components resolve those IDs through the Rixl SDK.
 
-### **Performance Optimized**
+Use component subpaths to include only what you need. An image-only import excludes video, feed, and HLS code. Video playback uses the package's HLS dependency or native browser support where applicable.
 
-- **Adaptive Streaming**: Automatically serves optimal quality based on device capabilities and network conditions
-- **Lazy Loading**: Images and videos load only when needed, reducing initial page load times
-- **CDN Delivery**: Global content delivery network ensures fast loading worldwide
-- **Memory Efficient**: Smart resource management prevents memory leaks in long-running applications
+## Rendering and styling
 
-### **Developer Experience**
+In a React SPA, React mounts the hosts and Lit renders their media contents in the browser. During SSR, React can render the hosts and supplied children on the server; media contents inside shadow DOM still render in the browser.
 
-- **TypeScript First**: Full type safety with comprehensive TypeScript definitions
-- **Framework Native**: Idiomatic React components designed to integrate seamlessly into your React applications
-- **Composable Hooks**: Build custom controls with `usePlayback`, `usePlayerProgress`, `usePlayerUI`, and friends through the player scope created by `<VideoPlayer>`, or use `<Video>` with `onRixlAnalytics` and sibling controls.
-- **Customizable**: Extensive styling and theming options to match your brand
-- **Zero Configuration**: Works out of the box with sensible defaults
+Set the host's dimensions using `style` or `className`. Internal styles are included in shadow DOM, so host classes do not style the player's internal controls.
 
-### **Modern Media Features**
+## Next steps
 
-- **Thumbhash Placeholders**: Beautiful, lightweight image placeholders during loading
-- **Picture-in-Picture**: Native browser PiP support for videos
-- **Responsive Design**: Automatic adaptation to different screen sizes and orientations
-
-## Browser Compatibility
-
-### Fully Supported
-
-- **Chrome** 88+
-- **Firefox** 85+
-- **Safari** 14+
-- **Edge** 88+
-
-### Mobile Support
-
-- **iOS Safari** 14+
-- **Chrome Mobile** 88+
-- **Samsung Internet** 15+
-
-### Legacy Browser Fallbacks
-
-The SDK provides graceful degradation for older browsers:
-
-- Static images for older browsers that don't support advanced features
-- Basic HTML5 video player fallback
-- Progressive enhancement ensures your content is always accessible
-
-## Performance Considerations
-
-### Network Optimization
-
-- **Bandwidth Adaptive**: Automatically adjusts quality based on connection speed
-- **Preloading Strategies**: Smart preloading of critical above-the-fold content
-- **Compression**: Advanced video and image compression reduces data usage
-- **Caching**: Intelligent browser and CDN caching strategies
-
-### Bundle Size
-
-- **Tree Shakable**: Import only the components you need
-- **Zero Dependencies**: No heavy third-party libraries
-- **Production Ready**: Minified and ready for production
-
-### Memory Management
-
-- **Automatic Cleanup**: Components clean up resources when unmounted
-- **Lazy Initialization**: Heavy resources only loaded when needed
-- **Garbage Collection Friendly**: Proper cleanup prevents memory leaks
-
-## What's Next?
-
-Ready to start building? Head to the [Installation](/en/sdk/media-react/getting-started/installation) guide to set up your first RIXL-powered media component, or see [Lit / Vanilla JS](/en/sdk/media-lit) for framework-free web components.
-
-**Quick Links:**
-
-- [React SDK Installation](/en/sdk/media-react/getting-started/installation) - Get up and running in minutes
-- [Video Component](/en/sdk/media-react/video-component) - Rich video player documentation
-- [Hooks](/en/sdk/media-react/hooks) - Build custom playback controls with the player hook APIs
-- [Image Component](/en/sdk/media-react/image-component) - Optimized image display
-- [Lit / Vanilla JS](/en/sdk/media-lit) - Framework-free web components
-- [SDK Overview](/en/sdk/media-react) - Complete SDK documentation
+- [Installation and authentication](/en/sdk/media-react/getting-started/installation)
+- [Video player](/en/sdk/media-react/video-component)
+- [Image component](/en/sdk/media-react/image-component)
+- [Media feeds](/en/sdk/media-react/feed-component)
+- [Custom controls and hooks](/en/sdk/media-react/hooks)

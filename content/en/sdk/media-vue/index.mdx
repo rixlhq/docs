@@ -1,128 +1,121 @@
 ---
 title: "Media Vue"
-description: "Use RIXL Media components in Vue 3 applications."
+description: "Vue 3 video player, image components, and infinite media feeds for Rixl, with TypeScript props, events, and player context."
 ---
 
-import {Callout} from "@/snippets";
+Vue 3 video player, image components, and infinite media feeds for Rixl. `@rixl/media-vue` provides typed Vue props, events, refs, and player context over the shared Rixl media UI.
 
-RIXL provides framework-free web components via `@rixl/media-lit` and headless state management via `@rixl/media`. Vue 3 has first-class native support for custom elements, enabling you to use `<rixl-video>`, `<rixl-image>`, and `<rixl-feed>` directly in any Vue or Nuxt application with standard reactive props and event listeners.
+## What you get
 
-## Installation
+- Adaptive HLS playback, captions, quality selection, fullscreen, and picture-in-picture.
+- Images with lazy loading and ThumbHash placeholders when available.
+- Vertical media feeds with pagination, looping, and automatic advancement.
+- Vue events and `v-model:muted` support for feeds.
+- Included player styles; no Tailwind CSS or custom-element compiler configuration is required.
 
-Install `@rixl/media-lit` alongside the core `@rixl/media` package:
+## Install
 
-```bash
-npm install @rixl/media-lit @rixl/media
+```sh
+npm install @rixl/media-vue
 ```
 
-## Vite Configuration
+Requires Vue 3.3 or later. Core and Lit are included as dependencies.
 
-Configure Vue to treat `rixl-*` tags as custom elements so the template compiler does not emit unknown element warnings:
+## Quick start
 
-```ts title="vite.config.ts"
-import vue from "@vitejs/plugin-vue";
-import {defineConfig} from "vite";
+Wait for the SDK connection before rendering media. Replace the API key and media ID with your Rixl values.
 
-export default defineConfig({
-  plugins: [
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: (tag) => tag.startsWith("rixl-"),
-        },
-      },
-    }),
-  ],
+```vue
+<script setup lang="ts">
+import {onMounted, ref} from "vue";
+import {connect} from "@rixl/media-vue/core";
+import {Video} from "@rixl/media-vue/video";
+
+const ready = ref(false);
+const error = ref("");
+
+onMounted(async () => {
+  try {
+    await connect({baseUrl: "https://api.rixl.com", apiKey: "YOUR_PUBLIC_API_KEY"});
+    ready.value = true;
+  } catch {
+    error.value = "Unable to connect to Rixl.";
+  }
 });
-```
-
-<Callout type="info">
-  If you are using **Nuxt 3**, configure `vue.compilerOptions.isCustomElement` in your `nuxt.config.ts` under the `vue` section.
-</Callout>
-
-## Authentication
-
-Initialize the RIXL client once in your application root or entry file before rendering media components:
-
-```ts
-import {connect} from "@rixl/media";
-
-await connect({
-  baseUrl: "https://api.rixl.com",
-  apiKey: "your-api-key",
-});
-```
-
-## Video Player
-
-Import the `@rixl/media-lit/video` element and bind your video ID dynamically:
-
-```vue title="VideoPlayer.vue"
-<script setup lang="ts">
-import "@rixl/media-lit/video";
-
-defineProps<{
-  videoId: string;
-}>();
 </script>
 
 <template>
-  <div class="video-container">
-    <rixl-video :video-id="videoId" autoplay controls />
-  </div>
+  <p v-if="error" role="alert">{{ error }}</p>
+  <Video v-else-if="ready" id="YOUR_VIDEO_ID" :muted="true" class="player" />
+  <p v-else role="status">Loading media…</p>
 </template>
-```
 
-## Responsive Images
-
-Import `@rixl/media-lit/image` to render optimized, responsive images with automatic WebP/AVIF format negotiation:
-
-```vue title="ImageViewer.vue"
-<script setup lang="ts">
-import "@rixl/media-lit/image";
-
-defineProps<{
-  imageId: string;
-}>();
-</script>
-
-<template>
-  <rixl-image :image-id="imageId" alt="Media asset" />
-</template>
-```
-
-## Media Feeds
-
-Display infinite-scroll feeds or story carousels using `<rixl-feed>`:
-
-```vue title="MediaFeed.vue"
-<script setup lang="ts">
-import "@rixl/media-lit/feed";
-
-defineProps<{
-  feedId: string;
-}>();
-</script>
-
-<template>
-  <rixl-feed :feed-id="feedId" loop autoscroll />
-</template>
-```
-
-## Events & Analytics
-
-The media components dispatch native custom events that can be listened to with Vue's `@` syntax:
-
-```vue title="AnalyticsExample.vue"
-<script setup lang="ts">
-import "@rixl/media-lit/video";
-
-function handleAnalytics(event: CustomEvent) {
-  console.log("Playback event:", event.detail);
+<style scoped>
+.player {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
 }
+</style>
+```
+
+Use credentials intended for browser access. If your application already authenticates the shared `@rixl/sdk` client, reuse that connection instead.
+
+## Images and feeds
+
+After connecting, import the components you need:
+
+```vue
+<script setup lang="ts">
+import {ref} from "vue";
+import {Image} from "@rixl/media-vue/image";
+import {Feed} from "@rixl/media-vue/feed";
+
+const muted = ref(true);
 </script>
 
 <template>
-  <rixl-video video-id="vid_123" @rixl-analytics="handleAnalytics" />
+  <Image id="YOUR_IMAGE_ID" alt="Mountain lake at sunrise" class="image" />
+  <Feed feedId="YOUR_FEED_ID" v-model:muted="muted" class="feed" />
 </template>
+
+<style scoped>
+.image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+.feed {
+  display: block;
+  height: 36rem;
+}
+</style>
 ```
+
+Production media is resolved by `id` or `feedId` through the SDK.
+
+## Events and custom controls
+
+Video emits `play`, `pause`, `ended`, `pausedChange`, `loadingChange`, `timeUpdate`, `loadedMetadata`, `volumeChange`, `rateChange`, `qualityChange`, and `error`. Image emits `loadingChange`; Feed emits `muteChange` and `update:muted`.
+
+```vue
+<Video id="YOUR_VIDEO_ID" @paused-change="(paused) => console.log(paused)" />
+```
+
+Use a component template ref to access its exposed `element`, the underlying Lit element. `<VideoPlayer>` shares a player scope with sibling controls; `usePlayerId()` and `useOptionalPlayerId()` are available from `/video` during setup. Playback actions and state live in `/core`.
+
+## Styling, rendering, and imports
+
+The wrappers include Lit's styles inside shadow DOM. Your `class` and `style` affect the host layout; internal player controls are configured through component props.
+
+The examples target browser rendering. In a Nuxt app, mount media inside a client-only boundary and initialize the SDK there. Full server-rendered media markup is not provided by this adapter.
+
+| Import                  | Exports                                                       |
+| ----------------------- | ------------------------------------------------------------- |
+| `@rixl/media-vue/image` | `Image`, `ImageProps`                                         |
+| `@rixl/media-vue/video` | `Video`, `VideoPlayer`, props, and player-context composables |
+| `@rixl/media-vue/feed`  | `Feed`, `FeedProps`                                           |
+| `@rixl/media-vue/core`  | Headless APIs, stores, utilities, and types                   |
+| `@rixl/media-vue`       | Components and Core exports                                   |
+
+Subpath imports keep an image-only app free of video, feed, and HLS code. See the [Vue guide](/en/sdk/media-vue) for integration details.

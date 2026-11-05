@@ -7,8 +7,9 @@ import {Callout} from "fumadocs-ui/components/callout";
 
 `usePlayerProgress()` is the preferred public hook for custom timeline UI within a `VideoPlayer` scope.
 
-<Callout type="warning">
-  This hook requires a `VideoPlayer` scope and a scope-aware media element. The standalone `<Video>` component does not participate in this scope.
+<Callout type="info">
+  Use this hook inside `Video` children, or inside a shared `VideoPlayer` that contains one `Video`. The player scope is resolved
+  automatically.
 </Callout>
 
 ## Signature
@@ -31,7 +32,7 @@ It returns:
 ## Example
 
 ```tsx
-import {VideoPlayer, usePlayerProgress} from "@rixl/media-react";
+import {Video, VideoPlayer, usePlayerProgress} from "@rixl/media-react";
 
 function CustomProgressControls() {
   const {currentTime, duration, progress, buffered, seekBy} = usePlayerProgress();
@@ -51,7 +52,7 @@ function CustomPlayer() {
   return (
     <VideoPlayer>
       <CustomProgressControls />
-      {/* scope-aware media element */}
+      <Video id="YOUR_VIDEO_ID" theme="hideUI" style={{display: "block", aspectRatio: "16 / 9"}} />
     </VideoPlayer>
   );
 }

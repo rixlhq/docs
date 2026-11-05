@@ -1,26 +1,18 @@
 ---
-title: "Overview"
-description: "Use the public MediaSDK hooks to build custom player controls and coordinate multiple players."
+title: "Player hooks"
+description: "Build custom React controls with player-scoped playback, volume, seeking, audio tracks, subtitles, and UI hooks."
 ---
 
-import {Callout} from "fumadocs-ui/components/callout";
+React's player hooks read the scope supplied by `Video` or `VideoPlayer`. They take no player ID.
 
-The React package exports a small set of public hooks for custom player UI. These hooks are **player-scoped**: they read state from an enclosing `<VideoPlayer>` provider.
-
-<Callout type="warning">
-  The standalone `<Video>` component is self-contained and does **not** automatically register with the `<VideoPlayer>` scope. The hooks below are intended for custom controls built around an enclosing `VideoPlayer` scope. For standalone `<Video>`, use `onRixlAnalytics` to observe events or render custom controls as siblings.
-</Callout>
-
-## Recommended Pattern
-
-Wrap the media element and its controls in a `<VideoPlayer>` scope:
+## Share a player with custom controls
 
 ```tsx
-import {VideoPlayer, usePlayback} from "@rixl/media-react";
+import {Video, VideoPlayer} from "@rixl/media-react/video";
+import {usePlayback} from "@rixl/media-react";
 
-function CustomControls() {
+function PlayButton() {
   const {paused, togglePlay} = usePlayback();
-
   return (
     <button type="button" onClick={() => void togglePlay()}>
       {paused ? "Play" : "Pause"}
@@ -28,50 +20,38 @@ function CustomControls() {
   );
 }
 
-function PlayerPage() {
+export function Player() {
   return (
     <VideoPlayer>
-      <CustomControls />
-      {/* A media element that participates in this scope */}
+      <Video id="YOUR_VIDEO_ID" theme="hideUI" style={{display: "block", aspectRatio: "16 / 9"}} />
+      <PlayButton />
     </VideoPlayer>
   );
 }
 ```
 
-<Callout type="info">`useGlobalPlayerSettings()` is the only page-level hook that intentionally fans out to all mounted scopes.</Callout>
+Initialize the SDK before mounting this player. Keep one `Video` in each `VideoPlayer` scope. Controls can also be nested inside `Video`, which provides its own scope.
 
-## Choose a Hook
+## Choose a hook
 
-| Hook                        | Use it for                                                  | Notes                                                 |
-| --------------------------- | ----------------------------------------------------------- | ----------------------------------------------------- |
-| `useMediaSettings()`        | Mute, unmute, volume, and previous volume                   | Player-scoped audio only                              |
-| `usePlayback()`             | Play, pause, playback rate, loading, ended, `pauseOthers()` | Best for transport controls                           |
-| `usePlayerProgress()`       | Current time, duration, buffered progress, seeking          | Preferred public timeline hook                        |
-| `usePlayerUI()`             | Fullscreen, Picture-in-Picture, controls visibility         | Exposes durable chrome state only                     |
-| `usePlayerTracks()`         | Audio track and subtitle track selection                    | Track styling and global caption prefs stay elsewhere |
-| `useGlobalPlayerSettings()` | Page-level coordination across mounted players              | Advanced API for shared controls                      |
-| `useProgressBar({video})`   | Low-level drag handling for a raw `HTMLVideoElement`        | Prefer `usePlayerProgress()` with `Video`             |
+| Hook                        | Purpose                                                 | Scope                 |
+| --------------------------- | ------------------------------------------------------- | --------------------- |
+| `usePlayback()`             | Play, pause, playback rate, and loading state           | Current player        |
+| `useMediaSettings()`        | Mute and volume                                         | Current player        |
+| `usePlayerProgress()`       | Timeline, buffered state, and seeking                   | Current player        |
+| `usePlayerTracks()`         | Audio and subtitle tracks                               | Current player        |
+| `usePlayerUI()`             | Controls visibility, fullscreen, and picture-in-picture | Current player        |
+| `useGlobalPlayerSettings()` | Shared preferences and coordination                     | Shared across players |
+| `useProgressBar({video})`   | Pointer seeking for a raw video element                 | Explicit element      |
 
-## Which Hook Should Most Apps Start With?
+Hooks and callbacks work in React SPAs. In an RSC application such as Next.js, call hooks from your own `"use client"` component.
 
-- Start with `usePlayback()` for play-pause UI.
-- Add `usePlayerProgress()` for a custom timeline or seek buttons.
-- Add `useMediaSettings()` for mute and volume controls.
-- Add `usePlayerTracks()` only if your videos expose audio or subtitle track choices.
-- Use `useGlobalPlayerSettings()` only when one page-level control should affect several mounted players.
+## Guides
 
-## Analytics with Standalone Video
-
-When using the standalone `<Video>` component, capture events through `onRixlAnalytics`:
-
-```tsx
-import {Video} from "@rixl/media-react";
-
-<Video id="your-video-id" analytics={true} analyticsPage="standalone" onRixlAnalytics={(e) => console.log(e.detail.event)} />;
-```
-
-## Related Docs
-
-- [Video component overview](/en/sdk/media-react/video-component)
-- [Video props reference](/en/sdk/media-react/video-component/props-reference)
-- [Analytics integration guide](/en/sdk/media-react/video-component/analytics-integration)
+- [Playback](/en/sdk/media-react/hooks/use-playback)
+- [Mute and volume](/en/sdk/media-react/hooks/use-media-settings)
+- [Progress](/en/sdk/media-react/hooks/use-player-progress)
+- [Tracks](/en/sdk/media-react/hooks/use-player-tracks)
+- [Player UI](/en/sdk/media-react/hooks/use-player-ui)
+- [Global settings](/en/sdk/media-react/hooks/use-global-player-settings)
+- [Raw progress interactions](/en/sdk/media-react/hooks/use-progress-bar)
