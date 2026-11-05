@@ -1,0 +1,98 @@
+---
+title: "Media Astro"
+description: "Use RIXL Media components in Astro applications."
+---
+
+import {Callout} from "@/snippets";
+
+RIXL provides native Astro components via `@rixl/media-astro`, backed by the shared Lit UI. The package is self-contained — the core ships bundled inside, so you only install the one package. Astro renders the custom element markup on the server and Lit hydrates the player and image contents in the browser. No integration or `client:*` directive is required.
+
+## Installation
+
+```bash
+npm install @rixl/media-astro
+```
+
+Requires Astro 7 or higher.
+
+## Configuration
+
+Place one `MediaConfig` component in your shared layout. Media elements wait for its client connection before fetching by ID:
+
+```astro
+---
+import MediaConfig from "@rixl/media-astro/config";
+---
+
+<MediaConfig baseUrl={import.meta.env.PUBLIC_RIXL_API_URL} apiKey={import.meta.env.PUBLIC_RIXL_API_KEY} />
+```
+
+Its configuration is sent to the browser, so use credentials intended for client applications and keep server credentials in server code. Omit this component if your host application already initializes the shared client, or if you provide complete media data and disable analytics.
+
+## Video Player
+
+Import the `Video` component from its subpath:
+
+```astro
+---
+import Video from "@rixl/media-astro/video";
+---
+
+<Video id="your-video-id" muted={false} volume={0.7} chapters={false}>
+  <span>Featured video</span>
+</Video>
+```
+
+Children pass through to the custom element's default slot. Pass `chapters` as a boolean to toggle chapter markers, or pass a chapter array to supply chapter data directly — data can also come from `videoData`.
+
+## Responsive Images
+
+```astro
+---
+import Image from "@rixl/media-astro/image";
+---
+
+<Image id="your-image-id" alt="Mountain landscape" class="cover" />
+```
+
+Standard HTML attributes, including `class`, `style`, and `data-*`, pass through to the custom element. `id` selects the image to load, or pass complete data via `imageData`.
+
+## Media Feeds
+
+```astro
+---
+import Feed from "@rixl/media-astro/feed";
+---
+
+<Feed feedId="your-feed-id" loop={true} muted={true} />
+```
+
+Only components used on the page contribute client scripts — an image-only page excludes video, feed, and HLS code.
+
+## Events
+
+The underlying elements dispatch standard DOM events. Listen for them in a processed Astro script:
+
+```astro
+<Video id="your-video-id" />
+
+<script>
+  document.addEventListener("volume-change", (event) => {
+    if (!(event instanceof CustomEvent)) return;
+    console.log(event.detail);
+  });
+</script>
+```
+
+Astro client navigation initializes incoming properties before the document swap. For analytics event taxonomy and core helpers, see [Analytics Integration](/en/sdk/media-react/video-component/analytics-integration) and [Core API](/en/sdk/media-core/core-api).
+
+## Subpath Exports
+
+| Subpath                    | Contents                                                   |
+| -------------------------- | ---------------------------------------------------------- |
+| `@rixl/media-astro`        | `Image`, `Video`, `Feed`, `MediaConfig` components         |
+| `@rixl/media-astro/core`   | Headless state stores, API clients, and connection helpers |
+| `@rixl/media-astro/image`  | `<Image>` component                                        |
+| `@rixl/media-astro/video`  | `<Video>` component                                        |
+| `@rixl/media-astro/feed`   | `<Feed>` component                                         |
+| `@rixl/media-astro/config` | `<MediaConfig>` component                                  |

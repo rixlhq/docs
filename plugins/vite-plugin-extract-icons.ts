@@ -19,6 +19,7 @@ const validCustomIcons = new Set([
   "vue",
   "svelte",
   "angular",
+  "astro",
   "lit",
   "core",
   "ui",

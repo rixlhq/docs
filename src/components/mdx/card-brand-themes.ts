@@ -37,6 +37,13 @@ export const BRAND_THEMES: Record<string, BrandTheme> = {
     titleHover: "group-hover:text-[#dc2626] dark:group-hover:text-[#f87171]",
     arrowHover: "group-hover:text-[#dc2626] dark:group-hover:text-[#f87171]",
   },
+  astro: {
+    badge: "border-[#FF5D01]/30 bg-[#FF5D01]/10 shadow-[#FF5D01]/10 dark:border-[#FF5D01]/30 dark:bg-[#FF5D01]/15",
+    cardHoverBorder: "hover:border-[#FF5D01]/50",
+    cardHoverShadow: "hover:shadow-[#FF5D01]/10",
+    titleHover: "group-hover:text-[#ea580c] dark:group-hover:text-[#fb923c]",
+    arrowHover: "group-hover:text-[#ea580c] dark:group-hover:text-[#fb923c]",
+  },
   lit: {
     badge: "border-[#324FFF]/30 bg-[#324FFF]/10 shadow-[#324FFF]/10 dark:border-[#324FFF]/30 dark:bg-[#324FFF]/15",
     cardHoverBorder: "hover:border-[#324FFF]/50",
