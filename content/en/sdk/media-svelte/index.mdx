@@ -9,10 +9,10 @@ RIXL media components are built on standard Web Components via `@rixl/media-lit`
 
 ## Installation
 
-Install the Web Component library and core headless client:
+Install the Web Component library (the core headless client ships bundled inside — no separate install needed):
 
 ```bash
-npm install @rixl/media-lit @rixl/media
+npm install @rixl/media-lit
 ```
 
 ## Authentication
@@ -20,7 +20,7 @@ npm install @rixl/media-lit @rixl/media
 Connect to RIXL in your root layout or on application mount:
 
 ```ts
-import {connect} from "@rixl/media";
+import {connect} from "@rixl/media-lit";
 
 await connect({
   baseUrl: "https://api.rixl.com",

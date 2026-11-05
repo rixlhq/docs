@@ -5,14 +5,14 @@ description: "Use RIXL Media components in Vue 3 applications."
 
 import {Callout} from "@/snippets";
 
-RIXL provides framework-free web components via `@rixl/media-lit` and headless state management via `@rixl/media`. Vue 3 has first-class native support for custom elements, enabling you to use `<rixl-video>`, `<rixl-image>`, and `<rixl-feed>` directly in any Vue or Nuxt application with standard reactive props and event listeners.
+RIXL provides framework-free web components via `@rixl/media-lit` with headless state management bundled in. Vue 3 has first-class native support for custom elements, enabling you to use `<rixl-video>`, `<rixl-image>`, and `<rixl-feed>` directly in any Vue or Nuxt application with standard reactive props and event listeners.
 
 ## Installation
 
-Install `@rixl/media-lit` alongside the core `@rixl/media` package:
+Install `@rixl/media-lit` (the core ships bundled inside — no separate install needed):
 
 ```bash
-npm install @rixl/media-lit @rixl/media
+npm install @rixl/media-lit
 ```
 
 ## Vite Configuration
@@ -45,7 +45,7 @@ export default defineConfig({
 Initialize the RIXL client once in your application root or entry file before rendering media components:
 
 ```ts
-import {connect} from "@rixl/media";
+import {connect} from "@rixl/media-lit";
 
 await connect({
   baseUrl: "https://api.rixl.com",
