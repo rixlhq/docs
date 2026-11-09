@@ -23,9 +23,7 @@ on:
 permissions:
   contents: read
 
-# A real rollback joins the rollout's group and cancels a rollout still
-# ramping or soaking, which would otherwise move traffic back to the bad
-# version. A dry run changes nothing, so it stays out of the way.
+# A real rollback cancels a rollout still ramping, which would undo it.
 concurrency:
   group: ${{ inputs.dry_run && 'rollback-dry-run' || 'rollout' }}
   cancel-in-progress: ${{ !inputs.dry_run }}

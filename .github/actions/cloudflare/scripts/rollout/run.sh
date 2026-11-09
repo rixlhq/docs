@@ -37,10 +37,8 @@ smoke() {
   local failed=""
   [ -n "${SMOKE_URLS}" ] || echo "no smoke urls configured, skipping the curl checks"
   for url in ${SMOKE_URLS//,/ }; do
-    # DOCS DIVERGENCE (not upstream yet): with SMOKE_PREVIEW_SUBDOMAIN set,
-    # smoke the new version's own preview URL (same path). On docs.rixl.com
-    # the override header is not honoured for HTML, so the old version or
-    # its cache answers. Upstream this as an input, then drop this block.
+    # DOCS DIVERGENCE from upstream: docs.rixl.com ignores the override header
+    # for HTML, so smoke the new version's preview URL instead.
     if [ -n "${SMOKE_PREVIEW_SUBDOMAIN:-}" ]; then
       url="https://${NEW_VERSION_ID:0:8}-${WORKER}.${SMOKE_PREVIEW_SUBDOMAIN}$(echo "${url}" | sed -E 's|https?://[^/]+||')"
     fi

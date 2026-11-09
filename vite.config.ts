@@ -207,11 +207,6 @@ export default defineConfig({
       pages: buildPrerenderPages(),
     }),
     react({compiler: true}),
-    // Names the release after the commit (the rollout's Sentry gate finds it
-    // by the 12-char version tag) and, with SENTRY_AUTH_TOKEN, uploads source
-    // maps then deletes them from the output. Org, project and URL come from
-    // SENTRY_ORG / SENTRY_PROJECT / SENTRY_URL, which CI sets from repo vars.
-    // Without a token it only stamps the release.
     sentryVitePlugin({
       authToken: process.env.SENTRY_AUTH_TOKEN,
       telemetry: false,
