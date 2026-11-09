@@ -5,6 +5,7 @@ import {tanstackStart} from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import {fumadocsMdx} from "fumadocs-mdx/vite";
+import {sentryVitePlugin} from "@sentry/vite-plugin";
 import {extractIconsPlugin} from "./plugins/vite-plugin-extract-icons.ts";
 import {linkCheckPlugin} from "./plugins/vite-plugin-link-check.ts";
 import {i18n} from "./src/lib/i18n.ts";
@@ -206,6 +207,19 @@ export default defineConfig({
       pages: buildPrerenderPages(),
     }),
     react({compiler: true}),
+    // Names the release after the commit (the rollout's Sentry gate finds it
+    // by the 12-char version tag) and, with SENTRY_AUTH_TOKEN, uploads source
+    // maps then deletes them from the output. Org, project and URL come from
+    // SENTRY_ORG / SENTRY_PROJECT / SENTRY_URL, which CI sets from repo vars.
+    // Without a token it only stamps the release.
+    sentryVitePlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      telemetry: false,
+      sourcemaps: {
+        assets: "./dist/client/**",
+        filesToDeleteAfterUpload: ["./dist/**/*.js.map", "./dist/**/*.css.map"],
+      },
+    }),
   ]),
   resolve: {
     alias: {

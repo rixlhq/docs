@@ -1,15 +1,22 @@
 name: Rollout
 
-# Vendored copy of rixlhq/github-actions' cloudflare-rollout.yml: docs is a
-# public repo, so it can't call reusable workflows in a private repo. Rollout
-# parameters (worker, ramp, smoke urls) live in the env block on the job.
+# Port of rixlhq/github-actions' cloudflare-rollout.yml. docs is a public repo
+# and cannot call reusable workflows or actions in a private one, so the
+# rollout scripts are vendored in .github/actions/cloudflare (see its README
+# for how to keep them in sync). This file holds the configuration only.
 #
-# CI uploads a version tagged with the commit, then triggers this workflow.
-# It puts the version at 0% traffic, smoke-tests it, ramps to 100%, and rolls
-# back to the previous version on any failure. Trigger manually with
-# dry_run=true to print the plan without touching traffic.
+# CI builds on GitHub and uploads a version tagged with the commit; this runs
+# only after that CI run is green. Per rollout:
+#   1. find the version tagged with the commit (a red build uploads nothing)
+#   2. add it at 0%, smoke-test its preview URL; a failure rejects it before
+#      any user gets it
+#   3. ramp through RAMP, soaking WATCH_MINUTES between steps and
+#      FINAL_WATCH_MINUTES after 100%, asking Sentry every minute: issues
+#      first seen in this release reaching SENTRY_MIN_USERS users, or (before
+#      100%) a share of errored sessions above SENTRY_MAX_RATE_RATIO times the
+#      old release's, roll back to the old version at 100% and fail the run
+# Trigger manually with dry_run=true to print the plan without touching traffic.
 on:
-  # Runs only after green CI on main (conclusion is checked on the job).
   workflow_run:
     workflows: ["CI"]
     types: [completed]
@@ -35,193 +42,88 @@ concurrency:
 
 jobs:
   rollout:
+    # Only after green CI on a push to main (PR CI runs never roll out).
     if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    # 5 + 5 + 15 minutes of soak, plus checks and Cloudflare's deploys.
+    timeout-minutes: 60
     env:
       WORKER: rixl-docs
-      RAMP: "100"
-      WATCH_MINUTES: 0
-      SMOKE_URLS: "https://docs.rixl.com/en/home"
-      # Smoke requests go to the new version's preview URL on this subdomain.
-      WORKERS_SUBDOMAIN: "rixl-d8a.workers.dev"
+      RAMP: "10,50,100"
+      WATCH_MINUTES: 5
+      FINAL_WATCH_MINUTES: 15
+      # The paths are what matters: run.sh requests them on the new version's
+      # preview URL (SMOKE_PREVIEW_SUBDOMAIN). One content page, one SDK page,
+      # one API reference page (built from the remote OpenAPI spec, the part
+      # most likely to break). A renamed endpoint rejects at 0%: update it here.
+      SMOKE_URLS: "https://developers.rixl.com/en/home,https://developers.rixl.com/en/sdk/media-react,https://developers.rixl.com/en/api/analytics/dashboards/get-analytics-v1-dashboard"
+      SMOKE_PREVIEW_SUBDOMAIN: "rixl-d8a.workers.dev"
+      # CI uploads before this starts, so the version exists; this only covers
+      # Cloudflare's list lagging the upload.
+      WAIT_MINUTES: 5
       DRY_RUN: ${{ inputs.dry_run || false }}
+      ACCEPTANCE_COMMAND: ""
+      ACCEPTANCE_RESULTS_PATH: ""
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      # Sentry gate. Releases are named after the commit by @sentry/vite-plugin
+      # in CI's build. SENTRY_AUTH_TOKEN needs project:read, event:read and
+      # org:read (the `rollout-gate` internal integration dashboard uses).
+      SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+      SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+      SENTRY_URL: ${{ vars.SENTRY_URL }}
+      SENTRY_ENVIRONMENT: production
+      SENTRY_MIN_USERS: 3
+      SENTRY_MAX_RATE_RATIO: 2
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
     steps:
-      # No checkout: CLI-only operations, so a global install beats installing
-      # the repo's devDependencies.
+      # The default ref (main), not the CI run's commit: the scripts that move
+      # traffic come from the trusted branch tip.
+      - name: Check out the rollout scripts
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/actions/cloudflare
+
       - name: Install Wrangler
         run: npm install -g wrangler@^4.135.0
 
-      - name: Resolve versions
+      # workflow_run's GITHUB_SHA is main's tip when the event fired, which a
+      # later merge can move; head_sha is the commit CI built and uploaded.
+      - name: Resolve version tag
+        env:
+          VERSION_TAG: ${{ inputs.version-tag || github.event.workflow_run.head_sha || github.sha }}
         run: |
-          set -euo pipefail
-          TAG="${{ inputs.version-tag }}"
-          if [ -z "${TAG}" ]; then
-            # workflow_run: the CI head sha; dispatch: the pushed sha.
-            TAG="$(echo "${{ github.event.workflow_run.head_sha || github.sha }}" | cut -c1-12)"
-          fi
+          TAG="$(echo "${VERSION_TAG}" | cut -c1-12)"
+          echo "TAG=${TAG}" >> "${GITHUB_ENV}"
+          echo "Rolling out ${WORKER} version tagged ${TAG}"
 
-          # CI uploads the version before triggering this workflow, so it must
-          # already exist — a red build uploads nothing and never triggers a
-          # rollout at all. Dry runs may target anything, so they fall back to
-          # planning against the newest uploaded version.
-          NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
-            | jq -r --arg t "${TAG}" '[.[] | select(.annotations["workers/tag"] == $t)] | last | .id // empty')
-          if [ -z "${NEW_VERSION_ID}" ] && [ "${DRY_RUN}" = "true" ]; then
-            NEW_VERSION_ID=$(wrangler versions list --name "${WORKER}" --json \
-              | jq -r 'last | .id // empty')
-            [ -n "${NEW_VERSION_ID}" ] && echo "No version tagged ${TAG}; dry run will plan against ${NEW_VERSION_ID}."
-          fi
-          if [ -z "${NEW_VERSION_ID}" ]; then
-            if [ "${DRY_RUN}" = "true" ]; then
-              echo "::error::No ${WORKER} versions exist at all — nothing to plan against."
-            else
-              echo "::error::No ${WORKER} version tagged ${TAG} — CI should have uploaded it."
-            fi
-            exit 1
-          fi
+      # Before any traffic moves: a gate that cannot reach Sentry would let
+      # every release through unjudged.
+      - name: Check the Sentry gate's access
+        if: ${{ inputs.dry_run != true }}
+        uses: ./.github/actions/cloudflare
+        with:
+          script: rollout/check-sentry
 
-          # The currently serving version (empty on a brand-new Worker, in
-          # which case the rollout just puts the new version at 100%).
-          CURRENT=$(wrangler deployments status --name "${WORKER}" --json 2>/dev/null || true)
-          OLD_VERSION_ID=$(jq -r '.versions | max_by(.percentage) | .version_id // empty' <<<"${CURRENT:-{}}" 2>/dev/null || true)
+      - name: Wait for the tagged version
+        uses: ./.github/actions/cloudflare
+        with:
+          script: rollout/wait-for-version
 
-          {
-            echo "TAG=${TAG}"
-            echo "NEW_VERSION_ID=${NEW_VERSION_ID}"
-            echo "OLD_VERSION_ID=${OLD_VERSION_ID}"
-          } >> "${GITHUB_ENV}"
-          echo "Rolling out ${TAG}: ${OLD_VERSION_ID:-none} → ${NEW_VERSION_ID}"
+      - name: Read current deployment
+        uses: ./.github/actions/cloudflare
+        with:
+          script: rollout/read-deployment
 
       - name: Plan
-        run: |
-          echo "::group::Rollout plan for ${WORKER}"
-          echo "new version : ${NEW_VERSION_ID} (tag ${TAG})"
-          echo "old version : ${OLD_VERSION_ID:-none}"
-          if [ -n "${OLD_VERSION_ID}" ]; then
-            echo "steps       : ${OLD_VERSION_ID}@100 + ${NEW_VERSION_ID}@0 → smoke"
-            for p in ${RAMP//,/ }; do
-              if [ "${p}" = "100" ]; then
-                echo "            → ${NEW_VERSION_ID}@100"
-              else
-                echo "            → ${NEW_VERSION_ID}@${p} + ${OLD_VERSION_ID}@$((100 - p)), watch ${WATCH_MINUTES}m"
-              fi
-            done
-          else
-            echo "steps       : ${NEW_VERSION_ID}@100 (first deploy)"
-          fi
-          echo "smoke urls  : ${SMOKE_URLS:-none}"
-          echo "dry run     : ${DRY_RUN}"
-          echo "::endgroup::"
-          if [ "${DRY_RUN}" = "true" ]; then
-            echo "Dry run — no traffic changes."
-          fi
+        uses: ./.github/actions/cloudflare
+        with:
+          script: rollout/plan
 
-      # Everything below is one script so a single rollback path covers every
-      # failure: the old version goes back to 100% and the run turns red.
+      # One script, so a single rollback path covers every failure.
       - name: Roll out
         if: ${{ inputs.dry_run != true }}
-        run: |
-          set -euo pipefail
-
-          rollback() {
-            echo "::error::${1} — rolling ${WORKER} back to ${OLD_VERSION_ID} at 100%"
-            wrangler versions deploy "${OLD_VERSION_ID}@100" \
-              --name "${WORKER}" -y --message "rollback ${TAG}: ${1}" || true
-            exit 1
-          }
-
-          # The versions list can show a version before the deploy endpoint
-          # can see it (replication lag surfaces as error 100146). Retry
-          # briefly instead of failing on a transient miss; genuine failures
-          # still roll back once retries are exhausted.
-          vdeploy() {
-            local message="$1"
-            shift
-            local attempt=0
-            while [ "${attempt}" -lt 5 ]; do
-              if wrangler versions deploy "$@" --name "${WORKER}" -y --message "${message}"; then
-                return 0
-              fi
-              attempt=$((attempt + 1))
-              if [ "${attempt}" -lt 5 ]; then
-                echo "Deploy failed (attempt ${attempt}/5); retrying in 30s..."
-                sleep 30
-              fi
-            done
-            return 1
-          }
-
-          smoke() {
-            local label="$1"
-            [ -n "${SMOKE_URLS}" ] || { echo "no smoke urls configured, skipping"; return 0; }
-            local failed=""
-            for url in ${SMOKE_URLS//,/ }; do
-              # Smoke the new version's own preview URL (same path, exact
-              # version): on the custom domain the version-override header is
-              # not honoured for HTML, so the old version or its cache answers.
-              url="https://${NEW_VERSION_ID:0:8}-${WORKER}.${WORKERS_SUBDOMAIN}$(echo "${url}" | sed -E 's|https?://[^/]+||')"
-              echo "smoke ${label}: ${url}"
-              body=$(curl -s -o /dev/null -w '%{http_code}' "${url}") || failed=1
-              if [ "${body}" != "200" ]; then
-                echo "::error::${url} returned ${body}, not 200"
-                failed=1
-                continue
-              fi
-              # The page loads; now prove its main JS bundle does too — the
-              # classic split-version breakage is new HTML referencing chunks
-              # that don't exist on this version.
-              host=$(echo "${url}" | sed -E 's|https?://([^/]+).*|\1|')
-              scheme=$(echo "${url}" | sed -E 's|(https?)://.*|\1|')
-              html=$(curl -sf "${url}") || failed=1
-              js=$(grep -oE 'src="[^"]+\.js[^"]*"' <<<"${html:-}" | head -1 | cut -d'"' -f2 || true)
-              if [ -z "${js}" ]; then
-                echo "::error::no <script src> found on ${url} — page looks broken"
-                failed=1
-                continue
-              fi
-              case "${js}" in
-                http*) js_url="${js}" ;;
-                *)     js_url="${scheme}://${host}${js}" ;;
-              esac
-              js_code=$(curl -s -o /dev/null -w '%{http_code}' "${js_url}") || failed=1
-              if [ "${js_code}" != "200" ]; then
-                echo "::error::${js_url} returned ${js_code}, not 200"
-                failed=1
-              fi
-            done
-            [ -z "${failed}" ]
-          }
-
-          if [ -z "${OLD_VERSION_ID}" ]; then
-            echo "First deploy — straight to 100%."
-            vdeploy "first deploy ${TAG}" "${NEW_VERSION_ID}@100"
-            exit 0
-          fi
-
-          echo "Adding ${NEW_VERSION_ID} at 0%"
-          vdeploy "rollout ${TAG}: add at 0%" "${OLD_VERSION_ID}@100" "${NEW_VERSION_ID}@0" \
-            || rollback "deploy to 0% failed"
-
-          smoke "0%" || rollback "smoke failed at 0%"
-
-          for p in ${RAMP//,/ }; do
-            if [ "${p}" = "100" ]; then
-              echo "Moving to 100%"
-              vdeploy "rollout ${TAG}: 100%" "${NEW_VERSION_ID}@100" \
-                || rollback "deploy to 100% failed"
-            else
-              echo "Moving to ${p}%"
-              vdeploy "rollout ${TAG}: ${p}%" "${OLD_VERSION_ID}@$((100 - p))" "${NEW_VERSION_ID}@${p}" \
-                || rollback "deploy to ${p}% failed"
-              if [ "${WATCH_MINUTES}" -gt 0 ]; then
-                echo "Watching for ${WATCH_MINUTES}m"
-                sleep "$((WATCH_MINUTES * 60))"
-              fi
-            fi
-            smoke "${p}%" || rollback "smoke failed at ${p}%"
-          done
-
-          echo "Rollout of ${TAG} complete on ${WORKER}."
+        uses: ./.github/actions/cloudflare
+        with:
+          script: rollout/run
