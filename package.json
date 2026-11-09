@@ -17,7 +17,7 @@
   "dependencies": {
     "@fumadocs/json-schema": "^0.3.5",
     "@radix-ui/react-presence": "^1.1.11",
-    "@rixl/media-react": "^1.0.2",
+    "@rixl/media-react": "^1.2.0",
     "@takumi-rs/image-response": "^2.19.0",
     "@tanstack/react-router": "^1.170.46",
     "@tanstack/react-router-devtools": "^1.167.2",
@@ -25,12 +25,12 @@
     "@tanstack/start-static-server-functions": "^1.167.44",
     "class-variance-authority": "^0.7.1",
     "cn": "0.5.2",
-    "fumadocs-core": "^16.18.0",
+    "fumadocs-core": "^16.18.1",
     "fumadocs-mdx": "^15.5.0",
     "fumadocs-openapi": "^12.6.0",
-    "fumadocs-ui": "^16.18.0",
-    "lucide-react": "^1.69.0",
-    "lucide-static": "^1.69.0",
+    "fumadocs-ui": "^16.18.1",
+    "lucide-react": "^1.70.0",
+    "lucide-static": "^1.70.0",
     "openapi-sampler": "^1.7.10",
     "radix-ui": "^1.8.1",
     "react": "^19.3.1",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@inlang/cli": "^3.6.0",
-    "@inlang/paraglide-js": "^3.1.0",
+    "@inlang/paraglide-js": "^3.2.0",
     "@tailwindcss/postcss": "^4.3.4",
     "@tailwindcss/vite": "^4.3.4",
     "@tanstack/devtools-vite": "^0.8.6",
@@ -58,7 +58,7 @@
     "typescript": "^7.0.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@1.5.0",
     "vite-plus": "1.5.0",
-    "wrangler": "^4.157.0"
+    "wrangler": "^4.158.0"
   },
   "overrides": {
     "react": "^19.3.0",
