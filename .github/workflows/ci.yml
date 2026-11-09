@@ -28,25 +28,18 @@ jobs:
         with:
           cache: true
 
-      # Check before Build, not beside it: the build rewrites src/paraglide,
-      # src/routeTree.gen.ts and the MDX sources that Check type-checks, so
-      # side by side Check could read a half-written file.
-      - name: 🧩 Check
-        run: vp check
+      - parallel:
+          - name: 🧩 Check
+            run: vp check
 
-      - name: 🛠️ Build
-        run: vpr build
-        # Sentry only in the build that ships (main): the release is named
-        # after this commit, which the rollout's Sentry gate looks up. PR
-        # previews get no DSN, so they never report into production.
-        # Same SENTRY_AUTH_TOKEN the rollout's gate reads with; it uploads
-        # the source maps.
-        env:
-          VITE_SENTRY_DSN: ${{ github.ref == 'refs/heads/main' && vars.SENTRY_DSN || '' }}
-          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
-          SENTRY_URL: ${{ vars.SENTRY_URL }}
-          SENTRY_AUTH_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.SENTRY_AUTH_TOKEN || '' }}
+          - name: 🛠️ Build
+            run: vpr build
+            env:
+              VITE_SENTRY_DSN: ${{ github.ref == 'refs/heads/main' && vars.SENTRY_DSN || '' }}
+              SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+              SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+              SENTRY_URL: ${{ vars.SENTRY_URL }}
+              SENTRY_AUTH_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.SENTRY_AUTH_TOKEN || '' }}
 
       - name: 🚀 Deploy to CF
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false && github.actor != 'dependabot[bot]'

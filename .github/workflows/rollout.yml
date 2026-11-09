@@ -1,21 +1,5 @@
 name: Rollout
 
-# Port of rixlhq/github-actions' cloudflare-rollout.yml. docs is a public repo
-# and cannot call reusable workflows or actions in a private one, so the
-# rollout scripts are vendored in .github/actions/cloudflare (see its README
-# for how to keep them in sync). This file holds the configuration only.
-#
-# CI builds on GitHub and uploads a version tagged with the commit; this runs
-# only after that CI run is green. Per rollout:
-#   1. find the version tagged with the commit (a red build uploads nothing)
-#   2. add it at 0%, smoke-test its preview URL; a failure rejects it before
-#      any user gets it
-#   3. ramp through RAMP, soaking WATCH_MINUTES between steps and
-#      FINAL_WATCH_MINUTES after 100%, asking Sentry every minute: issues
-#      first seen in this release reaching SENTRY_MIN_USERS users, or (before
-#      100%) a share of errored sessions above SENTRY_MAX_RATE_RATIO times the
-#      old release's, roll back to the old version at 100% and fail the run
-# Trigger manually with dry_run=true to print the plan without touching traffic.
 on:
   workflow_run:
     workflows: ["CI"]
@@ -42,33 +26,22 @@ concurrency:
 
 jobs:
   rollout:
-    # Only after green CI on a push to main (PR CI runs never roll out).
     if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
-    # 5 + 5 + 15 minutes of soak, plus checks and Cloudflare's deploys.
     timeout-minutes: 60
     env:
       WORKER: rixl-docs
       RAMP: "10,50,100"
       WATCH_MINUTES: 5
       FINAL_WATCH_MINUTES: 15
-      # The paths are what matters: run.sh requests them on the new version's
-      # preview URL (SMOKE_PREVIEW_SUBDOMAIN). One content page, one SDK page,
-      # one API reference page (built from the remote OpenAPI spec, the part
-      # most likely to break). A renamed endpoint rejects at 0%: update it here.
       SMOKE_URLS: "https://developers.rixl.com/en/home,https://developers.rixl.com/en/sdk/media-react,https://developers.rixl.com/en/api/analytics/dashboards/get-analytics-v1-dashboard"
       SMOKE_PREVIEW_SUBDOMAIN: "rixl-d8a.workers.dev"
-      # CI uploads before this starts, so the version exists; this only covers
-      # Cloudflare's list lagging the upload.
       WAIT_MINUTES: 5
       DRY_RUN: ${{ inputs.dry_run || false }}
       ACCEPTANCE_COMMAND: ""
       ACCEPTANCE_RESULTS_PATH: ""
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-      # Sentry gate. Releases are named after the commit by @sentry/vite-plugin
-      # in CI's build. SENTRY_AUTH_TOKEN needs project:read, event:read and
-      # org:read (the `rollout-gate` internal integration dashboard uses).
       SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
       SENTRY_ORG: ${{ vars.SENTRY_ORG }}
       SENTRY_URL: ${{ vars.SENTRY_URL }}
@@ -77,8 +50,6 @@ jobs:
       SENTRY_MAX_RATE_RATIO: 2
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
     steps:
-      # The default ref (main), not the CI run's commit: the scripts that move
-      # traffic come from the trusted branch tip.
       - name: Check out the rollout scripts
         uses: actions/checkout@v7
         with:
@@ -88,8 +59,6 @@ jobs:
       - name: Install Wrangler
         run: npm install -g wrangler@^4.135.0
 
-      # workflow_run's GITHUB_SHA is main's tip when the event fired, which a
-      # later merge can move; head_sha is the commit CI built and uploaded.
       - name: Resolve version tag
         env:
           VERSION_TAG: ${{ inputs.version-tag || github.event.workflow_run.head_sha || github.sha }}
@@ -98,8 +67,6 @@ jobs:
           echo "TAG=${TAG}" >> "${GITHUB_ENV}"
           echo "Rolling out ${WORKER} version tagged ${TAG}"
 
-      # Before any traffic moves: a gate that cannot reach Sentry would let
-      # every release through unjudged.
       - name: Check the Sentry gate's access
         if: ${{ inputs.dry_run != true }}
         uses: ./.github/actions/cloudflare
@@ -121,7 +88,6 @@ jobs:
         with:
           script: rollout/plan
 
-      # One script, so a single rollback path covers every failure.
       - name: Roll out
         if: ${{ inputs.dry_run != true }}
         uses: ./.github/actions/cloudflare
