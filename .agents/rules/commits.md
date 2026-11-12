@@ -10,7 +10,7 @@ A commit records claims: the message and the code. Only commit what has been che
 ## Order
 
 1. Finish one logical change.
-2. Run the checks for what you touched: `vp check`, and `vp run build` when content, routes or plugins changed (the build validates every internal link).
+2. Run the checks for what you touched: `vp check`, `vp test`, and `vp run build` when content, routes or plugins changed (the build validates every internal link).
 3. Run the `code-simplifier` skill on the changed code, then rerun the checks.
 4. Commit. Then move on to the next change.
 
@@ -18,7 +18,7 @@ A commit records claims: the message and the code. Only commit what has been che
 
 Lefthook runs them (`lefthook.yml`, installed by `prepare`, using the version pinned in `package.json`):
 
-- **pre-commit:** `vp check --fix` on staged code, JSON, Markdown, YAML and CSS. Fixes are re-staged. `vp run lint:suppressions` fails on any lint suppression without a ` -- <reason>`.
+- **pre-commit**, in order, stopping at the first failure: `vp check --fix` on staged code, JSON, Markdown, YAML and CSS (fixes are re-staged); `vp run lint:suppressions`, which fails on a lint suppression without a ` -- <reason>`; and `vp test related` on the staged files, which fails after 2 minutes rather than hang.
 - **pre-push:** `vp build`, which also checks internal content links (`plugins/vite-plugin-link-check.ts`), and `vp run knip` (unused files, exports and dependencies; config in `knip.jsonc`).
 
 Never skip a hook (`--no-verify`, `-n`, `LEFTHOOK=0`, `core.hooksPath`). If a hook fails, fix the cause. For Claude Code this is enforced: `.agents/hooks/no-skip-git-hooks.mjs` blocks those commands.

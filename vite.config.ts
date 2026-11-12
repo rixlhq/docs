@@ -157,6 +157,19 @@ export default defineConfig({
       },
     ],
   },
+  test: {
+    projects: [
+      {
+        // Inline projects don't inherit the root plugins, so tests skip TanStack Start, MDX and Sentry.
+        resolve: {alias: {"@": path.resolve(import.meta.dirname, "src")}},
+        test: {
+          name: "unit",
+          environment: "node",
+          include: ["{src,plugins,scripts}/**/__tests__/**/*.test.{ts,tsx}"],
+        },
+      },
+    ],
+  },
   plugins: lazyPlugins(async () => [
     linkCheckPlugin(),
     paraglideVitePlugin({

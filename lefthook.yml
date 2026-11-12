@@ -4,7 +4,8 @@ lefthook: node_modules/.bin/lefthook
 min_version: 2.2.2
 
 pre-commit:
-  parallel: true
+  # In order, stopping at the first failure: the fixes land before the tests read the files.
+  piped: true
   commands:
     check:
       glob:
@@ -15,6 +16,11 @@ pre-commit:
     suppressions:
       glob: "*.{ts,tsx}"
       run: vp run lint:suppressions
+    test:
+      glob: "*.{ts,tsx}"
+      # Tests that import the staged files. A stuck run fails the commit instead of hanging it.
+      run: vp test related {staged_files} --run --bail=1
+      timeout: 2m
 
 pre-push:
   parallel: true
