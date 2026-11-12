@@ -1,0 +1,5 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  // Claude Code runs this hook from .agents/settings.json, which Knip doesn't read.
+  "entry": [".agents/hooks/*.mjs"],
+}

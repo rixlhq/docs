@@ -24,3 +24,5 @@ pre-push:
         - "**/*.{js,ts,jsx,tsx}"
         - "content/**"
       run: vp build
+    knip:
+      run: vp run knip

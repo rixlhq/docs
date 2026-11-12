@@ -4,11 +4,11 @@ import type {ApiServer} from "@/lib/api-base-url";
 
 type MediaAdapters = NonNullable<CreateOpenAPIPageOptions["mediaAdapters"]>;
 
-export interface EncodedParameter {
+interface EncodedParameter {
   readonly value: string;
 }
 
-export interface EncodedParameterMultiple {
+interface EncodedParameterMultiple {
   readonly values: string[];
 }
 
@@ -38,7 +38,7 @@ export interface PathItemLite {
   parameters?: unknown[];
 }
 
-export interface RequestBodyLite {
+interface RequestBodyLite {
   required?: boolean;
   content?: Record<string, RequestMediaTypeLite>;
 }
@@ -49,7 +49,7 @@ export interface RequestMediaTypeLite {
   schema?: SchemaLite;
 }
 
-export interface RequestExampleLite {
+interface RequestExampleLite {
   summary?: string;
   description?: string;
   value?: unknown;
@@ -66,7 +66,7 @@ export interface ResponseMediaTypeLite {
   schema?: unknown;
 }
 
-export interface ResponseExampleLite {
+interface ResponseExampleLite {
   summary?: string;
   description?: string;
   value?: unknown;
@@ -92,8 +92,8 @@ export interface RenderedSchemaProperty {
   children: RenderedSchemaProperty[];
 }
 
-export type RenderMarkdown = (markdown: string) => ReactNode;
-export type RenderCodeBlock = (lang: string, code: string) => Promise<ReactNode>;
+type RenderMarkdown = (markdown: string) => ReactNode;
+type RenderCodeBlock = (lang: string, code: string) => Promise<ReactNode>;
 
 export interface OpenApiRenderContext {
   renderMarkdown: RenderMarkdown;
@@ -102,7 +102,7 @@ export interface OpenApiRenderContext {
   mediaAdapters: MediaAdapters;
 }
 
-export interface ResponseTabExample {
+interface ResponseTabExample {
   label?: string;
   description?: string;
   sample: unknown;

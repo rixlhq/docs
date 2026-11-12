@@ -19,7 +19,7 @@ A commit records claims: the message and the code. Only commit what has been che
 Lefthook runs them (`lefthook.yml`, installed by `prepare`, using the version pinned in `package.json`):
 
 - **pre-commit:** `vp check --fix` on staged code, JSON, Markdown, YAML and CSS. Fixes are re-staged. `vp run lint:suppressions` fails on any lint suppression without a ` -- <reason>`.
-- **pre-push:** `vp build`, which also checks internal content links (`plugins/vite-plugin-link-check.ts`).
+- **pre-push:** `vp build`, which also checks internal content links (`plugins/vite-plugin-link-check.ts`), and `vp run knip` (unused files, exports and dependencies; config in `knip.jsonc`).
 
 Never skip a hook (`--no-verify`, `-n`, `LEFTHOOK=0`, `core.hooksPath`). If a hook fails, fix the cause. For Claude Code this is enforced: `.agents/hooks/no-skip-git-hooks.mjs` blocks those commands.
 

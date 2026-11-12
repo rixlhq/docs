@@ -46,7 +46,7 @@ export function findOperationPath({
   return findPathByOperationId(paths, methodKey, operation.operationId) ?? findPathBySummary(paths, methodKey, operation.summary);
 }
 
-export function extractPathFromHeader(node: unknown): string | undefined {
+function extractPathFromHeader(node: unknown): string | undefined {
   const text = collectText(node).replace(/\s+/g, " ").trim();
   if (text.length === 0) return;
 

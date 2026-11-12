@@ -23,7 +23,7 @@ import {
 } from "@/components/icons/framework-icons";
 import {cn} from "cn";
 
-export type FrameworkIconName =
+type FrameworkIconName =
   | "react"
   | "vue"
   | "svelte"

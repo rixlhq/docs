@@ -9,7 +9,7 @@ Slop is work that looks finished but isn't: it compiles, often passes checks and
 
 ## Code
 
-- No dead code. If nothing calls it, delete it.
+- No dead code. If nothing calls it, delete it. Knip (`vp run knip`) fails on unused files, exports and dependencies.
 - No commented-out code. Git keeps the history.
 - No premature abstraction. Extract at three real call sites, not one.
 - No "just in case" code: no handling for cases that can't happen, no fallbacks nobody asked for.
