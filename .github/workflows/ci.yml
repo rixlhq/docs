@@ -34,6 +34,12 @@ jobs:
 
           - name: 🛠️ Build
             run: vpr build
+            env:
+              VITE_SENTRY_DSN: ${{ github.ref == 'refs/heads/main' && vars.SENTRY_DSN || '' }}
+              SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+              SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+              SENTRY_URL: ${{ vars.SENTRY_URL }}
+              SENTRY_AUTH_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.SENTRY_AUTH_TOKEN || '' }}
 
       - name: 🚀 Deploy to CF
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false && github.actor != 'dependabot[bot]'

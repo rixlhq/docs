@@ -23,6 +23,11 @@ on:
 permissions:
   contents: read
 
+# A real rollback cancels a rollout still ramping, which would undo it.
+concurrency:
+  group: ${{ inputs.dry_run && 'rollback-dry-run' || 'rollout' }}
+  cancel-in-progress: ${{ !inputs.dry_run }}
+
 jobs:
   rollback:
     runs-on: ubuntu-latest

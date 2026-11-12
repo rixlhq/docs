@@ -5,6 +5,7 @@ import {tanstackStart} from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import {fumadocsMdx} from "fumadocs-mdx/vite";
+import {sentryVitePlugin} from "@sentry/vite-plugin";
 import {extractIconsPlugin} from "./plugins/vite-plugin-extract-icons.ts";
 import {linkCheckPlugin} from "./plugins/vite-plugin-link-check.ts";
 import {i18n} from "./src/lib/i18n.ts";
@@ -206,6 +207,14 @@ export default defineConfig({
       pages: buildPrerenderPages(),
     }),
     react({compiler: true}),
+    sentryVitePlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      telemetry: false,
+      sourcemaps: {
+        assets: "./dist/client/**",
+        filesToDeleteAfterUpload: ["./dist/**/*.js.map", "./dist/**/*.css.map"],
+      },
+    }),
   ]),
   resolve: {
     alias: {
