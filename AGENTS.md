@@ -43,6 +43,17 @@ The full procedure is manual: run `/agent-review` (`.agents/skills/agent-review`
 - `plugins/` - build-time codegen: icon subset extraction, internal link validation
 - `src/lib/docs.ts` - Fumadocs collections (macro) and frontmatter schemas
 - `wrangler.jsonc` - Cloudflare Worker config (`rixl-docs`, `developers.rixl.com`, previews)
+- `openspec/` - specs and in-flight changes
+
+## Specs
+
+`openspec/specs/` describes how the site behaves today. `openspec/changes/` holds the changes in flight. Artifact rules live in `openspec/config.yaml`, and OpenSpec gives them to the agent writing each artifact.
+
+- Behaviour changes start as a change (`/opsx:propose`): routing, search, the API reference, `llms.txt` and the `.md` routes, i18n, the build plugins. Editing or adding pages under `content/`, refactors that keep behaviour, dependency bumps and typo fixes don't need one.
+- The spec changes while the work happens. Anything learned while building or reviewing (an edge case, an API limit, a review finding) goes into the change's spec or `design.md` first, then into the code.
+- Every choice a reviewer could question gets a decision entry in `design.md`: chosen, alternatives, dropped, evidence.
+- Tick a task only with its evidence: the passing test, or the command and its output.
+- Archive the change (`/opsx:archive`) in the PR that ships it, so the living specs stay true. Tasks still open at archive stay unticked with a reason.
 
 ## Technology Stack
 
