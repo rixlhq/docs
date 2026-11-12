@@ -48,3 +48,6 @@ out/
 # Vite+ hook dispatcher (generated); committed project hooks stay tracked
 /.vite-hooks/_/
 .vitest/
+
+# agent-review working files (drafts, reviewer output, findings register)
+reviews/

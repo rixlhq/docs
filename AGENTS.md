@@ -21,6 +21,15 @@ Claude Code loads every file in `.agents/rules/` on its own (`.claude` links to 
 
 Numbers live in config, never in rules. Rules point at the config instead of copying it: lint and complexity caps are in the `lint` block of `vite.config.ts`. If a rule and the config disagree, the config wins. Fix the rule in the same change.
 
+## Claim Review
+
+Before stating a claim as a conclusion, classify it as measured, verified
+against source, inferred, or assumed. Test consequential gaps when possible;
+otherwise label them as hypotheses. Use agent-review for the full procedure
+when the stakes require it.
+
+The full procedure is manual: run `/agent-review` (`.agents/skills/agent-review`). Its working files go in `reviews/`, which is gitignored.
+
 ## Repository Structure
 
 - `src/routes/` - TanStack Router file routes
