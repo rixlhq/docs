@@ -74,7 +74,8 @@ export function resolveRequestPath(pathname: string, data: EncodedRequestData): 
     resolvedPath = resolvedPath.replace(`{${key}}`, param.value);
   }
 
-  const [pathPart, existingQueryString] = resolvedPath.split("?", 2);
+  // split() always returns at least one element, so the path part is always there.
+  const [pathPart, existingQueryString] = resolvedPath.split("?", 2) as [string, string?];
   const searchParams = new URLSearchParams(existingQueryString ?? "");
   for (const [key, param] of Object.entries(data.query)) {
     if (param.values.length === 0) continue;
