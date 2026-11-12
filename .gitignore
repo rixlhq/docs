@@ -42,8 +42,8 @@ next-env.d.ts
 *.ipr
 .idea_modules/
 out/
-# Claude Code (personal)
-.claude
+# Personal agent settings (Claude Code writes settings.local.json for one machine)
+.agents/settings.local.json
 
 # Vite+ hook dispatcher (generated); committed project hooks stay tracked
 /.vite-hooks/_/

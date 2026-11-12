@@ -7,7 +7,19 @@ description: Core project guidelines for Rixl Documentation. Apply these rules w
 
 ## Project Overview
 
-The official documentation site for Rixl (`developers.rixl.com`), built with TanStack Start, Fumadocs and Vite+. MDX content, API reference generated from the OpenAPI spec, live `@rixl/media-react` player demos, and i18n (`en`, `de`). It builds to static files plus a SPA fallback and deploys to the Cloudflare Worker `rixl-docs`.
+The official documentation site for Rixl (`developers.rixl.com`), built with TanStack Start, Fumadocs and Vite+. MDX content, API reference generated from the OpenAPI spec, live `@rixl/media-react` player demos, and i18n through Paraglide (`en` is the only locale today, `project.inlang/settings.json`). It builds to static files plus a SPA fallback and deploys to the Cloudflare Worker `rixl-docs`.
+
+## Rules: read before you work
+
+Claude Code loads every file in `.agents/rules/` on its own (`.claude` links to `.agents`). Every other agent loads only this file, so read the rule file for your task before you start it.
+
+| Rule file                     | Read it before                                |
+| ----------------------------- | --------------------------------------------- |
+| `.agents/rules/anti-slop.md`  | writing or reviewing any code, page or commit |
+| `.agents/rules/code-style.md` | writing TypeScript or TSX                     |
+| `.agents/rules/commits.md`    | committing                                    |
+
+Numbers live in config, never in rules. Rules point at the config instead of copying it: lint and complexity caps are in the `lint` block of `vite.config.ts`. If a rule and the config disagree, the config wins. Fix the rule in the same change.
 
 ## Repository Structure
 
@@ -18,7 +30,7 @@ The official documentation site for Rixl (`developers.rixl.com`), built with Tan
 - `src/components/` - layout, `mdx/` (MDX components, incl. the API page), `ui/`
 - `src/lib/` - Fumadocs source adapter, OpenAPI pages, i18n, OG generation
 - `src/generated/`, `src/paraglide/`, `src/routeTree.gen.ts` - generated; never edit
-- `content/<locale>/` - MDX documentation (`en` is the source, `de` is translated)
+- `content/en/` - MDX documentation
 - `plugins/` - build-time codegen: icon subset extraction, internal link validation
 - `src/lib/docs.ts` - Fumadocs collections (macro) and frontmatter schemas
 - `wrangler.jsonc` - Cloudflare Worker config (`rixl-docs`, `developers.rixl.com`, previews)
@@ -85,7 +97,7 @@ Deploys: merging to `main` runs CI, which builds and uploads a tagged Worker ver
 
 ### Writing documentation
 
-- Place MDX files in `content/en/` (the `de` locale is translated from it)
+- Place MDX files in `content/en/`
 - Use frontmatter for metadata (title, description, etc.)
 - Follow Fumadocs conventions for file organization
 - Use MDX components from `src/components/mdx/` for rich content
@@ -98,20 +110,3 @@ Deploys: merging to `main` runs CI, which builds and uploads a tagged Worker ver
 - Include practical code examples
 - Link to related documentation
 - Keep code examples up-to-date with the SDK
-
-## TypeScript Requirements
-
-- Never use `any` types – Always use proper TypeScript types
-- Prefer explicit interfaces and type definitions
-- Use generics when appropriate for reusable components
-- Leverage type inference where it improves readability
-
-## Class Name Utilities
-
-Use `cn` for merging Tailwind CSS classes. Do not use `tailwind-merge` or a local `lib/cn` helper.
-
-```tsx
-import {cn} from "cn";
-
-<div className={cn("base-class", props.className, condition && "conditional-class")} />;
-```
