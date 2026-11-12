@@ -1,3 +1,8 @@
+# Run the lefthook pinned in package.json, not a global install, so every
+# machine runs the same hook version.
+lefthook: node_modules/.bin/lefthook
+min_version: 2.2.2
+
 pre-commit:
   parallel: true
   commands:

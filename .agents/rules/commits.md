@@ -16,12 +16,12 @@ A commit records claims: the message and the code. Only commit what has been che
 
 ## Hooks
 
-Lefthook runs them (`lefthook.yml`, installed by `prepare`):
+Lefthook runs them (`lefthook.yml`, installed by `prepare`, using the version pinned in `package.json`):
 
 - **pre-commit:** `vp check --fix` on staged code, JSON, Markdown, YAML and CSS. Fixes are re-staged.
 - **pre-push:** `vp build`, which also checks internal content links (`plugins/vite-plugin-link-check.ts`).
 
-Never skip a hook (`--no-verify`, `LEFTHOOK=0`). If a hook fails, fix the cause.
+Never skip a hook (`--no-verify`, `-n`, `LEFTHOOK=0`, `core.hooksPath`). If a hook fails, fix the cause. For Claude Code this is enforced: `.agents/hooks/no-skip-git-hooks.mjs` blocks those commands.
 
 ## Messages
 
