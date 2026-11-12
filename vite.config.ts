@@ -1,6 +1,7 @@
 import path from "node:path";
 import {paraglideVitePlugin} from "@inlang/paraglide-js";
 import {defineConfig, lazyPlugins} from "vite-plus";
+import {playwright} from "vite-plus/test/browser-playwright";
 import {tanstackStart} from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -53,6 +54,18 @@ function vendorPackageName(id: string): string | null {
   const match = id.match(/node_modules[\\/](?:@[^\\/]+[\\/])?([^\\/]+)/);
   if (!match) return null;
   return `vendor-${match[1]}`;
+}
+
+// The site and both test projects read translated strings through Paraglide's virtual modules.
+function paraglide() {
+  return paraglideVitePlugin({
+    project: "./project.inlang",
+    outdir: "./src/paraglide",
+    // `url` first: the `$lang` route segment is the source of truth for a docs
+    // page. The rest are fallbacks for non-localized entry points, cheapest
+    // lookup first (memory, then cookie).
+    strategy: ["url", "globalVariable", "cookie", "baseLocale"],
+  });
 }
 
 export default defineConfig({
@@ -160,7 +173,10 @@ export default defineConfig({
   test: {
     projects: [
       {
-        // Inline projects don't inherit the root plugins, so tests skip TanStack Start, MDX and Sentry.
+        // Since Vitest 5 an inline project inherits the root config. These don't, so
+        // tests skip TanStack Start, MDX and Sentry.
+        extends: false,
+        plugins: [paraglide()],
         resolve: {alias: {"@": path.resolve(import.meta.dirname, "src")}},
         test: {
           name: "unit",
@@ -168,18 +184,29 @@ export default defineConfig({
           include: ["{src,plugins,scripts}/**/__tests__/**/*.test.{ts,tsx}"],
         },
       },
+      {
+        extends: false,
+        // Tailwind builds the site CSS, so axe checks colour contrast against the real theme.
+        plugins: [paraglide(), tailwindcss()],
+        resolve: {alias: {"@": path.resolve(import.meta.dirname, "src")}},
+        optimizeDeps: {include: ["react", "react-dom/client", "vitest-browser-react", "axe-core"]},
+        test: {
+          name: "browser",
+          include: ["src/**/__tests__/**/*.ct.tsx"],
+          setupFiles: ["./test/setup.browser.ts"],
+          browser: {
+            enabled: true,
+            provider: playwright(),
+            instances: [{browser: "chromium"}],
+            headless: true,
+          },
+        },
+      },
     ],
   },
   plugins: lazyPlugins(async () => [
     linkCheckPlugin(),
-    paraglideVitePlugin({
-      project: "./project.inlang",
-      outdir: "./src/paraglide",
-      // `url` first: the `$lang` route segment is the source of truth for a docs
-      // page. The rest are fallbacks for non-localized entry points, cheapest
-      // lookup first (memory, then cookie).
-      strategy: ["url", "globalVariable", "cookie", "baseLocale"],
-    }),
+    paraglide(),
     extractIconsPlugin(),
     fumadocsMdx(),
     tailwindcss(),

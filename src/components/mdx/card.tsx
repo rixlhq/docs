@@ -3,7 +3,6 @@ import {ArrowUpRight} from "lucide-react";
 import type {HTMLAttributes, ReactNode} from "react";
 import {Icon, type IconName} from "@/components/mdx/icon";
 import {type BrandTheme, getBrandTheme} from "@/components/mdx/card-brand-themes";
-import {m} from "@/paraglide/messages";
 import {cn} from "cn";
 
 type ArrowType = boolean | "true" | "false";
@@ -35,7 +34,6 @@ const showArrow = (href?: string, arrow?: ArrowType) => {
 type CardWrapperProps = Omit<HTMLAttributes<HTMLElement>, "title" | "children"> & {
   href?: string;
   isExternal: boolean;
-  title: ReactNode;
   className?: string;
   children: ReactNode;
 };
@@ -56,12 +54,10 @@ function buildCardClassName(href: string | undefined, brandTheme: BrandTheme | u
   );
 }
 
-function CardWrapper({href, isExternal, title, className, children, ...props}: CardWrapperProps) {
-  const ariaLabel = href && typeof title === "string" ? m.navigateTo({title}) : undefined;
-
+function CardWrapper({href, isExternal, className, children, ...props}: CardWrapperProps) {
   if (!href) {
     return (
-      <div {...props} className={className} aria-label={ariaLabel}>
+      <div {...props} className={className}>
         {children}
       </div>
     );
@@ -69,14 +65,14 @@ function CardWrapper({href, isExternal, title, className, children, ...props}: C
 
   if (isExternal) {
     return (
-      <a {...props} href={href} className={className} aria-label={ariaLabel} target="_blank" rel="noopener noreferrer">
+      <a {...props} href={href} className={className} target="_blank" rel="noopener noreferrer">
         {children}
       </a>
     );
   }
 
   return (
-    <Link {...props} to={href} className={className} aria-label={ariaLabel}>
+    <Link {...props} to={href} className={className}>
       {children}
     </Link>
   );
@@ -150,7 +146,7 @@ export const Card = ({icon, brand, title, description: _description, href, arrow
   const cardClassName = buildCardClassName(href, brandTheme, className);
 
   return (
-    <CardWrapper href={href} isExternal={isExternal} title={title} className={cardClassName} {...props}>
+    <CardWrapper href={href} isExternal={isExternal} className={cardClassName} {...props}>
       <CardContent icon={icon} title={title} href={href} arrow={arrow} brandTheme={brandTheme}>
         {children}
       </CardContent>
