@@ -8,6 +8,7 @@
     "dev": "vp dev",
     "build": "vp build",
     "preview": "vp preview",
+    "lint:suppressions": "! grep -rnE '(eslint|oxlint)-disable' src plugins scripts --include='*.ts' --include='*.tsx' --exclude=routeTree.gen.ts | grep -v ' -- '",
     "generate:icons": "vpx plugins/vite-plugin-extract-icons.ts",
     "generate:paraglide": "paraglide-js compile --project project.inlang --outdir ./src/paraglide",
     "postinstall": "vpr generate:paraglide && vpr generate:icons",

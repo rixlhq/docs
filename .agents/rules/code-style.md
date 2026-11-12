@@ -10,7 +10,7 @@ Lint and complexity caps live in the `lint` block of `vite.config.ts`. `vp check
 ## TypeScript
 
 - Keep strict typing. Don't weaken `tsconfig.json` to make code compile.
-- No `any`.
+- No `any`. A lint suppression states its reason on the same line: `// oxlint-disable-next-line <rule> -- <reason>`.
 - `as` only with a comment on the line above saying why the compiler can't know.
 - Generics only when they make the types more correct.
 - Import `src/*` as `@/*`.

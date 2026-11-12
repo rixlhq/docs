@@ -146,6 +146,9 @@ export default defineConfig({
     options: {
       typeAware: true,
       typeCheck: true,
+      // A warning nobody fixes is noise: `vp check` (hook and CI) fails on any.
+      denyWarnings: true,
+      reportUnusedDisableDirectives: "error",
     },
     jsPlugins: [
       {

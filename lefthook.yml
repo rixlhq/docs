@@ -12,6 +12,9 @@ pre-commit:
         - "*.{json,md,yaml,yml,css}"
       run: vp check --fix {staged_files}
       stage_fixed: true
+    suppressions:
+      glob: "*.{ts,tsx}"
+      run: vp run lint:suppressions
 
 pre-push:
   parallel: true
