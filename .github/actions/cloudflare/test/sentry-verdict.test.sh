@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Tests scripts/rollout/sentry-verdict.jq: when Sentry's numbers roll a
-# release back. Run: mise run test
+# release back. Run: vp run test:actions
 set -euo pipefail
 
 JQ="$(dirname "$0")/../scripts/rollout/sentry-verdict.jq"

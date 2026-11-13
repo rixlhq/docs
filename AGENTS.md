@@ -13,11 +13,13 @@ The official documentation site for Rixl (`developers.rixl.com`), built with Tan
 
 Claude Code loads every file in `.agents/rules/` on its own (`.claude` links to `.agents`). Every other agent loads only this file, so read the rule file for your task before you start it.
 
-| Rule file                     | Read it before                                |
-| ----------------------------- | --------------------------------------------- |
-| `.agents/rules/anti-slop.md`  | writing or reviewing any code, page or commit |
-| `.agents/rules/code-style.md` | writing TypeScript or TSX                     |
-| `.agents/rules/commits.md`    | committing                                    |
+| Rule file                     | Read it before                                 |
+| ----------------------------- | ---------------------------------------------- |
+| `.agents/rules/anti-slop.md`  | writing or reviewing any code, page or commit  |
+| `.agents/rules/code-style.md` | writing TypeScript or TSX                      |
+| `.agents/rules/commits.md`    | committing                                     |
+| `.agents/rules/testing.md`    | writing or reviewing tests                     |
+| `.agents/rules/tdd.md`        | changing code in `src`, `plugins` or `scripts` |
 
 Numbers live in config, never in rules. Rules point at the config instead of copying it: lint and complexity caps are in the `lint` block of `vite.config.ts`. If a rule and the config disagree, the config wins. Fix the rule in the same change.
 

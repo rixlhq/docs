@@ -21,6 +21,11 @@ pre-commit:
       # Tests that import the staged files. A stuck run fails the commit instead of hanging it.
       run: vp test related {staged_files} --run --bail=1
       timeout: 2m
+    actions:
+      glob: ".github/actions/cloudflare/**"
+      # The rollout and Sentry gate scripts, with wrangler, sleep and Sentry stubbed.
+      run: vp run test:actions
+      timeout: 2m
 
 pre-push:
   parallel: true
