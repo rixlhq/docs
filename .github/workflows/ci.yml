@@ -19,6 +19,7 @@ jobs:
     permissions:
       contents: read
       deployments: write
+      pull-requests: write # coverage report comment
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v7
@@ -28,9 +29,32 @@ jobs:
         with:
           cache: true
 
+      - name: 🎭 Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('bun.lock') }}
+
+      - name: ⚙️ Setup Playwright OS dependencies
+        run: vpx playwright install-deps chromium
+
+      - name: ⚙️ Setup Playwright browser
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: vpx playwright install chromium
+
       - parallel:
           - name: 🧩 Check
             run: vp check
+
+          - name: 🔍 Dead code
+            run: vp run knip
+
+          - name: 🚫 Lint suppressions
+            run: vp run lint:suppressions
+
+          - name: 🧪 Action tests
+            run: vp run test:actions
 
           - name: 🛠️ Build
             run: vpr build
@@ -40,6 +64,14 @@ jobs:
               SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
               SENTRY_URL: ${{ vars.SENTRY_URL }}
               SENTRY_AUTH_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.SENTRY_AUTH_TOKEN || '' }}
+
+      # After the build, not beside it: build and test conflict when run in parallel (as in mediasdk).
+      - name: 🧪 Test
+        run: vp test --coverage
+
+      - name: 📊 Report coverage to PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false
+        uses: davelosert/vitest-coverage-report-action@v2
 
       - name: 🚀 Deploy to CF
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false && github.actor != 'dependabot[bot]'

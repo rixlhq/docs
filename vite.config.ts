@@ -171,6 +171,15 @@ export default defineConfig({
     ],
   },
   test: {
+    coverage: {
+      provider: "v8",
+      reporter: ["text-summary", "json-summary", "json"],
+      reportOnFailure: true,
+      include: ["src/**/*.{ts,tsx}", "plugins/**/*.ts", "scripts/**/*.ts"],
+      exclude: ["**/__tests__/**", "src/generated/**", "src/paraglide/**", "src/routeTree.gen.ts", "**/*.d.ts"],
+      // The coverage measured when the floor was set, rounded down. Raise it as tests land; never lower it.
+      thresholds: {statements: 38, branches: 35, functions: 31, lines: 38},
+    },
     projects: [
       {
         // Since Vitest 5 an inline project inherits the root config. These don't, so

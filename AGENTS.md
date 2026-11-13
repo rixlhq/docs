@@ -113,10 +113,11 @@ vp preview           # Preview the production build
 vp check --fix       # Format, lint, type-check; auto-fix what can be fixed
 vp run knip          # Unused files, exports and dependencies
 vp test              # Unit tests (Node) and axe accessibility tests (*.ct.tsx, in Chromium)
+vp test --coverage   # The same, failing below the coverage floor (as CI runs it)
 vpx playwright install chromium   # Once per machine, before the first browser test run
 ```
 
-Deploys: merging to `main` runs CI, which builds and uploads a tagged Worker version; `rollout.yml` (triggered on green CI) smoke-tests and promotes it. docs is a public repo, so it can't call the private shared workflows; port shared-workflow fixes here by hand.
+Deploys: CI runs `vp check`, Knip, the suppression check, the action tests, the build and `vp test --coverage` on every PR. On `main`, CI also uploads a tagged Worker version; `rollout.yml` (triggered on green CI) smoke-tests and promotes it. docs is a public repo, so it can't call the private shared workflows; port shared-workflow fixes here by hand.
 
 ## Documentation Content (MDX)
 

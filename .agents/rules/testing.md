@@ -33,6 +33,10 @@ Tests import Vitest APIs from `vite-plus/test`. Install Chromium once per machin
 - Browser: `__tests__/<name>.ct.tsx`
 - Shared browser helpers and setup: `test/`
 
+## Coverage
+
+CI runs `vp test --coverage` and fails below the floor in the `coverage.thresholds` block of `vite.config.ts`. The floor is the coverage measured when it was set, rounded down. Raise it when tests land; never lower it to make a change pass.
+
 ## Quality gates
 
 - Deterministic: no network, no real clock, no shared state between tests.
