@@ -15,6 +15,7 @@ Test projects are in the `test` block of `vite.config.ts`. Each one sets `extend
 | fast-check          | Property tests for pure functions with wide inputs                               | inside the unit tests, titled `[property] …` |
 | Vitest Browser Mode | MDX components rendered in real Chromium with the site CSS                       | `vp test --project browser`                  |
 | axe-core            | WCAG 2.2 AA checks on those components, in the light and dark theme              | `axeViolations()` from `test/a11y.ts`        |
+| Stryker             | Mutation testing: proves the unit tests notice wrong code                        | `vp run test:mutation`                       |
 | Bash tests          | The Cloudflare rollout and Sentry gate scripts, with wrangler and Sentry stubbed | `vp run test:actions`                        |
 
 Tests import Vitest APIs from `vite-plus/test`. Install Chromium once per machine with `vpx playwright install chromium`.
@@ -24,6 +25,7 @@ Tests import Vitest APIs from `vite-plus/test`. Install Chromium once per machin
 - **Unit** — Logic in `src/lib/`, `src/components/mdx/api-page/` helpers, `plugins/` and `scripts/lib/`. Build plugins run against a temporary `content/` folder made with `fs.mkdtemp`, never the real one. Mock the OpenAPI loader (`src/lib/openapi.server.ts`); tests never fetch the spec or call the API.
 - **fast-check** — Pure functions over URLs, paths, schemas and status codes. Assert an invariant across generated inputs. Property tests widen the inputs; they don't prove the assertions are strong enough.
 - **Browser and axe** — Every component in `src/components/mdx/` that `src/components/mdx-components.tsx` gives to pages gets a test asserting `expect(await axeViolations(container)).toEqual([])` in both themes (`setTheme`). Wrap components that render TanStack `<Link>` in a router. axe finds about a third of accessibility issues: it can't judge whether a label or alt text is meaningful. Components from `@rixl/media-react` (Video, Image, Feed) are tested in mediasdk, not here.
+- **Stryker** — Mutates the code the unit project tests (`mutate` in `stryker.config.mjs`) and reruns those tests. Too slow for pull requests, so `.github/workflows/mutation.yml` runs it report-only every Monday and opens a `mutation-report` issue listing the mutants no test caught. Locally, `vp run test:mutation` is incremental: it retests only what changed.
 - **Bash tests** — Any change to `.github/actions/cloudflare/scripts/` adds or updates a scenario in `.github/actions/cloudflare/test/`.
 
 ## Test location

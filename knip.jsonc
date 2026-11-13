@@ -1,5 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  // Claude Code runs this hook from .agents/settings.json, which Knip doesn't read.
-  "entry": [".agents/hooks/*.mjs"],
+  // Claude Code runs this hook from .agents/settings.json, and stryker.config.mjs names the
+  // Vitest config as a string; Knip reads neither.
+  "entry": [".agents/hooks/*.mjs", "test/stryker.vitest.config.ts"],
 }

@@ -51,3 +51,8 @@ out/
 
 # agent-review working files (drafts, reviewer output, findings register)
 reviews/
+
+# Stryker mutation testing
+.stryker-tmp
+.stryker-cache
+reports/mutation

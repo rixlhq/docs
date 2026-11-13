@@ -20,6 +20,7 @@ Applies to code in `src/`, `plugins/`, `scripts/` and `.github/actions/cloudflar
 - One assertion per test unless the assertions check the same behaviour.
 - Run `vp test` after every green and refactor step.
 - After the unit cycle, add `[property]` tests with fast-check for pure functions.
+- Mutation testing runs weekly in CI (`.github/workflows/mutation.yml`), not per change. When the `mutation-report` issue lists surviving mutants in code you own, kill them with assertions, or delete the code they show nobody needs.
 - A new or changed MDX component gets an axe browser test (`*.ct.tsx`) once its unit tests pass.
 
 ## Commits
