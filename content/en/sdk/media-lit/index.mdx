@@ -1,158 +1,113 @@
 ---
-title: "Lit / Vanilla JS"
-description: "Use RIXL Media SDK web components without a framework"
+title: "Media Lit"
+description: "Lit web components for Rixl images, adaptive HLS video playback, and infinite media feeds, with TypeScript APIs and included styles."
 ---
 
-import {Callout} from "@/snippets";
+Web components for Rixl images, adaptive HLS video playback, and infinite media feeds. Use `@rixl/media-lit` in Lit, vanilla JavaScript, or any application that supports custom elements.
 
-The `@rixl/media-lit` package provides framework-free web components built with [Lit](https://lit.dev/). Each component is available as a tree-shakable subpath import, so you only load the components you use.
+## What you get
 
-## Installation
+- `<rixl-video>`: HLS playback, captions, quality selection, fullscreen, and picture-in-picture.
+- `<rixl-image>`: lazy loading and ThumbHash placeholders when available.
+- `<rixl-feed>`: vertical media feeds with pagination, looping, and automatic advancement.
+- Typed element properties and DOM events.
+- Included styles inside shadow DOM, with no Tailwind CSS setup.
 
-```bash
+These are the UI components used by the Rixl React, Vue, Svelte, Angular, and Astro adapters.
+
+## Install
+
+```sh
 npm install @rixl/media-lit
 ```
 
-All dependencies (`lit`, `@rixl/media-core`, `thumbhash`) ship with the package — there are no peer dependencies to install, and no separate core package to add.
+Lit 3 is included as a dependency. Use an ES-module-aware build tool and a browser with custom-element and shadow-DOM support.
 
-## Authenticate
+## Quick start: vanilla TypeScript
 
-Standalone apps must call `connect()` once before rendering any media component:
+Connect before adding media elements to the document:
 
 ```ts
-import {connect} from "@rixl/media-lit";
+import "@rixl/media-lit/video";
+import {connect} from "@rixl/media-lit/core";
 
 await connect({
   baseUrl: "https://api.rixl.com",
-  apiKey: "your-rixl-api-key",
+  apiKey: "YOUR_PUBLIC_API_KEY",
+});
+
+const video = document.createElement("rixl-video");
+video.videoId = "YOUR_VIDEO_ID";
+video.muted = true;
+video.style.cssText = "display:block;width:100%;aspect-ratio:16/9";
+document.body.append(video);
+```
+
+Use credentials intended for browser access. Reuse the connection if your application already authenticates the shared `@rixl/sdk` client.
+
+## Attributes and properties
+
+For declarative markup added after connecting, use the media ID attributes:
+
+```html
+<rixl-video video-id="YOUR_VIDEO_ID" muted></rixl-video>
+<rixl-image image-id="YOUR_IMAGE_ID" alt="Mountain lake at sunrise"></rixl-image>
+<rixl-feed feed-id="YOUR_FEED_ID" muted></rixl-feed>
+```
+
+Import `/image` and `/feed` before using those tags. The regular HTML `id` attribute identifies the DOM element; `image-id` and `video-id` select Rixl media.
+
+| Element        | ID attribute | JavaScript property |
+| -------------- | ------------ | ------------------- |
+| `<rixl-image>` | `image-id`   | `imageId`           |
+| `<rixl-video>` | `video-id`   | `videoId`           |
+| `<rixl-feed>`  | `feed-id`    | `feedId`            |
+
+Boolean attributes follow HTML presence semantics: `muted="false"` still enables mute. Set a boolean property to `false` in JavaScript or omit the attribute. Property-only options such as `volume` are set in JavaScript.
+
+## Use in a Lit template
+
+After initializing the SDK, render with Lit's property bindings:
+
+```ts
+import {html} from "lit";
+import "@rixl/media-lit/video";
+
+export const player = (videoId: string) => html`
+  <rixl-video .videoId=${videoId} .muted=${true} .volume=${0.7} style="display:block;width:100%;aspect-ratio:16/9"></rixl-video>
+`;
+```
+
+## Events
+
+```ts
+import "@rixl/media-lit/video";
+
+const video = document.querySelector("rixl-video");
+video?.addEventListener("paused-change", (event) => {
+  if (event instanceof CustomEvent) console.log(event.detail.paused);
+});
+video?.addEventListener("rixl-analytics", (event) => {
+  if (event instanceof CustomEvent) console.log(event.detail.event);
 });
 ```
 
-`connect` initializes the shared `@rixl/sdk` HTTP client and seeds the analytics context (`device`, `session`, `navigator`, and user locale). You can also call `initializeAnalyticsContext()` yourself before any analytics event is emitted.
+Video state events include `paused-change` and `loading-change`; Feed emits `mute-change` and `current-index-change`. Image's `loading-change` detail is a boolean; Video's detail is `{loading: boolean}`.
 
-If your host app already uses `@rixl/sdk` and calls `connect()` for its own API calls, the media components will automatically reuse the authenticated client.
+## Styling and rendering
 
-## Using the Components
+Use normal CSS to size and position the hosts. Give images and videos an explicit height or aspect ratio, and feeds a height. The components include their internal styles in shadow DOM; application selectors do not reach internal controls.
 
-Import a single component from its subpath. This loads only that component and its shared dependencies.
+Media contents render in the browser. For a documented server-rendering integration, use the [React](https://www.npmjs.com/package/@rixl/media-react) or [Astro](https://www.npmjs.com/package/@rixl/media-astro) adapter; both render hosts on the server and initialize media in the browser.
 
-### Image
+## Imports
 
-```html
-<script type="module">
-  import "@rixl/media-lit/image";
-</script>
+| Import                  | Purpose                                     |
+| ----------------------- | ------------------------------------------- |
+| `@rixl/media-lit/image` | Register and export `RixlImage`             |
+| `@rixl/media-lit/video` | Register and export `RixlVideo`             |
+| `@rixl/media-lit/feed`  | Register and export `RixlFeed`              |
+| `@rixl/media-lit/core`  | Headless APIs, stores, utilities, and types |
+| `@rixl/media-lit`       | All top-level media components              |
 
-<rixl-image image-id="your-image-id"></rixl-image>
-```
-
-### Video
-
-```html
-<script type="module">
-  import "@rixl/media-lit/video";
-</script>
-
-<!-- Fetch by RIXL video ID -->
-<rixl-video video-id="your-video-id"></rixl-video>
-
-<!-- Or pass a direct HLS URL -->
-<rixl-video src="https://example.com/stream.m3u8"></rixl-video>
-```
-
-### Feed
-
-```html
-<script type="module">
-  import "@rixl/media-lit/feed";
-</script>
-
-<rixl-feed feed-id="your-feed-id"></rixl-feed>
-```
-
-## Available Subpaths
-
-| Subpath                 | Component      | What it registers                                                        |
-| ----------------------- | -------------- | ------------------------------------------------------------------------ |
-| `@rixl/media-lit/image` | `<rixl-image>` | Image component with lazy loading and view analytics                     |
-| `@rixl/media-lit/video` | `<rixl-video>` | Video component with HLS setup and interaction/error analytics           |
-| `@rixl/media-lit/feed`  | `<rixl-feed>`  | Infinite-scroll feed with image and video posts and feed-level analytics |
-
-The default barrel import (`@rixl/media-lit`) also registers all three components if you prefer convenience over bundle splitting.
-
-## Component Attributes
-
-### `<rixl-image>`
-
-| Attribute        | Type                                  | Required | Default        | Description                                   |
-| ---------------- | ------------------------------------- | -------- | -------------- | --------------------------------------------- |
-| `image-id`       | `string`                              | Yes      | —              | RIXL image ID to load and display             |
-| `analytics`      | `boolean`                             | No       | `true`         | Enable analytics                              |
-| `analytics-page` | `"feed" \| "standalone" \| "profile"` | No       | `"standalone"` | View context                                  |
-| `feed-id`        | `string`                              | No       | `""`           | Feed identifier when shown inside a feed      |
-| `post-id`        | `string`                              | No       | `""`           | Post identifier when shown inside a feed      |
-| `is-current`     | `boolean`                             | No       | `false`        | Whether this post is the active viewport item |
-
-### `<rixl-video>`
-
-| Attribute        | Type                                  | Required                   | Default        | Description                              |
-| ---------------- | ------------------------------------- | -------------------------- | -------------- | ---------------------------------------- |
-| `video-id`       | `string`                              | One of `video-id` or `src` | —              | RIXL video ID to load                    |
-| `src`            | `string`                              | One of `video-id` or `src` | —              | Direct HLS / video URL                   |
-| `analytics`      | `boolean`                             | No                         | `true`         | Enable analytics                         |
-| `analytics-page` | `"feed" \| "standalone" \| "profile"` | No                         | `"standalone"` | View context                             |
-| `feed-id`        | `string`                              | No                         | `""`           | Feed identifier when shown inside a feed |
-| `post-id`        | `string`                              | No                         | `""`           | Post identifier when shown inside a feed |
-| `is-current`     | `boolean`                             | No                         | `false`        | Active feed post                         |
-| `autoplay`       | `boolean`                             | No                         | `true`         | Autoplay when visible                    |
-| `muted`          | `boolean`                             | No                         | `true`         | Start muted                              |
-
-The `<rixl-video>` component is a custom Lit player. Set `controls` to enable the built-in control bar, or use `theme="hideUI"` and render your own controls alongside it. It handles HLS setup via `hls.js` when needed.
-
-### `<rixl-feed>`
-
-| Attribute           | Type                                  | Required | Default  | Description                                                       |
-| ------------------- | ------------------------------------- | -------- | -------- | ----------------------------------------------------------------- |
-| `feed-id`           | `string`                              | Yes      | —        | RIXL feed ID                                                      |
-| `loop`              | `boolean`                             | No       | `false`  | Restart from the first post after the last post finishes          |
-| `autoscroll`        | `boolean`                             | No       | `false`  | Auto-advance when the current video ends or after a dwell timeout |
-| `analytics`         | `boolean`                             | No       | `true`   | Enable analytics                                                  |
-| `analytics-page`    | `"feed" \| "standalone" \| "profile"` | No       | `"feed"` | View context                                                      |
-| `initial-index`     | `number`                              | No       | `0`      | Index of the post to show first                                   |
-| `safe-area-tab-bar` | `number`                              | No       | `12`     | Safe-area padding for tab bars (vh units)                         |
-| `muted`             | `boolean`                             | No       | `true`   | Start feed with muted media                                       |
-| `lang`              | `string`                              | No       | `"en"`   | Player language                                                   |
-| `feed-font`         | `string`                              | No       | —        | Font family key for captions/overlays                             |
-
-For React / JS, you can also set `posts` and `onFetchMore` as properties to drive the feed directly instead of fetching by `feedId`.
-
-## Analytics Events
-
-All Lit components dispatch a bubbling, composed `rixl-analytics` custom event. The payload is an `AnalyticsEvent` object:
-
-```html
-<script type="module">
-  import "@rixl/media-lit/image";
-
-  document.addEventListener("rixl-analytics", (e) => {
-    console.log(e.detail.event);
-  });
-</script>
-
-<rixl-image image-id="your-image-id"></rixl-image>
-```
-
-You can also attach the listener directly to the element:
-
-```js
-const image = document.querySelector("rixl-image");
-image.addEventListener("rixl-analytics", (e) => {
-  console.log(e.detail.event);
-});
-```
-
-For details on the event taxonomy and core helpers, see [Analytics Integration](/en/sdk/media-react/video-component/analytics-integration) and [Core API](/en/sdk/media-core/core-api).
-
-## Framework SDKs
-
-For React applications, use [`@rixl/media-react`](/en/sdk/media-react). For Vue 3, Svelte 5, Angular 20+, and Astro 7+, use the dedicated [`@rixl/media-vue`](/en/sdk/media-vue), [`@rixl/media-svelte`](/en/sdk/media-svelte), [`@rixl/media-angular`](/en/sdk/media-angular), and [`@rixl/media-astro`](/en/sdk/media-astro) packages. For vanilla JavaScript, HTML, or other environments, use `@rixl/media-lit` directly.
+Each component subpath registers its tag automatically. An image-only subpath import excludes video, feed, and HLS code.

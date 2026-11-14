@@ -1,268 +1,98 @@
 ---
-title: "Installation"
-description: "Install and configure RIXL Media SDK for React in your project"
+title: "Installation and rendering"
+description: "Install the Rixl React SDK in a SPA, Next.js, or TanStack Start and connect before loading media."
 ---
-
-import {Callout} from "@/snippets";
-import {Steps} from "fumadocs-ui/components/steps";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/tabs";
 
 ## Requirements
 
-Before installing the RIXL Media SDK for React, ensure your project meets these requirements:
+Use React 18 or later for the examples and player hooks. Your app supplies React and React DOM. The SDK includes Core, Lit, HLS support, TypeScript declarations, and player styles.
 
-- **React**: 18.0 or higher
-- **Node.js**: 24.0 or higher
-- **TailwindCSS**: 4.0.9 or higher _(recommended but optional)_
-
-## NPM Installation
-
-Install the RIXL Media SDK for React using your preferred package manager:
-
-<Tabs defaultValue="npm">
-  <TabsList>
-    <TabsTrigger value="npm">npm</TabsTrigger>
-    <TabsTrigger value="yarn">yarn</TabsTrigger>
-    <TabsTrigger value="pnpm">pnpm</TabsTrigger>
-    <TabsTrigger value="bun">bun</TabsTrigger>
-  </TabsList>
-
-<TabsContent value="npm">```bash npm install @rixl/media-react ```</TabsContent>
-
-<TabsContent value="yarn">```bash yarn add @rixl/media-react ```</TabsContent>
-
-<TabsContent value="pnpm">```bash pnpm add @rixl/media-react ```</TabsContent>
-
-  <TabsContent value="bun">
-    ```bash
-    bun add @rixl/media-react
-    ```
-  </TabsContent>
-</Tabs>
-
-## Setting Up Your First Video
-
-### 1. Upload Your Media
-
-Before using the SDK, you need to upload your media content:
-
-<Steps>
-  <Step>
-    **Upload to Dashboard**
-
-    Go to [dash.rixl.com/videos](https://dash.rixl.com/videos) for videos or [dash.rixl.com/images](https://dash.rixl.com/images) for images
-
-  </Step>
-  <Step>
-    **Get Media ID**
-
-    Copy the generated media ID (e.g., `"FU9aVtA88m"`)
-
-  </Step>
-  <Step>
-    **Authenticate and Render**
-
-    Call `connect()` if your app is standalone, then reference the media ID in your React components
-
-  </Step>
-</Steps>
-
-### 2. Import the Components
-
-```tsx
-import {Video, Image, Feed} from "@rixl/media-react";
+```sh
+npm install @rixl/media-react
 ```
 
-### 3. Authenticate the SDK
+No global SDK stylesheet or Tailwind CSS configuration is needed.
 
-All media fetches go through the shared `@rixl/sdk` HTTP client. Choose the mode that matches your app:
+## React SPA
 
-**Embedded mode** — your host app already calls `@rixl/sdk`'s `connect()` for its own API calls. The media SDK will automatically use the same authenticated client, so you do not need to do anything extra.
+Initialize the connection in your entry file before mounting media:
 
-**Standalone mode** — call `connect()` once, before rendering any media component, to exchange your API key for a Bearer token:
+```tsx title="src/main.tsx"
+import {createRoot} from "react-dom/client";
+import {connect} from "@rixl/media-react/core";
+import {Video} from "@rixl/media-react/video";
 
-```tsx
-import {connect} from "@rixl/media-react";
+async function main() {
+  await connect({baseUrl: "https://api.rixl.com", apiKey: "YOUR_PUBLIC_API_KEY"});
+  const container = document.getElementById("root");
+  if (!container) throw new Error("Missing #root element");
+  createRoot(container).render(<Video id="YOUR_VIDEO_ID" muted style={{display: "block", width: "100%", aspectRatio: "16 / 9"}} />);
+}
 
-await connect({
-  baseUrl: "https://api.rixl.com",
-  apiKey: "your-rixl-api-key",
-});
+main().catch(console.error);
 ```
 
-`connect` is re-exported from `@rixl/media-react` for convenience — components, hooks, upload helpers, analytics, and stores all come from this single package.
+Use credentials intended for browser access. If your host already authenticates the shared `@rixl/sdk` client, reuse that connection.
 
-### 4. Use in Your Component
+## Next.js App Router and TanStack Start
 
-```tsx
-import {Video} from "@rixl/media-react";
+Use the same React package. The UI entries and hooks preserve `"use client"`; `/core` and the root barrel remain outside that client boundary. No separate Rixl framework package or `ssr.noExternal` setting is needed.
 
-function App() {
-  return (
-    <div className="container mx-auto p-4">
-      <h1>My First RIXL Video</h1>
-      <Video id="D3OCjdLP60" className="w-full h-auto rounded-lg" analyticsPage="standalone" />
-    </div>
-  );
+For a page that connects in the browser, use a client component that waits before mounting media:
+
+```tsx title="components/MediaExample.tsx"
+"use client";
+
+import {useEffect, useState} from "react";
+import {connect} from "@rixl/media-react/core";
+import {Video} from "@rixl/media-react/video";
+
+export default function MediaExample() {
+  const [ready, setReady] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+    connect({baseUrl: "https://api.rixl.com", apiKey: "YOUR_PUBLIC_API_KEY"})
+      .then(() => {
+        if (active) setReady(true);
+      })
+      .catch(() => {
+        if (active) setError("Unable to connect to Rixl.");
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (error) return <p role="alert">{error}</p>;
+  if (!ready) return <p role="status">Loading media…</p>;
+  return <Video id="YOUR_VIDEO_ID" muted style={{display: "block", aspectRatio: "16 / 9"}} />;
 }
 ```
 
-<Callout type="info">
-  Need custom controls instead of the built-in player UI? Use the public [Hooks](/en/sdk/media-react/hooks) inside a `<VideoPlayer>` scope. The player-scope hooks bind to the enclosing player scope, not directly to `<Video>`.
-</Callout>
+Import this component from your Next.js page or render it in a TanStack Start route. In an app with several media sections, initialize the shared browser connection at their common boundary instead of reconnecting per player.
 
-## Basic Implementation Example
+This example renders its loading state on the server. When media components themselves are server-rendered, React produces custom-element hosts and supplied children. The internal image, video, controls, and feed items render in the browser. Put essential page text and metadata in your application's server HTML.
 
-```tsx
-import {Video, Image, Feed} from "@rixl/media-react";
+Keep server credentials in server code. Callbacks, refs, and player hooks belong inside client components.
 
-function MediaShowcase() {
-  return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
-      {/* Hero Video */}
-      <section className="text-center">
-        <h1 className="text-3xl font-bold mb-4">Welcome to Our Platform</h1>
-        <Video id="FU9aVtA88m" className="w-full h-auto rounded-xl shadow-lg" />
-      </section>
+## Styling and imports
 
-      {/* Image Gallery */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">Featured Images</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Image id="featured-1" className="aspect-square object-cover rounded-lg" />
-          <Image id="featured-2" className="aspect-square object-cover rounded-lg" />
-          <Image id="featured-3" className="aspect-square object-cover rounded-lg" />
-        </div>
-      </section>
-
-      {/* Background Video */}
-      <section className="relative h-96 rounded-xl overflow-hidden">
-        <Video id="background-video" className="absolute inset-0 w-full h-full object-cover" autoPlay={true} muted={true} />
-        <div className="relative z-10 flex items-center justify-center h-full">
-          <h2 className="text-4xl font-bold text-white text-center">Beautiful Background Video</h2>
-        </div>
-      </section>
-
-      {/* Feed */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">Latest Posts</h2>
-        <Feed feedId="latest-posts" analyticsPage="feed" />
-      </section>
-    </div>
-  );
-}
-
-export default MediaShowcase;
-```
-
-## Server-Side Rendering (Next.js / TanStack Start)
-
-The same `@rixl/media-react` package works with SSR — no separate wrapper, adapter plugin, `ssr: false` wrapper, or `<ClientOnly>` needed. The `/core` entry remains usable on the server.
-
-During SSR or static prerendering, React renders the `<rixl-image>`, `<rixl-video>`, and `<rixl-feed>` host tags and any children you supply. In the browser, React restores component properties and Lit renders their shadow DOM. The inner `<img>`, `<video>`, player controls, and feed items are **not rendered into the initial server HTML** — JavaScript is required to display and operate them.
-
-Passing `imageData`, `videoData`, or `posts` from a server loader avoids an additional media-data request in the browser. Set component dimensions or an aspect ratio for stable page layout, and render essential page text and metadata in your application when they must be present in the initial HTML.
-
-### Next.js App Router
-
-The public UI entries preserve `"use client"`, so a Server Component can import components directly:
+Give images and videos a height or aspect ratio and feeds a height. `className` and `style` configure the host layout; internal player styles live in shadow DOM.
 
 ```tsx
-// app/page.tsx — Server Component
 import {Image} from "@rixl/media-react/image";
-import type {ImageData} from "@rixl/media-react/core";
-import {loadImageData} from "./data";
-
-export default async function Page() {
-  const imageData: ImageData = await loadImageData();
-  return <Image imageData={imageData} analytics={false} alt="Mountain landscape" />;
-}
+import {Video, VideoPlayer} from "@rixl/media-react/video";
+import {Feed} from "@rixl/media-react/feed";
+import {usePlayback, usePlayerProgress} from "@rixl/media-react";
 ```
 
-Pass serializable data across the server/client boundary. Event handlers, refs, and player hooks belong in your own `"use client"` components. When loading media by ID, initialize the shared SDK in a client component and await `connect` before mounting the media components. Only send credentials intended for client use to the browser.
+An image-only subpath import excludes video, feed, and HLS code. Remove obsolete imports of `@rixl/media-react/style.css` or `/dev` when migrating.
 
-### TanStack Start
+## Troubleshooting
 
-Use your normal TanStack Start configuration — no Rixl-specific `ssr.noExternal` setting or CSS import is needed:
-
-```tsx
-// src/routes/media.tsx
-import {createFileRoute} from "@tanstack/react-router";
-import {Image} from "@rixl/media-react/image";
-import {loadImageData} from "../data";
-
-export const Route = createFileRoute("/media")({
-  loader: () => loadImageData(),
-  component: MediaPage,
-});
-
-function MediaPage() {
-  const imageData = Route.useLoaderData();
-  return <Image imageData={imageData} analytics={false} alt="Mountain landscape" />;
-}
-```
-
-Use a server function when the loader needs private credentials. If components fetch by ID or send analytics, initialize the shared SDK in the browser before mounting them.
-
-## Styling Setup (Optional)
-
-### With TailwindCSS
-
-If you're using TailwindCSS (recommended), the examples above will work out of the box. Ensure TailwindCSS is properly configured in your project.
-
-Component styles live inside their shadow DOM — the SDK builds no global stylesheet and your app needs no CSS import for the player UI. When migrating from the older React UI, remove `import "@rixl/media-react/style.css"`; that entry is no longer exported.
-
-### Without TailwindCSS
-
-You can use regular CSS classes or CSS-in-JS solutions:
-
-```tsx
-// Using regular CSS classes
-<Video
-  id="D3OCjdLP60"
-  className="custom-video-player"
-/>
-
-<Image
-  id="hero-image"
-  className="custom-image"
-/>
-```
-
-```css
-/* styles.css */
-.custom-video-player {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.custom-image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-```
-
-### Troubleshooting
-
-<Callout type="warning">
-  **Media not loading?** - Verify your media ID is correct - Check that the media exists in your RIXL dashboard - Ensure you have proper
-  network connectivity
-</Callout>
-
-<Callout type="info">**TypeScript errors?** - Ensure you're using React 18+ - Update your `@types/react` package if needed</Callout>
-
-<Callout type="info">
-  **Style issues?** - Check that your CSS framework is properly configured - Verify className props are being applied correctly
-</Callout>
-
-## What's Next?
-
-Now that you have the RIXL Media SDK installed and working:
-
-- Learn about [Video Component](/en/sdk/media-react/video-component) properties and advanced features
-- Explore [Hooks](/en/sdk/media-react/hooks) when you want custom controls or player state
-- Explore [Image Component](/en/sdk/media-react/image-component) optimization options
-- Browse [SDK Overview](/en/sdk/media-react) for complete documentation
+- Media is blank: await the browser connection, provide a valid media ID, and set host dimensions.
+- Autoplay is blocked: request muted autoplay and account for the browser's playback policy.
+- A hook cannot find its player: render it inside `Video` or a shared `VideoPlayer` scope.
+- Host classes do not change controls: configure the player through props; internal controls are inside shadow DOM.

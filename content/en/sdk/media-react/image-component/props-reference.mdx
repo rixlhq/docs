@@ -1,134 +1,42 @@
 ---
-title: "Props Reference"
-description: "Complete API reference for all Image component props and TypeScript interfaces"
+title: "Image props reference"
+description: "Configure Rixl React image IDs, alt text, layout, loading callbacks, and analytics."
 ---
 
-import {Callout} from "@/snippets";
+Use `ImageProps` from the package for the full TypeScript contract:
 
-## Core Props
+```ts
+import type {ImageProps} from "@rixl/media-react/image";
 
-### `id` **(Optional when `imageData` is provided)**
+export const imageProps = {
+  id: "YOUR_IMAGE_ID",
+  alt: "Mountain lake at sunrise",
+  analytics: true,
+} satisfies ImageProps;
+```
 
-**Type:** `string`
+## Props
 
-The unique image identifier from your RIXL dashboard. Upload your image to [dash.rixl.com/images](https://dash.rixl.com/images) to get this ID.
+| Prop                 | Type                                  | Default                       | Purpose                                   |
+| -------------------- | ------------------------------------- | ----------------------------- | ----------------------------------------- |
+| `id`                 | `string`                              | —                             | Rixl image ID to load through the SDK     |
+| `alt`                | `string`                              | File name                     | Description of the rendered image         |
+| `analytics`          | `boolean`                             | `true`                        | Enable image analytics                    |
+| `analyticsPage`      | `"standalone" \| "feed" \| "profile"` | `"standalone"`                | View context                              |
+| `isCurrent`          | `boolean`                             | `true` when an ID is supplied | Active image state for analytics          |
+| `feedId`, `postId`   | `string`                              | —                             | Feed context                              |
+| `className`, `style` | React host attributes                 | —                             | Dimensions and layout                     |
+| `onLoadingChange`    | `(loading: boolean) => void`          | —                             | Loading state callback                    |
+| `onRixlAnalytics`    | Custom event callback                 | —                             | Analytics payload at `event.detail.event` |
+
+Published components resolve `id` through the SDK. Supplying `imageData` does not bypass that request in npm builds.
+
+## Layout
 
 ```tsx
-<Image id="your-image-id" />
+<Image id="YOUR_IMAGE_ID" alt="Mountain lake at sunrise" style={{display: "block", width: "100%", aspectRatio: "16 / 9"}} />
 ```
 
-### `imageData` **(Optional)**
+Give the host a height or aspect ratio. Internal image styles live in shadow DOM, so host classes do not set the inner image's `object-fit` or other styles. Use meaningful alt text; do not rely on a generated file name for an editorial image.
 
-**Type:** `ImageData`
-
-Pre-fetched image metadata returned from `getImage()`. When `imageData` is provided, the SDK skips the network fetch.
-
-```tsx
-import {getImage, Image} from "@rixl/media-react";
-
-const imageData = await getImage("your-image-id");
-
-<Image imageData={imageData} />;
-```
-
-### `alt` **(Optional)**
-
-**Type:** `string`
-
-Alt text for the rendered `<img>`. If omitted, the component falls back to `imageData.file.name`.
-
-```tsx
-<Image id="your-image-id" alt="A sunset over the mountains" />
-```
-
-### `className` **(Optional)**
-
-**Type:** `string` | **Default:** `undefined`
-
-CSS classes for styling the image container. Supports all CSS frameworks including TailwindCSS.
-
-```tsx
-<Image id="your-image-id" className="object-contain w-full h-full rounded-lg shadow-md" />
-```
-
-## Analytics Props
-
-### `analytics` **(Optional)**
-
-**Type:** `boolean` | **Default:** `true`
-
-Enables built-in view tracking for images. When enabled, the SDK automatically tracks `content_views` `start`/`watch`/`end` events and `image_click` interactions.
-
-```tsx
-<Image id="your-image-id" analytics={true} />
-```
-
-### `analyticsPage` **(Optional)**
-
-**Type:** `"feed" | "standalone" | "profile"` | **Default:** `"standalone"`
-
-Specifies the page context for analytics reporting.
-
-```tsx
-<Image id="your-image-id" analyticsPage="profile" />
-```
-
-**Available Contexts:**
-
-- `'standalone'` - Image on its own dedicated page
-- `'feed'` - Image within a scrolling feed
-- `'profile'` - Image on a user profile page
-
-### `feedId` **(Optional)**
-
-**Type:** `string` | **Default:** `undefined`
-
-Feed identifier when the image is rendered inside a feed. `<Feed>` automatically propagates this value to child images.
-
-```tsx
-<Image id="your-image-id" feedId="my-feed" postId="post-123" />
-```
-
-### `postId` **(Optional)**
-
-**Type:** `string` | **Default:** `undefined`
-
-Post identifier when the image is rendered inside a feed.
-
-### `isCurrent` **(Optional)**
-
-**Type:** `boolean` | **Default:** `false`
-
-Marks this post as the active viewport item. `<Feed>` sets this automatically on the currently visible post.
-
-### `onRixlAnalytics` **(Optional)**
-
-**Type:** `(event: CustomEvent<{ event: AnalyticsEvent }>) => void`
-
-Called whenever an analytics event is dispatched. Use this to inspect or forward analytics payloads.
-
-```tsx
-<Image id="your-image-id" onRixlAnalytics={(e) => console.log(e.detail.event)} />
-```
-
-## TypeScript Interface
-
-```typescript
-interface ImageProps {
-  id?: string;
-  imageData?: ImageData;
-  alt?: string;
-  className?: string;
-  analytics?: boolean;
-  analyticsPage?: "feed" | "standalone" | "profile";
-  feedId?: string;
-  postId?: string;
-  isCurrent?: boolean;
-  onRixlAnalytics?: (event: CustomEvent<{event: AnalyticsEvent}>) => void;
-}
-```
-
-<Callout type="info">
-  The `Image` component forwards all props listed above. Standard HTML attributes such as `alt` and `className` are applied directly to the
-  rendered output.
-</Callout>
+A ref receives the underlying `RixlImage` element.

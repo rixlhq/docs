@@ -256,7 +256,7 @@ The video analytics controller collects segments as the user plays, pauses, seek
 For custom players or server-side logic, use the core analytics helpers:
 
 ```ts
-import {postContentEvent, postEngagement, postInteraction, postError, initializeAnalyticsContext} from "@rixl/media-react";
+import {postContentEvent, postEngagement, postInteraction, postError, initializeAnalyticsContext} from "@rixl/media-react/core";
 
 initializeAnalyticsContext();
 
@@ -298,7 +298,7 @@ postError({
 You can also build a low-level array and pass it to `postAnalytics`:
 
 ```ts
-import {postAnalytics, type ContentViewEvent} from "@rixl/media-react";
+import {postAnalytics, type ContentViewEvent} from "@rixl/media-react/core";
 
 const event: ContentViewEvent = {
   _type: "content_views",

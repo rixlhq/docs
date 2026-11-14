@@ -1,153 +1,62 @@
 ---
-title: "Basic Usage"
-description: "Learn how to implement the Video component with common patterns and use cases"
+title: "Video usage"
+description: "Load Rixl videos in React, request muted autoplay, handle events, and build scoped controls."
 ---
 
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/tabs";
-import {Callout} from "fumadocs-ui/components/callout";
+Authenticate before mounting media; see [Installation](/en/sdk/media-react/getting-started/installation).
 
-## Importing the Video Component
-
-```tsx
-import {Video} from "@rixl/media-react";
-```
-
-## Essential Props
-
-Every Video component needs at minimum:
+## Standard player
 
 ```tsx
-<Video
-  id="your-video-id" // Required: Your video ID from dash.rixl.com/videos
-/>
-```
+import {Video} from "@rixl/media-react/video";
 
-## Simple Video Player
-
-```tsx
-import {Video} from "@rixl/media-react";
-
-function BasicVideo() {
-  return (
-    <div className="max-w-4xl mx-auto">
-      <Video id="your-video-id" className="w-full h-auto rounded-lg" analyticsPage="standalone" />
-    </div>
-  );
-}
-```
-
-## Listening to Analytics Events
-
-```tsx
-import {Video} from "@rixl/media-react";
-
-function AnalyticsVideo() {
+export function Player() {
   return (
     <Video
-      id="your-video-id"
-      analyticsPage="standalone"
-      onRixlAnalytics={(e) => {
-        console.log("Analytics event:", e.detail.event);
-      }}
+      id="YOUR_VIDEO_ID"
+      style={{display: "block", width: "100%", aspectRatio: "16 / 9"}}
+      onPausedChange={(paused) => console.log("Paused:", paused)}
+      onRixlAnalytics={(event) => console.log(event.detail.event)}
     />
   );
 }
 ```
 
-## Common Use Cases
+The media ID is resolved through the Rixl SDK. State callbacks use booleans; analytics callbacks receive a custom event.
 
-<Tabs defaultValue="hero">
-  <TabsList>
-    <TabsTrigger value="hero">Hero Background</TabsTrigger>
-    <TabsTrigger value="contained">Contained Player</TabsTrigger>
-  </TabsList>
-
-  <TabsContent value="hero">
-    ```tsx
-    function HeroVideo() {
-      return (
-        <section className="relative h-screen overflow-hidden">
-          <Video
-            id="hero-video-id"
-            autoPlay
-            muted
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="relative z-10 flex items-center justify-center h-full">
-            <h1 className="text-4xl font-bold text-white">Welcome</h1>
-          </div>
-        </section>
-      );
-    }
-    ```
-  </TabsContent>
-
-  <TabsContent value="contained">
-    ```tsx
-    function ContainedVideo() {
-      return (
-        <section className="max-w-4xl mx-auto py-12">
-          <div className="aspect-video rounded-xl overflow-hidden">
-            <Video
-              id="video-id"
-              className="w-full h-full"
-            />
-          </div>
-        </section>
-      );
-    }
-    ```
-  </TabsContent>
-</Tabs>
-
-### Autoplay Preview
+## Muted autoplay
 
 ```tsx
-function HoverPreview() {
+<Video id="YOUR_VIDEO_ID" autoPlay muted loop theme="hideUI" style={{display: "block", width: "100%", aspectRatio: "16 / 9"}} />
+```
+
+Set `muted` explicitly when requesting autoplay. Browser policies can still restrict playback. Provide a pause control for a background video when appropriate.
+
+## Custom controls
+
+```tsx
+import {Video, VideoPlayer} from "@rixl/media-react/video";
+import {usePlayback} from "@rixl/media-react";
+
+function PlayButton() {
+  const {paused, togglePlay} = usePlayback();
   return (
-    <div className="w-64 aspect-video">
-      <Video id="preview-video-id" autoPlay muted className="w-full h-full object-cover" />
-    </div>
+    <button type="button" onClick={() => void togglePlay()}>
+      {paused ? "Play" : "Pause"}
+    </button>
+  );
+}
+
+export function CustomPlayer() {
+  return (
+    <VideoPlayer>
+      <Video id="YOUR_VIDEO_ID" theme="hideUI" style={{display: "block", aspectRatio: "16 / 9"}} />
+      <PlayButton />
+    </VideoPlayer>
   );
 }
 ```
 
-### Feed Video
+A `VideoPlayer` scope contains one video. Controls can alternatively be children of `Video`, which supplies a scope automatically.
 
-```tsx
-import {Feed} from "@rixl/media-react";
-
-function FeedPage() {
-  return <Feed feedId="my-feed" analyticsPage="feed" onRixlAnalytics={(e) => console.log(e.detail.event)} />;
-}
-```
-
-## Custom Control UI
-
-The built-in RIXL player provides a default control bar, but you can also build your own controls with `theme="hideUI"` and drive the player from `onRixlAnalytics` or your own state.
-
-```tsx
-function CustomControlsVideo() {
-  return (
-    <div className="relative w-full aspect-video">
-      <Video id="video-id" theme="hideUI" className="w-full h-full" />
-      {/* Render your own controls here as siblings */}
-    </div>
-  );
-}
-```
-
-See the [Player Controls](/en/sdk/media-react/video-component/player-controls) guide for all available UI props.
-
-## Best Practices
-
-<Callout type="default">**Aspect Ratios**: Use CSS aspect-ratio classes to prevent layout shifts during video loading.</Callout>
-
-<Callout type="info">
-  **Autoplay**: The SDK mutes autoplay by default to satisfy browser policies. For background videos, keep `muted={true}`.
-</Callout>
-
-<Callout type="info">
-  **Custom themes**: Use `theme`, `controls`, `progressBar`, `allowFullscreen`, `heatmap`, `chapters`, and other UI props to configure the
-  built-in player.
-</Callout>
+Host classes and inline styles configure layout, not the internal controls. See [Video props](/en/sdk/media-react/video-component/props-reference) and [Hooks](/en/sdk/media-react/hooks) for more.

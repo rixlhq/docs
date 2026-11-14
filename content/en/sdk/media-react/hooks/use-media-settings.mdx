@@ -7,8 +7,9 @@ import {Callout} from "fumadocs-ui/components/callout";
 
 `useMediaSettings()` exposes player-scoped audio state and actions.
 
-<Callout type="warning">
-  This hook requires a `VideoPlayer` scope and a scope-aware media element. The standalone `<Video>` component does not participate in this scope.
+<Callout type="info">
+  Use this hook inside `Video` children, or inside a shared `VideoPlayer` that contains one `Video`. The player scope is resolved
+  automatically.
 </Callout>
 
 ## Signature
@@ -30,7 +31,7 @@ It returns:
 ## Example
 
 ```tsx
-import {VideoPlayer, useMediaSettings} from "@rixl/media-react";
+import {Video, VideoPlayer, useMediaSettings} from "@rixl/media-react";
 
 function CustomVolumeControls() {
   const {muted, volume, toggleMute, setVolume} = useMediaSettings();
@@ -50,7 +51,7 @@ function CustomPlayer() {
   return (
     <VideoPlayer>
       <CustomVolumeControls />
-      {/* scope-aware media element */}
+      <Video id="YOUR_VIDEO_ID" theme="hideUI" style={{display: "block", aspectRatio: "16 / 9"}} />
     </VideoPlayer>
   );
 }

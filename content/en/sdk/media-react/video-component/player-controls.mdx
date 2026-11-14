@@ -7,7 +7,7 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/t
 import {Callout} from "fumadocs-ui/components/callout";
 
 <Callout type="info">
-  The `Video` component provides a fully featured video player beyond raw HTML `<video>`. You can configure the built-in UI using props such as `theme`, `controls`, `progressBar`, `allowFullscreen`, and `allowPictureInPicture`, or build custom controls with `theme="hideUI"` and `onRixlAnalytics`.
+  The `Video` component provides a fully featured video player beyond raw HTML `<video>`. You can configure the built-in UI using props such as `theme`, `controls`, `progressBar`, `allowFullscreen`, and `allowPictureInPicture`, or build custom controls with `theme="hideUI"` and the scoped player hooks.
 </Callout>
 
 ## Built-in UI
@@ -19,7 +19,7 @@ The player ships with a built-in control bar and several themes.
 | `controls`              | `boolean` | `true`    | Show the built-in control bar.                             |
 | `theme`                 | `string`  | `default` | `default`, `minimal`, `feed`, `hover`, `hideUI`.           |
 | `progressBar`           | `boolean` | `true`    | Show the progress/seek bar.                                |
-| `showChapters`          | `boolean` | `true`    | Render chapter markers on the progress bar.                |
+| `chapters`              | `boolean` | `true`    | Render chapter markers on the progress bar.                |
 | `heatmap`               | `boolean` | `true`    | Show an engagement heatmap overlay when data is available. |
 | `hotSegments`           | `boolean` | `false`   | Highlight hot (high-engagement) segments.                  |
 | `allowPlayPause`        | `boolean` | `true`    | Allow play/pause toggles.                                  |
@@ -36,7 +36,7 @@ import {Video} from "@rixl/media-react";
 
 ## Standard Media Attributes
 
-The player also accepts standard media attributes, which it forwards to the underlying media element:
+The adapter maps these supported playback props to the shared player:
 
 | Attribute     | Type      | Description                                     |
 | ------------- | --------- | ----------------------------------------------- |

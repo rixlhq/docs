@@ -3,16 +3,13 @@ title: "Video: Standard Video Player"
 description: "Complete guide to the standard video player with built-in RIXL controls and analytics"
 ---
 
-import {Video} from "@/snippets";
 import {Callout} from "fumadocs-ui/components/callout";
 
 The standard video player provides a complete, professional media experience using the RIXL video player with adaptive HLS streaming. This is the most common implementation for content platforms, educational sites, and any application requiring full video playback capabilities.
 
-## Live Example
+## Before you start
 
-<div className="w-full aspect-video rounded-lg overflow-hidden">
-  <Video id="your-video-id" className="w-full h-full" analyticsPage="standalone" controls theme="default" />
-</div>
+[Connect the SDK](/en/sdk/media-react/getting-started/installation) before mounting media. Replace the placeholder IDs in the implementation below with IDs from your Rixl project.
 
 ## Complete Implementation
 
@@ -98,8 +95,8 @@ function ResponsivePlayer() {
 </Callout>
 
 <Callout type="info">
-  **Autoplay Policy**: The SDK mutes autoplay by default to satisfy browser policies. Use `autoPlay={true}` and `muted={true}` for
-  background videos.
+  **Autoplay Policy**: Set `muted={true}` when requesting autoplay; browser playback policy still applies. Use `autoPlay={true}` and `muted=
+  {true}` for background videos.
 </Callout>
 
 <Callout type="info">

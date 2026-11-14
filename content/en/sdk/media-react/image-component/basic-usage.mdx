@@ -1,159 +1,50 @@
 ---
-title: "Basic Usage"
-description: "Learn how to implement the Image component with common patterns and examples"
+title: "Image usage"
+description: "Load Rixl images by ID in React and configure layout, alt text, loading callbacks, and analytics."
 ---
 
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/tabs";
-import {Callout} from "fumadocs-ui/components/callout";
-
-# Basic Usage
-
-## Importing the Image Component
+Connect before mounting media, as shown in [Installation](/en/sdk/media-react/getting-started/installation).
 
 ```tsx
-import {Image} from "@rixl/media-react";
-```
+import {Image} from "@rixl/media-react/image";
 
-## Essential Props
-
-Every Image component needs at minimum:
-
-```tsx
-<Image
-  id="your-image-id" // Required: Your image ID from dash.rixl.com/images
-/>
-```
-
-Pass `id` or pre-fetched `imageData` to display the image asset. `className` and `alt` are supported for styling and accessibility.
-
-## Simple Image Display Example
-
-```tsx
-import {Image} from "@rixl/media-react";
-
-function BasicImage() {
-  return (
-    <div className="max-w-2xl mx-auto">
-      <Image id="your-image-id" className="object-contain w-full h-full rounded-lg" analyticsPage="standalone" />
-    </div>
-  );
-}
-```
-
-## Listening to Analytics Events
-
-```tsx
-import {Image} from "@rixl/media-react";
-
-function AnalyticsImage() {
+export function HeroImage() {
   return (
     <Image
-      id="your-image-id"
-      analyticsPage="profile"
-      onRixlAnalytics={(e) => {
-        console.log("Analytics event:", e.detail.event);
-      }}
+      id="YOUR_IMAGE_ID"
+      alt="Mountain lake at sunrise"
+      style={{display: "block", width: "100%", aspectRatio: "16 / 9"}}
+      onLoadingChange={(loading) => console.log("Loading:", loading)}
+      onRixlAnalytics={(event) => console.log(event.detail.event)}
     />
   );
 }
 ```
 
-## Common Use Cases
+`id` selects the Rixl image. Production components fetch through the SDK; supplied `imageData` does not replace that request.
 
-### Hero Image
+## Galleries
 
-<Tabs defaultValue="hero">
-  <TabsList>
-    <TabsTrigger value="hero">Full Width Hero</TabsTrigger>
-    <TabsTrigger value="contained">Contained Hero</TabsTrigger>
-  </TabsList>
-
-  <TabsContent value="hero">
-    ```tsx
-    function HeroImage() {
-        return (
-            <section className="relative h-96 overflow-hidden">
-                <Image
-                    id="hero-image-id"
-                    className="absolute inset-0 w-full h-full object-cover"
-                />
-
-                <div className="relative z-10 flex items-center justify-center h-full">
-                    <h1 className="text-4xl font-bold text-white">Welcome</h1>
-                </div>
-            </section>
-        );
-    }
-    ```
-
-  </TabsContent>
-
-  <TabsContent value="contained">
-    ```tsx
-    function ContainedHero() {
-
-    return (
-        <section className="max-w-4xl mx-auto py-12">
-            <div className="aspect-video rounded-xl overflow-hidden">
-                <Image
-                id="hero-image-id"
-                className="w-full h-full object-cover"
-                />
-            </div>
-        </section>
-    );
-
-}
-
-````
-
-  </TabsContent>
-</Tabs>
-
-### Image Gallery
+Render one component per media ID and provide dimensions for each host:
 
 ```tsx
-const galleryImages = [{id: "image-1"}, {id: "image-2"}, {id: "image-3"}, {id: "image-4"}];
+import {Image} from "@rixl/media-react/image";
 
-function ImageGallery() {
+export function Gallery({images}: {images: {id: string; alt: string}[]}) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {galleryImages.map((image) => (
-        <div key={image.id} className="aspect-square rounded-lg overflow-hidden">
-          <Image id={image.id} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
-        </div>
+    <div style={{display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "1rem"}}>
+      {images.map((image) => (
+        <Image key={image.id} id={image.id} alt={image.alt} style={{display: "block", width: "100%", aspectRatio: "1"}} />
       ))}
-    </div>
-  );
-}
-````
-
-### Profile/Avatar Images
-
-```tsx
-function UserProfile() {
-  return (
-    <div className="flex items-center space-x-4">
-      <div className="w-16 h-16 rounded-full overflow-hidden">
-        <Image id="user-avatar-id" className="w-full h-full object-cover" />
-      </div>
-      <div>
-        <h3 className="font-semibold">John Doe</h3>
-        <p className="text-gray-600">Software Engineer</p>
-      </div>
     </div>
   );
 }
 ```
 
-## Best Practices
+## Styling
 
-<Callout type="default">**Aspect Ratios**: Use CSS aspect ratio classes to prevent layout shifts during image loading.</Callout>
+Use the host for spacing, dimensions, border radius, and clipping. Internal image styles live in shadow DOM. An `object-cover` class on the host does not change the inner image's fit mode.
 
-<Callout type="warning">
-  **Object Fit**: Use `object-contain` to preserve aspect ratio or `object-cover` to fill the container while cropping if necessary.
-</Callout>
+Use meaningful alt text for content images. The file name is only a fallback.
 
-<Callout type="info">
-  **Analytics**: Analytics are enabled by default. Provide `analyticsPage` (or let a parent `<Feed>` set it) so view events are correctly attributed.
-</Callout>
+See [Image props](/en/sdk/media-react/image-component/props-reference) for the typed contract.

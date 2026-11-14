@@ -3,22 +3,11 @@ title: "Image: Hero Image Display"
 description: "Full-width hero images with responsive scaling and text overlay support"
 ---
 
-import {Image} from "@/snippets";
 import {Callout} from "fumadocs-ui/components/callout";
 
-## Live Example
+## Before you start
 
-<div className="relative w-full h-[500px] rounded-lg overflow-hidden">
-    <Image
-        id="your-hero-image-id"
-        className="w-full h-full object-cover"
-    />
-
-    <div className="absolute w-full inset-0 flex items-center justify-center bg-black/30">
-        <h1 className="text-white text-5xl font-bold">Welcome</h1>
-    </div>
-
-</div>
+[Connect the SDK](/en/sdk/media-react/getting-started/installation) before mounting media. Replace the placeholder IDs in the implementation below with IDs from your Rixl project.
 
 ## Basic Implementation
 
@@ -28,7 +17,7 @@ import {Image} from "@rixl/media-react";
 export function HeroSection() {
   return (
     <div className="relative w-full h-[500px] rounded-lg overflow-hidden">
-      <Image id="your-hero-image-id" className="w-full h-full object-cover" />
+      <Image id="your-hero-image-id" className="w-full h-full" />
 
       <div className="absolute w-full inset-0 flex items-center justify-center bg-black/30">
         <h1 className="text-white text-5xl font-bold">Welcome</h1>
@@ -59,7 +48,7 @@ Available:
 
 ```tsx
 <div className="relative w-full h-screen">
-  <Image id="landing-hero" className="w-full h-full object-cover" />
+  <Image id="landing-hero" className="w-full h-full" />
   <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/20">
     <div className="container mx-auto h-full flex flex-col justify-center px-6">
       <h1 className="text-white text-6xl font-bold mb-4">Your Title Here</h1>
@@ -75,7 +64,7 @@ Available:
 ```tsx
 <section className="grid md:grid-cols-2 gap-0">
   <div className="relative h-[400px]">
-    <Image id="feature-image" className="w-full h-full object-cover" />
+    <Image id="feature-image" className="w-full h-full" />
   </div>
   <div className="flex items-center p-12 bg-gray-50">
     <div>
@@ -90,7 +79,7 @@ Available:
 
 ```tsx
 <div className="relative w-full h-[600px]">
-  <Image id="split-hero" className="w-full h-full object-cover" />
+  <Image id="split-hero" className="w-full h-full" />
   <div className="absolute inset-0 grid md:grid-cols-2">
     <div className="bg-black/70 flex items-center justify-center p-12">
       <div className="text-center text-white">
@@ -107,9 +96,13 @@ Available:
 ## Common Props
 
 - `id` (required) - Image ID from dash.rixl.com/images
-- `className` (optional) - Tailwind CSS classes for styling
+- `className` (optional) - CSS classes for host layout
 - `analyticsPage` (optional) - `"feed" | "standalone" | "profile"`
 
 <Callout type="warning">
   **Upload Required**: Upload images to [dash.rixl.com/images](https://dash.rixl.com/images) to obtain the required image ID.
 </Callout>
+
+## Host styling
+
+These classes style the custom-element host. The inner image is inside shadow DOM and uses the component's own fit behavior. Authenticate the SDK before mounting the component; no Tailwind CSS setup is required if you use equivalent host CSS.

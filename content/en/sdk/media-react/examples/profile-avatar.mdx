@@ -3,22 +3,11 @@ title: "Image: Profile Avatar"
 description: "Circular profile images in multiple sizes for user profiles and comments"
 ---
 
-import {Image} from "@/snippets";
 import {Callout} from "fumadocs-ui/components/callout";
 
-## Live Example
+## Before you start
 
-<div className="max-w-4xl mx-auto mb-8 flex items-center gap-6 p-8 bg-gray-50 rounded-lg">
-  <div className="w-24 h-24 rounded-full overflow-hidden">
-    <Image id="your-avatar-image-id" className="w-full h-full object-cover" />
-  </div>
-  <div className="w-16 h-16 rounded-full overflow-hidden">
-    <Image id="your-avatar-image-id" className="w-full h-full object-cover" />
-  </div>
-  <div className="w-10 h-10 rounded-full overflow-hidden">
-    <Image id="your-avatar-image-id" className="w-full h-full object-cover" />
-  </div>
-</div>
+[Connect the SDK](/en/sdk/media-react/getting-started/installation) before mounting media. Replace the placeholder IDs in the implementation below with IDs from your Rixl project.
 
 ## Basic Implementation
 
@@ -34,7 +23,7 @@ export function ProfileAvatar({imageId, size = "medium"}) {
 
   return (
     <div className={`${sizeClasses[size]} rounded-full overflow-hidden`}>
-      <Image id={imageId} className="w-full h-full object-cover" />
+      <Image id={imageId} className="w-full h-full" />
     </div>
   );
 }
@@ -59,7 +48,7 @@ function UserProfile({user}) {
   return (
     <div className="flex items-center gap-4 p-6">
       <div className="w-24 h-24 rounded-full overflow-hidden">
-        <Image id={user.imageId} className="w-full h-full object-cover" />
+        <Image id={user.imageId} className="w-full h-full" />
       </div>
       <div>
         <h2 className="text-2xl font-bold">{user.name}</h2>
@@ -77,7 +66,7 @@ function Comment({comment}) {
   return (
     <div className="flex gap-3 p-4">
       <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-        <Image id={comment.author.imageId} className="w-full h-full object-cover" />
+        <Image id={comment.author.imageId} className="w-full h-full" />
       </div>
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-1">
@@ -98,7 +87,7 @@ function UserCard({user}) {
   return (
     <div className="border rounded-lg p-6 text-center hover:shadow-lg transition">
       <div className="w-16 h-16 rounded-full overflow-hidden mx-auto mb-4">
-        <Image id={user.imageId} className="w-full h-full object-cover" />
+        <Image id={user.imageId} className="w-full h-full" />
       </div>
       <h3 className="font-semibold mb-1">{user.name}</h3>
       <p className="text-gray-600 text-sm">{user.role}</p>
@@ -116,9 +105,13 @@ function NavBar({currentUser}) {
     <nav className="flex items-center justify-between p-4 border-b">
       <div className="text-xl font-bold">Logo</div>
       <div className="w-10 h-10 rounded-full overflow-hidden cursor-pointer">
-        <Image id={currentUser.imageId} className="w-full h-full object-cover" />
+        <Image id={currentUser.imageId} className="w-full h-full" />
       </div>
     </nav>
   );
 }
 ```
+
+## Host styling
+
+These classes style the custom-element host. The inner image is inside shadow DOM and uses the component's own fit behavior. Authenticate the SDK before mounting the component; no Tailwind CSS setup is required if you use equivalent host CSS.

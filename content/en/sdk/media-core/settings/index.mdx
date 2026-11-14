@@ -5,14 +5,12 @@ description: "Customize player settings, captions, and global preferences with t
 
 import {Callout} from "@/snippets";
 
-The media core ships bundled inside `@rixl/media-react` — no separate install needed. Its `settingsStore` powers the player's global preferences: volume, playback speed, and caption appearance. Settings are automatically persisted to `localStorage`.
-
-Import everything below from `@rixl/media-react`.
+The `@rixl/media-core` package exposes a `settingsStore` that powers the player's global preferences: volume, playback speed, and caption appearance. Settings are automatically persisted to `localStorage`.
 
 ## Reading and Updating Settings
 
 ```ts
-import {settingsStore, defaultSettings} from "@rixl/media-react";
+import {settingsStore, defaultSettings} from "@rixl/media-core";
 
 // Current settings
 const current = settingsStore.getSettings();
@@ -51,7 +49,7 @@ settingsStore.setCaptionCharacterEdgeStyle("drop-shadow");
 For custom settings panels, you can load and validate raw objects against the SDK schema:
 
 ```ts
-import {loadSettings, saveSettings, validateSettings} from "@rixl/media-react";
+import {loadSettings, saveSettings, validateSettings} from "@rixl/media-core";
 
 const restored = loadSettings();
 const validated = validateSettings({volume: 2.5}); // clamped to valid range

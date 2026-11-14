@@ -1,148 +1,142 @@
 ---
 title: "Media React"
-description: "React components and hooks for RIXL media."
+description: "React video player, images, and infinite media feeds for Rixl, with player hooks and Next.js and TanStack Start support."
 ---
 
-import {Callout, Card, Columns} from "@/snippets";
+A React video player, image components, and infinite media feeds for Rixl. Use `@rixl/media-react` in a normal React SPA, Next.js, or TanStack Start, with TypeScript props and hooks for custom player controls.
 
-**RIXL SDK** provides production-ready components for displaying and interacting with processed media content. Built for developers who need reliable video streaming, image processing, and infinite-scroll feeds without the complexity of managing CDN delivery, adaptive streaming, or performance tuning.
+## What you get
 
-Simply install the SDK, reference your media IDs from the RIXL dashboard, and deliver professional media experiences that work across all devices and network conditions.
+- Adaptive HLS video playback with controls, captions, quality selection, fullscreen, and picture-in-picture.
+- Images with lazy loading and ThumbHash placeholders when available.
+- Vertical media feeds with pagination, looping, and automatic advancement.
+- Scoped hooks for playback, seeking, volume, audio tracks, subtitles, and player UI.
+- Included player styles, with no Tailwind CSS setup or global SDK stylesheet.
 
-## Get Started Building
+## Install
 
-<Columns cols={3}>
-  <Card
-    title="Getting Started"
-    href="/en/sdk/media-react/getting-started/overview"
-    icon="book-open"
-  >
-    Install the SDK and display your first video in under 5 minutes.
-  </Card>
-  <Card
-    title="Video Component"
-    href="/en/sdk/media-react/video-component"
-    icon="video"
-  >
-    Modern video player with built-in controls and analytics.
-  </Card>
-  <Card
-    title="Image Component"
-    href="/en/sdk/media-react/image-component"
-    icon="image"
-  >
-    Optimized images with lazy loading and thumbhash placeholders.
-  </Card>
+```sh
+npm install @rixl/media-react
+```
 
-<Card title="Feed Component" href="/en/sdk/media-react/feed-component" icon="rss">
-  Infinite-scrolling feeds for social and content discovery experiences.
-</Card>
+Use React 18 or later for the examples and player hooks. Core, Lit, and the media dependencies are installed automatically; your app supplies React and React DOM.
 
-<Card title="Lit / Vanilla JS" href="/en/sdk/media-lit" icon="code">
-  Framework-free web components for any HTML or JS project.
-</Card>
+## Quick start: React SPA
 
-<Card title="Core API" href="/en/sdk/media-core/core-api" icon="server">
-  Framework-agnostic media fetching, analytics, and upload helpers.
-</Card>
+Connect before mounting components that request media. In a Vite or other client-rendered React app, initialize the SDK in your entry file:
 
-<Card title="Upload SDK" href="/en/sdk/media-core/upload" icon="upload">
-  Upload images, videos, audio tracks, subtitles, and feed posts.
-</Card>
+```tsx
+import {createRoot} from "react-dom/client";
+import {connect} from "@rixl/media-react/core";
+import {Video} from "@rixl/media-react/video";
 
-  <Card
-    title="Settings"
-    href="/en/sdk/media-core/settings"
-    icon="settings"
-  >
-    Caption appearance, playback speed, volume, and global preferences.
-  </Card>
-</Columns>
+async function main() {
+  await connect({
+    baseUrl: "https://api.rixl.com",
+    apiKey: "YOUR_PUBLIC_API_KEY",
+  });
 
-## Why Choose RIXL SDK
+  const container = document.getElementById("root");
+  if (!container) throw new Error("Missing #root element");
 
-<Columns cols={3}>
-  <Card title="TypeScript First" icon="code">
-    Complete type safety with comprehensive TypeScript definitions and intelligent IDE autocompletion.
-  </Card>
-  <Card title="Zero Configuration" icon="zap">
-    Works out of the box with sensible defaults. Advanced customization available when you need it.
-  </Card>
-  <Card title="Performance Optimized" icon="activity">
-    Automatic lazy loading, adaptive streaming, and memory management for smooth user experiences.
-  </Card>
-  <Card title="Accessibility Built-In" icon="eye">
-    WCAG 2.1 compliant components with proper ARIA attributes and keyboard navigation support.
-  </Card>
-  <Card title="Framework Native" icon="layers">
-    Native React components; core pure functions and stores framework-agnostic.
-  </Card>
-  <Card title="Production Ready" icon="shield">
-    Battle-tested components used by millions of users with comprehensive error handling and fallbacks.
-  </Card>
-</Columns>
+  createRoot(container).render(<Video id="YOUR_VIDEO_ID" muted style={{display: "block", width: "100%", aspectRatio: "16 / 9"}} />);
+}
 
-## Component Features
+main().catch(console.error);
+```
 
-<Columns cols={3}>
-  <Card title="Video Player" icon="play">
-    HLS streaming with built-in controls, fullscreen/PiP, and automatic analytics events
-  </Card>
-  <Card title="Smart Image Display" icon="image">
-    Automatic format selection (WebP, AVIF), responsive sizing, thumbhash placeholders, and image analytics
-  </Card>
-  <Card title="Infinite Feeds" icon="refresh-cw">
-    Pagination, scroll-based media activation, autoscroll/loop modes, and feed-level analytics
-  </Card>
-  <Card title="Responsive Design" icon="smartphone">
-    Components automatically adapt to screen sizes with mobile-first design and touch-friendly interactions
-  </Card>
-  <Card title="Custom Styling" icon="palette">
-    Full CSS customization with TailwindCSS support via the `className` prop
-  </Card>
-  <Card title="Analytics" icon="bar-chart">
-    Built-in `content_views`, `engagement`, `interaction`, `error`, and `session_start` events
-  </Card>
-</Columns>
+Use credentials intended for browser access. If your host application already authenticates the shared `@rixl/sdk` client, reuse that connection.
 
-## Perfect for Modern Applications
+## Images and feeds
 
-<Columns cols={3}>
-  <Card title="Social Platforms" icon="users">
-    Build TikTok-style feeds, Instagram galleries, and YouTube-like experiences with professional media components
-  </Card>
-  <Card title="E-commerce Sites" icon="shopping-cart">
-    Product galleries, promotional videos, and high-quality imagery that loads instantly and converts better
-  </Card>
-  <Card title="Educational Apps" icon="graduation-cap">
-    Course videos with subtitles, interactive content feeds, and mobile-optimized learning experiences
-  </Card>
-  <Card title="Content Management" icon="file-text">
-    Creator dashboards, media libraries, and content discovery interfaces with infinite scroll
-  </Card>
-  <Card title="Marketing Campaigns" icon="target">
-    Landing pages with hero videos, product showcases, and media-rich experiences that engage users
-  </Card>
-  <Card title="Enterprise Applications" icon="building">
-    Internal tools, training platforms, and customer portals with reliable media delivery at scale
-  </Card>
-</Columns>
+```tsx
+import {Image} from "@rixl/media-react/image";
+import {Feed} from "@rixl/media-react/feed";
 
-## Browser Support & Compatibility
+export function MediaGallery() {
+  return (
+    <>
+      <Image id="YOUR_IMAGE_ID" alt="Mountain lake at sunrise" style={{display: "block", width: "100%", aspectRatio: "16 / 9"}} />
+      <Feed feedId="YOUR_FEED_ID" muted style={{display: "block", height: "36rem"}} />
+    </>
+  );
+}
+```
 
-<Columns cols={3}>
-  <Card title="Modern Browsers" icon="monitor">
-    Full support for Chrome 88+, Firefox 85+, Safari 14+, and Edge 88+ with all advanced features
-  </Card>
-  <Card title="Mobile Optimized" icon="smartphone">
-    Native iOS Safari and Android Chrome support with touch gestures and mobile-specific optimizations
-  </Card>
-  <Card title="Graceful Fallbacks" icon="rotate-ccw">
-    Automatic degradation for older browsers while maintaining core functionality and accessibility
-  </Card>
-</Columns>
+Render this after connecting. Production components load media by `id` or `feedId` through the SDK.
 
-<Callout type="tip" title="Ready to build amazing media experiences?">
-  Start with our [Installation Guide](/en/sdk/media-react/getting-started/installation) to add the SDK to your project, or explore the
-  [Video Component](/en/sdk/media-react/video-component) to see what's possible with professional video playback.
-</Callout>
+## Custom player controls
+
+Put custom controls inside `<Video>`, or use `<VideoPlayer>` to share a player with sibling controls. Hooks resolve the player from React context.
+
+```tsx
+import {Video, VideoPlayer} from "@rixl/media-react/video";
+import {usePlayback} from "@rixl/media-react";
+
+function PlayButton() {
+  const {paused, togglePlay} = usePlayback();
+  return (
+    <button type="button" onClick={() => void togglePlay()}>
+      {paused ? "Play" : "Pause"}
+    </button>
+  );
+}
+
+export function CustomPlayer() {
+  return (
+    <VideoPlayer>
+      <Video id="YOUR_VIDEO_ID" theme="hideUI" style={{display: "block", aspectRatio: "16 / 9"}} />
+      <PlayButton />
+    </VideoPlayer>
+  );
+}
+```
+
+| Hook                        | Purpose                                                 |
+| --------------------------- | ------------------------------------------------------- |
+| `usePlayback()`             | Play, pause, playback rate, and loading state           |
+| `useMediaSettings()`        | Mute and volume for the current player                  |
+| `usePlayerProgress()`       | Timeline state and seeking                              |
+| `usePlayerTracks()`         | Audio and subtitle selection                            |
+| `usePlayerUI()`             | Controls visibility, fullscreen, and picture-in-picture |
+| `useGlobalPlayerSettings()` | Shared preferences across players                       |
+| `useProgressBar({video})`   | Seeking interactions for a raw browser video element    |
+
+Player-scoped hooks take no player ID. Keep one `<Video>` in each `<VideoPlayer>` scope. `useGlobalPlayerSettings` and `useProgressBar` do not require a player scope.
+
+Callbacks such as `onPausedChange`, `onLoadingChange`, and Feed's `onMuteChange` receive booleans. `onRixlAnalytics` receives a custom event; read its payload through `event.detail.event`. Refs point to the underlying Lit element.
+
+## Next.js and TanStack Start
+
+The same package supports client rendering, server rendering, and prerendering. No separate Next.js or TanStack adapter is needed.
+
+- React renders custom-element hosts and your light-DOM children on the server.
+- Lit renders the image, video, controls, and feed content in the browser. Those contents are absent from the initial server HTML.
+- UI entries and hooks preserve `"use client"`. The root barrel and `/core` remain outside that client boundary.
+- Connect the shared client in the browser before mounting media that fetches by ID. Keep server credentials in server code.
+
+For a Next.js App Router client boundary, initialize the connection in an effect and mount media after it resolves. TanStack Start can use the same pattern inside a route. Server rendering is optional: React SPAs use the quick start above unchanged.
+
+See the [installation and rendering guide](/en/sdk/media-react/getting-started/installation) for setup examples. Include essential page text and metadata in your application's server HTML when you need them there.
+
+## Styling and imports
+
+Use `className` or `style` to size and position the host. Give images and videos an explicit height or aspect ratio, and feeds a height. Internal player styles live in shadow DOM; host classes do not select internal controls.
+
+| Import                    | Exports                                     |
+| ------------------------- | ------------------------------------------- |
+| `@rixl/media-react/image` | `Image`, `ImageProps`                       |
+| `@rixl/media-react/video` | `Video`, `VideoPlayer`, and their props     |
+| `@rixl/media-react/feed`  | `Feed`, `FeedProps`                         |
+| `@rixl/media-react/core`  | Headless APIs, stores, utilities, and types |
+| `@rixl/media-react`       | Components, hooks, and Core exports         |
+
+An image-only subpath import excludes video, feed, and HLS code. The obsolete `@rixl/media-react/style.css` and `/dev` entries are not exported.
+
+## Component guides
+
+- [Video](/en/sdk/media-react/video-component)
+- [Images](/en/sdk/media-react/image-component)
+- [Feeds](/en/sdk/media-react/feed-component)
+- [Hooks](/en/sdk/media-react/hooks)
+- [Examples](/en/sdk/media-react/examples)

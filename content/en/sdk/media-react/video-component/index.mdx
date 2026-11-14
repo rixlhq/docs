@@ -1,80 +1,43 @@
 ---
-title: "Overview"
-description: "Video player for RIXL content with HLS streaming, custom controls, and built-in analytics"
+title: "React video player"
+description: "Play Rixl videos in React with adaptive HLS, captions, built-in controls, and scoped custom controls."
 ---
 
-import {Callout} from "@/snippets";
-
-## Overview
-
-The `Video` component plays RIXL video content using adaptive HLS streaming with consistent playback behavior and integrated analytics.
-
-The player ships with a built-in control bar and multiple themes (`default`, `minimal`, `feed`, `hover`, `hideUI`). You can also hide the built-in UI and build your own controls as siblings of the component.
-
-### Quick Example
+`Video` loads a Rixl video by ID and renders its player in the browser. It works in React SPAs, Next.js, and TanStack Start.
 
 ```tsx
-import {Video} from "@rixl/media-react";
+import {Video} from "@rixl/media-react/video";
 
-function Player() {
-  return (
-    <Video
-      id="your-video-id"
-      className="w-full h-auto rounded-lg"
-      analyticsPage="standalone"
-      onRixlAnalytics={(e) => console.log(e.detail.event)}
-    />
-  );
+export function Player() {
+  return <Video id="YOUR_VIDEO_ID" muted style={{display: "block", width: "100%", aspectRatio: "16 / 9"}} />;
 }
 ```
 
-### Key Capabilities
+Connect the SDK first; see [Installation](/en/sdk/media-react/getting-started/installation).
 
-**Streaming & Playback**
+## Player features
 
-- HLS playback with automatic fallback
-- Muted autoplay support for browser compliance
-- Built-in player with configurable control bar
-- `src` override for direct streams
-- `videoData` for pre-fetched metadata
+- Adaptive HLS playback through native browser support or HLS.js.
+- Built-in play/pause, seeking, volume, fullscreen, and picture-in-picture controls.
+- Chapters, captions, audio tracks, and quality selection when available for the media.
+- Themes for a standard player, minimal UI, hover playback, feed use, and custom controls.
+- SDK analytics configuration and forwarded media events.
 
-**Analytics**
+Published components load `id` through the SDK. Direct URLs and supplied media objects do not replace that loading path.
 
-- `content_views` `start`/`watch`/`end` events with segments
-- Interaction events: `play`, `pause`, `seek`, `mute`, `volume_change`, `fullscreen`, `picture_in_picture`, `quality_change`, `settings_open`
-- Error events: `video_load_error`, `video_api_error`, and playback errors
-- `feed_id`, `post_id`, and `page` context support
+## Custom controls
 
-**Customization**
+Use `theme="hideUI"` and [player hooks](/en/sdk/media-react/hooks). Controls nested inside `Video` inherit its player scope. Wrap a video and detached sibling controls in `VideoPlayer` to share one scope.
 
-- `theme`, `controls`, `progressBar`, `allowFullscreen`, `allowPictureInPicture`, `heatmap`, `chapters`, `hotSegments`, and more
-- CSS class customization through `className`
-- Responsive design with aspect ratio preservation
+Use callbacks such as `onPausedChange` for state notifications and `onRixlAnalytics` for analytics events. Analytics callbacks are not a playback-control API.
 
-<Callout type="info">
-  The `Video` component accepts all media attributes and player configuration properties, emitting telemetry events through
-  `onRixlAnalytics`.
-</Callout>
+## Layout and server rendering
 
-### Custom Controls
+Give the host a height or aspect ratio. `style` and `className` affect the host, while internal player styles live in shadow DOM.
 
-Need custom controls? Use `theme="hideUI"` and render your own controls as siblings, or use the legacy player-scope hooks documented in [Hooks](/en/sdk/media-react/hooks).
+React can render the custom-element host and your children on the server. The internal video and controls render in the browser; server rendering is optional.
 
-The recommended patterns are:
-
-1. **Built-in UI** — pass `theme`, `controls`, `progressBar`, `allowFullscreen`, etc.
-2. **Custom sibling controls + `onRixlAnalytics`** — hide the UI and build your own control bar.
-
-### When to Use
-
-The Video component is perfect for:
-
-- **Content platforms** requiring professional video playback
-- **E-learning applications** with adaptive streaming
-- **Marketing websites** needing background or promotional videos
-- **Documentation sites** with instructional video content
-- **Mobile-first applications** requiring adaptive streaming
-
-### Browser Support
-
-Works seamlessly across all modern browsers. `hls.js` provides HLS playback support where native support is absent.
+- [Basic usage](/en/sdk/media-react/video-component/basic-usage)
+- [Props reference](/en/sdk/media-react/video-component/props-reference)
+- [Player controls](/en/sdk/media-react/video-component/player-controls)
+- [Analytics](/en/sdk/media-react/video-component/analytics-integration)
