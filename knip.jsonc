@@ -3,4 +3,6 @@
   // Claude Code runs this hook from .agents/settings.json, and stryker.config.mjs names the
   // Vitest config as a string; Knip reads neither.
   "entry": [".agents/hooks/*.mjs", "test/stryker.vitest.config.ts"],
+  // The OpenSpec skills run the CLI as `vp exec openspec`; nothing imports it.
+  "ignoreDependencies": ["@fission-ai/openspec"],
 }

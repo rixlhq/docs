@@ -56,6 +56,7 @@ The full procedure is manual: run `/agent-review` (`.agents/skills/agent-review`
 - Every choice a reviewer could question gets a decision entry in `design.md`: chosen, alternatives, dropped, evidence.
 - Tick a task only with its evidence: the passing test, or the command and its output.
 - Archive the change (`/opsx:archive`) in the PR that ships it, so the living specs stay true. Tasks still open at archive stay unticked with a reason.
+- The OpenSpec CLI is pinned in `package.json`. Run it as `vp exec openspec`, as the skills do. `vp exec openspec update` regenerates the skills with bare `openspec` calls; put `vp exec` back in front of them in the same change.
 
 ## Technology Stack
 
