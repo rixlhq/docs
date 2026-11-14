@@ -2,7 +2,7 @@
 # shellcheck disable=SC2016 # gate bodies expand inside the stub, not here
 # Tests scripts/rollout/run.sh's decisions with wrangler, sleep and the Sentry
 # gate stubbed: what rejects at 0%, what rolls back and when, what only
-# reports. Run: mise run test
+# reports. Run: vp run test:actions
 set -euo pipefail
 
 SRC="$(cd "$(dirname "$0")/../scripts/rollout" && pwd)"
