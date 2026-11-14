@@ -4,6 +4,13 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    ignore:
+      # vite-plus and its vite alias (vite-plus-core) must move together, which
+      # Dependabot can't do: bump them with `vp migrate`.
+      - dependency-name: "vite-plus"
+      - dependency-name: "vite"
+      # Pinned: an upgrade regenerates the OpenSpec skills (AGENTS.md, Specs).
+      - dependency-name: "@fission-ai/openspec"
     groups:
       dependencies:
         patterns:
