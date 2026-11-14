@@ -23,7 +23,7 @@ import {
 } from "@/components/icons/framework-icons";
 import {cn} from "cn";
 
-export type FrameworkIconName =
+type FrameworkIconName =
   | "react"
   | "vue"
   | "svelte"
@@ -46,7 +46,7 @@ export type FrameworkIconName =
   | "ts"
   | "js";
 
-const FRAMEWORK_ICON_MAP: Record<string, (props: ComponentProps<"svg">) => ReactElement> = {
+const FRAMEWORK_ICON_MAP: Record<FrameworkIconName, (props: ComponentProps<"svg">) => ReactElement> = {
   react: ReactIcon,
   vue: VueIcon,
   svelte: SvelteIcon,

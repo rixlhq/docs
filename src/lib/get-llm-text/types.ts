@@ -17,7 +17,7 @@ export interface OpenApiSchema {
   additionalProperties?: boolean | OpenApiSchema;
 }
 
-export interface OpenApiMediaType {
+interface OpenApiMediaType {
   schema?: OpenApiSchema;
 }
 

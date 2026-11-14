@@ -142,7 +142,7 @@ export function TableOfContentsPopover({container, trigger, content, header, foo
 
 function findLastActiveIndex(items: {active: boolean}[]): number {
   for (let i = items.length - 1; i >= 0; i--) {
-    if (items[i].active) return i;
+    if (items.at(i)?.active) return i;
   }
   return -1;
 }

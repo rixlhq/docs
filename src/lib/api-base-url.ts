@@ -1,6 +1,6 @@
 export const API_BASE_URL = "https://api.rixl.com";
 
-export interface ApiServerVariable {
+interface ApiServerVariable {
   default?: string;
   description?: string;
 }
@@ -18,7 +18,7 @@ export interface ApiServerRoot {
   basePath?: string;
 }
 
-export function absolutizeApiUrl(url: string) {
+function absolutizeApiUrl(url: string) {
   const value = url.trim();
   if (value.length === 0 || value === "/") return API_BASE_URL;
   if (value.startsWith("https://")) return trimTrailingSlash(value);
@@ -29,7 +29,7 @@ export function absolutizeApiUrl(url: string) {
   return `${API_BASE_URL}${prefixed}`;
 }
 
-export function resolveApiServerTemplate(server: ApiServer) {
+function resolveApiServerTemplate(server: ApiServer) {
   if (!server.url) return;
 
   let resolved = server.url;
@@ -41,7 +41,7 @@ export function resolveApiServerTemplate(server: ApiServer) {
   return absolutizeApiUrl(resolved);
 }
 
-export function buildApiUrlFromSwaggerHost(host: string, schemes?: string[], basePath?: string) {
+function buildApiUrlFromSwaggerHost(host: string, schemes?: string[], basePath?: string) {
   const normalizedSchemes = (schemes ?? []).map((value) => value.toLowerCase());
   const scheme = normalizedSchemes.includes("https") ? "https" : (normalizedSchemes[0] ?? "https");
   const normalizedBasePath = normalizeBasePath(basePath);

@@ -1,13 +1,39 @@
 ---
 trigger: always_on
-description: Commit workflow rules for incremental development.
+description: How to prepare, check and write a commit.
 ---
 
-# Commit Workflow Rules
+# Commits
 
-- Make step-by-step commits as coding work progresses
-- Keep each commit scoped to one logical change
-- Use conventional commit messages for every commit
-- Git hooks run through lefthook (`lefthook.yml`, installed by `prepare`): pre-commit runs `vp check --fix` (format, lint, typecheck) and `vp fmt` on staged files and re-stages the fixes; internal content links are validated at build time by `plugins/vite-plugin-link-check.ts`
-- Before committing run relevant tests for touched code
-- Before commiting run code-simplifier skill
+A commit records claims: the message and the code. Only commit what has been checked.
+
+## Order
+
+1. Finish one logical change.
+2. Run the checks for what you touched: `vp check`, `vp test`, and `vp run build` when content, routes or plugins changed (the build validates every internal link).
+3. Run the `code-simplifier` skill on the changed code, then rerun the checks.
+4. Commit. Then move on to the next change.
+
+## Hooks
+
+Lefthook runs them (`lefthook.yml`, installed by `prepare`, using the version pinned in `package.json`):
+
+- **pre-commit**, in order, stopping at the first failure: `vp check --fix` on staged code, JSON, Markdown, YAML and CSS (fixes are re-staged); `vp run lint:suppressions`, which fails on a lint suppression without a ` -- <reason>`; `vp test related` on the staged files; and `vp run test:actions` when `.github/actions/cloudflare/` changes.
+- **pre-push:** `vp build`, which also checks internal content links (`plugins/vite-plugin-link-check.ts`), and `vp run knip` (unused files, exports and dependencies; config in `knip.jsonc`).
+
+Every job reads stdin from `/dev/null`, so a hidden prompt can't block it, and the slow ones have a `timeout` in `lefthook.yml`, so a stuck run fails the hook instead of hanging it.
+
+Never skip a hook (`--no-verify`, `-n`, `LEFTHOOK=0`, `core.hooksPath`). If a hook fails, fix the cause. For Claude Code this is enforced: `.agents/hooks/no-skip-git-hooks.mjs` blocks those commands.
+
+## Messages
+
+- Conventional commits (`feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `ci`, `build`, `perf`, `style`).
+- One logical change per commit. Commit only what the current step changed.
+- Body says why, not what. State only claims you checked: "reduces" when you measured a reduction, not "fixes".
+
+## `main`
+
+Nothing in GitHub blocks these; the team holds them.
+
+- Never merge or push to `main` while CI is red.
+- Push directly to `main` only when a human asks for a hotfix. Everything else goes through a pull request. The one automated exception is `generate.yml`, which commits the new `.openapi-spec-sha` when the API spec changes.
