@@ -1,0 +1,27 @@
+schema: spec-driven
+
+# Shown to the agent whenever it writes an artifact. Conventions live in
+# AGENTS.md and .agents/rules/; this only says where.
+context: |
+  Rixl documentation site (developers.rixl.com): TanStack Start, Fumadocs 16, React 19,
+  TypeScript 7, Vite+ (`vp`), static prerender to a Cloudflare Worker.
+  Read AGENTS.md and the rule files it lists before writing any artifact.
+  The API contract is the OpenAPI spec the build loads (`src/lib/openapi.server.ts`);
+  SDK examples follow `@rixl/media-react`. Check either before claiming what it does.
+
+rules:
+  proposal:
+    - "Include a **Non-goals** section: what this change will not do."
+    - "Include **Acceptance**: the observable outcomes that mean the change is done."
+    - "Use `skip_specs: true` for a change with no behaviour change (refactor, dependency bump, tooling)."
+  specs:
+    - "Every requirement has at least one scenario a test or the build can check."
+    - "Describe behaviour a reader, a crawler or an LLM client can observe, not implementation."
+  design:
+    - "Write design.md for any choice a reviewer could reasonably question, not only for the cases the schema lists."
+    - "Record each such choice as a decision entry: **Chosen**, **Alternatives considered** (and why each lost), **Dropped** (anything tried or started and abandoned, why, and what replaced it), and **Evidence** (the doc, measurement or test it rests on)."
+    - "Never delete a dropped entry. It stops the next agent proposing the same approach again."
+  tasks:
+    - "Each implementation task names the test that proves it (file and test name) or, for work a test can't cover, the command or check that does."
+    - "Tick a task only with its evidence written on the task: the passing test, or the command and its result."
+    - "A task you can't finish stays unticked with a reason. Never tick it to close the change."

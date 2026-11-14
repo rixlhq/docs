@@ -87,7 +87,7 @@ export function collectResponseExamples(media: ResponseMediaTypeLite): Array<{la
   return [];
 }
 
-export function sampleSchema(schema: unknown): unknown {
+function sampleSchema(schema: unknown): unknown {
   if (!schema || typeof schema !== "object") return schema;
   try {
     return sample(schema as object);

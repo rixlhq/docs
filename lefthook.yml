@@ -1,12 +1,35 @@
+# Run the lefthook pinned in package.json, not a global install, so every
+# machine runs the same hook version.
+lefthook: node_modules/.bin/lefthook
+min_version: 2.2.2
+
+# Every job reads stdin from /dev/null so a hidden prompt can't block it, and the
+# slow ones have a timeout (well above their full run on a laptop) so a hang fails
+# the hook instead of stalling it.
+
 pre-commit:
-  parallel: true
+  # In order, stopping at the first failure: the fixes land before the tests read the files.
+  piped: true
   commands:
     check:
       glob:
         - "*.{js,ts,jsx,tsx}"
         - "*.{json,md,yaml,yml,css}"
-      run: vp check --fix {staged_files}
+      run: vp check --fix {staged_files} < /dev/null
       stage_fixed: true
+    suppressions:
+      glob: "*.{ts,tsx}"
+      run: vp run lint:suppressions < /dev/null
+    test:
+      glob: "*.{ts,tsx}"
+      # Tests that import the staged files.
+      run: vp test related {staged_files} --run --bail=1 < /dev/null
+      timeout: 2m
+    actions:
+      glob: ".github/actions/cloudflare/**"
+      # The rollout and Sentry gate scripts, with wrangler, sleep and Sentry stubbed.
+      run: vp run test:actions < /dev/null
+      timeout: 2m
 
 pre-push:
   parallel: true
@@ -15,4 +38,8 @@ pre-push:
       glob:
         - "**/*.{js,ts,jsx,tsx}"
         - "content/**"
-      run: vp build
+      run: vp build < /dev/null
+      timeout: 5m
+    knip:
+      run: vp run knip < /dev/null
+      timeout: 2m

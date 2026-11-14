@@ -1,10 +1,12 @@
 import path from "node:path";
 import {paraglideVitePlugin} from "@inlang/paraglide-js";
 import {defineConfig, lazyPlugins} from "vite-plus";
+import {playwright} from "vite-plus/test/browser-playwright";
 import {tanstackStart} from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import {fumadocsMdx} from "fumadocs-mdx/vite";
+import {sentryVitePlugin} from "@sentry/vite-plugin";
 import {extractIconsPlugin} from "./plugins/vite-plugin-extract-icons.ts";
 import {linkCheckPlugin} from "./plugins/vite-plugin-link-check.ts";
 import {i18n} from "./src/lib/i18n.ts";
@@ -52,6 +54,18 @@ function vendorPackageName(id: string): string | null {
   const match = id.match(/node_modules[\\/](?:@[^\\/]+[\\/])?([^\\/]+)/);
   if (!match) return null;
   return `vendor-${match[1]}`;
+}
+
+// The site and both test projects read translated strings through Paraglide's virtual modules.
+function paraglide() {
+  return paraglideVitePlugin({
+    project: "./project.inlang",
+    outdir: "./src/paraglide",
+    // `url` first: the `$lang` route segment is the source of truth for a docs
+    // page. The rest are fallbacks for non-localized entry points, cheapest
+    // lookup first (memory, then cookie).
+    strategy: ["url", "globalVariable", "cookie", "baseLocale"],
+  });
 }
 
 export default defineConfig({
@@ -145,6 +159,9 @@ export default defineConfig({
     options: {
       typeAware: true,
       typeCheck: true,
+      // A warning nobody fixes is noise: `vp check` (hook and CI) fails on any.
+      denyWarnings: true,
+      reportUnusedDisableDirectives: "error",
     },
     jsPlugins: [
       {
@@ -153,16 +170,52 @@ export default defineConfig({
       },
     ],
   },
+  test: {
+    coverage: {
+      provider: "v8",
+      reporter: ["text-summary", "json-summary", "json"],
+      reportOnFailure: true,
+      include: ["src/**/*.{ts,tsx}", "plugins/**/*.ts", "scripts/**/*.ts"],
+      exclude: ["**/__tests__/**", "src/generated/**", "src/paraglide/**", "src/routeTree.gen.ts", "**/*.d.ts"],
+      // The coverage measured when the floor was set, rounded down. Raise it as tests land; never lower it.
+      thresholds: {statements: 38, branches: 35, functions: 31, lines: 38},
+    },
+    projects: [
+      {
+        // Since Vitest 5 an inline project inherits the root config. These don't, so
+        // tests skip TanStack Start, MDX and Sentry.
+        extends: false,
+        plugins: [paraglide()],
+        resolve: {alias: {"@": path.resolve(import.meta.dirname, "src")}},
+        test: {
+          name: "unit",
+          environment: "node",
+          include: ["{src,plugins,scripts}/**/__tests__/**/*.test.{ts,tsx}"],
+        },
+      },
+      {
+        extends: false,
+        // Tailwind builds the site CSS, so axe checks colour contrast against the real theme.
+        plugins: [paraglide(), tailwindcss()],
+        resolve: {alias: {"@": path.resolve(import.meta.dirname, "src")}},
+        optimizeDeps: {include: ["react", "react-dom/client", "vitest-browser-react", "axe-core"]},
+        test: {
+          name: "browser",
+          include: ["src/**/__tests__/**/*.ct.tsx"],
+          setupFiles: ["./test/setup.browser.ts"],
+          browser: {
+            enabled: true,
+            provider: playwright(),
+            instances: [{browser: "chromium"}],
+            headless: true,
+          },
+        },
+      },
+    ],
+  },
   plugins: lazyPlugins(async () => [
     linkCheckPlugin(),
-    paraglideVitePlugin({
-      project: "./project.inlang",
-      outdir: "./src/paraglide",
-      // `url` first: the `$lang` route segment is the source of truth for a docs
-      // page. The rest are fallbacks for non-localized entry points, cheapest
-      // lookup first (memory, then cookie).
-      strategy: ["url", "globalVariable", "cookie", "baseLocale"],
-    }),
+    paraglide(),
     extractIconsPlugin(),
     fumadocsMdx(),
     tailwindcss(),
@@ -206,6 +259,14 @@ export default defineConfig({
       pages: buildPrerenderPages(),
     }),
     react({compiler: true}),
+    sentryVitePlugin({
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      telemetry: false,
+      sourcemaps: {
+        assets: "./dist/client/**",
+        filesToDeleteAfterUpload: ["./dist/**/*.js.map", "./dist/**/*.css.map"],
+      },
+    }),
   ]),
   resolve: {
     alias: {

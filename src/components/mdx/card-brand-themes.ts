@@ -8,7 +8,7 @@ export interface BrandTheme {
   arrowHover: string;
 }
 
-export const BRAND_THEMES: Record<string, BrandTheme> = {
+const BRAND_THEMES: Record<string, BrandTheme> = {
   react: {
     badge: "border-[#00D8FE]/30 bg-[#00D8FE]/10 shadow-[#00D8FE]/10 dark:border-[#00D8FE]/30 dark:bg-[#00D8FE]/15",
     cardHoverBorder: "hover:border-[#00D8FE]/50",
@@ -36,6 +36,13 @@ export const BRAND_THEMES: Record<string, BrandTheme> = {
     cardHoverShadow: "hover:shadow-[#DD0031]/10",
     titleHover: "group-hover:text-[#dc2626] dark:group-hover:text-[#f87171]",
     arrowHover: "group-hover:text-[#dc2626] dark:group-hover:text-[#f87171]",
+  },
+  astro: {
+    badge: "border-white/10 bg-[#17191e] shadow-[#17191e]/20 dark:border-white/15 dark:bg-[#17191e]",
+    cardHoverBorder: "hover:border-[#FF5D01]/50",
+    cardHoverShadow: "hover:shadow-[#FF5D01]/10",
+    titleHover: "group-hover:text-[#ea580c] dark:group-hover:text-[#fb923c]",
+    arrowHover: "group-hover:text-[#ea580c] dark:group-hover:text-[#fb923c]",
   },
   lit: {
     badge: "border-[#324FFF]/30 bg-[#324FFF]/10 shadow-[#324FFF]/10 dark:border-[#324FFF]/30 dark:bg-[#324FFF]/15",

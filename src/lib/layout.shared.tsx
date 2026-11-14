@@ -72,7 +72,7 @@ function buildNavLinks(lang: string) {
   ];
 }
 
-export function baseOptionsWithSectionLinks(lang: string, _sectionLinks?: SectionLinks): BaseLayoutProps {
+function baseOptionsWithSectionLinks(lang: string, _sectionLinks?: SectionLinks): BaseLayoutProps {
   return {
     nav: {
       title: <LogoWide className="h-8 fill-black dark:invert" />,

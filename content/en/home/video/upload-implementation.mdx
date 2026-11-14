@@ -27,16 +27,16 @@ Video uploads on RIXL use a secure **two-step direct upload** model:
 
 ---
 
-## SDK Quick Start (`@rixl/media`)
+## SDK Quick Start (`@rixl/media-react`)
 
-If you are building a TypeScript or JavaScript application, use `@rixl/media` for a pre-built uploader with progress events and cancellation:
+If you are building a TypeScript or JavaScript application, use `@rixl/media-react` for a pre-built uploader with progress events and cancellation (the core ships bundled inside — no separate install needed):
 
 ```bash
-npm install @rixl/media
+npm install @rixl/media-react
 ```
 
 ```typescript
-import {uploadVideo} from "@rixl/media";
+import {uploadVideo} from "@rixl/media-react";
 
 const videoId = await uploadVideo({
   projectId: "YOUR_PROJECT_ID",

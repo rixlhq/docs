@@ -1,0 +1,20 @@
+name: Cloudflare deploy script
+description: >-
+  Runs one script from scripts/ for cloudflare-rollout.yml and
+  cloudflare-rollback.yml. The workflows hold configuration only; the logic
+  lives in these scripts, which a reusable workflow can only reach through an
+  action (it runs in the caller's repository, not this one). Each script reads
+  the calling job's environment and documents what it needs at its top.
+
+inputs:
+  script:
+    description: "Script under scripts/, without .sh, e.g. rollout/plan"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        SCRIPT: ${{ github.action_path }}/scripts/${{ inputs.script }}.sh
+      run: bash "${SCRIPT}"

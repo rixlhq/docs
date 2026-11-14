@@ -349,7 +349,7 @@ import {Image} from "@rixl/media-react";
     **Performance & Concurrency**
 
     Improve upload performance:
-    - Use `@rixl/media`'s built-in `uploadVideo` helper for automatic progress and error handling
+    - Use `@rixl/media-react`'s built-in `uploadVideo` helper for automatic progress and error handling
     - Batch multiple uploads with bounded concurrency (2-3 simultaneous files) to prevent browser network saturation
     - Show instant ThumbHash placeholders for immediate user feedback
 
@@ -383,7 +383,7 @@ const waitForVideoReady = async (apiKey, videoId) => {
 **Monitoring Best Practices:**
 
 - Use smart polling intervals (start frequently, reduce over time)
-- Implement exponential backoff for errors
+- Retry only as described in [Retries](/en/home/developer/error-handling#retries)
 - Cache status responses briefly to reduce API calls
 - Clean up monitoring resources when complete
 - Batch monitors multiple items efficiently

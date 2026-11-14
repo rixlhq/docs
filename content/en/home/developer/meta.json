@@ -1,5 +1,5 @@
 {
   "title": "Developer Guides",
   "description": "API keys, rate limits, error handling, and integration guides",
-  "pages": ["overview", "api-keys", "rate-limits", "error-handling"]
+  "pages": ["overview", "api-keys", "versioning", "error-handling", "rate-limits", "pagination"]
 }
