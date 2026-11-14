@@ -2,7 +2,7 @@ import {defineI18n} from "fumadocs-core/i18n";
 
 export const i18n = defineI18n({
   defaultLanguage: "en",
-  // TODO: Add more languages
+  // Paraglide reads its own list from project.inlang/settings.json; a test keeps the two equal.
   languages: ["en"],
   fallbackLanguage: "en",
   parser: "dir",
