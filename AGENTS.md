@@ -60,7 +60,7 @@ The full procedure is manual: run `/agent-review` (`.agents/skills/agent-review`
 ## Technology Stack
 
 - TypeScript 7 (strict type safety required)
-- Node 24 (`.node-version`)
+- Node 26 (`engines` in `package.json`)
 - TanStack Start + TanStack Router (static prerender)
 - React 19
 - Fumadocs 16 (`fumadocs-core`, `fumadocs-ui`, `fumadocs-mdx`, `fumadocs-openapi`)
