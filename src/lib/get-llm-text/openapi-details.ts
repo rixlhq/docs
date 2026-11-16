@@ -89,15 +89,8 @@ function appendSecurityRequirements(
 }
 
 function appendServerDetails(lines: string[], operation: OpenApiOperation, schema: OpenApiDereferencedSchema | undefined) {
-  const servers = resolveServers(operation, schema);
-  if (servers.length === 0) {
-    lines.push("", "- Servers: not specified");
-    return;
-  }
-
   lines.push("", "- Servers:");
-  for (const server of servers) {
-    if (!server.url) continue;
+  for (const server of resolveServers(operation, schema)) {
     const description = normalizeInlineText(server.description);
     lines.push(`  - \`${server.url}\`${description ? `: ${description}` : ""}`);
     appendServerVariables(lines, server);
@@ -162,7 +155,7 @@ function appendResponseDetails(lines: string[], operation: OpenApiOperation) {
 }
 
 function getParameterType(parameter: {type?: string; format?: string; schema?: unknown; enum?: unknown[]}) {
-  if (parameter.schema && typeof parameter.schema === "object") {
+  if (typeof parameter.schema === "object" && parameter.schema !== null) {
     return getSchemaTypeLabel(parameter.schema as Parameters<typeof getSchemaTypeLabel>[0]);
   }
 
