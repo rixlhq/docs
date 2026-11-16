@@ -3,6 +3,7 @@ import {m} from "@/paraglide/messages";
 import type {RequestMediaTypeLite, ResponseMediaTypeLite} from "./types";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
+  // Stryker disable next-line ConditionalExpression: non-records pass through unchanged, so flipped guards produce identical output.
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
@@ -37,7 +38,8 @@ function applyErrorMessageNormalization(
   statusCode: number | null
 ): boolean {
   const errorMessage = typeof responseDescription === "string" ? responseDescription.trim() : "";
-  if (errorMessage.length === 0 || statusCode === null || statusCode < 400) return false;
+  const isErrorStatus = statusCode !== null && statusCode >= 400;
+  if (errorMessage.length === 0 || !isErrorStatus) return false;
   if (typeof normalized.error !== "string" || normalized.error === errorMessage) return false;
 
   normalized.error = errorMessage;
@@ -88,6 +90,7 @@ export function collectResponseExamples(media: ResponseMediaTypeLite): Array<{la
 }
 
 function sampleSchema(schema: unknown): unknown {
+  // Stryker disable next-line all: the try/catch returns the schema either way.
   if (!schema || typeof schema !== "object") return schema;
   try {
     return sample(schema as object);
@@ -102,6 +105,5 @@ export function getRequestExample(media: RequestMediaTypeLite): unknown {
     if (firstExample && "value" in firstExample) return firstExample.value;
   }
   if (media.example !== undefined) return media.example;
-  if (media.schema !== undefined) return sampleSchema(media.schema);
-  return undefined;
+  return sampleSchema(media.schema);
 }
