@@ -25,7 +25,6 @@ function absolutizeApiUrl(url: string) {
   if (value.startsWith("http://")) return trimTrailingSlash(`https://${value.slice("http://".length)}`);
 
   const prefixed = value.startsWith("/") ? value : `/${value}`;
-  if (prefixed === "/") return API_BASE_URL;
   return `${API_BASE_URL}${prefixed}`;
 }
 
@@ -63,6 +62,7 @@ export function resolveOpenApiServers(root: ApiServerRoot | undefined, operation
 }
 
 export function resolveOpenApiBaseUrl(root: ApiServerRoot | undefined, operationServers?: ApiServer[]) {
+  // Stryker disable next-line OptionalChaining: resolveOpenApiServers never returns an empty list.
   return resolveOpenApiServers(root, operationServers)[0]?.url ?? API_BASE_URL;
 }
 
@@ -84,7 +84,7 @@ function trimTrailingSlash(value: string) {
 }
 
 function normalizeServerList(servers: ApiServer[] | undefined): ApiServer[] {
-  if (!servers || servers.length === 0) return [];
+  if (!servers) return [];
 
   const seen = new Set<string>();
   const result: ApiServer[] = [];
