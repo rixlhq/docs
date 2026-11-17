@@ -52,7 +52,7 @@ export function LLMCopyButton({markdownUrl, githubUrl}: LLMCopyButtonProps) {
   });
 
   return (
-    <ButtonGroup aria-label={m.copyPageTitle()} className="rounded-lg border">
+    <ButtonGroup aria-label={m.copyPageTitle()}>
       <CopyButton isLoading={isLoading} checked={checked} onClick={onClick} />
       <ViewOptions markdownUrl={markdownUrl} githubUrl={githubUrl} onClick={onClick} />
     </ButtonGroup>

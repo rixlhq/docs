@@ -14,22 +14,10 @@ interface ViewOptionsMenuProps {
 export function ViewOptionsMenu({open, onOpenChange, children}: ViewOptionsMenuProps) {
   return (
     <DropdownMenu open={open} onOpenChange={onOpenChange}>
-      <DropdownMenuTrigger
-        render={
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
-            aria-label={m.viewOptions()}
-            className="text-fd-accent-foreground hover:bg-fd-muted-foreground/10"
-          />
-        }
-      >
-        <ChevronDown className="h-3.5 w-3.5" />
+      <DropdownMenuTrigger render={<Button type="button" variant="outline" size="icon-sm" aria-label={m.viewOptions()} />}>
+        <ChevronDown />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-fd-background">
-        {children}
-      </DropdownMenuContent>
+      <DropdownMenuContent align="end">{children}</DropdownMenuContent>
     </DropdownMenu>
   );
 }

@@ -23,4 +23,12 @@ describe.each(["light", "dark"] as const)("%s theme", (theme) => {
     const group = screen.container.querySelector('[role="group"]');
     expect(group?.getAttribute("aria-label")).toBe(m.copyPageTitle());
   });
+
+  test("copy action keeps stock button metrics", async () => {
+    setTheme(theme);
+    const screen = await render(<LLMCopyButton markdownUrl="/en/home.md" githubUrl="https://github.com/rixlhq/docs" />);
+
+    const copy = screen.container.querySelector("button") as HTMLElement;
+    expect([Math.round(copy.getBoundingClientRect().height), getComputedStyle(copy).fontSize]).toEqual([32, "14px"]);
+  });
 });
