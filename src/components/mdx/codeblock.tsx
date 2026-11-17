@@ -8,6 +8,7 @@ import {m} from "@/paraglide/messages";
 import {mergeRefs} from "@/lib/merge-refs";
 import {cn} from "cn";
 import {Button} from "@rixl/ui/button";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@rixl/ui/tooltip";
 
 /**
  * Local copy of `fumadocs-ui/components/codeblock` so the copy button's
@@ -173,18 +174,25 @@ function CodeBlockCopyButton({
   });
 
   return (
-    <Button
-      type="button"
-      variant="ghost"
-      size="icon-xs"
-      data-checked={checked || undefined}
-      className={cn("hover:text-fd-accent-foreground data-checked:text-fd-accent-foreground", className)}
-      {...props}
-      aria-label={checked ? m.copiedText() : m.copyText()}
-      onClick={onClick}
-    >
-      {checked ? <Check /> : <Clipboard />}
-    </Button>
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            data-checked={checked || undefined}
+            className={cn("hover:text-fd-accent-foreground data-checked:text-fd-accent-foreground", className)}
+            {...props}
+            aria-label={checked ? m.copiedText() : m.copyText()}
+            onClick={onClick}
+          >
+            {checked ? <Check /> : <Clipboard />}
+          </Button>
+        }
+      />
+      <TooltipContent>{checked ? m.copiedText() : m.copyText()}</TooltipContent>
+    </Tooltip>
   );
 }
 
