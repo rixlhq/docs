@@ -1,5 +1,5 @@
 import {CodeBlockTabsList, CodeBlockTabsTrigger} from "@/components/mdx/codeblock";
-import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+import {Tabs, TabsContent} from "@rixl/ui/tabs";
 import {m} from "@/paraglide/messages";
 import type {ReactNode} from "react";
 import type {OpenApiRenderContext, ResponseTab} from "./types";
@@ -78,11 +78,11 @@ function ExamplesBlock({panel, ctx}: {panel: ResponsePanel; ctx: RenderContext})
 
 function ResponsePanelContent({panel, ctx}: {panel: ResponsePanel; ctx: RenderContext}) {
   return (
-    <Tab key={panel.code} value={panel.code} className="p-4 space-y-4 bg-fd-background rounded-none data-[state=inactive]:hidden">
+    <TabsContent key={panel.code} value={panel.code} className="p-4 space-y-4 bg-fd-background rounded-none">
       {panel.description ? <div className="prose-no-margin text-sm">{ctx.renderMarkdown(panel.description)}</div> : null}
       {panel.mediaType ? <p className="text-xs text-fd-muted-foreground font-mono">{panel.mediaType}</p> : null}
       <ExamplesBlock panel={panel} ctx={ctx} />
-    </Tab>
+    </TabsContent>
   );
 }
 
@@ -93,7 +93,7 @@ export async function renderResponseTabs(tabs: ResponseTab[], ctx: RenderContext
   const defaultValue = panels[0]?.code ?? "";
 
   return (
-    <Tabs groupId="fumadocs_openapi_responses" defaultValue={defaultValue} className="bg-fd-card rounded-xl border overflow-hidden">
+    <Tabs variant="underline" defaultValue={defaultValue} className="gap-0 bg-fd-card rounded-xl border overflow-hidden">
       <CodeBlockTabsList>
         {panels.map((panel) => (
           <CodeBlockTabsTrigger key={panel.code} value={panel.code}>

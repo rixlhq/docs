@@ -3,11 +3,11 @@
 import {Check, Clipboard} from "lucide-react";
 import {type ComponentPropsWithRef, type HTMLAttributes, type ReactNode, type RefObject, createContext, use, useMemo, useRef} from "react";
 import {useCopyButton} from "fumadocs-ui/utils/use-copy-button";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "fumadocs-ui/components/ui/tabs";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@rixl/ui/tabs";
 import {m} from "@/paraglide/messages";
 import {mergeRefs} from "@/lib/merge-refs";
 import {cn} from "cn";
-import {buttonVariants} from "@/components/ui/button";
+import {Button} from "@rixl/ui/button";
 
 /**
  * Local copy of `fumadocs-ui/components/codeblock` so the copy button's
@@ -173,22 +173,18 @@ function CodeBlockCopyButton({
   });
 
   return (
-    <button
+    <Button
       type="button"
+      variant="ghost"
+      size="icon-xs"
       data-checked={checked || undefined}
-      className={cn(
-        buttonVariants({
-          className: "hover:text-fd-accent-foreground data-checked:text-fd-accent-foreground",
-          size: "icon-xs",
-        }),
-        className
-      )}
+      className={cn("hover:text-fd-accent-foreground data-checked:text-fd-accent-foreground", className)}
       {...props}
       aria-label={checked ? m.copiedText() : m.copyText()}
       onClick={onClick}
     >
       {checked ? <Check /> : <Clipboard />}
-    </button>
+    </Button>
   );
 }
 
@@ -196,33 +192,23 @@ export function CodeBlockTabs({ref, ...props}: ComponentPropsWithRef<typeof Tabs
   const containerRef = useRef<HTMLDivElement | null>(null);
   const nested = use(TabsContext) !== null;
   return (
-    <Tabs ref={mergeRefs(containerRef, ref)} {...props} className={cn("bg-fd-card rounded-xl border", !nested && "my-4", props.className)}>
+    <Tabs
+      variant="underline"
+      ref={mergeRefs(containerRef, ref)}
+      {...props}
+      className={cn("gap-0 bg-fd-card rounded-xl border", !nested && "my-4", props.className)}
+    >
       <TabsContext.Provider value={useMemo(() => ({containerRef, nested}), [nested])}>{props.children}</TabsContext.Provider>
     </Tabs>
   );
 }
 
 export function CodeBlockTabsList(props: ComponentPropsWithRef<typeof TabsList>) {
-  return (
-    <TabsList {...props} className={cn("flex flex-row px-2 overflow-x-auto text-fd-muted-foreground", props.className)}>
-      {props.children}
-    </TabsList>
-  );
+  return <TabsList {...props} className={cn("px-2", props.className)} />;
 }
 
 export function CodeBlockTabsTrigger({children, ...props}: ComponentPropsWithRef<typeof TabsTrigger>) {
-  return (
-    <TabsTrigger
-      {...props}
-      className={cn(
-        "relative group inline-flex text-sm font-medium text-nowrap items-center transition-colors gap-2 px-2 py-1.5 hover:text-fd-accent-foreground data-[state=active]:text-fd-primary [&_svg]:size-3.5",
-        props.className
-      )}
-    >
-      <div className="absolute inset-x-2 bottom-0 h-px group-data-[state=active]:bg-fd-primary" />
-      {children}
-    </TabsTrigger>
-  );
+  return <TabsTrigger {...props}>{children}</TabsTrigger>;
 }
 
 export function CodeBlockTab(props: ComponentPropsWithRef<typeof TabsContent>) {

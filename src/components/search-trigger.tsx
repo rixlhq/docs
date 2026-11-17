@@ -13,20 +13,20 @@ import {useSearchContext} from "fumadocs-ui/contexts/search";
 import type {SearchTriggerProps, FullSearchTriggerProps} from "fumadocs-ui/layouts/shared/slots/search-trigger";
 import {m} from "@/paraglide/messages";
 import {cn} from "cn";
-import {buttonVariants} from "@/components/ui/button";
+import {Button} from "@rixl/ui/button";
 
-export function SearchTrigger({hideIfDisabled, size: _size, color: _color, ...props}: SearchTriggerProps) {
-  const size = "icon-sm";
-  const color = "ghost";
+export function SearchTrigger({hideIfDisabled, size: _size, color: _color, variant: _variant, ...props}: SearchTriggerProps) {
   const {setOpenSearch, enabled} = useSearchContext();
   if (hideIfDisabled && !enabled) return null;
   const {className, onClick, ...buttonProps} = props;
   return (
-    <button
+    <Button
       type="button"
+      variant="ghost"
+      size="icon-sm"
       data-search=""
       aria-label={m.openSearch()}
-      className={cn(buttonVariants({size, color}), className)}
+      className={className}
       onClick={(e) => {
         onClick?.(e);
         setOpenSearch(true);
@@ -34,7 +34,7 @@ export function SearchTrigger({hideIfDisabled, size: _size, color: _color, ...pr
       {...buttonProps}
     >
       <Search />
-    </button>
+    </Button>
   );
 }
 

@@ -10,7 +10,7 @@ import {Sidebar, SidebarProvider, SidebarTrigger, useSidebar} from "fumadocs-ui/
 import {FullSearchTrigger, SearchTrigger} from "@/components/search-trigger";
 import {Menu} from "lucide-react";
 import {cn} from "cn";
-import {buttonVariants} from "@/components/ui/button";
+import {buttonVariants} from "@rixl/ui/button";
 import {m} from "@/paraglide/messages";
 
 interface LayoutProps {

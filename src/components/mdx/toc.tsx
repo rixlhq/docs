@@ -10,7 +10,7 @@
  */
 import {ChevronDown, Text} from "lucide-react";
 import {type ComponentProps, type ReactNode, createContext, use, useEffect, useEffectEvent, useMemo, useRef, useState} from "react";
-import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "fumadocs-ui/components/ui/collapsible";
+import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@rixl/ui/collapsible";
 import {TOCItem, TOCItems} from "fumadocs-ui/components/toc/default";
 import {TOCScrollArea, useItems, useTOCItems} from "fumadocs-ui/components/toc";
 import {useTreePath} from "fumadocs-ui/contexts/tree";

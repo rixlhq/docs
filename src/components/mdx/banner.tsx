@@ -4,7 +4,7 @@ import {X} from "lucide-react";
 import {type HTMLAttributes, Fragment, useCallback, useState, useSyncExternalStore} from "react";
 import {m} from "@/paraglide/messages";
 import {cn} from "cn";
-import {buttonVariants} from "@/components/ui/button";
+import {Button} from "@rixl/ui/button";
 
 type BannerVariant = "rainbow" | "normal";
 
@@ -19,20 +19,16 @@ const DEFAULT_RAINBOW_COLORS = ["rgba(0,149,255,0.56)", "rgba(231,77,255,0.77)",
 
 function BannerCloseButton({onClose}: {onClose: () => void}) {
   return (
-    <button
+    <Button
       type="button"
+      variant="ghost"
+      size="icon-sm"
       aria-label={m.closeBanner()}
       onClick={onClose}
-      className={cn(
-        buttonVariants({
-          color: "ghost",
-          className: "absolute inset-e-2 top-1/2 -translate-y-1/2 text-fd-muted-foreground/50",
-          size: "icon-sm",
-        })
-      )}
+      className="absolute inset-e-2 top-1/2 -translate-y-1/2 text-fd-muted-foreground/50"
     >
       <X />
-    </button>
+    </Button>
   );
 }
 

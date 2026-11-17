@@ -20,6 +20,7 @@ export function Provider({children, lang}: {children: ReactNode; lang?: string})
 
   return (
     <RootProvider
+      theme={{attribute: ["class", "data-theme"]}}
       i18n={{
         ...provider(lang),
         // Swap the leading locale segment via client-side history push so

@@ -3,7 +3,7 @@ import {Laptop, Moon, Sun} from "lucide-react";
 import {useTheme} from "next-themes";
 import {type HTMLAttributes, useSyncExternalStore} from "react";
 import {m} from "@/paraglide/messages";
-import {cn} from "cn";
+import {Button} from "@rixl/ui/button";
 
 const subscribe = () => () => {};
 
@@ -40,11 +40,10 @@ export function ThemeToggle({
   };
 
   return (
-    <button
-      className={cn(
-        "inline-flex size-9 cursor-pointer items-center justify-center rounded-lg bg-transparent text-fd-muted-foreground transition-colors hover:text-fd-accent-foreground",
-        className
-      )}
+    <Button
+      variant="ghost"
+      size="icon"
+      className={className}
       aria-label={m.toggleTheme()}
       onClick={() => setTheme(nextTheme())}
       data-theme-toggle=""
@@ -52,6 +51,6 @@ export function ThemeToggle({
       {...props}
     >
       <Icon className="size-4.5" />
-    </button>
+    </Button>
   );
 }
