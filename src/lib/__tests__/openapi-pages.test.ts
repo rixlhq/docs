@@ -19,6 +19,10 @@ describe("openApiPagesOptions.name", () => {
     expect(pageName({type: "webhook", item: {method: "POST", name: "video.ready"}})).toBe("webhook-post-video-ready");
   });
 
+  it("keeps inner slashes as separators even without a leading slash", () => {
+    expect(pageName({type: "operation", item: {method: "GET", path: "videos/{videoId}/captions"}})).toBe("get-videos-videoid-captions");
+  });
+
   it("[property] always gives a lowercase slug without doubled or outer dashes", () => {
     fc.assert(
       fc.property(fc.string(), (path) => {
@@ -26,5 +30,11 @@ describe("openApiPagesOptions.name", () => {
         expect(name).toMatch(/^get-[a-z0-9_]+(-[a-z0-9_]+)*$/);
       })
     );
+  });
+});
+
+describe("openApiPagesOptions", () => {
+  it("groups one page per operation by tag, emitting meta files", () => {
+    expect(openApiPagesOptions).toMatchObject({per: "operation", groupBy: "tag", meta: true});
   });
 });

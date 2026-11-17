@@ -29,6 +29,18 @@ describe("resolveOpenApiServers", () => {
     expect(resolveOpenApiBaseUrl({servers: [{url: "/"}]})).toBe(API_BASE_URL);
   });
 
+  it("trims whitespace around a spec-provided url", () => {
+    expect(resolveOpenApiBaseUrl({servers: [{url: " https://edge.example/ "}]})).toBe("https://edge.example");
+  });
+
+  it("keeps a trailing slash on a relative server path", () => {
+    expect(resolveOpenApiBaseUrl({servers: [{url: "v2/"}]})).toBe(`${API_BASE_URL}/v2/`);
+  });
+
+  it("falls back to the production API when a template variable resolves to nothing", () => {
+    expect(resolveOpenApiBaseUrl({servers: [{url: "{region}", variables: {region: undefined}}]})).toBe(API_BASE_URL);
+  });
+
   it("skips servers without a url and removes duplicates", () => {
     const servers = resolveOpenApiServers({
       servers: [{description: "no url"}, {url: "https://a.example"}, {url: "https://a.example/"}],
@@ -39,6 +51,24 @@ describe("resolveOpenApiServers", () => {
   it("builds the url from a Swagger 2 host, preferring https", () => {
     expect(resolveOpenApiBaseUrl({host: "api.example", schemes: ["HTTP", "HTTPS"], basePath: "v1"})).toBe("https://api.example/v1");
     expect(resolveOpenApiBaseUrl({host: "api.example", basePath: "/"})).toBe("https://api.example");
+  });
+
+  it("passes a non-http scheme through to the relative-url fallback", () => {
+    expect(resolveOpenApiBaseUrl({host: "api.example", schemes: ["WS"]})).toBe(`${API_BASE_URL}/ws://api.example`);
+  });
+
+  it("drops an empty or root-only base path", () => {
+    expect(resolveOpenApiBaseUrl({host: "api.example", schemes: ["ws"], basePath: "/"})).toBe(`${API_BASE_URL}/ws://api.example`);
+    expect(resolveOpenApiBaseUrl({host: "api.example", schemes: ["ws"], basePath: ""})).toBe(`${API_BASE_URL}/ws://api.example`);
+  });
+
+  it("defaults to https when the spec lists no schemes and no base path", () => {
+    expect(resolveOpenApiBaseUrl({host: "api.example"})).toBe("https://api.example");
+  });
+
+  it("separates host and base path with exactly one slash", () => {
+    expect(resolveOpenApiBaseUrl({host: "api.example", basePath: "v1/"})).toBe("https://api.example/v1");
+    expect(resolveOpenApiBaseUrl({host: "api.example", basePath: "/v1"})).toBe("https://api.example/v1");
   });
 });
 

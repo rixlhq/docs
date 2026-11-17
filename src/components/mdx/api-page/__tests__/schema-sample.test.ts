@@ -22,9 +22,26 @@ describe("normalizeResponseSample", () => {
   it("returns the same object when nothing changes, and non-objects untouched", () => {
     const sample = {code: 404};
     expect(normalizeResponseSample(sample, "404")).toBe(sample);
-    expect(normalizeResponseSample({code: 1}, "default")).toEqual({code: 1});
+    const unmatched = {code: 1};
+    expect(normalizeResponseSample(unmatched, "default")).toBe(unmatched);
     expect(normalizeResponseSample([1, 2], "404")).toEqual([1, 2]);
     expect(normalizeResponseSample("text", "404")).toBe("text");
+  });
+
+  it("leaves the error alone without an error description", () => {
+    const sample = {error: "x"};
+    expect(normalizeResponseSample(sample, "500")).toBe(sample);
+    expect(normalizeResponseSample({error: "x"}, "500", "")).toEqual({error: "x"});
+  });
+
+  it("returns the same object when the error already matches the description", () => {
+    const sample = {error: "same"};
+    expect(normalizeResponseSample(sample, "404", "same")).toBe(sample);
+  });
+
+  it("treats an array as a non-record even with custom keys", () => {
+    const arr = Object.assign([1, 2], {error: "old"});
+    expect(normalizeResponseSample(arr, "500", "Broken")).toBe(arr);
   });
 
   it("[property] never changes a sample without code or error", () => {
@@ -69,5 +86,25 @@ describe("getRequestExample", () => {
     expect(getRequestExample({example: 3})).toBe(3);
     expect(getRequestExample({schema: {type: "string"}})).toBe("string");
     expect(getRequestExample({})).toBeUndefined();
+  });
+
+  it("falls through to the example when the first named entry has no value", () => {
+    expect(getRequestExample({examples: {a: {}}, example: 3})).toBe(3);
+  });
+
+  it("falls through to the example when the first named entry is missing", () => {
+    expect(getRequestExample({examples: {a: undefined}, example: 9})).toBe(9);
+  });
+
+  it("returns the schema itself when sampling throws", () => {
+    const uncooperative = new Proxy(
+      {type: "object"},
+      {
+        get() {
+          throw new Error("nope");
+        },
+      }
+    );
+    expect(getRequestExample({schema: uncooperative})).toBe(uncooperative);
   });
 });

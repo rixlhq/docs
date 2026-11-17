@@ -44,7 +44,6 @@ function collectRequestBodyContent(operation: OpenApiOperation): RequestBodySumm
 
 function collectBodyParameters(operation: OpenApiOperation): RequestBodySummary[] {
   const bodyParameters = operation.parameters?.filter((parameter) => parameter.in === "body") ?? [];
-  if (bodyParameters.length === 0) return [];
 
   const contentTypes = operation.consumes && operation.consumes.length > 0 ? operation.consumes : ["application/json"];
   const results: RequestBodySummary[] = [];
@@ -112,13 +111,11 @@ export function getResponseContents(response: OpenApiResponse, produces: string[
   const entries: ResponseContentSummary[] = [];
   const contentEntries = Object.entries(response.content ?? {});
 
-  if (contentEntries.length > 0) {
-    for (const [contentType, media] of contentEntries) {
-      entries.push({
-        contentType,
-        schema: media?.schema,
-      });
-    }
+  for (const [contentType, media] of contentEntries) {
+    entries.push({
+      contentType,
+      schema: media?.schema,
+    });
   }
 
   if (response.schema) {

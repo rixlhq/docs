@@ -36,6 +36,16 @@ describe("isActive", () => {
     expect(isActive("/en/home", "/en/apis", {activeSubfolders: ["/en/api"]})).toBe(false);
   });
 
+  it("keeps the root url exact instead of normalizing it away", () => {
+    expect(isActive("/", "/en/home")).toBe(false);
+    expect(isActive("/", "/")).toBe(true);
+  });
+
+  it("is active when any listed subfolder matches, not only when all do", () => {
+    expect(isActive("/en/home", "/en/api/videos", {activeSubfolders: ["/en/api", "/en/sdk"]})).toBe(true);
+    expect(isActive("/en/home", "/en/docs/videos", {activeSubfolders: ["/en/api", "/en/sdk"]})).toBe(false);
+  });
+
   it("[property] a page is always active for itself, with or without a trailing slash", () => {
     fc.assert(fc.property(path, fc.boolean(), (url, nested) => isActive(url, `${url}/`, {nested})));
   });

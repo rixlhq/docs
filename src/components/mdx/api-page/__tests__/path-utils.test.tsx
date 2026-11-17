@@ -49,4 +49,40 @@ describe("findOperationPath", () => {
     expect(findOperationPath({ctx, operation: {operationId: "getVideo"}, method: "POST", headerNode: null})).toBeUndefined();
     expect(findOperationPath({ctx, operation: {operationId: "nope"}, method: "GET", headerNode: null})).toBeUndefined();
   });
+
+  it("finds nothing without a spec", () => {
+    const noSpec = {schema: undefined} as unknown as OpenApiRenderContext;
+    expect(findOperationPath({ctx: noSpec, operation: {operationId: "getVideo"}, method: "GET", headerNode: null})).toBeUndefined();
+  });
+
+  it("skips path entries and operations that are not objects", () => {
+    const sparse = {schema: {paths: {"/a": undefined, "/b": {get: undefined}}}} as unknown as OpenApiRenderContext;
+    expect(findOperationPath({ctx: sparse, operation: {operationId: "x", summary: "y"}, method: "GET", headerNode: null})).toBeUndefined();
+  });
+
+  it("ignores an operation without an operationId when matching by operationId", () => {
+    const anonymous = {schema: {paths: {"/anon": {get: {summary: "S"}}}}} as unknown as OpenApiRenderContext;
+    expect(findOperationPath({ctx: anonymous, operation: {}, method: "GET", headerNode: null})).toBeUndefined();
+  });
+
+  it("finds the path by summary even when it is not the first entry", () => {
+    const two = {
+      schema: {paths: {"/first": {get: {operationId: "other"}}, "/second": {get: {summary: "Target"}}}},
+    } as unknown as OpenApiRenderContext;
+    expect(findOperationPath({ctx: two, operation: {summary: "Target"}, method: "GET", headerNode: null})).toBe("/second");
+  });
+
+  it("skips a bare slash and reads the first real path", () => {
+    expect(findOperationPath({ctx, operation: {}, method: "GET", headerNode: "GET / /videos"})).toBe("/videos");
+  });
+
+  it("collects text from an array of nodes without merging tokens", () => {
+    const header = [<span key="1">{"GET"}</span>, <span key="2">{"/videos"}</span>];
+    expect(findOperationPath({ctx, operation: {}, method: "GET", headerNode: header})).toBe("/videos");
+    expect(findOperationPath({ctx, operation: {}, method: "GET", headerNode: ["/v", "1"]})).toBe("/v");
+  });
+
+  it("ignores non-element objects when collecting header text", () => {
+    expect(findOperationPath({ctx, operation: {}, method: "GET", headerNode: {children: "/videos"}})).toBeUndefined();
+  });
 });

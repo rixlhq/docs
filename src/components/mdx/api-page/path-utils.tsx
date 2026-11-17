@@ -38,8 +38,6 @@ export function findOperationPath({
   if (pathFromHeader) return pathFromHeader;
 
   const methodKey = method.toLowerCase();
-  if (!methodKey) return;
-
   const paths = getOpenApiPaths(ctx);
   if (!paths) return;
 
@@ -47,10 +45,7 @@ export function findOperationPath({
 }
 
 function extractPathFromHeader(node: unknown): string | undefined {
-  const text = collectText(node).replace(/\s+/g, " ").trim();
-  if (text.length === 0) return;
-
-  const match = text.match(new RegExp("/[A-Za-z0-9\\-._~!$&'()*+,;=:@{}/]+", "g"));
+  const match = collectText(node).match(/\/[A-Za-z0-9\-._~!$&'()*+,;=:@{}/]+/g);
   if (!match) return;
 
   for (const candidate of match) {
@@ -59,7 +54,6 @@ function extractPathFromHeader(node: unknown): string | undefined {
 }
 
 function collectText(node: unknown): string {
-  if (node == null || typeof node === "boolean") return "";
   if (typeof node === "string" || typeof node === "number") return String(node);
   if (Array.isArray(node)) return node.map(collectText).join(" ");
   if (!isValidElement(node)) return "";

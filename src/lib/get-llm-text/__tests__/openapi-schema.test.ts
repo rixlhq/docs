@@ -68,12 +68,86 @@ describe("appendSchemaNode", () => {
   it("renders array items, composites and additional properties", () => {
     expect(render({type: "array", items: {type: "string"}})).toEqual(["- `body*`: array", "  - Items:", "    - `item*`: string"]);
     expect(render({oneOf: [{type: "string"}]})).toEqual(["- `body*`: oneOf", "  - One of:", "    - `oneOf[0]*`: string"]);
+    expect(render({allOf: [{type: "string"}]})).toEqual(["- `body*`: allOf", "  - All of:", "    - `allOf[0]*`: string"]);
+    expect(render({anyOf: [{type: "number"}]})).toEqual(["- `body*`: anyOf", "  - Any of:", "    - `anyOf[0]*`: number"]);
     expect(render({type: "object", additionalProperties: true})).toEqual(["- `body*`: object", "  - Additional properties: allowed"]);
     expect(render({type: "object", additionalProperties: {type: "number"}})).toEqual([
       "- `body*`: object",
       "  - Additional properties:",
       "    - `<key>*`: number",
     ]);
+  });
+
+  it("skips empty enum and composite lists", () => {
+    expect(render({type: "string", enum: []})).toEqual(["- `body*`: string"]);
+    expect(render({oneOf: []})).toEqual(["- `body*`: oneOf"]);
+  });
+
+  it("skips a falsy property schema and a null additionalProperties", () => {
+    expect(render({type: "object", properties: {bad: undefined, good: {type: "string"}}})).toEqual([
+      "- `body*`: object",
+      "  - Fields:",
+      "    - `good`: string",
+    ]);
+    expect(render({type: "object", additionalProperties: null})).toEqual(["- `body*`: object"]);
+  });
+
+  it("indents nested items, composites and additional properties", () => {
+    expect(render({type: "object", properties: {deep: {type: "array", items: {type: "string"}}}})).toEqual([
+      "- `body*`: object",
+      "  - Fields:",
+      "    - `deep`: array",
+      "      - Items:",
+      "        - `item*`: string",
+    ]);
+    expect(render({type: "object", properties: {choice: {oneOf: [{type: "string"}]}}})).toEqual([
+      "- `body*`: object",
+      "  - Fields:",
+      "    - `choice`: oneOf",
+      "      - One of:",
+      "        - `oneOf[0]*`: string",
+    ]);
+    expect(render({type: "object", properties: {map: {type: "object", additionalProperties: true}}})).toEqual([
+      "- `body*`: object",
+      "  - Fields:",
+      "    - `map`: object",
+      "      - Additional properties: allowed",
+    ]);
+  });
+
+  it("marks only schema-listed properties as required", () => {
+    expect(render({type: "object", properties: {"Stryker was here": {type: "string"}}})).toEqual([
+      "- `body*`: object",
+      "  - Fields:",
+      "    - `Stryker was here`: string",
+    ]);
+  });
+
+  it("renders a shared object only once across sibling fields", () => {
+    const shared: OpenApiSchema = {type: "object", properties: {leaf: {type: "string"}}};
+    expect(render({type: "object", properties: {a: shared, b: shared}})).toEqual([
+      "- `body*`: object",
+      "  - Fields:",
+      "    - `a`: object",
+      "      - Fields:",
+      "        - `leaf`: string",
+      "    - `b`: object",
+    ]);
+  });
+
+  it("renders children of a first-seen $ref schema", () => {
+    const lines: string[] = [];
+    const context = createSchemaContext(lines);
+    appendSchemaNode({$ref: "#/x", properties: {a: {type: "string"}}}, context, {depth: 0, name: "r", required: false});
+    expect(lines).toEqual(["- `r`: ref<x>", "  - Fields:", "    - `a`: string"]);
+  });
+
+  it("does not render children of an already-seen $ref", () => {
+    const lines: string[] = [];
+    const context = createSchemaContext(lines);
+    appendSchemaNode({$ref: "#/x", properties: {a: {type: "string"}}}, context, {depth: 0, name: "r", required: false});
+    appendSchemaNode({$ref: "#/x", properties: {b: {type: "number"}}}, context, {depth: 0, name: "s", required: false});
+    expect(lines).toEqual(["- `r`: ref<x>", "  - Fields:", "    - `a`: string", "- `s`: ref<x>", "  - Circular reference: `#/x`"]);
   });
 
   it("stops at a circular $ref instead of recursing forever", () => {
