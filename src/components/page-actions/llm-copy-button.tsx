@@ -2,7 +2,8 @@
 
 import {useState} from "react";
 import {useCopyButton} from "fumadocs-ui/utils/use-copy-button";
-import {cn} from "cn";
+import {ButtonGroup} from "@rixl/ui/button-group";
+import {m} from "@/paraglide/messages";
 import {CopyButton} from "./copy-button";
 import {ViewOptions} from "./view-options";
 
@@ -51,9 +52,9 @@ export function LLMCopyButton({markdownUrl, githubUrl}: LLMCopyButtonProps) {
   });
 
   return (
-    <div className={cn("rounded-lg [&_svg]:size-4 cursor-pointer border text-sm flex items-center h-7")}>
+    <ButtonGroup aria-label={m.copyPageTitle()} className="rounded-lg border">
       <CopyButton isLoading={isLoading} checked={checked} onClick={onClick} />
       <ViewOptions markdownUrl={markdownUrl} githubUrl={githubUrl} onClick={onClick} />
-    </div>
+    </ButtonGroup>
   );
 }

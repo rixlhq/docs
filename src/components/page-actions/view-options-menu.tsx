@@ -2,6 +2,7 @@
 
 import {ChevronDown} from "lucide-react";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuTrigger} from "@rixl/ui/dropdown-menu";
+import {Button} from "@rixl/ui/button";
 import {m} from "@/paraglide/messages";
 
 interface ViewOptionsMenuProps {
@@ -14,8 +15,15 @@ export function ViewOptionsMenu({open, onOpenChange, children}: ViewOptionsMenuP
   return (
     <DropdownMenu open={open} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger
-        aria-label={m.viewOptions()}
-        className="h-full cursor-pointer rounded-r-lg px-2 text-fd-accent-foreground hover:bg-fd-muted-foreground/10"
+        render={
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label={m.viewOptions()}
+            className="text-fd-accent-foreground hover:bg-fd-muted-foreground/10"
+          />
+        }
       >
         <ChevronDown className="h-3.5 w-3.5" />
       </DropdownMenuTrigger>
