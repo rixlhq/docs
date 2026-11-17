@@ -45,10 +45,13 @@ export function Callout({type = "info", title, children}: CalloutProps) {
   return (
     <Alert variant={variant} className={cn("not-prose my-6")}>
       <IconComponent aria-hidden="true" />
-      {title ? <AlertTitle>{title}</AlertTitle> : null}
+      {/* The variant color stays on the icon, border and background only:
+          success/warning titles and the destructive description fall below
+          WCAG AA contrast in @rixl/ui, so text stays on fg/fg-muted. */}
+      {title ? <AlertTitle className="text-rixl-fg">{title}</AlertTitle> : null}
       <AlertDescription
         className={cn(
-          "text-sm leading-relaxed",
+          "text-sm leading-relaxed text-rixl-fg-muted!",
           "[&>p]:mb-2 [&>p:last-child]:mb-0",
           "[&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
           "[&_strong]:font-semibold [&_code]:font-mono [&_code]:text-xs",

@@ -1,5 +1,11 @@
 @import "tailwindcss";
 @import "@rixl/ui/preset.css";
+/* Tailwind ignores gitignored paths when scanning for candidates, so the
+   design-system utilities that never appear literally in our own files
+   (e.g. `size-8` behind `size="icon-sm"`) would silently go missing and
+   icon-only buttons would collapse to their icon size. Scan the library
+   sources explicitly. */
+@source "../../node_modules/@rixl/ui/src";
 @import "fumadocs-ui/css/black.css";
 @import "fumadocs-ui/css/preset.css";
 @import "fumadocs-openapi/css/preset.css";
