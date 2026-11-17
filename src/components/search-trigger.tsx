@@ -43,12 +43,13 @@ export function FullSearchTrigger({hideIfDisabled, ...props}: FullSearchTriggerP
   if (hideIfDisabled && !enabled) return null;
   const {className, onClick, ...buttonProps} = props;
   return (
-    <button
+    <Button
       type="button"
+      variant="outline"
       data-search-full=""
       {...buttonProps}
       className={cn(
-        "inline-flex items-center gap-2 rounded-lg border bg-fd-secondary/50 p-1.5 ps-2 text-sm text-fd-muted-foreground transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground",
+        "h-auto justify-start gap-2 border-fd-border bg-fd-secondary/50 p-1.5 ps-2 font-normal text-fd-muted-foreground hover:bg-fd-accent hover:text-fd-accent-foreground",
         className
       )}
       onClick={(e) => {
@@ -65,6 +66,6 @@ export function FullSearchTrigger({hideIfDisabled, ...props}: FullSearchTriggerP
           </kbd>
         ))}
       </div>
-    </button>
+    </Button>
   );
 }
