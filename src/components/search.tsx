@@ -31,7 +31,7 @@ function initDB(locale?: string) {
  * override it. Re-implementing the input here lets us source the
  * placeholder from paraglide.
  */
-function SearchInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
+function SearchInput(props: Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">) {
   const {search, onSearchChange} = useSearch();
   return (
     <Input
@@ -39,6 +39,7 @@ function SearchInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
       value={search}
       onChange={(e) => onSearchChange(e.target.value)}
       placeholder={m.search()}
+      aria-label={m.search()}
       className="w-0 flex-1 border-0 bg-transparent text-lg shadow-none placeholder:text-fd-muted-foreground focus-visible:ring-0"
     />
   );
