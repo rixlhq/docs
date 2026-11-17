@@ -14,7 +14,6 @@ import type {SearchTriggerProps, FullSearchTriggerProps} from "fumadocs-ui/layou
 import {m} from "@/paraglide/messages";
 import {cn} from "cn";
 import {Button} from "@rixl/ui/button";
-
 export function SearchTrigger({hideIfDisabled, size: _size, color: _color, variant: _variant, ...props}: SearchTriggerProps) {
   const {setOpenSearch, enabled} = useSearchContext();
   if (hideIfDisabled && !enabled) return null;
@@ -42,14 +41,17 @@ export function FullSearchTrigger({hideIfDisabled, ...props}: FullSearchTriggerP
   const {enabled, hotKey, setOpenSearch} = useSearchContext();
   if (hideIfDisabled && !enabled) return null;
   const {className, onClick, ...buttonProps} = props;
+  // Plain button, like the upstream fumadocs trigger: this is navbar
+  // chrome with its own metrics, not a design-system button. Wrapping
+  // Button here only produced overrides for height, padding and type.
   return (
-    <Button
+    <button
       type="button"
-      variant="outline"
       data-search-full=""
       {...buttonProps}
       className={cn(
-        "h-auto justify-start gap-2 border-fd-border bg-fd-secondary/50 p-1.5 ps-2 font-normal text-fd-muted-foreground hover:bg-fd-accent hover:text-fd-accent-foreground",
+        "h-auto inline-flex cursor-pointer items-center justify-start gap-2 border-fd-border bg-fd-secondary/50 p-1.5 ps-2 font-normal text-fd-muted-foreground transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring",
         className
       )}
       onClick={(e) => {
@@ -66,6 +68,6 @@ export function FullSearchTrigger({hideIfDisabled, ...props}: FullSearchTriggerP
           </kbd>
         ))}
       </div>
-    </Button>
+    </button>
   );
 }
