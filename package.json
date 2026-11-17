@@ -19,8 +19,10 @@
     "machine-translate": "inlang machine translate --project project.inlang"
   },
   "dependencies": {
+    "@base-ui/react": "^1.9.0",
     "@fumadocs/json-schema": "^0.3.5",
     "@rixl/media-react": "^1.2.0",
+    "@rixl/ui": "0.2.2",
     "@sentry/react": "^11.12.0",
     "@takumi-rs/image-response": "^2.20.0",
     "@tanstack/react-router": "^1.170.46",
@@ -36,7 +38,6 @@
     "lucide-static": "^1.72.0",
     "next-themes": "^0.4.6",
     "openapi-sampler": "^1.7.10",
-    "radix-ui": "^1.8.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "yaml": "^2.9.1",

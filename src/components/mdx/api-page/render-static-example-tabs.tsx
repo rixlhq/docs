@@ -1,5 +1,5 @@
 import {CodeBlockTabsList, CodeBlockTabsTrigger} from "@/components/mdx/codeblock";
-import {Tab, Tabs} from "fumadocs-ui/components/tabs";
+import {Tabs, TabsContent} from "@rixl/ui/tabs";
 // @ts-expect-error -- runtime export exists but not in .d.ts
 import {getExampleRequests} from "../../../../node_modules/fumadocs-openapi/dist/utils/get-example-requests.js";
 import type {CodeUsageGenerator} from "fumadocs-openapi/requests/generators";
@@ -77,7 +77,7 @@ async function highlightRequestItems(items: RequestTabItem[], ctx: OpenApiRender
 
 function RequestTabs({items}: {items: HighlightedTabItem[]}) {
   return (
-    <Tabs groupId="fumadocs_openapi_requests" defaultValue={items[0]?.id} className="bg-fd-card rounded-xl border my-4 overflow-hidden">
+    <Tabs variant="underline" defaultValue={items[0]?.id} className="gap-0 bg-fd-card rounded-xl border my-4 overflow-hidden">
       <CodeBlockTabsList>
         {items.map((item) => (
           <CodeBlockTabsTrigger key={item.id} value={item.id}>
@@ -87,13 +87,13 @@ function RequestTabs({items}: {items: HighlightedTabItem[]}) {
       </CodeBlockTabsList>
 
       {items.map((item) => (
-        <Tab
+        <TabsContent
           key={item.id}
           value={item.id}
-          className="p-0 bg-transparent rounded-none outline-none data-[state=inactive]:hidden [&>figure:only-child]:m-0 [&>figure:only-child]:rounded-none [&>figure:only-child]:border-0 [&>figure:only-child]:shadow-none"
+          className="p-0 bg-transparent rounded-none outline-none [&>figure:only-child]:m-0 [&>figure:only-child]:rounded-none [&>figure:only-child]:border-0 [&>figure:only-child]:shadow-none"
         >
           {item.node}
-        </Tab>
+        </TabsContent>
       ))}
     </Tabs>
   );

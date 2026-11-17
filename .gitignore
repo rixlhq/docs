@@ -56,3 +56,7 @@ reviews/
 .stryker-tmp
 .stryker-cache
 reports/mutation
+
+# harness & tool caches
+.opencode/
+project.inlang/cache/

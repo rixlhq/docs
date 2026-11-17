@@ -3,7 +3,7 @@
 import {ChevronLeftIcon, HomeIcon} from "lucide-react";
 import {Link, useRouter} from "@tanstack/react-router";
 import {m} from "@/paraglide/messages";
-import {buttonVariants} from "@/components/ui/button";
+import {buttonVariants, Button} from "@rixl/ui/button";
 import {cn} from "cn";
 
 export function NotFound() {
@@ -16,15 +16,15 @@ export function NotFound() {
         <h2 className="text-2xl font-semibold">{m.pageNotFound()}</h2>
         <p className="text-lg max-w-lg mx-auto leading-relaxed text-fd-muted-foreground">{m.pageNotFoundDesc()}</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link to="/" className={cn(buttonVariants({variant: "primary"}))}>
+          <Link to="/" className={cn(buttonVariants({variant: "default"}))}>
             <HomeIcon />
             {m.returnHome()}
           </Link>
 
-          <button type="button" onClick={() => router.history.back()} className={cn(buttonVariants({variant: "outline"}))}>
+          <Button type="button" variant="outline" onClick={() => router.history.back()}>
             <ChevronLeftIcon />
             {m.goBack()}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

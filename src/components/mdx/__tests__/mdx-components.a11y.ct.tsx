@@ -6,6 +6,7 @@ import {axeViolations, setTheme} from "../../../../test/a11y.ts";
 import {Banner} from "../banner";
 import {Callout} from "../callout";
 import {Card} from "../card";
+import {CodeBlock, Pre} from "../codeblock";
 import {Columns} from "../columns";
 import {Heading} from "../heading";
 
@@ -78,6 +79,17 @@ describe.each(["light", "dark"] as const)("%s theme", (theme) => {
       <Heading as="h2" id="install">
         Install
       </Heading>
+    );
+
+    expect(await axeViolations(container)).toEqual([]);
+  });
+
+  test("CodeBlock with title and copy button", async () => {
+    setTheme(theme);
+    const container = await renderInRouter(
+      <CodeBlock title="example.ts">
+        <Pre>const answer = 42;</Pre>
+      </CodeBlock>
     );
 
     expect(await axeViolations(container)).toEqual([]);

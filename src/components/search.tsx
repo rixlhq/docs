@@ -13,6 +13,7 @@ import {
   useSearch,
 } from "fumadocs-ui/components/dialog/search";
 import {useI18n} from "fumadocs-ui/contexts/i18n";
+import {Input} from "@rixl/ui/input";
 import {m} from "@/paraglide/messages";
 
 function initDB(locale?: string) {
@@ -33,12 +34,12 @@ function initDB(locale?: string) {
 function SearchInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   const {search, onSearchChange} = useSearch();
   return (
-    <input
+    <Input
       {...props}
       value={search}
       onChange={(e) => onSearchChange(e.target.value)}
       placeholder={m.search()}
-      className="w-0 flex-1 bg-transparent text-lg placeholder:text-fd-muted-foreground focus-visible:outline-none"
+      className="w-0 flex-1 border-0 bg-transparent text-lg shadow-none placeholder:text-fd-muted-foreground focus-visible:ring-0"
     />
   );
 }

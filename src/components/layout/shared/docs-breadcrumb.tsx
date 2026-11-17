@@ -4,8 +4,8 @@ import Link from "fumadocs-core/link";
 import {usePathname} from "fumadocs-core/framework";
 import {useTreeContext} from "fumadocs-ui/contexts/tree";
 import {useBreadcrumb, type BreadcrumbOptions} from "fumadocs-core/breadcrumb";
+import {Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator} from "@rixl/ui/breadcrumb";
 import {cn} from "cn";
-import {ChevronRight} from "lucide-react";
 import {m} from "@/paraglide/messages";
 import {locales} from "@/paraglide/runtime";
 import {getFirstPageUrl, isHomeCategory} from "./sidebar-banner";
@@ -25,21 +25,16 @@ interface CrumbItemProps {
 
 function CrumbItem({name, url, isLast, isFirst}: CrumbItemProps) {
   return (
-    <li className={cn("flex items-center", isLast ? "min-w-0" : "shrink-0")}>
-      {!isFirst && <ChevronRight className="text-fd-muted-foreground/60 mx-1.5 size-3.5 shrink-0" aria-hidden="true" />}
+    <BreadcrumbItem className={isLast ? "min-w-0" : "shrink-0"}>
+      {!isFirst && <BreadcrumbSeparator className="text-fd-muted-foreground/60" />}
       {url && !isLast ? (
-        <Link href={url} className="hover:text-fd-foreground whitespace-nowrap transition-colors">
+        <BreadcrumbLink render={<Link href={url} />} className="whitespace-nowrap hover:text-fd-foreground">
           {name}
-        </Link>
+        </BreadcrumbLink>
       ) : (
-        <span
-          className={cn(isLast ? "text-fd-foreground truncate font-medium" : "whitespace-nowrap")}
-          {...(isLast ? {"aria-current": "page"} : {})}
-        >
-          {name}
-        </span>
+        <BreadcrumbPage className={isLast ? "truncate font-medium" : "whitespace-nowrap"}>{name}</BreadcrumbPage>
       )}
-    </li>
+    </BreadcrumbItem>
   );
 }
 
@@ -100,12 +95,12 @@ export function DocsBreadcrumb({includeRoot = false, includePage = true, classNa
   if (crumbs.length <= 1) return null;
 
   return (
-    <nav aria-label="Breadcrumb" className={cn("min-w-0 pb-2 text-xs font-medium", className)}>
-      <ol className="flex flex-wrap items-center text-fd-muted-foreground">
+    <Breadcrumb className={cn("min-w-0 pb-2 text-xs font-medium", className)}>
+      <BreadcrumbList className="text-xs">
         {crumbs.map((item, i) => (
           <CrumbItem key={i} name={item.name} url={item.url} isLast={i === crumbs.length - 1} isFirst={i === 0} />
         ))}
-      </ol>
-    </nav>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 }

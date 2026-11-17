@@ -66,5 +66,6 @@
   "toggleMenu": "Toggle Menu",
   "openSidebar": "Open Sidebar",
   "closeSidebar": "Close Sidebar",
-  "footerCopyright": "© {year} RIXL Inc."
+  "footerCopyright": "© {year} RIXL Inc.",
+  "viewOptions": "View options"
 }

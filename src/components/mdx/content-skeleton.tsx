@@ -1,4 +1,5 @@
 import {DocsBody, DocsDescription, DocsPage, DocsTitle} from "fumadocs-ui/page";
+import {Skeleton} from "@rixl/ui/skeleton";
 
 const LINE_WIDTHS = ["w-full", "w-11/12", "w-4/5", "w-full", "w-2/3", "w-full", "w-5/6", "w-3/4"];
 
@@ -18,7 +19,7 @@ export function ContentSkeleton({title, description}: {title: string; descriptio
       footer={{enabled: false}}
     >
       {/* Holds the breadcrumb's row so the title does not jump on resolve. */}
-      <div className="h-5 w-16 animate-pulse rounded bg-fd-muted" />
+      <Skeleton className="h-5 w-16" />
       <header className="relative space-y-2">
         <DocsTitle>{title}</DocsTitle>
         {description ? <DocsDescription>{description}</DocsDescription> : null}
@@ -26,7 +27,7 @@ export function ContentSkeleton({title, description}: {title: string; descriptio
       <DocsBody>
         <div className="not-prose flex flex-col gap-3" aria-busy="true" aria-live="polite">
           {LINE_WIDTHS.map((width, i) => (
-            <div key={i} className={`h-4 animate-pulse rounded bg-fd-muted ${width}`} />
+            <Skeleton key={i} className={`h-4 ${width}`} />
           ))}
         </div>
       </DocsBody>

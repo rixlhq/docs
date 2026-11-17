@@ -31,7 +31,7 @@ Lint and complexity caps live in the `lint` block of `vite.config.ts`. `vp check
 
 - Tailwind utilities, with the Fumadocs theme tokens (`bg-fd-primary`, `text-fd-muted-foreground`). Inline `style` only for values computed at runtime.
 - Merge classes with `import {cn} from "cn"`. Don't use `tailwind-merge` or a local `cn` helper.
-- Reuse the primitives in `src/components/ui/` before building a new one.
+- Reuse the primitives from `@rixl/ui` before building a new one.
 
 ## i18n
 

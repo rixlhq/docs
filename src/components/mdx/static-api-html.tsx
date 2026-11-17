@@ -37,26 +37,30 @@ function setExpandedState(button: HTMLButtonElement, expanded: boolean): void {
   else panel.setAttribute("hidden", "");
 }
 
+function setTabSelected(tab: HTMLButtonElement, selected: boolean, panel: HTMLElement | null): void {
+  tab.setAttribute("aria-selected", selected ? "true" : "false");
+  tab.setAttribute("data-state", selected ? "active" : "inactive");
+  // `@rixl/ui` tabs style the active trigger via `data-active`; the
+  // server-rendered API HTML has no React tree, so mirror it here.
+  if (selected) tab.setAttribute("data-active", "");
+  else tab.removeAttribute("data-active");
+  tab.tabIndex = selected ? 0 : -1;
+
+  if (!panel) return;
+  panel.setAttribute("data-state", selected ? "active" : "inactive");
+  if (selected) panel.removeAttribute("hidden");
+  else panel.setAttribute("hidden", "");
+}
+
 function activateTab(button: HTMLButtonElement): void {
   const tabList = button.closest<HTMLElement>('[role="tablist"]');
   if (!tabList) return;
 
   const tabs = tabList.querySelectorAll<HTMLButtonElement>('[role="tab"]');
   for (const tab of tabs) {
-    const selected = tab === button;
-    tab.setAttribute("aria-selected", selected ? "true" : "false");
-    tab.setAttribute("data-state", selected ? "active" : "inactive");
-    tab.tabIndex = selected ? 0 : -1;
-
     const panelId = tab.getAttribute("aria-controls");
-    if (!panelId) continue;
-
-    const panel = document.getElementById(panelId);
-    if (!panel) continue;
-
-    panel.setAttribute("data-state", selected ? "active" : "inactive");
-    if (selected) panel.removeAttribute("hidden");
-    else panel.setAttribute("hidden", "");
+    const panel = panelId ? document.getElementById(panelId) : null;
+    setTabSelected(tab, tab === button, panel);
   }
 }
 

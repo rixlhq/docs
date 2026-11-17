@@ -5,7 +5,8 @@ import type {ComponentPropsWithoutRef} from "react";
 import {useCopyButton} from "fumadocs-ui/utils/use-copy-button";
 import {m} from "@/paraglide/messages";
 import {cn} from "cn";
-import {buttonVariants} from "@/components/ui/button";
+import {Button} from "@rixl/ui/button";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@rixl/ui/tooltip";
 
 type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
@@ -33,17 +34,23 @@ export function Heading({as, ...props}: HeadingProps) {
       <a data-card="" href={`#${props.id}`}>
         {props.children}
       </a>
-      <button
-        type="button"
-        aria-label={m.copyAnchorLink()}
-        className={cn(
-          buttonVariants({variant: "ghost", size: "icon-xs"}),
-          "not-prose shrink-0 text-fd-muted-foreground opacity-0 transition-opacity group-hover/heading:opacity-100"
-        )}
-        onClick={onCopy}
-      >
-        {isChecked ? <CopyCheckIcon /> : <LinkIcon />}
-      </button>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-xs"
+              aria-label={m.copyAnchorLink()}
+              className="not-prose shrink-0 text-fd-muted-foreground opacity-0 transition-opacity group-hover/heading:opacity-100"
+              onClick={onCopy}
+            >
+              {isChecked ? <CopyCheckIcon /> : <LinkIcon />}
+            </Button>
+          }
+        />
+        <TooltipContent>{isChecked ? m.copiedText() : m.copyText()}</TooltipContent>
+      </Tooltip>
     </As>
   );
 }
