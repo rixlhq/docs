@@ -10,11 +10,10 @@ import {
   SearchDialogList,
   SearchDialogOverlay,
   type SharedProps,
-  useSearch,
 } from "fumadocs-ui/components/dialog/search";
 import {useI18n} from "fumadocs-ui/contexts/i18n";
-import {Input} from "@rixl/ui/input";
 import {m} from "@/paraglide/messages";
+import {SearchInput} from "./search-input";
 
 function initDB(locale?: string) {
   return create({
@@ -22,27 +21,6 @@ function initDB(locale?: string) {
     // https://github.com/micheleriva/zbsearch — same language names as Orama
     language: locale === "de" ? "german" : "english",
   });
-}
-
-/**
- * Local replacement for `SearchDialogInput` from fumadocs. The upstream
- * component hard-codes its `placeholder` from `useTranslations`, and the
- * spread order in the source means passing `placeholder` as a prop cannot
- * override it. Re-implementing the input here lets us source the
- * placeholder from paraglide.
- */
-function SearchInput(props: Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">) {
-  const {search, onSearchChange} = useSearch();
-  return (
-    <Input
-      {...props}
-      value={search}
-      onChange={(e) => onSearchChange(e.target.value)}
-      placeholder={m.search()}
-      aria-label={m.search()}
-      className="w-0 flex-1 border-0 bg-transparent text-lg shadow-none placeholder:text-fd-muted-foreground focus-visible:ring-0"
-    />
-  );
 }
 
 function SearchEmpty() {
