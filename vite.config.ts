@@ -89,6 +89,10 @@ export default defineConfig({
               test: /node_modules[\\/]@tanstack[\\/]/,
               priority: 20,
             },
+            // @base-ui/react + utils form import cycles with a side-effectful
+            // top-level `new Timeout()`. Split across size-capped chunks,
+            // prod evaluates the cycle fatally (`ee is not a constructor`).
+            {name: "vendor-base-ui", test: /node_modules[\\/]@base-ui[\\/]/, priority: 15},
             {
               name: "vendor-fumadocs",
               test: /node_modules[\\/]fumadocs-[^\\/]+[\\/]/,
