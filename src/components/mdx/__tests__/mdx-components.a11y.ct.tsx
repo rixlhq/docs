@@ -73,6 +73,15 @@ describe.each(["light", "dark"] as const)("%s theme", (theme) => {
     expect(await axeViolations(container)).toEqual([]);
   });
 
+  test("icon-only buttons keep their design-system size", async () => {
+    setTheme(theme);
+    const container = await renderInRouter(<Banner id="launch">New API version</Banner>);
+
+    const close = container.querySelector('[data-slot="button"]') as HTMLElement;
+    const box = close.getBoundingClientRect();
+    expect([Math.round(box.width), Math.round(box.height)]).toEqual([32, 32]);
+  });
+
   test("Heading with its anchor and copy button", async () => {
     setTheme(theme);
     const container = await renderInRouter(

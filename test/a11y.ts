@@ -14,5 +14,11 @@ export async function axeViolations(element: Element): Promise<string[]> {
 
 /** Switches the page between the light and dark theme, the way next-themes does on the site. */
 export function setTheme(theme: "light" | "dark"): void {
+  // Mirrors `theme={{attribute: ["class", "data-theme"]}}` in the docs
+  // provider: Fumadocs reads the `dark` class, @rixl/ui reads `data-theme`.
+  // Toggling only the class would leave rixl components on their light
+  // tokens over a dark page, failing contrast checks that pass on the site.
   document.documentElement.classList.toggle("dark", theme === "dark");
+  if (theme === "dark") document.documentElement.setAttribute("data-theme", "dark");
+  else document.documentElement.removeAttribute("data-theme");
 }
