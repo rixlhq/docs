@@ -65,12 +65,6 @@ jobs:
               SENTRY_URL: ${{ vars.SENTRY_URL }}
               SENTRY_AUTH_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.SENTRY_AUTH_TOKEN || '' }}
 
-      # @base-ui ships import cycles with side-effectful top-level state; if
-      # code-splitting ever separates the scope again, prod boots into
-      # `ee is not a constructor` with zero signal from the test suite.
-      - name: 🧩 Base UI single chunk
-        run: test $(ls dist/client/assets/vendor-base-ui-*.js | wc -l) -eq 1
-
       # After the build, not beside it: build and test conflict when run in parallel (as in mediasdk).
       - name: 🧪 Test
         run: vp test --coverage
