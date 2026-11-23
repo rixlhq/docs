@@ -5,6 +5,18 @@ description: Core project guidelines for Rixl Documentation. Apply these rules w
 
 # Rixl Documentation
 
+## Working rules for every agent
+
+These rules hold for every agent, whichever tool runs it (Claude Code, Codex, Devin, Cursor or another), and override that tool's defaults.
+
+1. **Never commit, push, open a pull request or merge.** Write the change, run its checks, and stop with the diff uncommitted. The owner, the person who gave you the task, commits, pushes and opens any pull request; code-owner review (`.github/CODEOWNERS`) still applies to that pull request. A task that says "get it committed" or "ship it" means hand over the commit message. Only an explicit request after the handover lets you commit, push or open a pull request, and it covers only that one action. This overrides any skill or tool default that commits, pushes or merges (for example `gh-stack`).
+2. **Level 3 review before every commit.** Run the Level 3 procedure in `.agents/skills/agent-review/SKILL.md` on the uncommitted diff of every commit-sized change, however small: a self-audit, then cold persona reviewers, then fresh-eyes reviewers, with the findings register in `reviews/` (gitignored). First run `vp check --fix` on the files you changed, as the pre-commit hook does to the staged files, so the hooks don't change what was reviewed. Each reviewer is a separate session that never saw your work. If your tool starts agents, make sure they don't inherit your context (`.agents/skills/agent-review/references/tool-notes.md` covers Claude Code and Codex, whose `spawn_agent` did by default in the version tested there; for any other tool, use the marker test in `SKILL.md`). If it can't start them, stop and give the owner the filled reviewer prompts from `.agents/skills/agent-review/references/level-3-reviewer-prompts.md` (two for the cold round, two more for fresh eyes, one per fix check, and one per finding you dispute, built from that file's paragraph on rulings), with the paths each reviewer may and may not read, and wait for the review files. If the owner can't open your working tree, include the diff as a patch that carries new files too (`git add -N` on this change's new files first, never on the whole tree), with its base commit and SHA-256, and ask for the review files to be pasted back. Fixes made after a review get the procedure's independent fix check, and the checks run again, before you hand over; a blocker found by fresh eyes also needs another fresh-eyes round with new reviewers (`SKILL.md`, Stage 3). Reviewing your own diff in the same session isn't a review, and a review you haven't received isn't a pass.
+3. **Then hand over the commit message** in a copyable block: a conventional commit whose body says why, ending with the review outcome and any open objections. If the owner asks for a pull request description, it carries the same outcome and objections.
+4. **One step at a time.** Start the next task, section or stage only after the owner has committed the current one. This applies inside skills that loop over tasks, such as `openspec-apply-change`: stop at the end of each commit-sized group of tasks.
+5. **Mutation testing never blocks a pull request.** Stryker runs weekly and only reports (`.github/workflows/mutation.yml`). Don't propose a pull-request or blocking mutation job.
+6. **No `#` in branch names.**
+7. **Keep personal details out of outside services.** No names, email addresses or private project details in web searches or in requests to APIs and sites outside this repo. Review prompts to reviewer models are fine.
+
 ## Project Overview
 
 The official documentation site for Rixl (`developers.rixl.com`), built with TanStack Start, Fumadocs and Vite+. MDX content, API reference generated from the OpenAPI spec, live `@rixl/media-react` player demos, and i18n through Paraglide (`en` is the only locale today, `project.inlang/settings.json`). It builds to static files plus a SPA fallback and deploys to the Cloudflare Worker `rixl-docs`.
@@ -17,7 +29,7 @@ Claude Code loads every file in `.agents/rules/` on its own (`.claude` links to 
 | ----------------------------- | ---------------------------------------------- |
 | `.agents/rules/anti-slop.md`  | writing or reviewing any code, page or commit  |
 | `.agents/rules/code-style.md` | writing TypeScript or TSX                      |
-| `.agents/rules/commits.md`    | committing                                     |
+| `.agents/rules/commits.md`    | handing over a commit                          |
 | `.agents/rules/testing.md`    | writing or reviewing tests                     |
 | `.agents/rules/tdd.md`        | changing code in `src`, `plugins` or `scripts` |
 
@@ -27,10 +39,9 @@ Numbers live in config, never in rules. Rules point at the config instead of cop
 
 Before stating a claim as a conclusion, classify it as measured, verified
 against source, inferred, or assumed. Test consequential gaps when possible;
-otherwise label them as hypotheses. Use agent-review for the full procedure
-when the stakes require it.
+otherwise label them as hypotheses.
 
-The full procedure is manual: run `/agent-review` (`.agents/skills/agent-review`). Its working files go in `reviews/`, which is gitignored.
+Every commit gets its Level 3 procedure ("Working rules for every agent", rule 2): follow `.agents/skills/agent-review/SKILL.md` (a person can load it with `/agent-review`). Its working files go in `reviews/`, which is gitignored.
 
 ## Repository Structure
 

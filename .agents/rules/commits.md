@@ -12,7 +12,7 @@ A commit records claims: the message and the code. Only commit what has been che
 1. Finish one logical change.
 2. Run the checks for what you touched: `vp check`, `vp test`, and `vp run build` when content, routes or plugins changed (the build validates every internal link).
 3. Run the `code-simplifier` skill on the changed code, then rerun the checks.
-4. Commit. Then move on to the next change.
+4. Run the Level 3 procedure on the uncommitted diff (`AGENTS.md`, "Working rules for every agent", rule 2), then hand the commit message to the owner, who commits. Start the next change only after that commit.
 
 ## Hooks
 
@@ -36,4 +36,4 @@ Never skip a hook (`--no-verify`, `-n`, `LEFTHOOK=0`, `core.hooksPath`). If a ho
 Nothing in GitHub blocks these; the team holds them.
 
 - Never merge or push to `main` while CI is red.
-- Push directly to `main` only when a human asks for a hotfix. Everything else goes through a pull request. The one automated exception is `generate.yml`, which commits the new `.openapi-spec-sha` when the API spec changes.
+- The owner pushes directly to `main` only for a hotfix. Everything else goes through a pull request, which the owner opens. The one automated exception is `generate.yml`, which commits the new `.openapi-spec-sha` when the API spec changes.
