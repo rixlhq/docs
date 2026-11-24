@@ -1,7 +1,7 @@
 {
   "root": true,
   "title": "Home",
-  "description": "Complete guide to the RIXL media processing platform",
+  "description": "Complete guide to the Rixl media processing platform",
   "pagesIndex": "index",
   "pages": [
     "getting-started",

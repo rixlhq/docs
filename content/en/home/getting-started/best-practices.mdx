@@ -1,13 +1,13 @@
 ---
 title: Best Practices
-description: Essential guidelines and recommendations for optimizing your RIXL workflow, from media preparation to production deployment.
+description: Essential guidelines and recommendations for optimizing your Rixl workflow, from media preparation to production deployment.
 ---
 
 import {Callout, Card, Columns} from "@/snippets";
 import {Step, Steps} from "fumadocs-ui/components/steps";
 import {Tab, Tabs} from "fumadocs-ui/components/tabs";
 
-Get the most out of **RIXL** with these proven best practices. Whether you're just getting started or optimizing an existing workflow, these guidelines will help you achieve better performance, quality, and efficiency.
+Get the most out of **Rixl** with these proven best practices. Whether you're just getting started or optimizing an existing workflow, these guidelines will help you achieve better performance, quality, and efficiency.
 
 ## Media Processing Best Practices
 
@@ -82,7 +82,7 @@ Choose the right [quality tier](/en/home/video/quality-tiers) based on your cont
   <Step>
     **Source Quality**
 
-    Upload the highest quality version you have. RIXL will optimize down to appropriate sizes automatically.
+    Upload the highest quality version you have. Rixl will optimize down to appropriate sizes automatically.
     - **Video**: Up to 2GB per file
     - **Images**: Up to 100MB per file
     - **Resolution**: Keep original resolution, avoid upscaling
@@ -285,7 +285,7 @@ import {Image} from "@rixl/media-react";
     Always provide descriptive alt text for images and meaningful titles for videos.
   </Card>
   <Card title="Keyboard Navigation" icon="keyboard">
-    RIXL components include built-in keyboard navigation support.
+    Rixl components include built-in keyboard navigation support.
   </Card>
   <Card title="Screen Readers" icon="volume-2">
     Components are WCAG 2.1 compliant with proper ARIA attributes.
@@ -331,7 +331,7 @@ import {Image} from "@rixl/media-react";
     **Direct Upload Flow**
 
     Use the direct upload model:
-    1. **Initialize Upload**: Request upload credentials and presigned upload URLs from the RIXL API.
+    1. **Initialize Upload**: Request upload credentials and presigned upload URLs from the Rixl API.
     2. **Direct Upload**: Stream bytes directly to the signed cloud storage URL using HTTP `PUT`. Processing begins automatically once the file is uploaded.
 
   </Step>
@@ -412,7 +412,7 @@ const waitForVideoReady = async (apiKey, videoId) => {
 
 <Columns cols={3}>
   <Card title="Leverage CDN" icon="globe">
-    RIXL's global CDN automatically caches content close to your users.
+    Rixl's global CDN automatically caches content close to your users.
   </Card>
   <Card title="Use Lazy Loading" icon="zap">
     Load images and videos only when they enter the viewport to save bandwidth.

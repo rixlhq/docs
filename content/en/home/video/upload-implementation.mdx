@@ -12,7 +12,7 @@ Implement video uploads with comprehensive code examples and best practices for 
 
 ### Implementation Overview
 
-Video uploads on RIXL use a secure **two-step direct upload** model:
+Video uploads on Rixl use a secure **two-step direct upload** model:
 
 1. **Initialize Upload**: Request upload credentials and presigned URLs for your video (and optional poster).
 2. **Direct Upload**: Stream your media file directly to the presigned storage URL using HTTP `PUT`. Once bytes are written, transcoding begins automatically.
@@ -150,7 +150,7 @@ console.log(`Video uploaded and processing! Video ID: ${videoId}`);
         video_quality: str = "VIDEO_QUALITY_PRO"
     ) -> str:
         """
-        Uploads a video to RIXL in two steps:
+        Uploads a video to Rixl in two steps:
         1. Request upload credentials
         2. Stream binary file directly to storage
         """
