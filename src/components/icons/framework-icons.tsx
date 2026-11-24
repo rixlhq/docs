@@ -126,8 +126,6 @@ export function LitIcon({className, ...props}: SVGProps<SVGSVGElement>) {
   );
 }
 
-export const CoreIcon = TypeScriptIcon;
-
 export function UiIcon({className, ...props}: SVGProps<SVGSVGElement>) {
   return (
     <svg

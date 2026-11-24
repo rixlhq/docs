@@ -4,7 +4,6 @@ import {iconMap, type IconName} from "@/generated/icons";
 import {
   AngularIcon,
   AstroIcon,
-  CoreIcon,
   CsharpIcon,
   GoIcon,
   JavaIcon,
@@ -53,7 +52,7 @@ const FRAMEWORK_ICON_MAP: Record<FrameworkIconName, (props: ComponentProps<"svg"
   angular: AngularIcon,
   astro: AstroIcon,
   lit: LitIcon,
-  core: CoreIcon,
+  core: TypeScriptIcon,
   ui: UiIcon,
   go: GoIcon,
   python: PythonIcon,
