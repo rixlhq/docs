@@ -58,8 +58,8 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.3.0",
-    "@vitest/browser-playwright": "5.1.0",
-    "@vitest/coverage-v8": "5.1.0",
+    "@vitest/browser-playwright": "5.1.1",
+    "@vitest/coverage-v8": "5.1.1",
     "axe-core": "^4.14.1",
     "fast-check": "^4.11.0",
     "knip": "^6.48.0",
@@ -69,17 +69,14 @@
     "playwright": "^1.65.1",
     "tailwindcss": "^4.3.5",
     "typescript": "^7.0.2",
-    "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
-    "vite-plus": "1.7.0",
-    "vitest": "5.1.0",
+    "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8001",
+    "vite-plus": "1.8.0",
     "vitest-browser-react": "2.3.0",
     "wrangler": "^4.168.0"
   },
   "overrides": {
     "react": "^19.3.0",
-    "react-dom": "^19.3.0",
-    "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8000",
-    "vitest": "5.1.0"
+    "react-dom": "^19.3.0"
   },
   "devEngines": {
     "packageManager": {
