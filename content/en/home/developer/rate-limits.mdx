@@ -1,6 +1,6 @@
 ---
 title: Rate Limits
-description: How the RIXL API signals throttling and how your client should respond.
+description: How the Rixl API signals throttling and how your client should respond.
 ---
 
 import {Callout} from "@/snippets";
@@ -13,7 +13,7 @@ The API may answer `429 Too Many Requests` when it needs you to slow down, and `
 - Cap concurrency, and batch or cache reads where you can.
 
 <Callout type="warning" title="No published limits">
-  RIXL does not publish numeric rate limits. Build for adaptive throttling driven by `Retry-After` rather than fixed numbers.
+  Rixl does not publish numeric rate limits. Build for adaptive throttling driven by `Retry-After` rather than fixed numbers.
 </Callout>
 
 ## Related

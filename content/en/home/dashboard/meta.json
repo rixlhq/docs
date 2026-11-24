@@ -1,5 +1,5 @@
 {
   "title": "Dashboard",
-  "description": "Manage projects and media library in the RIXL web dashboard",
+  "description": "Manage projects and media library in the Rixl web dashboard",
   "pages": ["overview", "guide", "---Projects---", "projects", "---Media Library---", "media"]
 }
